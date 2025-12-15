@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- tree view -->
+        <!--record id="view_campaign_builder_tree" model="ir.ui.view">
+            <field name="name">campaign_builder_tree</field>
+            <field name="model">vit.campaign_builder</field>
+            <field name="inherit_id" ref="vit_ads_suhu.view_vit_campaign_builder_tree"/>
+            <field name="arch" type="xml">
+            </field>
+        </record-->
+        <!-- form view -->
+        <!-- record id="view_campaign_builder_form" model="ir.ui.view">
+            <field name="name">campaign_builder_form</field>
+            <field name="model">vit.campaign_builder</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="vit_ads_suhu.view_vit_campaign_builder_form"/>
+            <field name="arch" type="xml">
+            </field>
+        </record-->
+        <!-- search -->
+        <!--record id="view_campaign_builder_search" model="ir.ui.view">
+            <field name="name">campaign_builder</field>
+            <field name="model">vit.campaign_builder</field>
+            <field name="inherit_id" ref="vit_ads_suhu.view_vit_campaign_builder_search"/>
+            <field name="arch" type="xml">
+            </field>
+        </record-->
+        <!-- action window -->
+        <!--record id="vit_ads_suhu.action_campaign_builder" model="ir.actions.act_window">
+            <field name="name">Campaign Builder</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.campaign_builder</field>
+            <field name="view_mode">list,form,kanban,pivot,graph</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to add a new Campaign Builder
+                </p><p>
+
+                </p>
+            </field>
+        </record-->
+
+        <menuitem id="menu_campaign_builder" name="Campaign Builder" parent="vit_ads_suhu_config_menu" action="action_campaign_builder" sequence="110"/>
+    </data>
+</odoo>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- report qweb view -->
+        <record id="action_report_vit_visual_concept" model="ir.actions.report">
+            <field name="name">Visual Concept</field>
+            <field name="model">vit.visual_concept</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">vit_ads_suhu.vit_visual_concept_report</field>
+            <field name="report_file">vit_ads_suhu.vit_visual_concept_report</field>
+            <field name="print_report_name">object.name</field>
+            <field name="binding_model_id" ref="vit_ads_suhu.model_vit_visual_concept"/>
+            <field name="binding_type">report</field>
+        </record>
+        <!-- document template -->
+        <template id="vit_ads_suhu.vit_visual_concept_report_document" >
+            <t t-call="web.external_layout">
+                <t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
+                <div class="page">
+                    <h2>
+                        Visual Concept: <span t-field="doc.name"/>
+                    </h2>
+                    <div class="row mt32 mb32">
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Angle</strong>
+                            <p class="m-0" t-field="doc.angle" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Hook</strong>
+                            <p class="m-0" t-field="doc.hook" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Script Writer</strong>
+                            <p class="m-0" t-field="doc.script_writer_id"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Ads Copy</strong>
+                            <p class="m-0" t-field="doc.ads_copy_id"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Audience Profiler</strong>
+                            <p class="m-0" t-field="doc.audience_profiler_id"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure"/>
+                <h2>Compliance Checker</h2>
+                <table class="table table-sm o_main_table" name="compliance_checker_ids_table">
+                    <thead>
+                        <tr>
+                            <td> Name</td>
+                            <td> Inherit</td>
+                            <td>Visual Concept</td>
+                            <td>Ads Copy</td>
+                        </tr>
+                    </thead>
+                    <tbody class="compliance_checker_ids_tbody">
+                        <tr t-foreach="doc.compliance_checker_ids" t-as="line">
+                            <td><span t-field="line._name" /></td>
+                            <td><span t-field="line._inherit" /></td>
+                            <td><span t-field="line.visual_concept_id" /></td>
+                            <td><span t-field="line.ads_copy_id" /></td>
+                        </tr> <!-- foreach-->
+                    </tbody>
+                </table>
+                <div class="oe_structure"/>
+                <h2>Image Prompt</h2>
+                <table class="table table-sm o_main_table" name="image_prompt_ids_table">
+                    <thead>
+                        <tr>
+                            <td>Prompt</td>
+                            <td>Image</td>
+                            <td>Image Filename</td>
+                            <td>Name</td>
+                            <td>Visual Concept</td>
+                            <td>Image Generator</td>
+                        </tr>
+                    </thead>
+                    <tbody class="image_prompt_ids_tbody">
+                        <tr t-foreach="doc.image_prompt_ids" t-as="line">
+                            <td><span t-field="line.prompt" /></td>
+                            <td><span t-field="line.image" /></td>
+                            <td><span t-field="line.image_filename" /></td>
+                            <td><span t-field="line.name" /></td>
+                            <td><span t-field="line.visual_concept_id" /></td>
+                            <td><span t-field="line.image_generator_id" /></td>
+                        </tr> <!-- foreach-->
+                    </tbody>
+                </table>
+                <div class="oe_structure"/>
+            </t>
+        </template>
+
+        <!-- main template -->
+        <template id="vit_ads_suhu.vit_visual_concept_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="lang" t-value="doc.create_uid.lang"/>
+                    <t t-call="vit_ads_suhu.vit_visual_concept_report_document" />
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

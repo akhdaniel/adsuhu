@@ -1,0 +1,7 @@
+<odoo>
+	<data>
+		<menuitem id="vit_ads_suhu_top_menu" name="Ads Suhu" sequence="20" web_icon="vit_ads_suhu,static/description/icon.png" />
+		<menuitem id="vit_ads_suhu_sub_menu" name="Operations" sequence="40" parent="vit_ads_suhu_top_menu" />
+		<menuitem id="vit_ads_suhu_config_menu" name="Configurations" sequence="1000" parent="vit_ads_suhu_top_menu" />
+	</data>
+</odoo>

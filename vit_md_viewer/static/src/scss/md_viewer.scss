@@ -1,0 +1,33 @@
+.o_field_markdown_viewer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.o_field_markdown_viewer .o_markdown_viewer_content {
+    width: 100%;
+    font-size:larger;
+}
+
+.o_field_markdown_viewer .o_markdown_viewer_editor {
+    width: 100%;
+    display: flex;
+}
+
+.o_field_markdown_viewer .o_markdown_viewer_editor > * {
+    flex: 1 1 auto;
+}
+
+.o_field_markdown_viewer .o_markdown_viewer_editor textarea.o_input {
+    width: 100%;
+}
+
+.o_inner_group .o_markdown_viewer_full_width_cell,
+.o_inner_group .o_markdown_viewer_full_width_label {
+    grid-column: 1 / -1;
+}
+
+.o_group .o_markdown_viewer_full_width_cell {
+    flex: 0 0 100%;
+    max-width: 100%;
+}

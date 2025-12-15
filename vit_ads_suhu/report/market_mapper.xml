@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- report qweb view -->
+        <record id="action_report_vit_market_mapper" model="ir.actions.report">
+            <field name="name">Market Mapper</field>
+            <field name="model">vit.market_mapper</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">vit_ads_suhu.vit_market_mapper_report</field>
+            <field name="report_file">vit_ads_suhu.vit_market_mapper_report</field>
+            <field name="print_report_name">object.name</field>
+            <field name="binding_model_id" ref="vit_ads_suhu.model_vit_market_mapper"/>
+            <field name="binding_type">report</field>
+        </record>
+        <!-- document template -->
+        <template id="vit_ads_suhu.vit_market_mapper_report_document" >
+            <t t-call="web.external_layout">
+                <t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
+                <div class="page">
+                    <h2>
+                        Market Mapper: <span t-field="doc.name"/>
+                    </h2>
+                    <div class="row mt32 mb32">
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Product Value Analysis</strong>
+                            <p class="m-0" t-field="doc.product_value_analysis_id"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure"/>
+                <h2>Audience Profiler</h2>
+                <table class="table table-sm o_main_table" name="audience_profiler_ids_table">
+                    <thead>
+                        <tr>
+                            <td> Name</td>
+                            <td> Inherit</td>
+                            <td>Market Mapper</td>
+                        </tr>
+                    </thead>
+                    <tbody class="audience_profiler_ids_tbody">
+                        <tr t-foreach="doc.audience_profiler_ids" t-as="line">
+                            <td><span t-field="line._name" /></td>
+                            <td><span t-field="line._inherit" /></td>
+                            <td><span t-field="line.market_mapper_id" /></td>
+                        </tr> <!-- foreach-->
+                    </tbody>
+                </table>
+                <div class="oe_structure"/>
+            </t>
+        </template>
+
+        <!-- main template -->
+        <template id="vit_ads_suhu.vit_market_mapper_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="lang" t-value="doc.create_uid.lang"/>
+                    <t t-call="vit_ads_suhu.vit_market_mapper_report_document" />
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

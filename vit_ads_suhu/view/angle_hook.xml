@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- tree view -->
+        <record id="view_vit_angle_hook_tree" model="ir.ui.view">
+            <field name="name">vit_angle_hook_tree</field>
+            <field name="model">vit.angle_hook</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="Angle">
+                    <field name="angle_no" /> <!-- 100-->
+                    <field name="name" /> <!-- 100-->
+                    <field name="audience_profiler_id" /> <!-- 100-->
+                    <field name="gpt_prompt_id" /> <!-- 100-->
+                    <field name="product_value_analysis_id" /> <!-- 101-->
+                    <field name="description" /> <!-- 104-->
+                </list>
+            </field>
+        </record>
+        <!-- pivot view -->
+        <record id="view_vit_angle_hook_pivot" model="ir.ui.view">
+            <field name="name">vit_angle_hook_tree</field>
+            <field name="model">vit.angle_hook</field>
+            <field name="type">pivot</field>
+            <field name="arch" type="xml">
+                <pivot string="Angle">
+                    <field name="audience_profiler_id" type="row"/>
+                    <field name="product_value_analysis_id" type="row"/>
+                    <field name="gpt_prompt_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+        <!-- form view -->
+        <record id="view_vit_angle_hook_form" model="ir.ui.view">
+            <field name="name">vit_angle_hook_form</field>
+            <field name="model">vit.angle_hook</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Angle">
+                    <header>
+                        <button string="Generate" type="object" name="action_generate" />
+                        <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object" name="action_view_detail_ads_copy_ids" class="oe_stat_button" icon="fa-search" >
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="ads_copy_ids_count" />
+                                    </span>
+                                    <span class="o_stat_text">Ads Copy</span>
+                                </div>
+                            </button>
+                            <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
+                                <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
+                                <!--field name="detail_ids" invisible="1"/-->
+                            <!--/button-->
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Angle Name"/>
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group> <!-- left -->
+                                <field name="angle_no"  />
+                                <field name="gpt_url" widget="url" />
+                                <field name="description"  />
+                            </group>
+                            <group> <!-- right -->
+                                <field name="audience_profiler_id"  />
+                                <field name="gpt_prompt_id"  />
+                                <field name="product_value_analysis_id"  />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="output" string="Output">
+                                <field name="output" widget="md_viewer" />
+                            </page>
+                            <page name="input" string="Input">
+                                <field name="input" widget="md_viewer" />
+                            </page>
+                        </notebook>
+                        <group name="note_group" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            </group>
+                            <div class="clearfix"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- search -->
+        <record id="view_vit_angle_hook_search" model="ir.ui.view">
+            <field name="name">vit_angle_hook</field>
+            <field name="model">vit.angle_hook</field>
+            <field name="arch" type="xml">
+                <search string="Angle">
+
+                    <filter string="Angle No" name="filter_by_angle_no" domain="[('angle_no','=','')]" />
+                    <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
+                    <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
+                    <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
+                    <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
+                    <field name="angle_no" select="True"/>
+                    <field name="name" select="True"/>
+                    <field name="output" select="True"/>
+                    <field name="input" select="True"/>
+                    <field name="gpt_url" select="True"/>
+                    <field name="description" select="True"/>
+                    <field name="audience_profiler_id" select="True"/>
+                    <field name="product_value_analysis_id" select="True"/>
+                    <field name="gpt_prompt_id" select="True"/>
+                    <group string="Group By..">
+                        <filter string="Audience Profiler" domain="[]" name="group_by_audience_profiler_id" context="{'group_by':'audience_profiler_id'}"/>
+                        <filter string="Product Value Analysis" domain="[]" name="group_by_product_value_analysis_id" context="{'group_by':'product_value_analysis_id'}"/>
+                        <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
+        <record id="view_vit_angle_hook_kanban" model="ir.ui.view" >
+            <field name="name">vit_angle_hook</field>
+            <field name="model">vit.angle_hook</field>
+            <field name="arch" type="xml">
+                <kanban version="7.0">
+                    <field name="id" />
+                    <templates>
+                        <t t-name="card" class="flex-row">
+                            <main class="p-2">
+                                <h4>
+                                    <a type="open"><field name="name"/></a>
+                                </h4>
+                            </main>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- graph -->
+        <record id="view_vit_angle_hook_graph" model="ir.ui.view">
+            <field name="name">vit_angle_hook</field>
+            <field name="model">vit.angle_hook</field>
+            <field name="arch" type="xml">
+                <graph string="Angle" type="bar">
+                    <field name="audience_profiler_id"/>
+                </graph>
+            </field>
+        </record>
+        <!-- action window -->
+        <record id="action_angle_hook" model="ir.actions.act_window">
+            <field name="name">Angle</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.angle_hook</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to add a new Angle
+                </p><p>
+
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_angle_hook" name="Angle" parent="vit_ads_suhu_config_menu" action="action_angle_hook" sequence="50"/>
+    </data>
+</odoo>

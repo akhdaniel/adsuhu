@@ -1,0 +1,68 @@
+<odoo>
+<data>
+    <!-- 1 Product Value Analyst -->
+    <record id="gpt_product_value_analysis" model="vit.gpt_prompt">
+        <field name="name">product_value_analysis</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-68961adb4a88819181afa78552bf3277-product-value-analyst</field>
+    </record>
+
+    <!-- 2 Market Mapper -->
+    <record id="gpt_market_mapper" model="vit.gpt_prompt">
+        <field name="name">market_mapper</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-6896d1ff2b508191a7d9f834a2d73a3c-ai-market-mapper</field>
+    </record>
+
+    <!-- 3 Audience Profiler -->
+    <record id="gpt_audience_profiler" model="vit.gpt_prompt">
+        <field name="name">audience_profiler</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-6896fbebc10c8191be0ca65f5eaaa78f-audience-profiler</field>
+    </record>
+    <!-- 4 Angle & Hook Strategist -->
+    <record id="gpt_angle_hook" model="vit.gpt_prompt">
+        <field name="name">angle_hook</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-68976848f38c8191b829128e141d15f8-angle-hook-strategist</field>
+    </record>
+    <!-- 5 Ad Copy Engineer -->    
+    <record id="gpt_ads_copy" model="vit.gpt_prompt">
+        <field name="name">ads_copy</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-6898240d17e08191827b66ac668e034a-ad-copy-engineer</field>
+    </record>
+    <!-- 6 Scriptwriter -->      
+    <record id="gpt_script_writer" model="vit.gpt_prompt">
+        <field name="name">script_writer</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-68989d6504588191a0b51e890e682bcc-scriptwriter</field>
+    </record>
+    <!-- 7 Visual Concept Designer-->   
+    <record id="gpt_visual_concept" model="vit.gpt_prompt">
+        <field name="name">visual_concept</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-6899718789088191b445e6276f27e543-visual-concept-designer-meta-first</field>
+    </record>
+
+    <!-- 8 Compliance Checker -->             
+    <record id="gpt_compliance_checker" model="vit.gpt_prompt">
+        <field name="name">compliance_checker</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-6899ffd128988191aa327f1f81bb9ad8-compliance-checker-meta-ads</field>
+    </record>
+
+    <!-- 9 Landing Page Builder-->
+    <record id="gpt_landing_page_builderr" model="vit.gpt_prompt">
+        <field name="name">landing_page_builder</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-689ffc7005fc8191b100e04495503413-lp-builder-meta</field>
+    </record>
+
+    <!-- 10 Campaign Builder -->
+    <record id="gpt_campaign_builder" model="vit.gpt_prompt">
+        <field name="name">campaign_builder</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-689a974961908191901e00c003e16868-campaign-builder-meta-ads</field>
+    </record>
+               
+    <!-- 11 -->
+    <record id="gpt_image_generator" model="vit.gpt_prompt">
+        <field name="name">image_generator</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-68705c673be88191b44a40da7eada6d1-kang-gambar</field>
+    </record>
+                          
+
+    
+</data>
+</odoo>

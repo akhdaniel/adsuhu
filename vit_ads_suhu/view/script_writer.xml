@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- tree view -->
+        <record id="view_vit_script_writer_tree" model="ir.ui.view">
+            <field name="name">vit_script_writer_tree</field>
+            <field name="model">vit.script_writer</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="Script Writer">
+                    <field name="angle" /> <!-- 100-->
+                    <field name="name" /> <!-- 100-->
+                    <field name="ads_copy_id" /> <!-- 100-->
+                    <field name="gpt_prompt_id" /> <!-- 100-->
+                    <field name="hook" /> <!-- 101-->
+                    <field name="angle_hook_id" /> <!-- 101-->
+                    <field name="description" /> <!-- 104-->
+                </list>
+            </field>
+        </record>
+        <!-- pivot view -->
+        <record id="view_vit_script_writer_pivot" model="ir.ui.view">
+            <field name="name">vit_script_writer_tree</field>
+            <field name="model">vit.script_writer</field>
+            <field name="type">pivot</field>
+            <field name="arch" type="xml">
+                <pivot string="Script Writer">
+                    <field name="ads_copy_id" type="row"/>
+                    <field name="angle_hook_id" type="row"/>
+                    <field name="gpt_prompt_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+        <!-- form view -->
+        <record id="view_vit_script_writer_form" model="ir.ui.view">
+            <field name="name">vit_script_writer_form</field>
+            <field name="model">vit.script_writer</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Script Writer">
+                    <header>
+                        <button string="Generate" type="object" name="action_generate" />
+                        <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object" name="action_view_detail_visual_concept_ids" class="oe_stat_button" icon="fa-search" >
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="visual_concept_ids_count" />
+                                    </span>
+                                    <span class="o_stat_text">Visual Concept</span>
+                                </div>
+                            </button>
+                            <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
+                                <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
+                                <!--field name="detail_ids" invisible="1"/-->
+                            <!--/button-->
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Script Writer Name"/>
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group> <!-- left -->
+                                <field name="angle"  />
+                                <field name="hook"  />
+                                <field name="gpt_url" widget="url" />
+                                <field name="description"  />
+                            </group>
+                            <group> <!-- right -->
+                                <field name="ads_copy_id"  />
+                                <field name="gpt_prompt_id"  />
+                                <field name="angle_hook_id"  />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="output" string="Output">
+                                <field name="output" widget="md_viewer" />
+                            </page>
+                            <page name="input" string="Input">
+                                <field name="input" widget="md_viewer" />
+                            </page>
+                        </notebook>
+                        <group name="note_group" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            </group>
+                            <div class="clearfix"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- search -->
+        <record id="view_vit_script_writer_search" model="ir.ui.view">
+            <field name="name">vit_script_writer</field>
+            <field name="model">vit.script_writer</field>
+            <field name="arch" type="xml">
+                <search string="Script Writer">
+
+                    <filter string="Angle" name="filter_by_angle" domain="[('angle','=','')]" />
+                    <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
+                    <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
+                    <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
+                    <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
+                    <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
+                    <field name="angle" select="True"/>
+                    <field name="hook" select="True"/>
+                    <field name="name" select="True"/>
+                    <field name="output" select="True"/>
+                    <field name="input" select="True"/>
+                    <field name="gpt_url" select="True"/>
+                    <field name="description" select="True"/>
+                    <field name="ads_copy_id" select="True"/>
+                    <field name="angle_hook_id" select="True"/>
+                    <field name="gpt_prompt_id" select="True"/>
+                    <group string="Group By..">
+                        <filter string="Ads Copy" domain="[]" name="group_by_ads_copy_id" context="{'group_by':'ads_copy_id'}"/>
+                        <filter string="Angle Hook" domain="[]" name="group_by_angle_hook_id" context="{'group_by':'angle_hook_id'}"/>
+                        <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
+        <record id="view_vit_script_writer_kanban" model="ir.ui.view" >
+            <field name="name">vit_script_writer</field>
+            <field name="model">vit.script_writer</field>
+            <field name="arch" type="xml">
+                <kanban version="7.0">
+                    <field name="id" />
+                    <templates>
+                        <t t-name="card" class="flex-row">
+                            <main class="p-2">
+                                <h4>
+                                    <a type="open"><field name="name"/></a>
+                                </h4>
+                            </main>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- graph -->
+        <record id="view_vit_script_writer_graph" model="ir.ui.view">
+            <field name="name">vit_script_writer</field>
+            <field name="model">vit.script_writer</field>
+            <field name="arch" type="xml">
+                <graph string="Script Writer" type="bar">
+                    <field name="ads_copy_id"/>
+                </graph>
+            </field>
+        </record>
+        <!-- action window -->
+        <record id="action_script_writer" model="ir.actions.act_window">
+            <field name="name">Script Writer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.script_writer</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to add a new Script Writer
+                </p><p>
+
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_script_writer" name="Script Writer" parent="vit_ads_suhu_config_menu" action="action_script_writer" sequence="70"/>
+    </data>
+</odoo>

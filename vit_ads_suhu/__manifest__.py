@@ -1,0 +1,59 @@
+#-*- coding: utf-8 -*-
+
+{
+	"name": "Ads Suhu",
+	"version": "1.0",
+	"depends": [
+		"base"
+	],
+	"author": "Akhmad Daniel Sembiring",
+	"category": "Utility",
+	"website": "http://vitraining.com",
+	"images": [
+		"static/description/images/main_screenshot.jpg"
+	],
+	"price": "100",
+	"license": "OPL-1",
+	"currency": "USD",
+	"summary": "magic ads creator",
+	"description": "",
+	"data": [
+		"security/groups.xml",
+		"security/ir.model.access.csv",
+		"view/menu.xml",
+		"view/product_value_analysis.xml",
+		"report/product_value_analysis.xml",
+		"view/market_mapper.xml",
+		"report/market_mapper.xml",
+		"view/audience_profiler.xml",
+		"report/audience_profiler.xml",
+		"view/angle_hook.xml",
+		"report/angle_hook.xml",
+		"view/ads_copy.xml",
+		"report/ads_copy.xml",
+		"view/script_writer.xml",
+		"report/script_writer.xml",
+		"view/visual_concept.xml",
+		"report/visual_concept.xml",
+		"view/compliance_checker.xml",
+		"report/compliance_checker.xml",
+		"view/landing_page_builder.xml",
+		"report/landing_page_builder.xml",
+		"view/campaign_builder.xml",
+		"report/campaign_builder.xml",
+		"view/image_generator.xml",
+		"report/image_generator.xml",
+		"view/gpt_prompt.xml",
+		"report/gpt_prompt.xml",
+		"view/image_prompt.xml",
+		"report/image_prompt.xml",
+		"view/generator_service.xml",
+		"report/generator_service.xml",
+		"view/general_object.xml",
+		"report/general_object.xml"
+	],
+	"installable": True,
+	"auto_install": False,
+	"application": True,
+	"odooVersion": 18
+}

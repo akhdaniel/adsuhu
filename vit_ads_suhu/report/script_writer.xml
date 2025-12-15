@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- report qweb view -->
+        <record id="action_report_vit_script_writer" model="ir.actions.report">
+            <field name="name">Script Writer</field>
+            <field name="model">vit.script_writer</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">vit_ads_suhu.vit_script_writer_report</field>
+            <field name="report_file">vit_ads_suhu.vit_script_writer_report</field>
+            <field name="print_report_name">object.name</field>
+            <field name="binding_model_id" ref="vit_ads_suhu.model_vit_script_writer"/>
+            <field name="binding_type">report</field>
+        </record>
+        <!-- document template -->
+        <template id="vit_ads_suhu.vit_script_writer_report_document" >
+            <t t-call="web.external_layout">
+                <t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
+                <div class="page">
+                    <h2>
+                        Script Writer: <span t-field="doc.name"/>
+                    </h2>
+                    <div class="row mt32 mb32">
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Angle</strong>
+                            <p class="m-0" t-field="doc.angle" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Hook</strong>
+                            <p class="m-0" t-field="doc.hook" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Ads Copy</strong>
+                            <p class="m-0" t-field="doc.ads_copy_id"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Angle Hook</strong>
+                            <p class="m-0" t-field="doc.angle_hook_id"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure"/>
+                <h2>Visual Concept</h2>
+                <table class="table table-sm o_main_table" name="visual_concept_ids_table">
+                    <thead>
+                        <tr>
+                            <td> Name</td>
+                            <td> Inherit</td>
+                            <td>Angle</td>
+                            <td>Hook</td>
+                            <td>Script Writer</td>
+                            <td>Ads Copy</td>
+                            <td>Audience Profiler</td>
+                        </tr>
+                    </thead>
+                    <tbody class="visual_concept_ids_tbody">
+                        <tr t-foreach="doc.visual_concept_ids" t-as="line">
+                            <td><span t-field="line._name" /></td>
+                            <td><span t-field="line._inherit" /></td>
+                            <td><span t-field="line.angle" /></td>
+                            <td><span t-field="line.hook" /></td>
+                            <td><span t-field="line.script_writer_id" /></td>
+                            <td><span t-field="line.ads_copy_id" /></td>
+                            <td><span t-field="line.audience_profiler_id" /></td>
+                        </tr> <!-- foreach-->
+                    </tbody>
+                </table>
+                <div class="oe_structure"/>
+            </t>
+        </template>
+
+        <!-- main template -->
+        <template id="vit_ads_suhu.vit_script_writer_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="lang" t-value="doc.create_uid.lang"/>
+                    <t t-call="vit_ads_suhu.vit_script_writer_report_document" />
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
