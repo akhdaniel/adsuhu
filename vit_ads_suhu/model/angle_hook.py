@@ -19,6 +19,10 @@ class angle_hook(models.Model):
         pass
 
 
+    def action_create_ad_copy(self, ):
+        pass
+
+
     @api.onchange("audience_profiler_id","product_value_analysis_id")
     def _get_input(self, ):
         """

@@ -31,7 +31,7 @@ class landing_page_builder(models.Model):
         }
         """
         for rec in self:
-            rec.name = f"LP - ANGLE {rec.ads_copy_id.angle_hook_id.angle_no}"
+            rec.name = f"LP - ANGLE {rec.ads_copy_id.angle_hook_id.angle_no} - HOOK {rec.ads_copy_id.hook_no}"
             rec.input = f"""
 # ✅ ADS COPY:
 ---

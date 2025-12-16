@@ -8,9 +8,8 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <list string="General Object">
-                    <field name="name" /> <!-- 100-->
-                    <field name="gpt_prompt_id" /> <!-- 100-->
-                    <field name="description" /> <!-- 104-->
+                    <field name="name" /> <!-- 1-->
+                    <field name="description" /> <!-- 1500-->
                 </list>
             </field>
         </record>
@@ -49,8 +48,8 @@
                         </div>
                         <group>
                             <group> <!-- left -->
-                                <field name="gpt_url" widget="url" />
                                 <field name="description"  />
+                                <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="gpt_prompt_id"  />

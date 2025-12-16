@@ -33,6 +33,8 @@ class landing_page_builder(models.Model):
 
 
     _inherit = "vit.general_object"
+    angle = fields.Text(related="ads_copy_id.angle_hook_id.description",  string=_("Angle"))
+    hook = fields.Text(related="ads_copy_id.description",  string=_("Hook"))
 
 
     def action_view_detail_campaign_builder_ids(self):

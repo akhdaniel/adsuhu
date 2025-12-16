@@ -31,3 +31,45 @@
     flex: 0 0 100%;
     max-width: 100%;
 }
+
+.o_field_markdown_viewer .o_markdown_viewer_toolbar {
+    position: relative;
+    display: inline-flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.o_markdown_viewer_copy_wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.o_markdown_viewer_copy_popup {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 0.25rem);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #212529;
+    color: #fff;
+    font-size: 0.75rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    animation: oMarkdownViewerCopyFade 1s ease forwards;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 1;
+    transform: translateY(-50%);
+}
+
+@keyframes oMarkdownViewerCopyFade {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

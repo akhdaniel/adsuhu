@@ -22,6 +22,14 @@
                     </h2>
                     <div class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Angle</strong>
+                            <p class="m-0" t-field="doc.angle" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Hook</strong>
+                            <p class="m-0" t-field="doc.hook" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Visual Concept</strong>
                             <p class="m-0" t-field="doc.visual_concept_id"/>
                         </div>
@@ -38,6 +46,8 @@
                         <tr>
                             <td> Name</td>
                             <td> Inherit</td>
+                            <td>Angle</td>
+                            <td>Hook</td>
                             <td>Compliance Checker</td>
                             <td>Ads Copy</td>
                             <td>Audience Profiler</td>
@@ -48,6 +58,8 @@
                         <tr t-foreach="doc.landing_page_builder_ids" t-as="line">
                             <td><span t-field="line._name" /></td>
                             <td><span t-field="line._inherit" /></td>
+                            <td><span t-field="line.angle" /></td>
+                            <td><span t-field="line.hook" /></td>
                             <td><span t-field="line.compliance_checker_id" /></td>
                             <td><span t-field="line.ads_copy_id" /></td>
                             <td><span t-field="line.audience_profiler_id" /></td>

@@ -63,6 +63,21 @@
     </record>
                           
 
+                   
+    <!-- 12 -->
+    <record id="gpt_video_director" model="vit.gpt_prompt">
+        <field name="name">video_director</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-68b2b230a3008191a818541ea92f82d4-ai-video-director</field>
+    </record>
+                          
+                   
+    <!-- 13 -->
+    <record id="gpt_algo_copy" model="vit.gpt_prompt">
+        <field name="name">algo_copy</field>
+        <field name="gpt_url">https://chatgpt.com/g/g-68f9ab9f0cd08191a29572827894429c-algocopy</field>
+    </record>
+                          
+
     
 </data>
 </odoo>

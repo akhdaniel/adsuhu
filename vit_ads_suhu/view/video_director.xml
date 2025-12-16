@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- tree view -->
+        <record id="view_vit_video_director_tree" model="ir.ui.view">
+            <field name="name">vit_video_director_tree</field>
+            <field name="model">vit.video_director</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="Video Director">
+                    <field name="name" /> <!-- 1-->
+                    <field name="visual_concept_id" /> <!-- 100-->
+                    <field name="video_service_id" /> <!-- 101-->
+                    <field name="description" /> <!-- 1500-->
+                </list>
+            </field>
+        </record>
+        <!-- pivot view -->
+        <record id="view_vit_video_director_pivot" model="ir.ui.view">
+            <field name="name">vit_video_director_tree</field>
+            <field name="model">vit.video_director</field>
+            <field name="type">pivot</field>
+            <field name="arch" type="xml">
+                <pivot string="Video Director">
+                    <field name="visual_concept_id" type="row"/>
+                    <field name="video_service_id" type="row"/>
+                    <field name="gpt_prompt_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+        <!-- form view -->
+        <record id="view_vit_video_director_form" model="ir.ui.view">
+            <field name="name">vit_video_director_form</field>
+            <field name="model">vit.video_director</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Video Director">
+                    <header>
+                        <button string="Generate" type="object" name="action_generate" />
+                        <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
+                                <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
+                                <!--field name="detail_ids" invisible="1"/-->
+                            <!--/button-->
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Video Director Name"/>
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group> <!-- left -->
+                                <field name="description"  />
+                                <field name="gpt_url" widget="url" />
+                            </group>
+                            <group> <!-- right -->
+                                <field name="visual_concept_id"  />
+                                <field name="gpt_prompt_id"  />
+                                <field name="video_service_id"  />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="output" string="Output">
+                                <field name="output" widget="md_viewer" />
+                            </page>
+                            <page name="input" string="Input">
+                                <field name="input" widget="md_viewer" />
+                            </page>
+                        </notebook>
+                        <group name="note_group" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            </group>
+                            <div class="clearfix"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- search -->
+        <record id="view_vit_video_director_search" model="ir.ui.view">
+            <field name="name">vit_video_director</field>
+            <field name="model">vit.video_director</field>
+            <field name="arch" type="xml">
+                <search string="Video Director">
+
+                    <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
+                    <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
+                    <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
+                    <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
+                    <field name="name" select="True"/>
+                    <field name="output" select="True"/>
+                    <field name="input" select="True"/>
+                    <field name="gpt_url" select="True"/>
+                    <field name="description" select="True"/>
+                    <field name="visual_concept_id" select="True"/>
+                    <field name="video_service_id" select="True"/>
+                    <field name="gpt_prompt_id" select="True"/>
+                    <group string="Group By..">
+                        <filter string="Visual Concept" domain="[]" name="group_by_visual_concept_id" context="{'group_by':'visual_concept_id'}"/>
+                        <filter string="Video Service" domain="[]" name="group_by_video_service_id" context="{'group_by':'video_service_id'}"/>
+                        <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
+        <record id="view_vit_video_director_kanban" model="ir.ui.view" >
+            <field name="name">vit_video_director</field>
+            <field name="model">vit.video_director</field>
+            <field name="arch" type="xml">
+                <kanban version="7.0">
+                    <field name="id" />
+                    <templates>
+                        <t t-name="card" class="flex-row">
+                            <main class="p-2">
+                                <h4>
+                                    <a type="open"><field name="name"/></a>
+                                </h4>
+                            </main>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- graph -->
+        <record id="view_vit_video_director_graph" model="ir.ui.view">
+            <field name="name">vit_video_director</field>
+            <field name="model">vit.video_director</field>
+            <field name="arch" type="xml">
+                <graph string="Video Director" type="bar">
+                    <field name="visual_concept_id"/>
+                </graph>
+            </field>
+        </record>
+        <!-- action window -->
+        <record id="action_video_director" model="ir.actions.act_window">
+            <field name="name">Video Director</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.video_director</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to add a new Video Director
+                </p><p>
+
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_video_director" name="Video Director" parent="vit_ads_suhu_config_menu" action="action_video_director" sequence="170"/>
+    </data>
+</odoo>

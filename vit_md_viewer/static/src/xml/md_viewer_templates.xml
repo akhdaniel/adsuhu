@@ -13,16 +13,23 @@
                 >
                     <i t-att-class="toggleIconClass" aria-hidden="true"/>
                 </button>
-                <button
-                    type="button"
-                    class="btn btn-link o_markdown_viewer_copy"
-                    t-on-click="copyMarkdown"
-                    t-att-title="copyButtonTitle"
-                    t-att-aria-label="copyButtonTitle"
-                    t-att-disabled="copyButtonDisabled ? true : undefined"
-                >
-                    <i class="fa fa-copy" aria-hidden="true"/>
-                </button>
+                <span class="o_markdown_viewer_copy_wrapper">
+                    <button
+                        type="button"
+                        class="btn btn-link o_markdown_viewer_copy"
+                        t-on-click="copyMarkdown"
+                        t-att-title="copyButtonTitle"
+                        t-att-aria-label="copyButtonTitle"
+                        t-att-disabled="copyButtonDisabled ? true : undefined"
+                    >
+                        <i class="fa fa-copy" aria-hidden="true"/>
+                    </button>
+                    <t t-if="state.copyStatus === 'success'">
+                        <div class="o_markdown_viewer_copy_popup">
+                            <t t-esc="copyPopupText"/>
+                        </div>
+                    </t>
+                </span>
             </div>
             <t t-if="shouldShowPreview">
                 <div class="o_markdown_viewer_content" t-raw="renderedMarkdown"/>

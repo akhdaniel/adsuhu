@@ -8,14 +8,10 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <list string="Visual Concept">
+                    <field name="name" /> <!-- 1-->
                     <field name="angle" /> <!-- 100-->
-                    <field name="name" /> <!-- 100-->
-                    <field name="script_writer_id" /> <!-- 100-->
-                    <field name="gpt_prompt_id" /> <!-- 100-->
                     <field name="hook" /> <!-- 101-->
-                    <field name="ads_copy_id" /> <!-- 101-->
-                    <field name="audience_profiler_id" /> <!-- 102-->
-                    <field name="description" /> <!-- 104-->
+                    <field name="description" /> <!-- 1500-->
                 </list>
             </field>
         </record>
@@ -55,6 +51,22 @@
                                     <span class="o_stat_text">Compliances</span>
                                 </div>
                             </button>
+                            <button type="object" name="action_view_detail_image_prompt_ids" class="oe_stat_button" icon="fa-search" >
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="image_prompt_ids_count" />
+                                    </span>
+                                    <span class="o_stat_text">Image Prompts</span>
+                                </div>
+                            </button>
+                            <button type="object" name="action_view_detail_video_director_ids" class="oe_stat_button" icon="fa-search" >
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="video_director_ids_count" />
+                                    </span>
+                                    <span class="o_stat_text">Videos</span>
+                                </div>
+                            </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
                                 <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
                                 <!--field name="detail_ids" invisible="1"/-->
@@ -68,8 +80,8 @@
                             <group> <!-- left -->
                                 <field name="angle"  />
                                 <field name="hook"  />
-                                <field name="gpt_url" widget="url" />
                                 <field name="description"  />
+                                <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="script_writer_id"  />
@@ -79,15 +91,6 @@
                             </group>
                         </group>
                         <notebook>
-                            <page name="image_prompt_ids" string="Image Prompt">
-                                <field name="image_prompt_ids" >
-                                    <list >
-                                        <field name="prompt" /> <!-- 100-->
-                                        <field name="image_generator_id" /> <!-- 101-->
-                                        <field name="name" /> <!-- 103-->
-                                    </list>
-                                </field>
-                            </page>
                             <page name="output" string="Output">
                                 <field name="output" widget="md_viewer" />
                             </page>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- report qweb view -->
+        <record id="action_report_vit_image_variant" model="ir.actions.report">
+            <field name="name">Image Variant</field>
+            <field name="model">vit.image_variant</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">vit_ads_suhu.vit_image_variant_report</field>
+            <field name="report_file">vit_ads_suhu.vit_image_variant_report</field>
+            <field name="print_report_name">object.name</field>
+            <field name="binding_model_id" ref="vit_ads_suhu.model_vit_image_variant"/>
+            <field name="binding_type">report</field>
+        </record>
+        <!-- document template -->
+        <template id="vit_ads_suhu.vit_image_variant_report_document" >
+            <t t-call="web.external_layout">
+                <t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
+                <div class="page">
+                    <h2>
+                        Image Variant: <span t-field="doc.name"/>
+                    </h2>
+                    <div class="row mt32 mb32">
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Image</strong>
+                            <img alt="" title="image" class="m-0" style="width:100px" t-attf-src="data:image/*;base64,{{doc.image}}" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Image Filename</strong>
+                            <p class="m-0" t-field="doc.image_filename" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Image Generator</strong>
+                            <p class="m-0" t-field="doc.image_generator_id"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure"/>
+            </t>
+        </template>
+
+        <!-- main template -->
+        <template id="vit_ads_suhu.vit_image_variant_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="lang" t-value="doc.create_uid.lang"/>
+                    <t t-call="vit_ads_suhu.vit_image_variant_report_document" />
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

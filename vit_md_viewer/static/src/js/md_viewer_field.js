@@ -237,6 +237,10 @@ export class MarkdownViewerFieldComponent extends TextField {
         return this.state.copyStatus === "success" ? _t("Copied!") : _t("Copy Markdown");
     }
 
+    get copyPopupText() {
+        return _t("Copied");
+    }
+
     get copyButtonDisabled() {
         const value = this.props.record.data[this.props.name] || "";
         return !value;
@@ -247,15 +251,42 @@ export class MarkdownViewerFieldComponent extends TextField {
         if (!value) {
             return;
         }
+        let copied = false;
         try {
-            await navigator.clipboard.writeText(value);
-            this.state.copyStatus = "success";
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(value);
+                copied = true;
+            }
         } catch {
-            this.state.copyStatus = "error";
-        } finally {
-            setTimeout(() => {
-                this.state.copyStatus = "idle";
-            }, 1500);
+            // ignored, fallback tries next
+        }
+        if (!copied) {
+            // Fallback for browsers without Clipboard API or HTTP context.
+            try {
+                const textarea = document.createElement("textarea");
+                textarea.value = value;
+                textarea.style.position = "fixed";
+                textarea.style.opacity = "0";
+                textarea.style.pointerEvents = "none";
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                copied = document.execCommand("copy");
+                document.body.removeChild(textarea);
+            } catch {
+                copied = false;
+            }
+        }
+        this.state.copyStatus = copied ? "success" : "error";
+        setTimeout(() => {
+            this.state.copyStatus = "idle";
+        }, 1000);
+        if (!copied) {
+            this.displayNotification({
+                title: _t("Copy failed"),
+                message: _t("Please copy the text manually."),
+                type: "warning",
+            });
         }
     }
 

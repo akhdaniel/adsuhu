@@ -8,12 +8,9 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <list string="Angle">
+                    <field name="name" /> <!-- 1-->
                     <field name="angle_no" /> <!-- 100-->
-                    <field name="name" /> <!-- 100-->
-                    <field name="audience_profiler_id" /> <!-- 100-->
-                    <field name="gpt_prompt_id" /> <!-- 100-->
-                    <field name="product_value_analysis_id" /> <!-- 101-->
-                    <field name="description" /> <!-- 104-->
+                    <field name="description" /> <!-- 1500-->
                 </list>
             </field>
         </record>
@@ -40,6 +37,7 @@
                 <form string="Angle">
                     <header>
                         <button string="Generate" type="object" name="action_generate" />
+                        <button string="Create Ad Copy" type="object" name="action_create_ad_copy" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -64,8 +62,8 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="angle_no"  />
-                                <field name="gpt_url" widget="url" />
                                 <field name="description"  />
+                                <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="audience_profiler_id"  />

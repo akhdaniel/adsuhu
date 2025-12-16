@@ -10,14 +10,17 @@
             </field>
         </record-->
         <!-- form view -->
-        <!-- record id="view_audience_profiler_form" model="ir.ui.view">
+        <record id="view_audience_profiler_form" model="ir.ui.view">
             <field name="name">audience_profiler_form</field>
             <field name="model">vit.audience_profiler</field>
             <field name="type">form</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_audience_profiler_form"/>
             <field name="arch" type="xml">
+                <sheet position="before">
+                    <img class="img-fluid mx-auto " alt="flow" src="/vit_ads_suhu_inherit/static/src/img/audience_profiler.png"/>
+                </sheet>            
             </field>
-        </record-->
+        </record>
         <!-- search -->
         <!--record id="view_audience_profiler_search" model="ir.ui.view">
             <field name="name">audience_profiler</field>
@@ -41,6 +44,6 @@
             </field>
         </record-->
 
-        <menuitem id="menu_audience_profiler" name="Audience Profiler" parent="vit_ads_suhu_config_menu" action="action_audience_profiler" sequence="40"/>
+        <!-- <menuitem id="menu_audience_profiler" name="Audience Profiler" parent="vit_ads_suhu_config_menu" action="action_audience_profiler" sequence="40"/> -->
     </data>
 </odoo>

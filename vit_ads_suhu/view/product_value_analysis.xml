@@ -8,10 +8,9 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <list string="Product Value Analysis">
+                    <field name="name" /> <!-- 1-->
                     <field name="product_url" /> <!-- 100-->
-                    <field name="name" /> <!-- 100-->
-                    <field name="gpt_prompt_id" /> <!-- 100-->
-                    <field name="description" /> <!-- 104-->
+                    <field name="description" /> <!-- 1500-->
                 </list>
             </field>
         </record>
@@ -61,8 +60,8 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="product_url"  />
-                                <field name="gpt_url" widget="url" />
                                 <field name="description"  />
+                                <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="gpt_prompt_id"  />

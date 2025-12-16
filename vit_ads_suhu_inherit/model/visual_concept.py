@@ -34,7 +34,7 @@ class visual_concept(models.Model):
         }
         """
         for rec in self:
-            rec.name = f"VISUAL CONCEPT - ANGLE {rec.script_writer_id.angle_hook_id.angle_no}"
+            rec.name = f"VISUAL CONCEPT - ANGLE {rec.script_writer_id.angle_hook_id.angle_no} - HOOK {rec.ads_copy_id.hook_no}"
             rec.input = f"""
 # ✅ SCRIPT:
 ---

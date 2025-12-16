@@ -10,14 +10,17 @@
             </field>
         </record-->
         <!-- form view -->
-        <!-- record id="view_image_generator_form" model="ir.ui.view">
+        <record id="view_image_generator_form" model="ir.ui.view">
             <field name="name">image_generator_form</field>
             <field name="model">vit.image_generator</field>
             <field name="type">form</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_image_generator_form"/>
             <field name="arch" type="xml">
+                <sheet position="before">
+                    <img class="img-fluid mx-auto " alt="flow" src="/vit_ads_suhu_inherit/static/src/img/image_generator.png"/>
+                </sheet>              
             </field>
-        </record-->
+        </record>
         <!-- search -->
         <!--record id="view_image_generator_search" model="ir.ui.view">
             <field name="name">image_generator</field>
@@ -41,6 +44,6 @@
             </field>
         </record-->
 
-        <menuitem id="menu_image_generator" name="Image Generator" parent="vit_ads_suhu_config_menu" action="action_image_generator" sequence="120"/>
+        <!-- <menuitem id="menu_image_generator" name="Image Generator" parent="vit_ads_suhu_config_menu" action="action_image_generator" sequence="120"/> -->
     </data>
 </odoo>

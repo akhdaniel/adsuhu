@@ -8,13 +8,10 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <list string="Script Writer">
+                    <field name="name" /> <!-- 1-->
                     <field name="angle" /> <!-- 100-->
-                    <field name="name" /> <!-- 100-->
-                    <field name="ads_copy_id" /> <!-- 100-->
-                    <field name="gpt_prompt_id" /> <!-- 100-->
                     <field name="hook" /> <!-- 101-->
-                    <field name="angle_hook_id" /> <!-- 101-->
-                    <field name="description" /> <!-- 104-->
+                    <field name="description" /> <!-- 1500-->
                 </list>
             </field>
         </record>
@@ -66,8 +63,8 @@
                             <group> <!-- left -->
                                 <field name="angle"  />
                                 <field name="hook"  />
-                                <field name="gpt_url" widget="url" />
                                 <field name="description"  />
+                                <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="ads_copy_id"  />

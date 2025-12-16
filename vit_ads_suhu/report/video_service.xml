@@ -2,23 +2,23 @@
 <odoo>
     <data>
         <!-- report qweb view -->
-        <record id="action_report_vit_generator_service" model="ir.actions.report">
-            <field name="name">Generator Service</field>
-            <field name="model">vit.generator_service</field>
+        <record id="action_report_vit_video_service" model="ir.actions.report">
+            <field name="name">Video Service</field>
+            <field name="model">vit.video_service</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">vit_ads_suhu.vit_generator_service_report</field>
-            <field name="report_file">vit_ads_suhu.vit_generator_service_report</field>
+            <field name="report_name">vit_ads_suhu.vit_video_service_report</field>
+            <field name="report_file">vit_ads_suhu.vit_video_service_report</field>
             <field name="print_report_name">object.name</field>
-            <field name="binding_model_id" ref="vit_ads_suhu.model_vit_generator_service"/>
+            <field name="binding_model_id" ref="vit_ads_suhu.model_vit_video_service"/>
             <field name="binding_type">report</field>
         </record>
         <!-- document template -->
-        <template id="vit_ads_suhu.vit_generator_service_report_document" >
+        <template id="vit_ads_suhu.vit_video_service_report_document" >
             <t t-call="web.external_layout">
                 <t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
                 <div class="page">
                     <h2>
-                        Generator Service: <span t-field="doc.name"/>
+                        Video Service: <span t-field="doc.name"/>
                     </h2>
                     <div class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-2">
@@ -32,11 +32,11 @@
         </template>
 
         <!-- main template -->
-        <template id="vit_ads_suhu.vit_generator_service_report">
+        <template id="vit_ads_suhu.vit_video_service_report">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="lang" t-value="doc.create_uid.lang"/>
-                    <t t-call="vit_ads_suhu.vit_generator_service_report_document" />
+                    <t t-call="vit_ads_suhu.vit_video_service_report_document" />
                 </t>
             </t>
         </template>

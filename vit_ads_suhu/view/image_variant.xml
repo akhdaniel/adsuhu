@@ -2,25 +2,36 @@
 <odoo>
     <data>
         <!-- tree view -->
-        <record id="view_vit_generator_service_tree" model="ir.ui.view">
-            <field name="name">vit_generator_service_tree</field>
-            <field name="model">vit.generator_service</field>
+        <record id="view_vit_image_variant_tree" model="ir.ui.view">
+            <field name="name">vit_image_variant_tree</field>
+            <field name="model">vit.image_variant</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <list string="Generator Service">
+                <list string="Image Variant">
                     <field name="name" /> <!-- 100-->
-                    <field name="url" widget="url"/> <!-- 101-->
+                    <field name="image_generator_id" /> <!-- 100-->
                 </list>
             </field>
         </record>
+        <!-- pivot view -->
+        <record id="view_vit_image_variant_pivot" model="ir.ui.view">
+            <field name="name">vit_image_variant_tree</field>
+            <field name="model">vit.image_variant</field>
+            <field name="type">pivot</field>
+            <field name="arch" type="xml">
+                <pivot string="Image Variant">
+                    <field name="image_generator_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
         <!-- form view -->
-        <record id="view_vit_generator_service_form" model="ir.ui.view">
-            <field name="name">vit_generator_service_form</field>
-            <field name="model">vit.generator_service</field>
+        <record id="view_vit_image_variant_form" model="ir.ui.view">
+            <field name="name">vit_image_variant_form</field>
+            <field name="model">vit.image_variant</field>
             <field name="type">form</field>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <form string="Generator Service">
+                <form string="Image Variant">
                     <header>
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
@@ -32,14 +43,16 @@
                             <!--/button-->
                         </div>
                         <div class="oe_title">
-                            <label for="name" class="oe_edit_only" string="Generator Service Name"/>
+                            <label for="name" class="oe_edit_only" string="Image Variant Name"/>
                             <h1><field name="name" /></h1>
                         </div>
                         <group>
                             <group> <!-- left -->
-                                <field name="url" widget="url" />
+                                <field name="image" filename="image_filename" widget="image" />
+                                <field name="image_filename" invisible="1" />
                             </group>
                             <group> <!-- right -->
+                                <field name="image_generator_id"  />
                             </group>
                         </group>
                         <notebook>
@@ -56,30 +69,37 @@
             </field>
         </record>
         <!-- search -->
-        <record id="view_vit_generator_service_search" model="ir.ui.view">
-            <field name="name">vit_generator_service</field>
-            <field name="model">vit.generator_service</field>
+        <record id="view_vit_image_variant_search" model="ir.ui.view">
+            <field name="name">vit_image_variant</field>
+            <field name="model">vit.image_variant</field>
             <field name="arch" type="xml">
-                <search string="Generator Service">
+                <search string="Image Variant">
 
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
-                    <filter string="Url" name="filter_by_url" domain="[('url','=','')]" />
+                    <filter string="Image" name="filter_by_image" domain="[('image','=','')]" />
+                    <filter string="Image Filename" name="filter_by_image_filename" domain="[('image_filename','=','')]" />
                     <field name="name" select="True"/>
-                    <field name="url" select="True"/>
+                    <field name="image" select="True"/>
+                    <field name="image_filename" select="True"/>
+                    <field name="image_generator_id" select="True"/>
                     <group string="Group By..">
+                        <filter string="Image Generator" domain="[]" name="group_by_image_generator_id" context="{'group_by':'image_generator_id'}"/>
                     </group>
                 </search>
             </field>
         </record>
         <!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
-        <record id="view_vit_generator_service_kanban" model="ir.ui.view" >
-            <field name="name">vit_generator_service</field>
-            <field name="model">vit.generator_service</field>
+        <record id="view_vit_image_variant_kanban" model="ir.ui.view" >
+            <field name="name">vit_image_variant</field>
+            <field name="model">vit.image_variant</field>
             <field name="arch" type="xml">
                 <kanban version="7.0">
                     <field name="id" />
                     <templates>
                         <t t-name="card" class="flex-row">
+                            <aside class="o_kanban_image m-2">
+                                <field name="image" widget="image" alt="Rooms" options="{'img_class': 'w-100 object-fit-contain'}" invisible="not image"/>
+                            </aside>
                             <main class="p-2">
                                 <h4>
                                     <a type="open"><field name="name"/></a>
@@ -90,21 +110,31 @@
                 </kanban>
             </field>
         </record>
+        <!-- graph -->
+        <record id="view_vit_image_variant_graph" model="ir.ui.view">
+            <field name="name">vit_image_variant</field>
+            <field name="model">vit.image_variant</field>
+            <field name="arch" type="xml">
+                <graph string="Image Variant" type="bar">
+                    <field name="image_generator_id"/>
+                </graph>
+            </field>
+        </record>
         <!-- action window -->
-        <record id="action_generator_service" model="ir.actions.act_window">
-            <field name="name">Generator Service</field>
+        <record id="action_image_variant" model="ir.actions.act_window">
+            <field name="name">Image Variant</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">vit.generator_service</field>
+            <field name="res_model">vit.image_variant</field>
             <field name="view_mode">list,form</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
-                Click to add a new Generator Service
+                Click to add a new Image Variant
                 </p><p>
 
                 </p>
             </field>
         </record>
 
-        <menuitem id="menu_generator_service" name="Generator Service" parent="vit_ads_suhu_config_menu" action="action_generator_service" sequence="150"/>
+        <menuitem id="menu_image_variant" name="Image Variant" parent="vit_ads_suhu_config_menu" action="action_image_variant" sequence="190"/>
     </data>
 </odoo>

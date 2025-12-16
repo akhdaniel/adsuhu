@@ -8,10 +8,9 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <list string="Market Mapper">
-                    <field name="name" /> <!-- 100-->
+                    <field name="name" /> <!-- 1-->
                     <field name="product_value_analysis_id" /> <!-- 100-->
-                    <field name="gpt_prompt_id" /> <!-- 100-->
-                    <field name="description" /> <!-- 104-->
+                    <field name="description" /> <!-- 1500-->
                 </list>
             </field>
         </record>
@@ -60,8 +59,8 @@
                         </div>
                         <group>
                             <group> <!-- left -->
-                                <field name="gpt_url" widget="url" />
                                 <field name="description"  />
+                                <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="product_value_analysis_id"  />

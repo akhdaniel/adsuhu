@@ -8,12 +8,9 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <list string="Ads Copy">
+                    <field name="name" /> <!-- 1-->
                     <field name="hook_no" /> <!-- 100-->
-                    <field name="name" /> <!-- 100-->
-                    <field name="angle_hook_id" /> <!-- 100-->
-                    <field name="gpt_prompt_id" /> <!-- 100-->
-                    <field name="audience_profiler_id" /> <!-- 101-->
-                    <field name="description" /> <!-- 104-->
+                    <field name="description" /> <!-- 1500-->
                 </list>
             </field>
         </record>
@@ -52,6 +49,14 @@
                                     <span class="o_stat_text">Scripts</span>
                                 </div>
                             </button>
+                            <button type="object" name="action_view_detail_image_generator_ids" class="oe_stat_button" icon="fa-search" >
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="image_generator_ids_count" />
+                                    </span>
+                                    <span class="o_stat_text">Images</span>
+                                </div>
+                            </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
                                 <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
                                 <!--field name="detail_ids" invisible="1"/-->
@@ -64,8 +69,8 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="hook_no"  />
-                                <field name="gpt_url" widget="url" />
                                 <field name="description"  />
+                                <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="angle_hook_id"  />

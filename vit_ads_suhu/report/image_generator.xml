@@ -22,6 +22,18 @@
                     </h2>
                     <div class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Ratio</strong>
+                            <p class="m-0" t-field="doc.ratio" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Angle</strong>
+                            <p class="m-0" t-field="doc.angle" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Hook</strong>
+                            <p class="m-0" t-field="doc.hook" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Image Prompt</strong>
                             <p class="m-0" t-field="doc.image_prompt_id"/>
                         </div>
@@ -29,8 +41,32 @@
                             <strong>Visual Concept</strong>
                             <p class="m-0" t-field="doc.visual_concept_id"/>
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Ads Copy</strong>
+                            <p class="m-0" t-field="doc.ads_copy_id"/>
+                        </div>
                     </div>
                 </div>
+                <div class="oe_structure"/>
+                <h2>Image Variant</h2>
+                <table class="table table-sm o_main_table" name="image_variant_ids_table">
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Image</td>
+                            <td>Image Filename</td>
+                            <td>Image Generator</td>
+                        </tr>
+                    </thead>
+                    <tbody class="image_variant_ids_tbody">
+                        <tr t-foreach="doc.image_variant_ids" t-as="line">
+                            <td><span t-field="line.name" /></td>
+                            <td><span t-field="line.image" /></td>
+                            <td><span t-field="line.image_filename" /></td>
+                            <td><span t-field="line.image_generator_id" /></td>
+                        </tr> <!-- foreach-->
+                    </tbody>
+                </table>
                 <div class="oe_structure"/>
             </t>
         </template>

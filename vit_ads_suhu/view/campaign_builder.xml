@@ -8,14 +8,11 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <list string="Campaign Builder">
-                    <field name="name" /> <!-- 100-->
-                    <field name="landing_page_builder_id" /> <!-- 100-->
-                    <field name="gpt_prompt_id" /> <!-- 100-->
-                    <field name="compliance_checker_id" /> <!-- 101-->
+                    <field name="name" /> <!-- 1-->
+                    <field name="angle" /> <!-- 100-->
                     <field name="visual_concept_id" /> <!-- 102-->
-                    <field name="script_writer_id" /> <!-- 103-->
-                    <field name="description" /> <!-- 104-->
-                    <field name="ads_copy_id" /> <!-- 104-->
+                    <field name="hook" /> <!-- 200-->
+                    <field name="description" /> <!-- 1500-->
                 </list>
             </field>
         </record>
@@ -60,8 +57,10 @@
                         </div>
                         <group>
                             <group> <!-- left -->
-                                <field name="gpt_url" widget="url" />
+                                <field name="angle"  />
+                                <field name="hook"  />
                                 <field name="description"  />
+                                <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="landing_page_builder_id"  />
@@ -98,11 +97,15 @@
             <field name="arch" type="xml">
                 <search string="Campaign Builder">
 
+                    <filter string="Angle" name="filter_by_angle" domain="[('angle','=','')]" />
+                    <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
                     <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
+                    <field name="angle" select="True"/>
+                    <field name="hook" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
                     <field name="input" select="True"/>

@@ -35,4 +35,4 @@ class image_prompt(models.Model):
         return super(image_prompt, self).copy(default)
 
     visual_concept_id = fields.Many2one(comodel_name="vit.visual_concept",  string=_("Visual Concept"))
-    image_generator_id = fields.Many2one(comodel_name="vit.generator_service",  string=_("Image Generator"))
+    image_generator_id = fields.Many2one(comodel_name="vit.image_service",  string=_("Image Generator"))

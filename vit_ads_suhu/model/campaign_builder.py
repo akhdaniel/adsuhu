@@ -33,6 +33,8 @@ class campaign_builder(models.Model):
 
 
     _inherit = "vit.general_object"
+    angle = fields.Text(related="ads_copy_id.angle_hook_id.description",  string=_("Angle"))
+    hook = fields.Text(related="ads_copy_id.description",  string=_("Hook"))
 
 
     landing_page_builder_id = fields.Many2one(comodel_name="vit.landing_page_builder",  string=_("Landing Page Builder"))

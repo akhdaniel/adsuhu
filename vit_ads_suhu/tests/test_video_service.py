@@ -8,11 +8,11 @@ import logging
 _logger = logging.getLogger(__name__)
 
 @tagged('post_install', '-at_install')
-class GeneratorServiceTestCase(VitAdsSuhuCommon):
+class VideoServiceTestCase(VitAdsSuhuCommon):
 
-	def test_vit_generator_service_count(cls):
+	def test_vit_video_service_count(cls):
 		_logger.info(' -------------------- test record count -----------------------------------------')
 		cls.assertEqual(
 		    4,
-		    len(cls.generator_services)
+		    len(cls.video_services)
 		)
