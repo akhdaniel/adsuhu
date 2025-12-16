@@ -14,6 +14,10 @@ class ads_copy(models.Model):
         pass
 
 
+    def action_create_images(self, ):
+        pass
+
+
     @api.onchange("audience_profiler_id","angle_hook_id")
     def _get_input(self, ):
         """

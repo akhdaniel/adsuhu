@@ -45,3 +45,43 @@ class ads_copy(models.Model):
 {rec.audience_profiler_id.output}
 
 """
+
+    def action_create_images(self):
+        pass 
+        import re
+        def extract_copywriting_variants(text: str):
+            """
+            Extract paragraphs under '=== COPYWRITING VARIASI ==='
+            starting with 1., 2., 3. and return them as a list.
+            """
+
+            # Step 1: isolate section COPYWRITING VARIASI
+            section_match = re.search(
+                r"=== COPYWRITING VARIASI ===(.*?)(?:Optional_|$)",
+                text,
+                flags=re.S
+            )
+
+            if not section_match:
+                return []
+
+            section_text = section_match.group(1)
+
+            # Step 2: split by numbered items (1., 2., 3.)
+            variants = re.findall(
+                r"\n\s*\d+\.\s*(.*?)(?=\n\s*\d+\.|\Z)",
+                section_text,
+                flags=re.S
+            )
+
+            # Step 3: clean whitespace
+            return [v.strip() for v in variants]
+        
+        images = extract_copywriting_variants(self.output)
+        self.image_generator_ids = [(0,0,{
+            'ads_copy_id': self.id,
+            'name':'/',
+            'description': x
+        }) for x in images]
+
+        self.image_generator_ids._get_input()

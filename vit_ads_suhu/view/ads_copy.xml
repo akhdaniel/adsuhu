@@ -37,6 +37,7 @@
                 <form string="Ads Copy">
                     <header>
                         <button string="Generate" type="object" name="action_generate" />
+                        <button string="Create Images" type="object" name="action_create_images" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>

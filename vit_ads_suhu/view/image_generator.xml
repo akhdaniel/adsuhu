@@ -10,11 +10,8 @@
                 <list string="Image Generator">
                     <field name="name" /> <!-- 1-->
                     <field name="ratio" /> <!-- 100-->
-                    <field name="image_prompt_id" /> <!-- 100-->
                     <field name="angle" /> <!-- 101-->
-                    <field name="visual_concept_id" /> <!-- 101-->
                     <field name="hook" /> <!-- 102-->
-                    <field name="ads_copy_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>

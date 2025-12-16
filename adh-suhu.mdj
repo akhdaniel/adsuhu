@@ -2550,6 +2550,24 @@
 										},
 										{
 											"_type": "UMLOperationView",
+											"_id": "AAAAAAGbJ2JB217dFK8=",
+											"_parent": {
+												"$ref": "AAAAAAGbDOXvedRGZ8E="
+											},
+											"model": {
+												"$ref": "AAAAAAGbJ2JBiF7Oz+8="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 757,
+											"top": 2186,
+											"width": 607,
+											"height": 13,
+											"text": "+action_create_images()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
 											"_id": "AAAAAAGbF0INqRHSBac=",
 											"_parent": {
 												"$ref": "AAAAAAGbDOXvedRGZ8E="
@@ -2560,7 +2578,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 757,
-											"top": 2186,
+											"top": 2201,
 											"width": 607,
 											"height": 13,
 											"text": "+_get_input()",
@@ -2578,7 +2596,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 757,
-											"top": 2201,
+											"top": 2216,
 											"width": 607,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -2590,7 +2608,7 @@
 									"left": 752,
 									"top": 2166,
 									"width": 617,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -14658,6 +14676,14 @@
 						},
 						{
 							"_type": "UMLOperation",
+							"_id": "AAAAAAGbJ2JBiF7Oz+8=",
+							"_parent": {
+								"$ref": "AAAAAAGbDOXvd9Q9xBk="
+							},
+							"name": "action_create_images"
+						},
+						{
+							"_type": "UMLOperation",
 							"_id": "AAAAAAGbF0INoxHDuWQ=",
 							"_parent": {
 								"$ref": "AAAAAAGbDOXvd9Q9xBk="
@@ -15602,6 +15628,7 @@
 									"$ref": "AAAAAAGbGXSXC0owNgc="
 								},
 								"name": "image_prompt_id",
+								"documentation": "{\n\"tree:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDPZ/gLayzX8="
 								},
@@ -15632,6 +15659,7 @@
 									"$ref": "AAAAAAGbGXS1n1sgy7k="
 								},
 								"name": "visual_concept_id",
+								"documentation": "{\n\"tree:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDPZ/gLayzX8="
 								},
@@ -15662,6 +15690,7 @@
 									"$ref": "AAAAAAGbJdOWXN7c8rg="
 								},
 								"name": "ads_copy_id",
+								"documentation": "{\n\"tree:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDPZ/gLayzX8="
 								},
