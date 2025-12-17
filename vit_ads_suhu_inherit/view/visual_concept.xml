@@ -2,13 +2,16 @@
 <odoo>
     <data>
         <!-- tree view -->
-        <!--record id="view_visual_concept_tree" model="ir.ui.view">
+        <record id="view_visual_concept_tree" model="ir.ui.view">
             <field name="name">visual_concept_tree</field>
             <field name="model">vit.visual_concept</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_visual_concept_tree"/>
             <field name="arch" type="xml">
+                <xpath expr="//list" position="attributes">
+                    <attribute name="js_class">ads_list_with_banner</attribute>
+                </xpath>            
             </field>
-        </record-->
+        </record>
         <!-- form view -->
         <record id="view_visual_concept_form" model="ir.ui.view">
             <field name="name">visual_concept_form</field>
@@ -16,9 +19,9 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_visual_concept_form"/>
             <field name="arch" type="xml">
-                <sheet position="before">
-                    <img class="img-fluid mx-auto " alt="flow" src="/vit_ads_suhu_inherit/static/src/img/visual_concept.png"/>
-                </sheet>               
+                <xpath expr="//form" position="attributes">
+                    <attribute name="js_class">ads_form_with_banner</attribute>
+                </xpath>             
             </field>
         </record>
         <!-- search -->

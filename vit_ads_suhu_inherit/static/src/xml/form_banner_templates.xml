@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vit_ads_suhu_inherit.BannerFormRenderer" t-inherit="web.FormView" t-inherit-mode="primary">
+        <!-- <xpath expr="//div[@t-ref='root']" position="before"> -->
+        <!-- <xpath expr="//t[@t-component='props.Renderer']" position="before"> -->
+        <xpath expr="//t[@t-set-slot='control-panel-create-button']" position="after">
+            <img t-att-src="imageSrc" class="img-fluid mx-auto" alt="-" />
+        </xpath>
+    </t>
+</templates>

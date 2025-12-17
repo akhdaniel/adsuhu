@@ -2,13 +2,16 @@
 <odoo>
     <data>
         <!-- tree view -->
-        <!--record id="view_campaign_builder_tree" model="ir.ui.view">
+        <record id="view_campaign_builder_tree" model="ir.ui.view">
             <field name="name">campaign_builder_tree</field>
             <field name="model">vit.campaign_builder</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_campaign_builder_tree"/>
             <field name="arch" type="xml">
+                <xpath expr="//list" position="attributes">
+                    <attribute name="js_class">ads_list_with_banner</attribute>
+                </xpath>            
             </field>
-        </record-->
+        </record>
         <!-- form view -->
         <record id="view_campaign_builder_form" model="ir.ui.view">
             <field name="name">campaign_builder_form</field>
@@ -16,9 +19,9 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_campaign_builder_form"/>
             <field name="arch" type="xml">
-                <sheet position="before">
-                    <img class="img-fluid mx-auto " alt="flow" src="/vit_ads_suhu_inherit/static/src/img/campaign_builder.png"/>
-                </sheet>               
+                <xpath expr="//form" position="attributes">
+                    <attribute name="js_class">ads_form_with_banner</attribute>
+                </xpath>              
             </field>
         </record>
         <!-- search -->

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vit_ads_suhu_inherit.BannerListRenderer" t-inherit="web.ListView" t-inherit-mode="primary">
+        <xpath expr="//t[@t-component='props.Renderer']" position="before">
+            <img t-att-src="imageSrc" class="img-fluid mx-auto" alt="-" />
+        </xpath>
+    </t>
+</templates>

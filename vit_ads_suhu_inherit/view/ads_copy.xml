@@ -2,13 +2,16 @@
 <odoo>
     <data>
         <!-- tree view -->
-        <!--record id="view_ads_copy_tree" model="ir.ui.view">
-            <field name="name">ads_copy_tree</field>
+        <record id="view_ads_copy_tree_banner" model="ir.ui.view">
+            <field name="name">ads_copy_tree_banner</field>
             <field name="model">vit.ads_copy</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_ads_copy_tree"/>
             <field name="arch" type="xml">
+                <xpath expr="//list" position="attributes">
+                    <attribute name="js_class">ads_list_with_banner</attribute>
+                </xpath>
             </field>
-        </record-->
+        </record>
         <!-- form view -->
         <record id="view_ads_copy_form" model="ir.ui.view">
             <field name="name">ads_copy_form</field>
@@ -16,9 +19,9 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_ads_copy_form"/>
             <field name="arch" type="xml">
-                <sheet position="before">
-                    <img class="img-fluid mx-auto " alt="flow" src="/vit_ads_suhu_inherit/static/src/img/ads_copy.png"/>
-                </sheet>               
+                <xpath expr="//form" position="attributes">
+                    <attribute name="js_class">ads_form_with_banner</attribute>
+                </xpath>           
             </field>
         </record>
         <!-- search -->
@@ -29,20 +32,9 @@
             <field name="arch" type="xml">
             </field>
         </record-->
-        <!-- action window -->
-        <!--record id="vit_ads_suhu.action_ads_copy" model="ir.actions.act_window">
-            <field name="name">Ads Copy</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">vit.ads_copy</field>
-            <field name="view_mode">list,form,kanban,pivot,graph</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
-                Click to add a new Ads Copy
-                </p><p>
-
-                </p>
-            </field>
-        </record-->
+        <!-- <record id="vit_ads_suhu.action_ads_copy" model="ir.actions.act_window">
+            <field name="context">{'banner_src': '/vit_ads_suhu_inherit/static/src/img/ads_copy.png','default_banner_src': '/vit_ads_suhu_inherit/static/src/img/ads_copy.png','banner_alt': 'Ads Copy flow','default_banner_alt': 'Ads Copy flow'}</field>
+        </record> -->
 
         <!-- <menuitem id="menu_ads_copy" name="Ads Copy" parent="vit_ads_suhu_config_menu" action="action_ads_copy" sequence="60"/> -->
     </data>

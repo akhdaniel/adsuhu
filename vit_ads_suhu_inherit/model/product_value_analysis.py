@@ -43,7 +43,7 @@ class product_value_analysis(models.Model):
             html_content = record._get_product_content(record.product_url)
             cleaned_html = record._clean_html_content(html_content)
             markdown_content = record._html_to_markdown(cleaned_html)
-            record.product_description = markdown_content or cleaned_html or ""
+            record.description = markdown_content or cleaned_html or ""
 
         return True
 

@@ -4,7 +4,7 @@
 	"name": "Ads Suhu - magic ads creator Inherited",
 	"version": "1.0",
 	"depends": [
-		"base",
+		"base","web",
 		"vit_ads_suhu"
 	],
 	"author": "Akhmad Daniel Sembiring",
@@ -18,6 +18,13 @@
 	"currency": "USD",
 	"summary": "",
 	"description": "",
+    "assets": {
+        "web.assets_backend": [
+            "vit_ads_suhu_inherit/static/src/js/*.js",
+            "vit_ads_suhu_inherit/static/src/xml/*.xml",
+            "vit_ads_suhu_inherit/static/src/scss/*.scss",
+        ],
+    },
 	"data": [
         "data/gpts.xml",
 		"view/product_value_analysis.xml",
