@@ -7,3 +7,39 @@
     width: auto;
     object-fit: contain;
 }
+
+.stage_first,
+.stage_normal {
+    background: linear-gradient(135deg, #ffd699, #ff8c32);
+    color: black;
+    position: relative;
+    // padding-right: 1.5rem;
+}
+
+.stage_first.active,
+.stage_normal.active {
+    background: linear-gradient(135deg, #d5b58f, #4f3b23);
+    color: white;
+}
+
+.stage_first.last,
+.stage_normal.last {
+    margin-right: 1.5rem;
+}
+
+.stage_first.last::after,
+.stage_normal.last::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    bottom: -2px;
+    right: -1.9rem;
+    width: 1.9rem;
+    background: linear-gradient(180deg, #fb9e57, #f88024);
+    clip-path: polygon(0 0, 97% 50%, 0 97%);
+}
+
+.stage_first.last.active::after,
+.stage_normal.last.active::after {
+    background: linear-gradient(180deg, #6a4f2f, #4f3b23);
+}
