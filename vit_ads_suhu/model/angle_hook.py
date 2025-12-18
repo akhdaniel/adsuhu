@@ -19,6 +19,10 @@ class angle_hook(models.Model):
         pass
 
 
+    def action_split_angles(self, ):
+        pass
+
+
     def action_create_ad_copy(self, ):
         pass
 
