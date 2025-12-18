@@ -35,6 +35,27 @@ class product_value_analysis(models.Model):
 
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Gpt Prompt"), default=_get_default_prompt)
 
+    @api.onchange("description")
+    def _get_input(self, ):
+        """
+        {
+        }
+        """
+        for rec in self:
+            rec.name = f"PRODUCT VALUE - {rec.name}"
+            rec.input = f"""
+
+# PRODUCT FEATURES:
+================
+
+
+# ✅ DESCRIPTION:
+================
+{rec.description}
+
+"""
+
+
     def action_fetch_product_description(self, ):
         for record in self:
             if not record.product_url:
