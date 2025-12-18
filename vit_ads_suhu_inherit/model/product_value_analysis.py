@@ -44,14 +44,15 @@ class product_value_analysis(models.Model):
         for rec in self:
             rec.input = f"""
 
+# ✅ DESCRIPTION:
+================
+{rec.description}
+
 # PRODUCT FEATURES:
 ================
 {rec.features}
 
 
-# ✅ DESCRIPTION:
-================
-{rec.description}
 
 """
 

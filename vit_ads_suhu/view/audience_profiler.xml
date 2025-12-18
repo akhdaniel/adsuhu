@@ -9,7 +9,6 @@
             <field name="arch" type="xml">
                 <list string="Audience Profiler">
                     <field name="name" /> <!-- 1-->
-                    <field name="market_mapper_id" /> <!-- 100-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
