@@ -106,3 +106,4 @@ class ads_copy(models.Model):
     audience_profiler_id = fields.Many2one(comodel_name="vit.audience_profiler", related="angle_hook_id.audience_profiler_id",  string=_("Audience Profiler"))
     script_writer_ids = fields.One2many(comodel_name="vit.script_writer",  inverse_name="ads_copy_id",  string=_("Script Writer"))
     image_generator_ids = fields.One2many(comodel_name="vit.image_generator",  inverse_name="ads_copy_id",  string=_("Image Generator"))
+    product_value_analysis_id = fields.Many2one(comodel_name="vit.product_value_analysis", related="angle_hook_id.product_value_analysis_id",  string=_("Product Value Analysis"))

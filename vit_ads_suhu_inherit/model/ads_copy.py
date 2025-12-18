@@ -44,6 +44,10 @@ class ads_copy(models.Model):
 ---
 {rec.audience_profiler_id.output}
 
+# ✅ PRODUCT VALUE:
+---
+{rec.product_value_analysis_id.output}
+
 """
 
     def action_create_images(self):

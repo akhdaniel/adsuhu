@@ -48,28 +48,27 @@ class angle_hook(models.Model):
 
     def action_split_angles(self, ):
         import re
-
         def extract_angle_packages(text: str):
             # --- 1. BIG IDEAS ---
             big_ideas_match = re.search(
-                r"# ✅ === BIG IDEA ===(.*?)# ✅ === ANGLES & HOOKS ===",
+                r"#\s*===\s*BIG IDEA\s*===(.*?)#\s*===\s*ANGLES",
                 text,
-                re.S
+                re.S | re.I
             )
             big_ideas = big_ideas_match.group(1).strip() if big_ideas_match else ""
 
             # --- 2. CATATAN STRATEGIS ---
             catatan_match = re.search(
-                r"# ✅ CATATAN STRATEGIS(.*)$",
+                r"#\s*CATATAN STRATEGIS(.*)$",
                 text,
-                re.S
+                re.S | re.I
             )
             catatan = catatan_match.group(1).strip() if catatan_match else ""
 
-            # --- 3. ANGLES ---
+            # --- 3. ANGLES (emoji-agnostic) ---
             angle_pattern = re.compile(
-                r"(## 🔺 Angle \d+:\s+\*\*.*?\*\*.*?)(?=## 🔺 Angle \d+:|\Z)",
-                re.S
+                r"(##\s*Angle\s+\d+:\s+\*\*.*?\*\*.*?)(?=##\s*Angle\s+\d+:|\Z)",
+                re.S | re.I
             )
             angles = angle_pattern.findall(text)
 
