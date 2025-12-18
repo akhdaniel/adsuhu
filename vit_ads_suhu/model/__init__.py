@@ -16,4 +16,5 @@ from . import product_value_analysis
 from . import script_writer
 from . import video_director
 from . import video_service
+from . import video_variant
 from . import visual_concept

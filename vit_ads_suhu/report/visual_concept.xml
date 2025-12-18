@@ -100,6 +100,7 @@
                             <td> Inherit</td>
                             <td>Visual Concept</td>
                             <td>Video Service</td>
+                            <td>Ads Copy</td>
                         </tr>
                     </thead>
                     <tbody class="video_director_ids_tbody">
@@ -108,6 +109,7 @@
                             <td><span t-field="line._inherit" /></td>
                             <td><span t-field="line.visual_concept_id" /></td>
                             <td><span t-field="line.video_service_id" /></td>
+                            <td><span t-field="line.ads_copy_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
                 </table>

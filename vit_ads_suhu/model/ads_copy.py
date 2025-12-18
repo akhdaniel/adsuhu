@@ -102,8 +102,40 @@ class ads_copy(models.Model):
     image_generator_ids_count = fields.Integer(compute="compute_image_generator_ids")
 
 
+    def action_view_detail_video_director_ids(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("vit_ads_suhu.action_video_director")
+        view_tree = self.env.ref("vit_ads_suhu.view_vit_video_director_tree")
+        view_form = self.env.ref("vit_ads_suhu.view_vit_video_director_form")
+        action["domain"] = [
+            ("ads_copy_id", "in", self.ids)
+        ]
+        action["context"] = {
+            "default_ads_copy_id": self.id
+        }
+        recs = self.video_director_ids
+        if len(recs) <= 1:
+            action["views"] = [(view_form.id, "form")]
+            action["view_mode"] = "form"
+            action["view_id"] = view_form.id
+            action["res_id"] = recs.id if recs else False
+        else:
+            action["views"] = [(view_tree.id, "list"), (view_form.id, "form")]
+            action["view_mode"] = "list,form"
+            action["view_id"] = view_tree.id
+            action["res_id"] = False
+        return action
+
+    def compute_video_director_ids(self):
+        for rec in self:
+            rec.video_director_ids_count = len(rec.video_director_ids)
+
+    video_director_ids_count = fields.Integer(compute="compute_video_director_ids")
+
+
     angle_hook_id = fields.Many2one(comodel_name="vit.angle_hook", string="Angle")
     audience_profiler_id = fields.Many2one(comodel_name="vit.audience_profiler", related="angle_hook_id.audience_profiler_id",  string=_("Audience Profiler"))
     script_writer_ids = fields.One2many(comodel_name="vit.script_writer",  inverse_name="ads_copy_id",  string=_("Script Writer"))
     image_generator_ids = fields.One2many(comodel_name="vit.image_generator",  inverse_name="ads_copy_id",  string=_("Image Generator"))
     product_value_analysis_id = fields.Many2one(comodel_name="vit.product_value_analysis", related="angle_hook_id.product_value_analysis_id",  string=_("Product Value Analysis"))
+    video_director_ids = fields.One2many(comodel_name="vit.video_director",  inverse_name="ads_copy_id",  string=_("Video Director"))

@@ -92,6 +92,28 @@
                     </tbody>
                 </table>
                 <div class="oe_structure"/>
+                <h2>Video Director</h2>
+                <table class="table table-sm o_main_table" name="video_director_ids_table">
+                    <thead>
+                        <tr>
+                            <td> Name</td>
+                            <td> Inherit</td>
+                            <td>Visual Concept</td>
+                            <td>Video Service</td>
+                            <td>Ads Copy</td>
+                        </tr>
+                    </thead>
+                    <tbody class="video_director_ids_tbody">
+                        <tr t-foreach="doc.video_director_ids" t-as="line">
+                            <td><span t-field="line._name" /></td>
+                            <td><span t-field="line._inherit" /></td>
+                            <td><span t-field="line.visual_concept_id" /></td>
+                            <td><span t-field="line.video_service_id" /></td>
+                            <td><span t-field="line.ads_copy_id" /></td>
+                        </tr> <!-- foreach-->
+                    </tbody>
+                </table>
+                <div class="oe_structure"/>
             </t>
         </template>
 

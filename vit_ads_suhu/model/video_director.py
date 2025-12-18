@@ -31,3 +31,5 @@ class video_director(models.Model):
 
     visual_concept_id = fields.Many2one(comodel_name="vit.visual_concept",  string=_("Visual Concept"))
     video_service_id = fields.Many2one(comodel_name="vit.video_service",  string=_("Video Service"))
+    ads_copy_id = fields.Many2one(comodel_name="vit.ads_copy",  string=_("Ads Copy"))
+    video_variant_ids = fields.One2many(comodel_name="vit.video_variant",  inverse_name="video_director_id",  string=_("Video Variant"))

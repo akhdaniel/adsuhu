@@ -59,6 +59,14 @@
                                     <span class="o_stat_text">Images</span>
                                 </div>
                             </button>
+                            <button type="object" name="action_view_detail_video_director_ids" class="oe_stat_button" icon="fa-search" >
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="video_director_ids_count" />
+                                    </span>
+                                    <span class="o_stat_text">Videos</span>
+                                </div>
+                            </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
                                 <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
                                 <!--field name="detail_ids" invisible="1"/-->

@@ -56,7 +56,9 @@
 		"view/video_service.xml",
 		"report/video_service.xml",
 		"view/image_variant.xml",
-		"report/image_variant.xml"
+		"report/image_variant.xml",
+		"view/video_variant.xml",
+		"report/video_variant.xml"
 	],
 	"installable": True,
 	"auto_install": False,
