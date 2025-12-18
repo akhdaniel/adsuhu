@@ -179,6 +179,24 @@
 											"height": 13,
 											"text": "+product_url: Text",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbL1G48KeXqGo=",
+											"_parent": {
+												"$ref": "AAAAAAGbDOD0tLqmoBs="
+											},
+											"model": {
+												"$ref": "AAAAAAGbL1G436eUkhU="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 1653,
+											"top": 251,
+											"width": 439,
+											"height": 13,
+											"text": "+features: Text",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Roboto;13;0",
@@ -186,7 +204,7 @@
 									"left": 1648,
 									"top": 201,
 									"width": 449,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -210,7 +228,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1653,
-											"top": 259,
+											"top": 274,
 											"width": 439,
 											"height": 13,
 											"text": "+action_fetch_product_description()",
@@ -228,7 +246,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1653,
-											"top": 274,
+											"top": 289,
 											"width": 439,
 											"height": 13,
 											"text": "+action_generate()",
@@ -246,7 +264,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1653,
-											"top": 289,
+											"top": 304,
 											"width": 439,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -256,7 +274,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 1648,
-									"top": 254,
+									"top": 269,
 									"width": 449,
 									"height": 53
 								},
@@ -14223,6 +14241,15 @@
 							},
 							"name": "product_url",
 							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbL1G436eUkhU=",
+							"_parent": {
+								"$ref": "AAAAAAGbDOD0srqePoM="
+							},
+							"name": "features",
+							"type": "Text"
 						}
 					],
 					"operations": [
@@ -16115,7 +16142,7 @@
 								"$ref": "AAAAAAGbHvslCAoNY5M="
 							},
 							"name": "description",
-							"documentation": "{\n\"form:seq\":1500\n}",
+							"documentation": "{\n\"form:seq\":1500,\n\"form:pos\":\"tab\",\n\"tree:invisible\":true\n}",
 							"type": "Text"
 						}
 					]

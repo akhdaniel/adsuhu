@@ -12,7 +12,6 @@
                     <field name="angle" /> <!-- 100-->
                     <field name="visual_concept_id" /> <!-- 102-->
                     <field name="hook" /> <!-- 200-->
-                    <field name="description" /> <!-- 1500-->
                 </list>
             </field>
         </record>
@@ -59,7 +58,6 @@
                             <group> <!-- left -->
                                 <field name="angle"  />
                                 <field name="hook"  />
-                                <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
@@ -77,6 +75,9 @@
                             </page>
                             <page name="input" string="Input">
                                 <field name="input" widget="md_viewer" />
+                            </page>
+                            <page name="description" string="Description">
+                                <field name="description"  />
                             </page>
                         </notebook>
                         <group name="note_group" col="6" class="mt-2 mt-md-0">
