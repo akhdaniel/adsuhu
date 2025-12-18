@@ -28,6 +28,10 @@ class market_mapper(models.Model):
         pass
 
 
+    def action_create_audience_profiles(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 

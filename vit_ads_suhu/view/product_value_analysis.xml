@@ -10,6 +10,7 @@
                 <list string="Product Value Analysis">
                     <field name="name" /> <!-- 1-->
                     <field name="product_url" /> <!-- 100-->
+                    <field name="features" /> <!-- 101-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -60,6 +61,7 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="product_url"  />
+                                <field name="features"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                             </group>
@@ -94,12 +96,14 @@
                 <search string="Product Value Analysis">
 
                     <filter string="Product Url" name="filter_by_product_url" domain="[('product_url','=','')]" />
+                    <filter string="Features" name="filter_by_features" domain="[('features','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
                     <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
                     <field name="product_url" select="True"/>
+                    <field name="features" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
                     <field name="input" select="True"/>

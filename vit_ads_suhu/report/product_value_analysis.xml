@@ -25,6 +25,10 @@
                             <strong>Product Url</strong>
                             <p class="m-0" t-field="doc.product_url" />
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Features</strong>
+                            <p class="m-0" t-field="doc.features" />
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>
