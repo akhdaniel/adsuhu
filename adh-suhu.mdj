@@ -14249,6 +14249,7 @@
 								"$ref": "AAAAAAGbDOD0srqePoM="
 							},
 							"name": "features",
+							"documentation": "{\n\"form:pos\":\"tab\",\n\"tree:invisible\":true\n}",
 							"type": "Text"
 						}
 					],
@@ -16142,7 +16143,7 @@
 								"$ref": "AAAAAAGbHvslCAoNY5M="
 							},
 							"name": "description",
-							"documentation": "{\n\"form:seq\":1500,\n\"form:pos\":\"tab\",\n\"tree:invisible\":true\n}",
+							"documentation": "{\n\"form:seq\":1500\n}",
 							"type": "Text"
 						}
 					]
