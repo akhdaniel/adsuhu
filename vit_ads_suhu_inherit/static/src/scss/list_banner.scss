@@ -9,15 +9,16 @@
 }
 
 .stage_first,
-.stage_normal {
+.stage_normal,
+.stage_child {
     background: linear-gradient(135deg, #ffd699, #ff8c32);
     color: black;
     position: relative;
-    // padding-right: 1.5rem;
 }
 
 .stage_first.active,
-.stage_normal.active {
+.stage_normal.active,
+.stage_child.active {
     background: linear-gradient(135deg, #d5b58f, #4f3b23);
     color: white;
 }

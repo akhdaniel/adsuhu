@@ -7,12 +7,12 @@
                     t-foreach="stages"
                     t-as="stage"
                     t-key="stage.id"
+                    t-if="!stage.hidden or stage.id === props.resModel"
                     t-att-class="`col-lg-1 col-xs-2 col-sm-2 stage_normal ${stage.id === props.resModel ? 'active' : ''} ${stage.id  === 'vit.campaign_builder' ? 'last' : ''}`"
                 >
                     <span t-esc="stage.label"/>
                 </div>
             </div>
-            <!-- <img t-att-src="imageSrc" class="img-fluid mx-auto" alt="-" /> -->
         </xpath>
     </t>
 </templates>
