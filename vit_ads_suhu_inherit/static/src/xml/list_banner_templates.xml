@@ -3,16 +3,14 @@
     <t t-name="vit_ads_suhu_inherit.BannerListRenderer" t-inherit="web.ListView" t-inherit-mode="primary">
         <xpath expr="//t[@t-component='props.Renderer']" position="before">
             <div class="row mx-0">
-                <div class="row mx-0">
-                    <div
-                        t-foreach="stages"
-                        t-as="stage"
-                        t-key="stage.id"
-                        t-if="!stage.hidden or stage.id === props.resModel"
-                        t-att-class="`col-lg-1 col-xs-2 col-sm-2 stage_normal ${stage.id === props.resModel ? 'active' : ''} ${stage.id  === 'vit.campaign_builder' ? 'last' : ''}`"
-                    >
-                        <span t-esc="stage.label"/>
-                    </div>
+                <div
+                    t-foreach="stages"
+                    t-as="stage"
+                    t-key="stage.id"
+                    t-if="!stage.hidden or stage.id === props.resModel"
+                    t-att-class="`col-lg-1 col-xs-2 col-sm-2 stage_normal ${stage.id === props.resModel ? 'active' : ''} ${stage.id  === 'vit.campaign_builder' ? 'last' : ''}`"
+                >
+                    <span t-esc="stage.label"/>
                 </div>
             </div>
         </xpath>
