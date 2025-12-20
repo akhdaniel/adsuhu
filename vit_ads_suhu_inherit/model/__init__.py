@@ -10,3 +10,4 @@ from . import compliance_checker
 from . import landing_page_builder
 from . import campaign_builder
 from . import image_generator
+from . import video_director
