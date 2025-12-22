@@ -35,10 +35,13 @@ class ads_copy(models.Model):
             rec.name = f"AD COPY - ANGLE {rec.angle_hook_id.angle_no} - HOOK {hook}"
             rec.input = f"""
 
-# ✅ ANGLE & HOOK:
+# ✅ HOOK:
+---
+focus pada hook ini: {rec.hook_id.output}
+
+# ✅ ANGLE:
 ---
 {rec.angle_hook_id.output}
-
 
 # ✅ AUDIENCE PROFILE:
 ---
