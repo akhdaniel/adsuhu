@@ -37,6 +37,7 @@ class ads_copy(models.Model):
 
 
     _inherit = "vit.general_object"
+    angle = fields.Text(related="angle_hook_id.description",  string=_("Angle"))
     hook_no = fields.Integer( string=_("Hook No"))
 
 
