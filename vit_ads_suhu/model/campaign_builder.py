@@ -14,11 +14,11 @@ class campaign_builder(models.Model):
         pass
 
 
-    @api.depends("ads_copy_id.output","script_writer_id.output","visual_concept_id.output","compliance_checker_id.output","landing_page_builder_id.output")
+    @api.onchange("ads_copy_id","script_writer_id","visual_concept_id","compliance_checker_id","landing_page_builder_id")
     def _get_input(self, ):
         """
         {
-        "@api.depends":["ads_copy_id.output","script_writer_id.output","visual_concept_id.output","compliance_checker_id.output","landing_page_builder_id.output"]
+        "@api.onchange":["ads_copy_id","script_writer_id","visual_concept_id","compliance_checker_id","landing_page_builder_id"]
         }
         """
         pass

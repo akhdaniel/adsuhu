@@ -38,6 +38,20 @@
                 <!-- <div class="o_markdown_viewer_editor"> -->
                     <t t-call="web.TextField"/>
                 <!-- </div> -->
+                <!-- <div t-ref="div">
+                    <textarea
+                        class="o_input"
+                        t-att-class="{
+                            'o_field_translate': isTranslatable,
+                            'o_field_placeholder': props.dynamicPlaceholder,
+                        }"
+                        t-att-id="props.id"
+                        t-att-placeholder="props.placeholder"
+                        t-att-rows="rowCount"
+                        t-ref="textarea"
+                        t-on-blur="onBlur"
+                    />
+                </div> -->
             </t>
         </div>
     </t>

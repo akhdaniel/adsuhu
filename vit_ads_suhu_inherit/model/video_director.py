@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class video_director(models.Model):
 
     _name = "vit.video_director"
-    _descri_inheritption = "vit.video_director"
+    _inherit = "vit.video_director"
 
 
     def action_generate(self, ):
@@ -25,7 +25,7 @@ class video_director(models.Model):
 
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
 
-    @api.onchange("visual_concept_id")
+    @api.onchange("visual_concept_id","ads_copy_id")
     def _get_input(self, ):
         """
         {
@@ -33,10 +33,15 @@ class video_director(models.Model):
         }
         """
         for rec in self:
-            rec.name = f"VISUAL CONCEPT - ANGLE {rec.visual_concept_id.ads_copy_id.angle_hook_id.angle_no} - HOOK {rec.ads_copy_id.hook_no}"
+            rec.name = f"VIDEO DIRECTOR - ANGLE {rec.ads_copy_id.angle_hook_id.angle_no} - HOOK {rec.ads_copy_id.hook_no}"
             rec.input = f"""
+# ✅ ADS COPY:
+================
+{rec.ads_copy_id.output}
+
+
 # ✅ VISUAL CONCEPT:
 ================
-{rec.visual_concept_id.output}
+{rec.visual_concept_id.output or ''}
 
 """

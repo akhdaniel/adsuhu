@@ -51,6 +51,14 @@
                                     <span class="o_stat_text">Scripts</span>
                                 </div>
                             </button>
+                            <button type="object" name="action_view_detail_visual_concept_id" class="oe_stat_button" icon="fa-search" >
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="visual_concept_id_count" />
+                                    </span>
+                                    <span class="o_stat_text">Visual Concepts</span>
+                                </div>
+                            </button>
                             <button type="object" name="action_view_detail_image_generator_ids" class="oe_stat_button" icon="fa-search" >
                                 <div class="o_form_field o_stat_info">
                                     <span class="o_stat_value">

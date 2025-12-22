@@ -317,21 +317,21 @@ export class MarkdownViewerFieldComponent extends TextField {
     }
 
     updateFieldWidth() {
-        // this.cleanupFieldWidth();
-        // const root = this.rootRef?.el;
-        // if (!root) {
-        //     return;
-        // }
-        // const inputCell = root.closest(".o_cell");
-        // if (inputCell) {
-        //     inputCell.classList.add("o_markdown_viewer_full_width_cell");
-        //     this._fullWidthCells.push(inputCell);
-        //     const labelCell = inputCell.previousElementSibling;
-        //     if (labelCell && labelCell.classList.contains("o_wrap_label")) {
-        //         labelCell.classList.add("o_markdown_viewer_full_width_label");
-        //         this._fullWidthCells.push(labelCell);
-        //     }
-        // }
+        this.cleanupFieldWidth();
+        const root = this.rootRef?.el;
+        if (!root) {
+            return;
+        }
+        const inputCell = root.closest(".o_field_md_viewer");
+        if (inputCell) {
+            inputCell.classList.add("o_field_text");
+            this._fullWidthCells.push(inputCell);
+            const labelCell = inputCell.previousElementSibling;
+            if (labelCell && labelCell.classList.contains("o_wrap_label")) {
+                labelCell.classList.add("o_markdown_viewer_full_width_label");
+                this._fullWidthCells.push(labelCell);
+            }
+        }
     }
 }
 

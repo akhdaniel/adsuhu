@@ -64,6 +64,32 @@
                     </tbody>
                 </table>
                 <div class="oe_structure"/>
+                <h2>Visual Concept</h2>
+                <table class="table table-sm o_main_table" name="visual_concept_id_table">
+                    <thead>
+                        <tr>
+                            <td> Name</td>
+                            <td> Inherit</td>
+                            <td>Angle</td>
+                            <td>Hook</td>
+                            <td>Script Writer</td>
+                            <td>Ads Copy</td>
+                            <td>Audience Profiler</td>
+                        </tr>
+                    </thead>
+                    <tbody class="visual_concept_id_tbody">
+                        <tr t-foreach="doc.visual_concept_id" t-as="line">
+                            <td><span t-field="line._name" /></td>
+                            <td><span t-field="line._inherit" /></td>
+                            <td><span t-field="line.angle" /></td>
+                            <td><span t-field="line.hook" /></td>
+                            <td><span t-field="line.script_writer_id" /></td>
+                            <td><span t-field="line.ads_copy_id" /></td>
+                            <td><span t-field="line.audience_profiler_id" /></td>
+                        </tr> <!-- foreach-->
+                    </tbody>
+                </table>
+                <div class="oe_structure"/>
                 <h2>Image Generator</h2>
                 <table class="table table-sm o_main_table" name="image_generator_ids_table">
                     <thead>
