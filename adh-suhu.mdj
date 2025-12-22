@@ -7049,14 +7049,14 @@
 									"parentStyle": false,
 									"left": 1245,
 									"top": 2644,
-									"width": 152.40087890625,
+									"width": 152.43896484375,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
 									"hostEdge": {
 										"$ref": "AAAAAAGbDO0IstXWiVA="
 									},
-									"text": "+langing_page_builder_ids"
+									"text": "+landing_page_builder_ids"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -16496,7 +16496,7 @@
 								"_parent": {
 									"$ref": "AAAAAAGbDO0IsdXSVWI="
 								},
-								"name": "langing_page_builder_ids",
+								"name": "landing_page_builder_ids",
 								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"LPs\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOXvd9Q9xBk="

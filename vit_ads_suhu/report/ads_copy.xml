@@ -94,8 +94,8 @@
                     </tbody>
                 </table>
                 <div class="oe_structure"/>
-                <h2>Langing Page Builder</h2>
-                <table class="table table-sm o_main_table" name="langing_page_builder_ids_table">
+                <h2>Landing Page Builder</h2>
+                <table class="table table-sm o_main_table" name="landing_page_builder_ids_table">
                     <thead>
                         <tr>
                             <td> Name</td>
@@ -108,8 +108,8 @@
                             <td>Product Value Analysis</td>
                         </tr>
                     </thead>
-                    <tbody class="langing_page_builder_ids_tbody">
-                        <tr t-foreach="doc.langing_page_builder_ids" t-as="line">
+                    <tbody class="landing_page_builder_ids_tbody">
+                        <tr t-foreach="doc.landing_page_builder_ids" t-as="line">
                             <td><span t-field="line._name" /></td>
                             <td><span t-field="line._inherit" /></td>
                             <td><span t-field="line.angle" /></td>

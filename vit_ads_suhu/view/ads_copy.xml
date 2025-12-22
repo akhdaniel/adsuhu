@@ -60,10 +60,10 @@
                                     <span class="o_stat_text">Visual Concepts</span>
                                 </div>
                             </button>
-                            <button type="object" name="action_view_detail_langing_page_builder_ids" class="oe_stat_button" icon="fa-search" >
+                            <button type="object" name="action_view_detail_landing_page_builder_ids" class="oe_stat_button" icon="fa-search" >
                                 <div class="o_form_field o_stat_info">
                                     <span class="o_stat_value">
-                                        <field name="langing_page_builder_ids_count" />
+                                        <field name="landing_page_builder_ids_count" />
                                     </span>
                                     <span class="o_stat_text">LPs</span>
                                 </div>
