@@ -22,7 +22,7 @@ class ads_copy(models.Model):
         ).id
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
     
-    @api.onchange("audience_profiler_id","angle_hook_id")
+    @api.onchange("audience_profiler_id","angle_hook_id","hook_id")
     def _get_input(self, ):
         """
         {
