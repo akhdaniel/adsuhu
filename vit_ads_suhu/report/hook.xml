@@ -2,56 +2,58 @@
 <odoo>
     <data>
         <!-- report qweb view -->
-        <record id="action_report_vit_angle_hook" model="ir.actions.report">
-            <field name="name">Angle Hook</field>
-            <field name="model">vit.angle_hook</field>
+        <record id="action_report_vit_hook" model="ir.actions.report">
+            <field name="name">Hook</field>
+            <field name="model">vit.hook</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">vit_ads_suhu.vit_angle_hook_report</field>
-            <field name="report_file">vit_ads_suhu.vit_angle_hook_report</field>
+            <field name="report_name">vit_ads_suhu.vit_hook_report</field>
+            <field name="report_file">vit_ads_suhu.vit_hook_report</field>
             <field name="print_report_name">object.name</field>
-            <field name="binding_model_id" ref="vit_ads_suhu.model_vit_angle_hook"/>
+            <field name="binding_model_id" ref="vit_ads_suhu.model_vit_hook"/>
             <field name="binding_type">report</field>
         </record>
         <!-- document template -->
-        <template id="vit_ads_suhu.vit_angle_hook_report_document" >
+        <template id="vit_ads_suhu.vit_hook_report_document" >
             <t t-call="web.external_layout">
                 <t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
                 <div class="page">
                     <h2>
-                        Angle Hook: <span t-field="doc.name"/>
+                        Hook: <span t-field="doc.name"/>
                     </h2>
                     <div class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-2">
-                            <strong>Angle No</strong>
-                            <p class="m-0" t-field="doc.angle_no" />
+                            <strong>Hook No</strong>
+                            <p class="m-0" t-field="doc.hook_no" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
-                            <strong>Audience Profiler</strong>
-                            <p class="m-0" t-field="doc.audience_profiler_id"/>
-                        </div>
-                        <div class="col-auto mw-100 mb-2">
-                            <strong>Product Value Analysis</strong>
-                            <p class="m-0" t-field="doc.product_value_analysis_id"/>
+                            <strong>Angle Hook</strong>
+                            <p class="m-0" t-field="doc.angle_hook_id"/>
                         </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>
-                <h2>Hook</h2>
-                <table class="table table-sm o_main_table" name="hook_ids_table">
+                <h2>Ads Copy</h2>
+                <table class="table table-sm o_main_table" name="ads_copy_ids_table">
                     <thead>
                         <tr>
                             <td> Name</td>
                             <td> Inherit</td>
+                            <td>Angle</td>
                             <td>Hook No</td>
                             <td>Angle Hook</td>
+                            <td>Audience Profiler</td>
+                            <td>Product Value Analysis</td>
                         </tr>
                     </thead>
-                    <tbody class="hook_ids_tbody">
-                        <tr t-foreach="doc.hook_ids" t-as="line">
+                    <tbody class="ads_copy_ids_tbody">
+                        <tr t-foreach="doc.ads_copy_ids" t-as="line">
                             <td><span t-field="line._name" /></td>
                             <td><span t-field="line._inherit" /></td>
+                            <td><span t-field="line.angle" /></td>
                             <td><span t-field="line.hook_no" /></td>
                             <td><span t-field="line.angle_hook_id" /></td>
+                            <td><span t-field="line.audience_profiler_id" /></td>
+                            <td><span t-field="line.product_value_analysis_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
                 </table>
@@ -60,11 +62,11 @@
         </template>
 
         <!-- main template -->
-        <template id="vit_ads_suhu.vit_angle_hook_report">
+        <template id="vit_ads_suhu.vit_hook_report">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-set="lang" t-value="doc.create_uid.lang"/>
-                    <t t-call="vit_ads_suhu.vit_angle_hook_report_document" />
+                    <t t-call="vit_ads_suhu.vit_hook_report_document" />
                 </t>
             </t>
         </template>

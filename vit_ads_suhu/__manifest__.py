@@ -58,7 +58,9 @@
 		"view/image_variant.xml",
 		"report/image_variant.xml",
 		"view/video_variant.xml",
-		"report/video_variant.xml"
+		"report/video_variant.xml",
+		"view/hook.xml",
+		"report/hook.xml"
 	],
 	"installable": True,
 	"auto_install": False,

@@ -6,6 +6,7 @@ from . import audience_profiler
 from . import campaign_builder
 from . import compliance_checker
 from . import gpt_prompt
+from . import hook
 from . import image_generator
 from . import image_prompt
 from . import image_service
