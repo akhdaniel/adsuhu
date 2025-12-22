@@ -44,7 +44,7 @@
                                     <span class="o_stat_value">
                                         <field name="angle_hook_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Angle and Hooks</span>
+                                    <span class="o_stat_text">Angles</span>
                                 </div>
                             </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->

@@ -16479,7 +16479,7 @@
 									"$ref": "AAAAAAGbDOT4hsITrMI="
 								},
 								"name": "angle_hook_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Angle and Hooks\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Angles\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDON8Br0grWk="
 								},
@@ -16725,6 +16725,7 @@
 									"$ref": "AAAAAAGbRUSwv5rNgyM="
 								},
 								"name": "ads_copy_ids",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Ads Copy\",\n       \"icon\":\"fa-search\"\n    },\n    \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbRT3ekBxh4uw="
 								},
