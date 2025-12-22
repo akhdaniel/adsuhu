@@ -7047,16 +7047,16 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 1268,
+									"left": 1245,
 									"top": 2644,
-									"width": 107.1484375,
+									"width": 152.40087890625,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
 									"hostEdge": {
 										"$ref": "AAAAAAGbDO0IstXWiVA="
 									},
-									"text": "+langing_page_ids"
+									"text": "+langing_page_builder_ids"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -7557,12 +7557,12 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2984,
-									"top": 2452,
+									"left": 3016,
+									"top": 2415,
 									"width": 157.64404296875,
 									"height": 13,
-									"alpha": 0.2307529701192017,
-									"distance": 125.41929676090518,
+									"alpha": -0.11960656933110414,
+									"distance": 139.84634424968,
 									"hostEdge": {
 										"$ref": "AAAAAAGbDO5BDWBppPs="
 									},
@@ -16496,7 +16496,7 @@
 								"_parent": {
 									"$ref": "AAAAAAGbDO0IsdXSVWI="
 								},
-								"name": "langing_page_ids",
+								"name": "langing_page_builder_ids",
 								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"LPs\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOXvd9Q9xBk="

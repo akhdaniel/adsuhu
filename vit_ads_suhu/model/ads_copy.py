@@ -103,7 +103,7 @@ class ads_copy(models.Model):
     visual_concept_id_count = fields.Integer(compute="compute_visual_concept_id")
 
 
-    def action_view_detail_langing_page_ids(self):
+    def action_view_detail_langing_page_builder_ids(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("vit_ads_suhu.action_landing_page_builder")
         view_tree = self.env.ref("vit_ads_suhu.view_vit_landing_page_builder_tree")
@@ -127,11 +127,11 @@ class ads_copy(models.Model):
             action["res_id"] = False
         return action
 
-    def compute_langing_page_ids(self):
+    def compute_langing_page_builder_ids(self):
         for rec in self:
-            rec.langing_page_ids_count = len(rec.langing_page_ids)
+            rec.langing_page_builder_ids_count = len(rec.langing_page_builder_ids)
 
-    langing_page_ids_count = fields.Integer(compute="compute_langing_page_ids")
+    langing_page_builder_ids_count = fields.Integer(compute="compute_langing_page_builder_ids")
 
 
     def action_view_detail_image_generator_ids(self):
@@ -201,6 +201,6 @@ class ads_copy(models.Model):
     product_value_analysis_id = fields.Many2one(comodel_name="vit.product_value_analysis", related="angle_hook_id.product_value_analysis_id",  string=_("Product Value Analysis"))
     script_writer_ids = fields.One2many(comodel_name="vit.script_writer",  inverse_name="ads_copy_id",  string=_("Script Writer"))
     visual_concept_id = fields.One2many(comodel_name="vit.visual_concept",  inverse_name="ads_copy_id",  string=_("Visual Concept"))
-    langing_page_ids = fields.One2many(comodel_name="vit.landing_page_builder",  inverse_name="ads_copy_id",  string=_("Langing Page"))
+    langing_page_builder_ids = fields.One2many(comodel_name="vit.landing_page_builder",  inverse_name="ads_copy_id",  string=_("Langing Page Builder"))
     image_generator_ids = fields.One2many(comodel_name="vit.image_generator",  inverse_name="ads_copy_id",  string=_("Image Generator"))
     video_director_ids = fields.One2many(comodel_name="vit.video_director",  inverse_name="ads_copy_id",  string=_("Video Director"))
