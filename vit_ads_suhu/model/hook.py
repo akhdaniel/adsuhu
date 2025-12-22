@@ -51,3 +51,5 @@ class hook(models.Model):
 
     angle_hook_id = fields.Many2one(comodel_name="vit.angle_hook", string="Angle")
     ads_copy_ids = fields.One2many(comodel_name="vit.ads_copy",  inverse_name="hook_id",  string=_("Ads Copy"))
+    audience_profiler_id = fields.Many2one(comodel_name="vit.audience_profiler", related="angle_hook_id.audience_profiler_id",  string=_("Audience Profiler"))
+    product_value_analysis_id = fields.Many2one(comodel_name="vit.product_value_analysis", related="angle_hook_id.product_value_analysis_id",  string=_("Product Value Analysis"))

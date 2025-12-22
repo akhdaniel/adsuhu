@@ -29,6 +29,14 @@
                             <strong>Angle Hook</strong>
                             <p class="m-0" t-field="doc.angle_hook_id"/>
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Audience Profiler</strong>
+                            <p class="m-0" t-field="doc.audience_profiler_id"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Product Value Analysis</strong>
+                            <p class="m-0" t-field="doc.product_value_analysis_id"/>
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>

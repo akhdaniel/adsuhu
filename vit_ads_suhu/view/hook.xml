@@ -22,6 +22,8 @@
             <field name="arch" type="xml">
                 <pivot string="Hook">
                     <field name="angle_hook_id" type="row"/>
+                    <field name="audience_profiler_id" type="row"/>
+                    <field name="product_value_analysis_id" type="row"/>
                     <field name="gpt_prompt_id" type="row"/>
                 </pivot>
             </field>
@@ -65,6 +67,8 @@
                             <group> <!-- right -->
                                 <field name="angle_hook_id"  />
                                 <field name="gpt_prompt_id"  />
+                                <field name="audience_profiler_id"  />
+                                <field name="product_value_analysis_id"  />
                             </group>
                         </group>
                         <notebook>
@@ -106,9 +110,13 @@
                     <field name="gpt_url" select="True"/>
                     <field name="description" select="True"/>
                     <field name="angle_hook_id" select="True"/>
+                    <field name="audience_profiler_id" select="True"/>
+                    <field name="product_value_analysis_id" select="True"/>
                     <field name="gpt_prompt_id" select="True"/>
                     <group string="Group By..">
                         <filter string="Angle Hook" domain="[]" name="group_by_angle_hook_id" context="{'group_by':'angle_hook_id'}"/>
+                        <filter string="Audience Profiler" domain="[]" name="group_by_audience_profiler_id" context="{'group_by':'audience_profiler_id'}"/>
+                        <filter string="Product Value Analysis" domain="[]" name="group_by_product_value_analysis_id" context="{'group_by':'product_value_analysis_id'}"/>
                         <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
                     </group>
                 </search>
