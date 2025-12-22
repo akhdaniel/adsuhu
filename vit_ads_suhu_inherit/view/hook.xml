@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- tree view -->
+        <record id="view_hook_tree_banner" model="ir.ui.view">
+            <field name="name">hook_tree_banner</field>
+            <field name="model">vit.hook</field>
+            <field name="inherit_id" ref="vit_ads_suhu.view_vit_hook_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="attributes">
+                    <attribute name="js_class">ads_list_with_banner</attribute>
+                </xpath>
+            </field>
+        </record>
+        <!-- form view -->
+        <record id="view_hook_form" model="ir.ui.view">
+            <field name="name">hook_form</field>
+            <field name="model">vit.hook</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="vit_ads_suhu.view_vit_hook_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="js_class">ads_form_with_banner</attribute>
+                </xpath>           
+            </field>
+        </record>
+        <!-- search -->
+        <!--record id="view_hook_search" model="ir.ui.view">
+            <field name="name">hook</field>
+            <field name="model">vit.hook</field>
+            <field name="inherit_id" ref="vit_ads_suhu.view_vit_hook_search"/>
+            <field name="arch" type="xml">
+            </field>
+        </record-->
+        <!-- <record id="vit_ads_suhu.action_hook" model="ir.actions.act_window">
+            <field name="context">{'banner_src': '/vit_ads_suhu_inherit/static/src/img/hook.png','default_banner_src': '/vit_ads_suhu_inherit/static/src/img/hook.png','banner_alt': 'Ads Copy flow','default_banner_alt': 'Ads Copy flow'}</field>
+        </record> -->
+
+        <!-- <menuitem id="menu_hook" name="Ads Copy" parent="vit_ads_suhu_config_menu" action="action_hook" sequence="60"/> -->
+    </data>
+</odoo>

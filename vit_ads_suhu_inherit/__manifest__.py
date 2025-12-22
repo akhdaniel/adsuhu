@@ -31,6 +31,7 @@
 		"view/market_mapper.xml",
 		"view/audience_profiler.xml",
 		"view/angle_hook.xml",
+		"view/hook.xml",
 		"view/ads_copy.xml",
 		"view/script_writer.xml",
 		"view/visual_concept.xml",
