@@ -43,6 +43,7 @@
                             <td>Angle Hook</td>
                             <td>Audience Profiler</td>
                             <td>Product Value Analysis</td>
+                            <td>Hook</td>
                         </tr>
                     </thead>
                     <tbody class="ads_copy_ids_tbody">
@@ -54,6 +55,7 @@
                             <td><span t-field="line.angle_hook_id" /></td>
                             <td><span t-field="line.audience_profiler_id" /></td>
                             <td><span t-field="line.product_value_analysis_id" /></td>
+                            <td><span t-field="line.hook_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
                 </table>

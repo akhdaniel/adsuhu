@@ -43,6 +43,22 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                            <button type="object" name="action_view_detail_hook_ids" class="oe_stat_button" icon="fa-search" >
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="hook_ids_count" />
+                                    </span>
+                                    <span class="o_stat_text">Hooks</span>
+                                </div>
+                            </button>
+                            <button type="object" name="action_view_detail_ads_copy_ids" class="oe_stat_button" icon="fa-search" >
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="ads_copy_ids_count" />
+                                    </span>
+                                    <span class="o_stat_text">Ads Copy</span>
+                                </div>
+                            </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
                                 <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
                                 <!--field name="detail_ids" invisible="1"/-->
@@ -65,8 +81,6 @@
                             </group>
                         </group>
                         <notebook>
-                            <page name="hook_ids" string="Hook">
-                            </page>
                             <page name="output" string="Output">
                                 <field name="output" widget="md_viewer" />
                             </page>
