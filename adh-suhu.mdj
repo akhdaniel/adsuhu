@@ -2568,6 +2568,24 @@
 										},
 										{
 											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbSWIa4iBpuA4=",
+											"_parent": {
+												"$ref": "AAAAAAGbDOXvedRFM2E="
+											},
+											"model": {
+												"$ref": "AAAAAAGbSWIayCBajZ0="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 685,
+											"top": 2347,
+											"width": 607,
+											"height": 13,
+											"text": "+hook: Text",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGbHvzN+2cDOFE=",
 											"_parent": {
 												"$ref": "AAAAAAGbDOXvedRFM2E="
@@ -2578,7 +2596,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 685,
-											"top": 2347,
+											"top": 2362,
 											"width": 607,
 											"height": 13,
 											"text": "+hook_no: Integer",
@@ -2590,7 +2608,7 @@
 									"left": 680,
 									"top": 2297,
 									"width": 617,
-									"height": 68
+									"height": 83
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -2614,7 +2632,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 685,
-											"top": 2370,
+											"top": 2385,
 											"width": 607,
 											"height": 13,
 											"text": "+action_generate()",
@@ -2632,7 +2650,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 685,
-											"top": 2385,
+											"top": 2400,
 											"width": 607,
 											"height": 13,
 											"text": "+action_create_images()",
@@ -2650,7 +2668,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 685,
-											"top": 2400,
+											"top": 2415,
 											"width": 607,
 											"height": 13,
 											"text": "+_get_input()",
@@ -2668,7 +2686,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 685,
-											"top": 2415,
+											"top": 2430,
 											"width": 607,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -2678,7 +2696,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 680,
-									"top": 2365,
+									"top": 2380,
 									"width": 617,
 									"height": 68
 								},
@@ -17331,6 +17349,16 @@
 							},
 							"name": "angle",
 							"documentation": "{\n\"related\":\"angle_hook_id.description\"\n}",
+							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbSWIayCBajZ0=",
+							"_parent": {
+								"$ref": "AAAAAAGbDOXvd9Q9xBk="
+							},
+							"name": "hook",
+							"documentation": "{\n\"related\":\"hook_id.description\"\n}",
 							"type": "Text"
 						},
 						{

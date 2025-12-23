@@ -10,7 +10,8 @@
                 <list string="Ads Copy">
                     <field name="name" /> <!-- 1-->
                     <field name="angle" /> <!-- 100-->
-                    <field name="hook_no" /> <!-- 101-->
+                    <field name="hook" /> <!-- 101-->
+                    <field name="hook_no" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -97,6 +98,7 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="angle"  />
+                                <field name="hook"  />
                                 <field name="hook_no"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -136,6 +138,7 @@
                 <search string="Ads Copy">
 
                     <filter string="Angle" name="filter_by_angle" domain="[('angle','=','')]" />
+                    <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
                     <filter string="Hook No" name="filter_by_hook_no" domain="[('hook_no','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
@@ -143,6 +146,7 @@
                     <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
                     <field name="angle" select="True"/>
+                    <field name="hook" select="True"/>
                     <field name="hook_no" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>

@@ -26,6 +26,10 @@
                             <p class="m-0" t-field="doc.angle" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Hook</strong>
+                            <p class="m-0" t-field="doc.hook" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Hook No</strong>
                             <p class="m-0" t-field="doc.hook_no" />
                         </div>
