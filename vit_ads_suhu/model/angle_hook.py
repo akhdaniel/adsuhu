@@ -23,7 +23,7 @@ class angle_hook(models.Model):
         pass
 
 
-    def action_create_ad_copy(self, ):
+    def action_split_hooks(self, ):
         pass
 
 

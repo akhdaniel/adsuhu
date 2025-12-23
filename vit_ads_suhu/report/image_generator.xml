@@ -45,6 +45,10 @@
                             <strong>Ads Copy</strong>
                             <p class="m-0" t-field="doc.ads_copy_id"/>
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Hook</strong>
+                            <p class="m-0" t-field="doc.hook_id"/>
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>

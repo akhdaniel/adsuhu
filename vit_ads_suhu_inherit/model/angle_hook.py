@@ -48,42 +48,115 @@ class angle_hook(models.Model):
 
     def action_split_angles(self, ):
         import re
-        def extract_angle_packages(text: str):
-            # --- 1. BIG IDEAS ---
-            big_ideas_match = re.search(
-                r"#\s*===\s*BIG IDEA\s*===(.*?)#\s*===\s*ANGLES",
-                text,
-                re.S | re.I
-            )
-            big_ideas = big_ideas_match.group(1).strip() if big_ideas_match else ""
+        from typing import List, Dict
 
-            # --- 2. CATATAN STRATEGIS ---
-            catatan_match = re.search(
-                r"#\s*CATATAN STRATEGIS(.*)$",
-                text,
-                re.S | re.I
-            )
-            catatan = catatan_match.group(1).strip() if catatan_match else ""
 
-            # --- 3. ANGLES (emoji-agnostic) ---
+        def extract_sections(text: str) -> Dict:
+            result = {}
+
+            # --- Extract BIG IDEA ---
+            big_idea_pattern = re.compile(
+                r"## === BIG IDEA ===(.*?)(?=---)",
+                re.DOTALL
+            )
+            big_idea_match = big_idea_pattern.search(text)
+            if big_idea_match:
+                result["BIG_IDEA"] = big_idea_match.group(1).strip()
+
+            # --- Extract CATATAN STRATEGIS ---
+            catatan_pattern = re.compile(
+                r"## === CATATAN STRATEGIS ===(.*)$",
+                re.DOTALL
+            )
+            catatan_match = catatan_pattern.search(text)
+            if catatan_match:
+                result["CATATAN_STRATEGIS"] = catatan_match.group(1).strip()
+
+            # --- Extract ANGLES ---
             angle_pattern = re.compile(
-                r"(##\s*Angle\s+\d+:\s+\*\*.*?\*\*.*?)(?=##\s*Angle\s+\d+:|\Z)",
-                re.S | re.I
+                r"### .+? ANGLE (\d+) — \*\*(.+?)\*\*(.*?)(?=---|\Z)",
+                re.DOTALL
             )
-            angles = angle_pattern.findall(text)
 
-            # --- 4. BUILD RESULT ---
-            results = []
-            for angle in angles:
-                combined = (
-                    f"BIG IDEAS:\n{big_ideas}\n\n"
-                    f"{angle.strip()}\n\n"
-                    f"CATATAN STRATEGIS:\n{catatan}"
-                )
-                results.append(combined)
+            angles = []
+            for match in angle_pattern.finditer(text):
+                angle_no = int(match.group(1))
+                angle_title = match.group(2).strip()
+                angle_body = match.group(3).strip()
 
-            return results
+                angles.append({
+                    "angle_no": angle_no,
+                    "title": angle_title,
+                    "content": angle_body
+                })
 
-        angles = extract_angle_packages(self.output)
-        _logger.info('angles')
-        _logger.info(angles)
+            result["ANGLES"] = angles
+
+            return result
+
+
+        extracted = extract_sections(self.output)
+
+        for angle in extracted['ANGLES']:
+            print(angle)
+            default = dict(
+                audience_profiler_id=self.audience_profiler_id.id,
+                name=f"ANGLE {angle['angle_no']} - {self.product_value_analysis_id.name}",
+                angle_no=angle['angle_no'],
+                description=angle['title'],
+                output=f"# ANGLE {angle['angle_no']} {angle['title']}\n\n{angle['content']}\n---\n# BIG_IDEA\n\n{extracted['BIG_IDEA']}\n---\n# CATATAN_STRATEGIS\n\n{extracted['CATATAN_STRATEGIS']}",
+            )
+            an = self.create(default)
+
+
+    def action_split_hooks(self, ):
+
+        import re
+        from typing import List, Dict
+
+        def extract_hooks(text: str) -> List[Dict]:
+            hooks = []
+
+            # 1️⃣ Ambil blok Hooks sampai sebelum # BIG_IDEA
+            hooks_block_pattern = re.compile(
+                r"\*\*Hooks:\*\*(.*?)(?=\n---\n# BIG_IDEA)",
+                re.DOTALL
+            )
+
+            hooks_block_match = hooks_block_pattern.search(text)
+            if not hooks_block_match:
+                return hooks
+
+            hooks_block = hooks_block_match.group(1)
+
+            # 2️⃣ Extract setiap hook bernomor
+            hook_pattern = re.compile(
+                r"\d+\.\s+\*\*“(.+?)”\*\*\s*\n\s*\*\(Emosi:\s*(.+?)\s*\|\s*Teknik:\s*(.+?)\)",
+                re.DOTALL
+            )
+
+            for match in hook_pattern.finditer(hooks_block):
+                hooks.append({
+                    "hook": match.group(1).strip(),
+                    "emotion": match.group(2).strip(),
+                    "technique": match.group(3).strip()
+                })
+
+            return hooks
+
+
+        extracted_hooks = extract_hooks(self.output)
+
+        from pprint import pprint
+        pprint(extracted_hooks)
+
+        hooks = []
+        self.hook_ids = hooks
+        self.hook_ids = [(0,0,{
+            'angle_hook_id': self.id,
+            'name':f"HOOK {i+1} - ANGLE {self.angle_no}",
+            'hook_no': i+1,
+            'description': hook['hook'],
+            'output': f"# {hook['hook']}\n\nEmotion: {hook['emotion']}\ntechnique: {hook['technique']}"
+        }) for i,hook in enumerate(extracted_hooks)]
+        

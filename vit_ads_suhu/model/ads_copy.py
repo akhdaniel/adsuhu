@@ -14,7 +14,11 @@ class ads_copy(models.Model):
         pass
 
 
-    def action_create_images(self, ):
+    def action_split_images(self, ):
+        pass
+
+
+    def action_create_lp(self, ):
         pass
 
 

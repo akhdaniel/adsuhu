@@ -38,7 +38,7 @@
                     <header>
                         <button string="Generate" type="object" name="action_generate" />
                         <button string="Split Angles" type="object" name="action_split_angles" />
-                        <button string="Create Ad Copy" type="object" name="action_create_ad_copy" />
+                        <button string="Split Hooks" type="object" name="action_split_hooks" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
