@@ -13,6 +13,16 @@
                 >
                     <i t-att-class="toggleIconClass" aria-hidden="true"/>
                 </button>
+                <button
+                    type="button"
+                    class="btn btn-link o_markdown_viewer_reformat"
+                    t-on-click="reformatOutput"
+                    t-att-title="reformatTitle"
+                    t-att-aria-label="reformatTitle"
+                    t-att-disabled="reformatDisabled ? true : undefined"
+                >
+                    <i t-att-class="reformatIconClass" aria-hidden="true"/>
+                </button>
                 <span class="o_markdown_viewer_copy_wrapper">
                     <button
                         type="button"

@@ -4,6 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { TextField, textField } from "@web/views/fields/text/text_field";
 import { markup, onMounted, onPatched, onWillUnmount, useRef, useState } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
 const escapeHtml = (text) => {
     if (!text) {
@@ -195,8 +196,11 @@ export class MarkdownViewerFieldComponent extends TextField {
         this.state = useState({
             mode: "preview",
             copyStatus: "idle",
+            isReformatting: false,
         });
         this._fullWidthCells = [];
+        this.orm = useService("orm");
+        this.notification = useService("notification");
 
         onMounted(() => this.updateFieldWidth());
         onPatched(() => this.updateFieldWidth());
@@ -246,6 +250,19 @@ export class MarkdownViewerFieldComponent extends TextField {
         return !value;
     }
 
+    get reformatTitle() {
+        return _t("Reformat Output");
+    }
+
+    get reformatDisabled() {
+        const record = this.props.record;
+        return !record?.resId || this.state.isReformatting;
+    }
+
+    get reformatIconClass() {
+        return this.state.isReformatting ? "fa fa-spinner fa-spin" : "fa fa-indent";
+    }
+
     async copyMarkdown() {
         const value = this.props.record.data[this.props.name] || "";
         if (!value) {
@@ -282,11 +299,31 @@ export class MarkdownViewerFieldComponent extends TextField {
             this.state.copyStatus = "idle";
         }, 1000);
         if (!copied) {
-            this.displayNotification({
+            this.notification.add({
                 title: _t("Copy failed"),
                 message: _t("Please copy the text manually."),
                 type: "warning",
             });
+        }
+    }
+
+    async reformatOutput() {
+        const record = this.props.record;
+        if (!record?.resId) {
+            return;
+        }
+        this.state.isReformatting = true;
+        try {
+            const result = await this.orm.call(record.resModel, "reformat_output", [[record.resId]]);
+            const formatted =
+                Array.isArray(result) && result.length ? result[0] : result !== undefined ? result : "";
+            if (this.props.update) {
+                await this.props.update(formatted);
+            } else if (record?.data) {
+                record.data[this.props.name] = formatted;
+            }
+        } finally {
+            this.state.isReformatting = false;
         }
     }
 
