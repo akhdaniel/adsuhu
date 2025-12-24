@@ -29,6 +29,10 @@
                             <strong>Features</strong>
                             <p class="m-0" t-field="doc.features" />
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Final Report</strong>
+                            <p class="m-0" t-field="doc.final_report" />
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>

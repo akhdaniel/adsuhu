@@ -33,6 +33,7 @@ class product_value_analysis(models.Model):
     _inherit = "vit.general_object"
     product_url = fields.Text( string=_("Product Url"))
     features = fields.Text( string=_("Features"))
+    final_report = fields.Text( string=_("Final Report"))
 
 
     def action_view_detail_market_mapper_ids(self):
