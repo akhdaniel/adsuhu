@@ -593,7 +593,7 @@ Response in {self.lang_id.name} language.
                                 js.pop('hook_library')
                                 js.pop('instruction')
                                 report.append(f"#### {m}.{p}.{a}.{h}.{adx}.{imgx} Ads Image: {img['name']}")
-                                res = json_to_markdown(js).replace('\n\n','\n')
+                                res = json_to_markdown(js, level=5, max_level=6).replace('\n\n','\n')
                                 report.append(res)
                                 report.append("\n")  
 

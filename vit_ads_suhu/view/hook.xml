@@ -9,7 +9,8 @@
             <field name="arch" type="xml">
                 <list string="Hook">
                     <field name="name" /> <!-- 1-->
-                    <field name="hook_no" /> <!-- 100-->
+                    <field name="angle_no" /> <!-- 100-->
+                    <field name="hook_no" /> <!-- 101-->
                     <field name="partner_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
                 </list>
@@ -63,6 +64,7 @@
                         </div>
                         <group>
                             <group> <!-- left -->
+                                <field name="angle_no"  />
                                 <field name="hook_no"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -108,6 +110,7 @@
             <field name="arch" type="xml">
                 <search string="Hook">
 
+                    <filter string="Angle No" name="filter_by_angle_no" domain="[('angle_no','=','')]" />
                     <filter string="Hook No" name="filter_by_hook_no" domain="[('hook_no','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
@@ -116,6 +119,7 @@
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
                     <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
+                    <field name="angle_no" select="True"/>
                     <field name="hook_no" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>

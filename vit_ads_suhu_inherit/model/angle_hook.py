@@ -138,9 +138,9 @@ class angle_hook(models.Model):
         }
         """
         for rec in self:
-            index = len(rec.audience_profiler_id.angle_hook_ids)+1
-            rec.angle_no = index
-            rec.name = f"ANGLE {index} - {rec.product_value_analysis_id.name}"
+            # index = len(rec.audience_profiler_id.angle_hook_ids)+1
+            # rec.angle_no = index
+            rec.name = f"ANGLE  - {rec.product_value_analysis_id.name}"
             rec.input = f"""
 # ✅ AUDIENCE PROFILE:
 ---

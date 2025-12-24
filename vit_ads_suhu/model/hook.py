@@ -15,6 +15,7 @@ class hook(models.Model):
 
 
     _inherit = "vit.general_object"
+    angle_no = fields.Integer(related="angle_hook_id.angle_no",  string=_("Angle No"))
     hook_no = fields.Integer( string=_("Hook No"))
 
 

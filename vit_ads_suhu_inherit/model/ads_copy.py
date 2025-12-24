@@ -191,17 +191,17 @@ class ads_copy(models.Model):
         ).id
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
     
-    @api.onchange("audience_profiler_id","angle_hook_id","hook_id")
+    @api.onchange("audience_profiler_id","hook_id")
     def _get_input(self, ):
         """
         {
-        @api.depends("audience_profiler_id","angle_hook_id")
+        @api.depends("audience_profiler_id"")
         }
         """
         for rec in self:
-            hook = len(rec.angle_hook_id.ads_copy_ids)+1
+            hook = len(rec.hook_id.ads_copy_ids)+1
             rec.hook_no = hook
-            rec.name = f"AD COPY - ANGLE {rec.angle_hook_id.angle_no} - HOOK {hook}"
+            rec.name = f"AD COPY - ANGLE {rec.hook_id.angle_no} - HOOK {hook}"
             rec.input = f"""
 
 # HOOK:
@@ -426,6 +426,9 @@ Response in {self.lang_id.name} language.
         })]
 
     def action_split_images(self):
+        if not self.output:
+              raise UserError('Output empty: please regenerate output')
+        
         js = json.loads(self.clean_md(self.output))
         if 'ads_copy' not in js:
             raise UserError('ads_copy key not found. regenerate output')

@@ -15500,6 +15500,25 @@
 										},
 										{
 											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbUJpfrkJsyQo=",
+											"_parent": {
+												"$ref": "AAAAAAGbRT3ekhxpUpM="
+											},
+											"model": {
+												"$ref": "AAAAAAGbUJpfZkIGOXo="
+											},
+											"fillColor": "#00FFD4",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 309,
+											"top": 1644,
+											"width": 455,
+											"height": 13,
+											"text": "+angle_no: Integer",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGbRT+3m4SoqSs=",
 											"_parent": {
 												"$ref": "AAAAAAGbRT3ekhxpUpM="
@@ -15511,7 +15530,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 309,
-											"top": 1644,
+											"top": 1659,
 											"width": 455,
 											"height": 13,
 											"text": "+hook_no: Integer",
@@ -15524,7 +15543,7 @@
 									"left": 304,
 									"top": 1609,
 									"width": 465,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -15539,7 +15558,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 304,
-									"top": 1662,
+									"top": 1677,
 									"width": 465,
 									"height": 10
 								},
@@ -21554,6 +21573,16 @@
 							"name": "_inherit",
 							"type": "",
 							"defaultValue": "vit.general_object"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbUJpfZkIGOXo=",
+							"_parent": {
+								"$ref": "AAAAAAGbRT3ekBxh4uw="
+							},
+							"name": "angle_no",
+							"documentation": "{\n\"related\":\"angle_hook_id.angle_no\"\n}",
+							"type": "Integer"
 						},
 						{
 							"_type": "UMLAttribute",
