@@ -386,7 +386,7 @@ Response in {self.lang_id.name} language.
                         for item in value:
                             md_lines.append(f"- {item}")
                     else:
-                        md_lines.append(f"**{title_case_key(key)}**: {value}")
+                        md_lines.append(f"- **{title_case_key(key)}**: {value}")
                     return
 
                 heading_prefix = "#" * level
@@ -486,16 +486,16 @@ Response in {self.lang_id.name} language.
 
         report.append("**Target Market Awal**")
         target_market_awal = output['target_market_awal']
-        report.append(f"*Persona*: {target_market_awal['persona']}")
-        report.append(f"*Pain*: {target_market_awal['pain']}")
-        report.append(f"*Gain*: {target_market_awal['gain']}")
+        report.append(f"- *Persona*: {target_market_awal['persona']}")
+        report.append(f"- *Pain*: {target_market_awal['pain']}")
+        report.append(f"- *Gain*: {target_market_awal['gain']}")
         report.append("\n")
 
         report.append("**Copywriting Angles**")
         copywriting_angle = output['copywriting_angle']
-        report.append(f"*Hook*: {copywriting_angle['hook']}")
-        report.append(f"*Proof*: {copywriting_angle['proof']}")
-        report.append(f"*Path*: {copywriting_angle['path']}")
+        report.append(f"- *Hook*: {copywriting_angle['hook']}")
+        report.append(f"- *Proof*: {copywriting_angle['proof']}")
+        report.append(f"- *Path*: {copywriting_angle['path']}")
         report.append("\n")
 
         # ------------------------------------------------------------------------
@@ -514,10 +514,13 @@ Response in {self.lang_id.name} language.
             # ------------------------------------------------------------------------
             profiles = market.audience_profiler_ids
             for p, profile in enumerate(profiles, start=1):
-                if not profile.output:
-                    continue
                 report.append(f"# {m}.{p} Audience Profiles: {profile['description']}")
                 report.append("---")
+
+                if not profile.output:
+                    report.append("--no data--")
+                    continue
+
                 res = json_to_markdown(json.loads(profile.output))
                 report.append(res)
                 report.append("\n")
@@ -528,12 +531,16 @@ Response in {self.lang_id.name} language.
                 # ------------------------------------------------------------------------
                 angles = profile.angle_hook_ids
                 for a, angle in enumerate(angles, start=1):
-                    if not angle.output:
-                        continue
                     if not angle.description:
                         continue
-                    report.append(f"# {m}.{p}.{a} Angle: {angle['description']}")
+
+                    report.append(f"# {m}.{p}.{a} {angle['name']}: {angle['description']}")
                     report.append("---")
+
+                    if not angle.output:
+                        report.append("--no data--")
+                        continue
+
                     js = json.loads(self.clean_md(angle.output))
                     res = json_to_markdown(js)
                     report.append(res)
@@ -545,10 +552,13 @@ Response in {self.lang_id.name} language.
                     # ------------------------------------------------------------------------
                     hooks = angle.hook_ids
                     for h, hook in enumerate(hooks, start=1):
-                        if not hook.output:
-                            continue
-                        report.append(f"# {m}.{p}.{a}.{h} Hook: {hook['description']}")
+                        report.append(f"## {m}.{p}.{a}.{h} Hook {hook['hook_no']}: {hook['description']}")
                         report.append("---")
+
+                        if not hook.output:
+                            report.append("--no data--")
+                            continue
+
                         js = json.loads(self.clean_md(hook.output))
                         res = json_to_markdown(js['hook'])
                         report.append(res)
@@ -559,11 +569,13 @@ Response in {self.lang_id.name} language.
                         # ------------------------------------------------------------------------
                         ads = hook.ads_copy_ids
                         for adx, ad in enumerate(ads, start=1):
-                            if not ad.output:
-                                continue
-                            report.append(f"# {m}.{p}.{a}.{h}.{adx} Ads: {ad['hook']}")
+                            report.append(f"### {m}.{p}.{a}.{h}.{adx} Ads: {ad['hook']}")
                             report.append("---")
-                            
+
+                            if not ad.output:
+                                report.append("--no data--")
+                                continue
+
                             js = json.loads(self.clean_md(ad.output))
                             js.pop('ads_copy')
                             js.pop('landing_page')
@@ -580,13 +592,13 @@ Response in {self.lang_id.name} language.
                                 js.pop('angle_library')
                                 js.pop('hook_library')
                                 js.pop('instruction')
-                                report.append(f"## {m}.{p}.{a}.{h}.{adx}.{imgx} Ads Image: {img['name']}")
+                                report.append(f"#### {m}.{p}.{a}.{h}.{adx}.{imgx} Ads Image: {img['name']}")
                                 res = json_to_markdown(js).replace('\n\n','\n')
                                 report.append(res)
                                 report.append("\n")  
 
                                 for imgvx, variant in enumerate(img.image_variant_ids, start=1):
-                                    report.append(f"## {m}.{p}.{a}.{h}.{adx}.{imgvx} Image Varian: {variant['name']}")
+                                    report.append(f"##### {m}.{p}.{a}.{h}.{adx}.{imgvx} Image Varian: {variant['name']}")
                                     res = f"![{ad['name']}](/web/image/vit.image_variant/{variant.id}/image?unique={int(time.time())})"
                                     report.append(res)
                                     report.append("\n")    
@@ -594,8 +606,6 @@ Response in {self.lang_id.name} language.
                             # ------------------------------------------------------------------------
                             # landing page
                             # ------------------------------------------------------------------------                            
-
-
 
 
         self.final_report = "\n".join(report)

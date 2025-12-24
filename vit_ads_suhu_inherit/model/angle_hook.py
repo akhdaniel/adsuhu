@@ -278,38 +278,37 @@ Response in {self.lang_id.name} language.
 
     def action_split_angles(self, ):
         js = json.loads(self.clean_md(self.output))
-        print(js)
 
         big_ideas= js['big_ideas']
         angles= js['angles']
         catatan_strategis= js['catatan_strategis']
 
         for i,angle in enumerate(angles):
-            output = {
-                'angle': angle,
+            # angle = {
+            #  "angle": "Siap Audit Itu Bukan Klaim, Tapi Bukti",
+            #  "pov": "Sistem persuratan bukan soal fitur, tapi soal apakah bisa dipertanggungjawabkan di depan auditor dan pimpinan.",
+            #  "hooks": []
+            # }
+            output = angle
+            output.update({
                 'big_ideas':big_ideas,
                 'catatan_strategis': catatan_strategis
-            }
+            })
             default = dict(
                 audience_profiler_id=self.audience_profiler_id.id,
                 name=f"ANGLE {i+1} - {self.product_value_analysis_id.name}",
                 angle_no=i+1,
                 description=angle['angle'],
-                output="```json\n"+json.dumps(output, indent=4) + "\n```",
+                output= json.dumps(output, indent=4),
             )
             an = self.create(default)
 
-
-
     def action_split_hooks(self, ):
-        js = json.loads(self.clean_md(self.output))
-        angle= js['angle']
+        angle = json.loads(self.clean_md(self.output))
         for i,hook in enumerate(angle['hooks']):
             output = {
-                'angle': {
-                    'angle':angle['angle'],
-                    'pov':angle['pov'],
-                },
+                'angle':angle['angle'],
+                'pov':angle['pov'],
                 'hook': hook
             }
             default = dict(
