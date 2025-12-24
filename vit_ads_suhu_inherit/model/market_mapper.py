@@ -103,6 +103,7 @@ class market_mapper(models.Model):
     specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
     lang_id = fields.Many2one(comodel_name="res.lang", related="product_value_analysis_id.lang_id")
+    partner_id = fields.Many2one(comodel_name="res.partner", related="product_value_analysis_id.partner_id")
     
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_market_mapper", raise_if_not_found=False)

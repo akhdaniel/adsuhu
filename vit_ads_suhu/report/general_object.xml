@@ -54,8 +54,8 @@
                             <p class="m-0" t-field="doc.lang_id"/>
                         </div>
                         <div class="col-auto mw-100 mb-2">
-                            <strong>Customer</strong>
-                            <p class="m-0" t-field="doc.customer_id"/>
+                            <strong>Partner</strong>
+                            <p class="m-0" t-field="doc.partner_id"/>
                         </div>
                     </div>
                 </div>

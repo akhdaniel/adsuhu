@@ -14,6 +14,7 @@ class hook(models.Model):
         pass
     
     lang_id = fields.Many2one(comodel_name="res.lang", related="angle_hook_id.product_value_analysis_id.lang_id")
+    partner_id = fields.Many2one(comodel_name="res.partner", related="angle_hook_id.product_value_analysis_id.partner_id")
 
     # def _get_default_prompt(self):
     #     prompt = self.env.ref("vit_ads_suhu_inherit.gpt_ads_copy", raise_if_not_found=False)

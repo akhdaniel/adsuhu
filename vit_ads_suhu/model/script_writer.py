@@ -69,5 +69,5 @@ class script_writer(models.Model):
 
 
     ads_copy_id = fields.Many2one(comodel_name="vit.ads_copy",  string=_("Ads Copy"))
-    angle_hook_id = fields.Many2one(comodel_name="vit.angle_hook", string="Angle", related="ads_copy_id.angle_hook_id")
+    angle_hook_id = fields.Many2one(comodel_name="vit.angle_hook", string="Angle", related="ads_copy_id.hook_id.angle_hook_id")
     visual_concept_ids = fields.One2many(comodel_name="vit.visual_concept",  inverse_name="script_writer_id",  string=_("Visual Concept"))

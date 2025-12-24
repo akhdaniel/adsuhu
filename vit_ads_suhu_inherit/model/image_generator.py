@@ -16,6 +16,7 @@ class image_generator(models.Model):
     def action_generate(self, ):
         pass
     lang_id = fields.Many2one(comodel_name="res.lang", related="ads_copy_id.product_value_analysis_id.lang_id")
+    partner_id = fields.Many2one(comodel_name="res.partner", related="ads_copy_id.product_value_analysis_id.partner_id")
 
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_image_generator", raise_if_not_found=False)

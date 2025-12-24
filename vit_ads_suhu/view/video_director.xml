@@ -11,7 +11,7 @@
                     <field name="name" /> <!-- 1-->
                     <field name="visual_concept_id" /> <!-- 100-->
                     <field name="video_service_id" /> <!-- 101-->
-                    <field name="customer_id" /> <!-- 102-->
+                    <field name="partner_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -28,7 +28,7 @@
                     <field name="ads_copy_id" type="row"/>
                     <field name="gpt_prompt_id" type="row"/>
                     <field name="lang_id" type="row"/>
-                    <field name="customer_id" type="row"/>
+                    <field name="partner_id" type="row"/>
                 </pivot>
             </field>
         </record>
@@ -66,7 +66,7 @@
                                 <field name="video_service_id"  />
                                 <field name="lang_id"  />
                                 <field name="ads_copy_id"  />
-                                <field name="customer_id"  />
+                                <field name="partner_id"  />
                             </group>
                         </group>
                         <notebook>
@@ -79,7 +79,7 @@
                             </page>
                             <page name="video_script_ids" string="Video Script">
                                 <field name="video_script_ids" >
-                                    <list >
+                                    <list editable="bottom">
                                         <field name="name" /> <!-- 100-->
                                         <field name="duration" /> <!-- 101-->
                                         <field name="visuals" /> <!-- 102-->
@@ -138,14 +138,14 @@
                     <field name="ads_copy_id" select="True"/>
                     <field name="gpt_prompt_id" select="True"/>
                     <field name="lang_id" select="True"/>
-                    <field name="customer_id" select="True"/>
+                    <field name="partner_id" select="True"/>
                     <group string="Group By..">
                         <filter string="Visual Concept" domain="[]" name="group_by_visual_concept_id" context="{'group_by':'visual_concept_id'}"/>
                         <filter string="Video Service" domain="[]" name="group_by_video_service_id" context="{'group_by':'video_service_id'}"/>
                         <filter string="Ads Copy" domain="[]" name="group_by_ads_copy_id" context="{'group_by':'ads_copy_id'}"/>
                         <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
                         <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
-                        <filter string="Customer" domain="[]" name="group_by_customer_id" context="{'group_by':'customer_id'}"/>
+                        <filter string="Partner" domain="[]" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
                     </group>
                 </search>
             </field>

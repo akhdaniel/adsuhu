@@ -178,9 +178,11 @@ class ads_copy(models.Model):
         pass
     specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
-    lang_id = fields.Many2one(comodel_name="res.lang", related="angle_hook_id.product_value_analysis_id.lang_id")
-
+    lang_id = fields.Many2one(comodel_name="res.lang",    related="angle_hook_id.product_value_analysis_id.lang_id")
+    partner_id = fields.Many2one(comodel_name="res.partner", related="angle_hook_id.product_value_analysis_id.partner_id")
+    
     def _get_default_prompt(self):
+        
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_algo_copy", raise_if_not_found=False)
         if prompt:
             return prompt.id
@@ -425,8 +427,9 @@ Response in {self.lang_id.name} language.
 
     def action_split_images(self):
         js = json.loads(self.clean_md(self.output))
-        print(js)
-
+        if 'ads_copy' not in js:
+            raise UserError('ads_copy key not found. regenerate output')
+        
         for i,ad in enumerate(js['ads_copy']):
             img=self.env['vit.image_generator'].create({
                 'ads_copy_id': self.id, 
@@ -447,7 +450,8 @@ Response in {self.lang_id.name} language.
 
     def action_create_lp(self):
         js = json.loads(self.clean_md(self.output))
-        print(js)
+        if 'landing_page' not in js:
+            raise UserError('landing_page key not found. regenerate output')
 
         output = js['landing_page']
         output.update({'angle_library': js['angle_library']})
@@ -460,11 +464,11 @@ Response in {self.lang_id.name} language.
 
     def action_create_video(self):
         js = json.loads(self.clean_md(self.output))
+        if 'video_script' not in js:
+            raise UserError('video_script key not found. regenerate output')
+        
         output=js['video_script']
         # print(output['scripts'])
-
-        for x in output['scripts']:
-            print(x)
 
         self.video_director_ids = [(0,0,{
             'name': 'VIDEO DIRECTOR 1',

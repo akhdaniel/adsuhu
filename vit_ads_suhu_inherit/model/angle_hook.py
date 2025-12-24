@@ -126,7 +126,8 @@ class angle_hook(models.Model):
         ).id
     
     lang_id = fields.Many2one(comodel_name="res.lang", related="product_value_analysis_id.lang_id")
-    
+    partner_id = fields.Many2one(comodel_name="res.partner", related="product_value_analysis_id.partner_id")    
+
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
 
     @api.onchange("audience_profiler_id","product_value_analysis_id","lang_id")
@@ -303,7 +304,6 @@ Response in {self.lang_id.name} language.
     def action_split_hooks(self, ):
         js = json.loads(self.clean_md(self.output))
         angle= js['angle']
-        print(angle)
         for i,hook in enumerate(angle['hooks']):
             output = {
                 'angle': {

@@ -36,36 +36,6 @@
                     </div>
                 </div>
                 <div class="oe_structure"/>
-                <h2>Ads Copy</h2>
-                <table class="table table-sm o_main_table" name="ads_copy_ids_table">
-                    <thead>
-                        <tr>
-                            <td> Name</td>
-                            <td> Inherit</td>
-                            <td>Angle</td>
-                            <td>Hook</td>
-                            <td>Hook No</td>
-                            <td>Angle Hook</td>
-                            <td>Audience Profiler</td>
-                            <td>Product Value Analysis</td>
-                            <td>Hook</td>
-                        </tr>
-                    </thead>
-                    <tbody class="ads_copy_ids_tbody">
-                        <tr t-foreach="doc.ads_copy_ids" t-as="line">
-                            <td><span t-field="line._name" /></td>
-                            <td><span t-field="line._inherit" /></td>
-                            <td><span t-field="line.angle" /></td>
-                            <td><span t-field="line.hook" /></td>
-                            <td><span t-field="line.hook_no" /></td>
-                            <td><span t-field="line.angle_hook_id" /></td>
-                            <td><span t-field="line.audience_profiler_id" /></td>
-                            <td><span t-field="line.product_value_analysis_id" /></td>
-                            <td><span t-field="line.hook_id" /></td>
-                        </tr> <!-- foreach-->
-                    </tbody>
-                </table>
-                <div class="oe_structure"/>
                 <h2>Hook</h2>
                 <table class="table table-sm o_main_table" name="hook_ids_table">
                     <thead>

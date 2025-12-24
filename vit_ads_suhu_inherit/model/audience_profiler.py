@@ -85,6 +85,7 @@ class audience_profiler(models.Model):
 
 
     lang_id = fields.Many2one(comodel_name="res.lang", related="market_mapper_id.product_value_analysis_id.lang_id")
+    partner_id = fields.Many2one(comodel_name="res.partner", related="market_mapper_id.product_value_analysis_id.partner_id")
 
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_audience_profiler", raise_if_not_found=False)
