@@ -27,6 +27,8 @@ class video_director(models.Model):
 
 
     _inherit = "vit.general_object"
+    video = fields.Binary( string=_("Video"))
+    video_filename = fields.Char( string=_("Video Filename"))
 
 
     visual_concept_id = fields.Many2one(comodel_name="vit.visual_concept",  string=_("Visual Concept"))

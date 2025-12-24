@@ -8,6 +8,7 @@ import json
 import logging
 import re
 import requests
+import time
 
 try:
     from bs4 import BeautifulSoup
@@ -360,7 +361,7 @@ Response in {self.lang_id.name} language.
                 )
 
             def render_table(key, value):
-                md_lines.append(f"**{title_case_key(key)}**")
+                # md_lines.append(f"**{title_case_key(key)}**")
 
                 headers = list(value[0].keys())
                 header_row = "| " + " | ".join(title_case_key(h) for h in headers) + " |"
@@ -425,6 +426,9 @@ Response in {self.lang_id.name} language.
         product = self
         report = []
 
+        # ------------------------------------------------------------------------
+        # Product value
+        # ------------------------------------------------------------------------
         report.append(f"# Campaign Generator Report: {product.name}")
         report.append("---")
         report.append("## Description")
@@ -494,7 +498,9 @@ Response in {self.lang_id.name} language.
         report.append(f"*Path*: {copywriting_angle['path']}")
         report.append("\n")
 
-
+        # ------------------------------------------------------------------------
+        # Market analysis
+        # ------------------------------------------------------------------------
         markets = product.market_mapper_ids
         for m, market in enumerate(markets, start=2):
             report.append(f"# {m}. Market Analysis")
@@ -502,7 +508,10 @@ Response in {self.lang_id.name} language.
             res = json_to_markdown(json.loads(market.output))
             report.append(res)
             report.append("\n")
-
+            
+            # ------------------------------------------------------------------------
+            # Audience profile
+            # ------------------------------------------------------------------------
             profiles = market.audience_profiler_ids
             for p, profile in enumerate(profiles, start=1):
                 if not profile.output:
@@ -514,6 +523,9 @@ Response in {self.lang_id.name} language.
                 report.append("\n")
                 report.append("\n")
 
+                # ------------------------------------------------------------------------
+                # Angles
+                # ------------------------------------------------------------------------
                 angles = profile.angle_hook_ids
                 for a, angle in enumerate(angles, start=1):
                     if not angle.output:
@@ -522,11 +534,15 @@ Response in {self.lang_id.name} language.
                         continue
                     report.append(f"# {m}.{p}.{a} Angle: {angle['description']}")
                     report.append("---")
-                    res = json_to_markdown(json.loads(self.clean_md(angle.output)))
+                    js = json.loads(self.clean_md(angle.output))
+                    res = json_to_markdown(js)
                     report.append(res)
                     report.append("\n")    
                     report.append("\n")    
 
+                    # ------------------------------------------------------------------------
+                    # Hooks
+                    # ------------------------------------------------------------------------
                     hooks = angle.hook_ids
                     for h, hook in enumerate(hooks, start=1):
                         if not hook.output:
@@ -538,16 +554,48 @@ Response in {self.lang_id.name} language.
                         report.append(res)
                         report.append("\n")                
 
+                        # ------------------------------------------------------------------------
+                        # Ads copy
+                        # ------------------------------------------------------------------------
                         ads = hook.ads_copy_ids
                         for adx, ad in enumerate(ads, start=1):
                             if not ad.output:
                                 continue
                             report.append(f"# {m}.{p}.{a}.{h}.{adx} Ads: {ad['hook']}")
                             report.append("---")
+                            
                             js = json.loads(self.clean_md(ad.output))
-                            res = json_to_markdown(js['ads_copy'])
+                            js.pop('ads_copy')
+                            js.pop('landing_page')
+                            res = json_to_markdown(js)
                             report.append(res)
-                            report.append("\n")                
+                            report.append("\n")  
+
+                            # ------------------------------------------------------------------------
+                            # Ads images
+                            # ------------------------------------------------------------------------  
+                            images = ad.image_generator_ids
+                            for imgx, img in enumerate(images, start=1):
+                                js = json.loads(self.clean_md(img.output))
+                                js.pop('angle_library')
+                                js.pop('hook_library')
+                                js.pop('instruction')
+                                report.append(f"## {m}.{p}.{a}.{h}.{adx}.{imgx} Ads Image: {img['name']}")
+                                res = json_to_markdown(js).replace('\n\n','\n')
+                                report.append(res)
+                                report.append("\n")  
+
+                                for imgvx, variant in enumerate(img.image_variant_ids, start=1):
+                                    report.append(f"## {m}.{p}.{a}.{h}.{adx}.{imgvx} Image Varian: {variant['name']}")
+                                    res = f"![{ad['name']}](/web/image/vit.image_variant/{variant.id}/image?unique={int(time.time())})"
+                                    report.append(res)
+                                    report.append("\n")    
+
+                            # ------------------------------------------------------------------------
+                            # landing page
+                            # ------------------------------------------------------------------------                            
+
+
 
 
         self.final_report = "\n".join(report)

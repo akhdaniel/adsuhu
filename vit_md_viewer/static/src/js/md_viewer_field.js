@@ -30,7 +30,7 @@ const escapeHtml = (text) => {
 
 const applyInlineFormatting = (text) => {
     let html = escapeHtml(text);
-    html = html.replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1"/>');
+    html = html.replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" width="50%"/>');
     html = html.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noreferrer noopener">$1</a>');
     html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
     html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");

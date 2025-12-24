@@ -57,6 +57,8 @@
                         </div>
                         <group>
                             <group> <!-- left -->
+                                <field name="video" filename="video_filename" />
+                                <field name="video_filename" invisible="1" />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                             </group>
@@ -119,6 +121,8 @@
             <field name="arch" type="xml">
                 <search string="Video Director">
 
+                    <filter string="Video" name="filter_by_video" domain="[('video','=','')]" />
+                    <filter string="Video Filename" name="filter_by_video_filename" domain="[('video_filename','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -126,6 +130,8 @@
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
                     <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
+                    <field name="video" select="True"/>
+                    <field name="video_filename" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
                     <field name="input" select="True"/>
