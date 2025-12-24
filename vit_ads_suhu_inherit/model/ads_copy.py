@@ -111,7 +111,62 @@ REQUIRED JSON OUTPUT FORMAT:
       "headline": "Siapkan Sistem Aset Anda Sebelum Audit Berikutnya",
       "cta": "Jadwalkan Demo Sekarang"
     }
-  }
+  },
+  "video_script":{
+    "length":"30-45s",
+    "scripts":[
+      {
+        "name":"hook (stop scroll)",
+        "duration":"0-3s",
+        "visuals":["...","..."],
+        "text_overlay":"...",
+        "voice_over":"..."
+      },
+      {
+        "name":"problem mapping",
+        "duration":"4-10s",
+        "visuals":["...","..."],
+        "text_overlay":"...",
+        "voice_over":"..."
+      },
+      {
+        "name":"insight shift",
+        "duration":"11-18s",
+        "visuals":["...","..."],
+        "text_overlay":"...",
+        "voice_over":"..."
+      },{
+        "name":"solution",
+        "duration":"11-18s",
+        "visuals":["...","..."],
+        "text_overlay":"...",
+        "voice_over":"..."
+      },{
+        "name":"kill effort + proof",
+        "duration":"28-34s",
+        "visuals":["...","..."],
+        "text_overlay":"...",
+        "voice_over":"..."
+      },{
+        "name":"reset failure",
+        "duration":"35-41s",
+        "visuals":["...","..."],
+        "text_overlay":"...",
+        "voice_over":"..."
+      },{
+        "name":"cta (soft, meta-safe)",
+        "duration":"42-45s",
+        "visuals":["...","..."],
+        "text_overlay":"...",
+        "voice_over":"..."
+      },
+    ]
+  },
+  "catatan_produksi":[
+    "format: 9:16",
+    "subtitle wajib",
+    "hook teks muncul <2 detik"
+  ]
 }
 ```
 """
@@ -153,6 +208,8 @@ Langsung buat Ads copy nya, focus pada hook ini dulu:
 {rec.hook_id.output}.
 
 Setelah itu langsung buat LP 8 section.
+
+Lalu buat video script nya.
 
 # ANGLE dan HOOK lengkap:
 ---
@@ -399,4 +456,24 @@ Response in {self.lang_id.name} language.
         self.landing_page_builder_ids = [(0,0,{
             'name': 'LP 1',
             'output': self.wrap_md(output)
+        })]
+
+    def action_create_video(self):
+        js = json.loads(self.clean_md(self.output))
+        output=js['video_script']
+        # print(output['scripts'])
+
+        for x in output['scripts']:
+            print(x)
+
+        self.video_director_ids = [(0,0,{
+            'name': 'VIDEO DIRECTOR 1',
+            'output': self.wrap_md(output),
+            'video_script_ids': [(0,0,{
+                'name': x['name'],
+                'duration': x['duration'],
+                'visuals': ",".join(x['visuals']),
+                'text_overlay': x['text_overlay'],
+                'voice_over': x['voice_over'],
+            }) for x in output['scripts']]
         })]

@@ -11,6 +11,7 @@
                     <field name="name" /> <!-- 1-->
                     <field name="angle" /> <!-- 100-->
                     <field name="hook" /> <!-- 101-->
+                    <field name="customer_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -27,6 +28,7 @@
                     <field name="audience_profiler_id" type="row"/>
                     <field name="gpt_prompt_id" type="row"/>
                     <field name="lang_id" type="row"/>
+                    <field name="customer_id" type="row"/>
                 </pivot>
             </field>
         </record>
@@ -90,6 +92,7 @@
                                 <field name="ads_copy_id"  />
                                 <field name="lang_id"  />
                                 <field name="audience_profiler_id"  />
+                                <field name="customer_id"  />
                             </group>
                         </group>
                         <notebook>
@@ -147,12 +150,14 @@
                     <field name="audience_profiler_id" select="True"/>
                     <field name="gpt_prompt_id" select="True"/>
                     <field name="lang_id" select="True"/>
+                    <field name="customer_id" select="True"/>
                     <group string="Group By..">
                         <filter string="Script Writer" domain="[]" name="group_by_script_writer_id" context="{'group_by':'script_writer_id'}"/>
                         <filter string="Ads Copy" domain="[]" name="group_by_ads_copy_id" context="{'group_by':'ads_copy_id'}"/>
                         <filter string="Audience Profiler" domain="[]" name="group_by_audience_profiler_id" context="{'group_by':'audience_profiler_id'}"/>
                         <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
                         <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
+                        <filter string="Customer" domain="[]" name="group_by_customer_id" context="{'group_by':'customer_id'}"/>
                     </group>
                 </search>
             </field>

@@ -12,6 +12,7 @@
                     <field name="angle" /> <!-- 100-->
                     <field name="hook" /> <!-- 101-->
                     <field name="hook_no" /> <!-- 102-->
+                    <field name="customer_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -29,6 +30,7 @@
                     <field name="hook_id" type="row"/>
                     <field name="gpt_prompt_id" type="row"/>
                     <field name="lang_id" type="row"/>
+                    <field name="customer_id" type="row"/>
                 </pivot>
             </field>
         </record>
@@ -44,6 +46,7 @@
                         <button string="Generate" type="object" name="action_generate" />
                         <button string="Split Ads Images" type="object" name="action_split_images" />
                         <button string="Create Lp" type="object" name="action_create_lp" />
+                        <button string="Create Video" type="object" name="action_create_video" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -111,6 +114,7 @@
                                 <field name="audience_profiler_id"  />
                                 <field name="lang_id"  />
                                 <field name="product_value_analysis_id"  />
+                                <field name="customer_id"  />
                                 <field name="hook_id"  />
                             </group>
                         </group>
@@ -172,6 +176,7 @@
                     <field name="hook_id" select="True"/>
                     <field name="gpt_prompt_id" select="True"/>
                     <field name="lang_id" select="True"/>
+                    <field name="customer_id" select="True"/>
                     <group string="Group By..">
                         <filter string="Angle Hook" domain="[]" name="group_by_angle_hook_id" context="{'group_by':'angle_hook_id'}"/>
                         <filter string="Audience Profiler" domain="[]" name="group_by_audience_profiler_id" context="{'group_by':'audience_profiler_id'}"/>
@@ -179,6 +184,7 @@
                         <filter string="Hook" domain="[]" name="group_by_hook_id" context="{'group_by':'hook_id'}"/>
                         <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
                         <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
+                        <filter string="Customer" domain="[]" name="group_by_customer_id" context="{'group_by':'customer_id'}"/>
                     </group>
                 </search>
             </field>

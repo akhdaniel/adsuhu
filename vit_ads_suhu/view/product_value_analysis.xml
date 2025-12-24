@@ -10,6 +10,7 @@
                 <list string="Product Value Analysis">
                     <field name="name" /> <!-- 1-->
                     <field name="product_url" /> <!-- 100-->
+                    <field name="customer_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -23,6 +24,7 @@
                 <pivot string="Product Value Analysis">
                     <field name="gpt_prompt_id" type="row"/>
                     <field name="lang_id" type="row"/>
+                    <field name="customer_id" type="row"/>
                 </pivot>
             </field>
         </record>
@@ -37,6 +39,7 @@
                     <header>
                         <button string="Fetch Product Description" type="object" name="action_fetch_product_description" />
                         <button string="Generate" type="object" name="action_generate" />
+                        <button string="Generate Report" type="object" name="action_generate_report" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -67,6 +70,7 @@
                             <group> <!-- right -->
                                 <field name="gpt_prompt_id"  />
                                 <field name="lang_id"  />
+                                <field name="customer_id"  />
                             </group>
                         </group>
                         <notebook>
@@ -124,9 +128,11 @@
                     <field name="specific_instruction" select="True"/>
                     <field name="gpt_prompt_id" select="True"/>
                     <field name="lang_id" select="True"/>
+                    <field name="customer_id" select="True"/>
                     <group string="Group By..">
                         <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
                         <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
+                        <filter string="Customer" domain="[]" name="group_by_customer_id" context="{'group_by':'customer_id'}"/>
                     </group>
                 </search>
             </field>

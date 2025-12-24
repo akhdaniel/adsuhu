@@ -47,7 +47,6 @@ class general_object(models.Model):
         text = re.sub(r"\\u([0-9a-fA-F]{4})", lambda m: chr(int(m.group(1), 16)), text)
         # Normalize to ASCII by decomposing unicode characters and mapping common symbols
         normalized = unicodedata.normalize("NFKD", text)
-        print(normalized)
         translated = []
         for ch in normalized:
             if ord(ch) < 128:

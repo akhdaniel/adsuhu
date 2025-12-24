@@ -53,6 +53,10 @@
                             <strong>Lang</strong>
                             <p class="m-0" t-field="doc.lang_id"/>
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Customer</strong>
+                            <p class="m-0" t-field="doc.customer_id"/>
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>

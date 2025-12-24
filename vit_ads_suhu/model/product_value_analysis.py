@@ -18,6 +18,10 @@ class product_value_analysis(models.Model):
         pass
 
 
+    def action_generate_report(self, ):
+        pass
+
+
     def _get_default_prompt(self, ):
         pass
 

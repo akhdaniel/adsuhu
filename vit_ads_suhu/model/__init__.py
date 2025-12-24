@@ -5,6 +5,7 @@ from . import angle_hook
 from . import audience_profiler
 from . import campaign_builder
 from . import compliance_checker
+from . import customer
 from . import gpt_prompt
 from . import hook
 from . import image_generator
@@ -17,6 +18,7 @@ from . import market_mapper
 from . import product_value_analysis
 from . import script_writer
 from . import video_director
+from . import video_script
 from . import video_service
 from . import video_variant
 from . import visual_concept

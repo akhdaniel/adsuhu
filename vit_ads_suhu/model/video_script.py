@@ -1,0 +1,30 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
+
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+
+class video_script(models.Model):
+
+    _name = "vit.video_script"
+    _description = "vit.video_script"
+
+
+    def action_reload_view(self):
+        pass
+
+    name = fields.Char( required=True, copy=False, string=_("Name"))
+    duration = fields.Char( string=_("Duration"))
+    visuals = fields.Text( string=_("Visuals"))
+    text_overlay = fields.Text( string=_("Text Overlay"))
+    voice_over = fields.Text( string=_("Voice Over"))
+
+
+    def copy(self, default=None):
+        default = dict(default or {})
+        default.update({
+            'name': self.name + ' (Copy)'
+        })
+        return super(video_script, self).copy(default)
+
+    video_director_id = fields.Many2one(comodel_name="vit.video_director",  string=_("Video Director"))

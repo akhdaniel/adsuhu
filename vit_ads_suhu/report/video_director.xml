@@ -56,6 +56,30 @@
                     </tbody>
                 </table>
                 <div class="oe_structure"/>
+                <h2>Video Script</h2>
+                <table class="table table-sm o_main_table" name="video_script_ids_table">
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Duration</td>
+                            <td>Visuals</td>
+                            <td>Text Overlay</td>
+                            <td>Voice Over</td>
+                            <td>Video Director</td>
+                        </tr>
+                    </thead>
+                    <tbody class="video_script_ids_tbody">
+                        <tr t-foreach="doc.video_script_ids" t-as="line">
+                            <td><span t-field="line.name" /></td>
+                            <td><span t-field="line.duration" /></td>
+                            <td><span t-field="line.visuals" /></td>
+                            <td><span t-field="line.text_overlay" /></td>
+                            <td><span t-field="line.voice_over" /></td>
+                            <td><span t-field="line.video_director_id" /></td>
+                        </tr> <!-- foreach-->
+                    </tbody>
+                </table>
+                <div class="oe_structure"/>
             </t>
         </template>
 

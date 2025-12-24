@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- tree view -->
+        <record id="view_vit_video_script_tree" model="ir.ui.view">
+            <field name="name">vit_video_script_tree</field>
+            <field name="model">vit.video_script</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="Video Script">
+                    <field name="name" /> <!-- 100-->
+                    <field name="video_director_id" /> <!-- 100-->
+                    <field name="duration" /> <!-- 101-->
+                    <field name="visuals" /> <!-- 102-->
+                    <field name="text_overlay" /> <!-- 103-->
+                    <field name="voice_over" /> <!-- 104-->
+                </list>
+            </field>
+        </record>
+        <!-- pivot view -->
+        <record id="view_vit_video_script_pivot" model="ir.ui.view">
+            <field name="name">vit_video_script_tree</field>
+            <field name="model">vit.video_script</field>
+            <field name="type">pivot</field>
+            <field name="arch" type="xml">
+                <pivot string="Video Script">
+                    <field name="video_director_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+        <!-- form view -->
+        <record id="view_vit_video_script_form" model="ir.ui.view">
+            <field name="name">vit_video_script_form</field>
+            <field name="model">vit.video_script</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Video Script">
+                    <header>
+                        <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
+                                <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
+                                <!--field name="detail_ids" invisible="1"/-->
+                            <!--/button-->
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Video Script Name"/>
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group> <!-- left -->
+                                <field name="duration"  />
+                                <field name="visuals"  />
+                                <field name="text_overlay"  />
+                                <field name="voice_over"  />
+                            </group>
+                            <group> <!-- right -->
+                                <field name="video_director_id"  />
+                            </group>
+                        </group>
+                        <notebook>
+                        </notebook>
+                        <group name="note_group" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            </group>
+                            <div class="clearfix"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- search -->
+        <record id="view_vit_video_script_search" model="ir.ui.view">
+            <field name="name">vit_video_script</field>
+            <field name="model">vit.video_script</field>
+            <field name="arch" type="xml">
+                <search string="Video Script">
+
+                    <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Duration" name="filter_by_duration" domain="[('duration','=','')]" />
+                    <filter string="Visuals" name="filter_by_visuals" domain="[('visuals','=','')]" />
+                    <filter string="Text Overlay" name="filter_by_text_overlay" domain="[('text_overlay','=','')]" />
+                    <filter string="Voice Over" name="filter_by_voice_over" domain="[('voice_over','=','')]" />
+                    <field name="name" select="True"/>
+                    <field name="duration" select="True"/>
+                    <field name="visuals" select="True"/>
+                    <field name="text_overlay" select="True"/>
+                    <field name="voice_over" select="True"/>
+                    <field name="video_director_id" select="True"/>
+                    <group string="Group By..">
+                        <filter string="Video Director" domain="[]" name="group_by_video_director_id" context="{'group_by':'video_director_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
+        <record id="view_vit_video_script_kanban" model="ir.ui.view" >
+            <field name="name">vit_video_script</field>
+            <field name="model">vit.video_script</field>
+            <field name="arch" type="xml">
+                <kanban version="7.0">
+                    <field name="id" />
+                    <templates>
+                        <t t-name="card" class="flex-row">
+                            <main class="p-2">
+                                <h4>
+                                    <a type="open"><field name="name"/></a>
+                                </h4>
+                            </main>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- graph -->
+        <record id="view_vit_video_script_graph" model="ir.ui.view">
+            <field name="name">vit_video_script</field>
+            <field name="model">vit.video_script</field>
+            <field name="arch" type="xml">
+                <graph string="Video Script" type="bar">
+                    <field name="video_director_id"/>
+                </graph>
+            </field>
+        </record>
+        <!-- action window -->
+        <record id="action_video_script" model="ir.actions.act_window">
+            <field name="name">Video Script</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.video_script</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to add a new Video Script
+                </p><p>
+
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_video_script" name="Video Script" parent="vit_ads_suhu_config_menu" action="action_video_script" sequence="240"/>
+    </data>
+</odoo>
