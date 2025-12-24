@@ -330,3 +330,224 @@ Response in {self.lang_id.name} language.
             if match:
                 return match.group(1), match.group(2)
         return None
+
+
+    def action_generate_report(self, ):
+        def json_to_markdown(data, level=3, max_level=4):
+            """
+            Convert JSON/dict into Markdown with controlled heading depth.
+
+            Rules:
+            - Starting heading level = 3 (###)
+            - Maximum heading level = 4 (####)
+            - Deeper levels (> max_level):
+                **Key**: value
+            - Keys converted to Title Case
+            - List of primitives -> bullet points (-)
+            - List of objects (list of dict) -> Markdown table
+            """
+
+            md_lines = []
+
+            def title_case_key(key):
+                return key.replace("_", " ").title()
+
+            def is_list_of_dicts(value):
+                return (
+                    isinstance(value, list)
+                    and value
+                    and all(isinstance(item, dict) for item in value)
+                )
+
+            def render_table(key, value):
+                md_lines.append(f"**{title_case_key(key)}**")
+
+                headers = list(value[0].keys())
+                header_row = "| " + " | ".join(title_case_key(h) for h in headers) + " |"
+                separator_row = "| " + " | ".join("---" for _ in headers) + " |"
+
+                md_lines.append(header_row)
+                md_lines.append(separator_row)
+
+                for row in value:
+                    row_line = "| " + " | ".join(str(row.get(h, "")) for h in headers) + " |"
+                    md_lines.append(row_line)
+
+                md_lines.append("\n")
+
+            def render_value(key, value, level):
+                # Beyond max heading depth → paragraph format
+                if level > max_level:
+                    if is_list_of_dicts(value):
+                        render_table(key, value)
+                    elif isinstance(value, list):
+                        md_lines.append(f"**{title_case_key(key)}**:")
+                        for item in value:
+                            md_lines.append(f"- {item}")
+                    else:
+                        md_lines.append(f"**{title_case_key(key)}**: {value}")
+                    return
+
+                heading_prefix = "#" * level
+                md_lines.append(f"{heading_prefix} {title_case_key(key)}")
+
+                if isinstance(value, dict):
+                    for k, v in value.items():
+                        render_value(k, v, level + 1)
+
+                elif is_list_of_dicts(value):
+                    render_table(key, value)
+
+                elif isinstance(value, list):
+                    for item in value:
+                        md_lines.append(f"- {item}")
+
+                else:
+                    md_lines.append(str(value))
+
+            if isinstance(data, dict):
+                for key, value in data.items():
+                    render_value(key, value, level)
+
+            elif isinstance(data, list):
+                for item in data:
+                    md_lines.append(f"- {item}")
+
+            return "\n".join(md_lines)
+
+
+        def list_to_bullet(lst):
+            res=[]
+            for l in lst:
+                res.append(f"* {l}")
+            return "\n".join(res)
+        
+        product = self
+        report = []
+
+        report.append(f"# Campaign Generator Report: {product.name}")
+        report.append("---")
+        report.append("## Description")
+        report.append(f"{product.description}")
+        report.append("")
+        report.append(f"Product URL: {product.product_url}")
+        report.append("")        
+        report.append("## Features")
+        report.append("---")
+        report.append(f"{product.features}")
+        report.append("")
+        report.append("# 1. Product Value Analysis")
+        report.append("---")
+        output = json.loads(product.output)
+
+        report.append(f"**Product category**:")
+        report.append(f"{output['category']}")
+        report.append("\n")
+
+        report.append(f"**Level Maslow**:")
+        report.append(f"{output['level_maslow']}")
+        report.append("\n")
+
+        report.append(f"**Unique Selling Propositions**:")
+        report.append(list_to_bullet(output['unique_selling_propositions']))
+        
+        report.append(f"**Extended Value Map**:")
+        for i,val in enumerate(output['value_map_extended']):
+            report.append(f"**Fitur {i+1}: {val['fitur']}**")
+            report.append(f"- Pain Point: {val['pain_point']}")
+            report.append(f"- Gain Point: {val['gain_point']}")
+            report.append(f"- Manfaat Fungsional: {val['manfaat_fungsional']}")
+            report.append(f"- Manfaat Emosional: {val['manfaat_emosional']}")
+            report.append(f"- Manfaat Emosional: {val['manfaat_emosional']}")
+            report.append(f"- Proof: {val['proof']}")
+            report.append(f"- Motif Pembelian: {val['motif_pembelian']}")
+            report.append(f"- Buying Trigger: {val['buying_trigger']}")
+            report.append(f"- Level Maslow: {val['level_maslow']}")
+            report.append(f"- USP Relevan: {val['usp_relevan']}")
+        report.append("\n")
+        
+        report.append("**Spike Diferensiasi**")
+        report.append(output['spike_diferensiasi'])
+        report.append("\n")
+        
+        report.append("**Buying Triggers**")
+        buying_triggers=output['buying_triggers']
+        report.append("*Rasional*")
+        report.append(list_to_bullet(buying_triggers['rasional']))
+        report.append("\n")
+        
+        report.append("*Emosional*")
+        report.append(list_to_bullet(buying_triggers['emosional']))
+        report.append("\n")       
+
+        report.append("**Target Market Awal**")
+        target_market_awal = output['target_market_awal']
+        report.append(f"*Persona*: {target_market_awal['persona']}")
+        report.append(f"*Pain*: {target_market_awal['pain']}")
+        report.append(f"*Gain*: {target_market_awal['gain']}")
+        report.append("\n")
+
+        report.append("**Copywriting Angles**")
+        copywriting_angle = output['copywriting_angle']
+        report.append(f"*Hook*: {copywriting_angle['hook']}")
+        report.append(f"*Proof*: {copywriting_angle['proof']}")
+        report.append(f"*Path*: {copywriting_angle['path']}")
+        report.append("\n")
+
+
+        markets = product.market_mapper_ids
+        for m, market in enumerate(markets, start=2):
+            report.append(f"# {m}. Market Analysis")
+            report.append("---")
+            res = json_to_markdown(json.loads(market.output))
+            report.append(res)
+            report.append("\n")
+
+            profiles = market.audience_profiler_ids
+            for p, profile in enumerate(profiles, start=1):
+                if not profile.output:
+                    continue
+                report.append(f"# {m}.{p} Audience Profiles: {profile['description']}")
+                report.append("---")
+                res = json_to_markdown(json.loads(profile.output))
+                report.append(res)
+                report.append("\n")
+                report.append("\n")
+
+                angles = profile.angle_hook_ids
+                for a, angle in enumerate(angles, start=1):
+                    if not angle.output:
+                        continue
+                    if not angle.description:
+                        continue
+                    report.append(f"# {m}.{p}.{a} Angle: {angle['description']}")
+                    report.append("---")
+                    res = json_to_markdown(json.loads(self.clean_md(angle.output)))
+                    report.append(res)
+                    report.append("\n")    
+                    report.append("\n")    
+
+                    hooks = angle.hook_ids
+                    for h, hook in enumerate(hooks, start=1):
+                        if not hook.output:
+                            continue
+                        report.append(f"# {m}.{p}.{a}.{h} Hook: {hook['description']}")
+                        report.append("---")
+                        js = json.loads(self.clean_md(hook.output))
+                        res = json_to_markdown(js['hook'])
+                        report.append(res)
+                        report.append("\n")                
+
+                        ads = hook.ads_copy_ids
+                        for adx, ad in enumerate(ads, start=1):
+                            if not ad.output:
+                                continue
+                            report.append(f"# {m}.{p}.{a}.{h}.{adx} Ads: {ad['hook']}")
+                            report.append("---")
+                            js = json.loads(self.clean_md(ad.output))
+                            res = json_to_markdown(js['ads_copy'])
+                            report.append(res)
+                            report.append("\n")                
+
+
+        self.final_report = "\n".join(report)

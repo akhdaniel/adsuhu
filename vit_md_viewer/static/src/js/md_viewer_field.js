@@ -46,9 +46,18 @@ const renderSimpleMarkdown = (value) => {
     let paragraphBuffer = [];
     let codeBuffer = [];
     let inCodeBlock = false;
+    let inTable = false;
     let listRoot = null;
     let indentStack = [];
     let itemsStack = [];
+    let tableBuffer = null;
+    let tableAlignments = [];
+
+    const resetTable = () => {
+        tableBuffer = null;
+        tableAlignments = [];
+        inTable = false;
+    };
 
     const flushParagraph = () => {
         if (!paragraphBuffer.length) {
@@ -111,14 +120,85 @@ const renderSimpleMarkdown = (value) => {
         codeBuffer = [];
     };
 
+    const splitTableRow = (line) => line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim());
+
+    const parseAlignments = (line) => {
+        const cells = splitTableRow(line);
+        if (!cells.length) {
+            return null;
+        }
+        const aligns = [];
+        for (const cell of cells) {
+            const trimmed = cell.trim();
+            if (!/^:?-{3,}:?$/.test(trimmed)) {
+                return null;
+            }
+            if (trimmed.startsWith(":") && trimmed.endsWith(":")) {
+                aligns.push("center");
+            } else if (trimmed.endsWith(":")) {
+                aligns.push("right");
+            } else {
+                aligns.push("left");
+            }
+        }
+        return aligns;
+    };
+
+    const getTableStart = (currentLine, separatorLine) => {
+        if (!separatorLine || !currentLine.includes("|")) {
+            return null;
+        }
+        const headerCells = splitTableRow(currentLine);
+        if (headerCells.length < 2) {
+            return null;
+        }
+        const alignments = parseAlignments(separatorLine);
+        if (!alignments || alignments.length !== headerCells.length) {
+            return null;
+        }
+        return { headerCells, alignments };
+    };
+
+    const addTableRowCells = (cells) => {
+        if (!cells.length) {
+            return;
+        }
+        if (!tableBuffer) {
+            tableBuffer = [];
+        }
+        tableBuffer.push(cells.map((cell) => applyInlineFormatting(cell)));
+    };
+
+    const flushTable = () => {
+        if (!tableBuffer?.length) {
+            resetTable();
+            return;
+        }
+        const [headers, ...rows] = tableBuffer;
+        const renderRow = (cells, tagName) =>
+            cells
+                .map((cell, index) => {
+                    const align = tableAlignments[index];
+                    const alignAttr = align ? ` align="${align}"` : "";
+                    return `<${tagName}${alignAttr}>${cell}</${tagName}>`;
+                })
+                .join("");
+        const body = rows.map((row) => `<tr>${renderRow(row, "td")}</tr>`).join("");
+        const bodyHtml = body ? `<tbody>${body}</tbody>` : "";
+        htmlParts.push(`<table style="border:1px #ddd solid; padding: 2px"><thead><tr>${renderRow(headers, "th")}</tr></thead>${bodyHtml}</table></br>`);
+        resetTable();
+    };
+
     const lines = value.split(/\r?\n/);
-    for (const line of lines) {
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
         if (line.startsWith("```")) {
             if (inCodeBlock) {
                 flushCode();
             } else {
                 flushParagraph();
                 flushList();
+                flushTable();
             }
             inCodeBlock = !inCodeBlock;
             continue;
@@ -131,9 +211,32 @@ const renderSimpleMarkdown = (value) => {
 
         const trimmed = line.trim();
 
+        if (inTable) {
+            const cells = splitTableRow(line);
+            if (line.includes("|") && cells.length > 1) {
+                addTableRowCells(cells);
+                continue;
+            }
+            flushTable();
+            i -= 1;
+            continue;
+        }
+
         if (!trimmed) {
             flushParagraph();
             flushList();
+            flushTable();
+            continue;
+        }
+
+        const potentialTableStart = getTableStart(line, lines[i + 1]);
+        if (potentialTableStart) {
+            flushParagraph();
+            flushList();
+            tableAlignments = potentialTableStart.alignments;
+            addTableRowCells(potentialTableStart.headerCells);
+            inTable = true;
+            i += 1; // Skip the separator line
             continue;
         }
 
@@ -141,6 +244,7 @@ const renderSimpleMarkdown = (value) => {
         if (headingMatch) {
             flushParagraph();
             flushList();
+            flushTable();
             htmlParts.push(
                 `<h${headingMatch[1].length}>${applyInlineFormatting(headingMatch[2])}</h${headingMatch[1].length}>`
             );
@@ -159,6 +263,7 @@ const renderSimpleMarkdown = (value) => {
         if (/^>+\s+/.test(line)) {
             flushParagraph();
             flushList();
+            flushTable();
             htmlParts.push(`<blockquote>${applyInlineFormatting(line.replace(/^>+\s+/, ""))}</blockquote>`);
             continue;
         }
@@ -166,6 +271,7 @@ const renderSimpleMarkdown = (value) => {
         if (/^([-*_]){3,}$/.test(trimmed)) {
             flushParagraph();
             flushList();
+            flushTable();
             htmlParts.push("<hr/>");
             continue;
         }
@@ -181,6 +287,7 @@ const renderSimpleMarkdown = (value) => {
 
     flushParagraph();
     flushList();
+    flushTable();
 
     return htmlParts.join("");
 };

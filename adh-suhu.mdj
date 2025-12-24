@@ -18890,7 +18890,7 @@
 								"$ref": "AAAAAAGbDOD0srqePoM="
 							},
 							"name": "final_report",
-							"documentation": "{\n\"form:pos\":\"tab:Reports\",\n\"form:seq\":1000\n}",
+							"documentation": "{\n\"form:pos\":\"tab:Reports\",\n\"form:seq\":1000,\n\"tree:invisible\":true,\n\"xml:widget\":\"md_viewer\"\n}",
 							"type": "Text"
 						}
 					],

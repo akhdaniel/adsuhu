@@ -11,7 +11,6 @@
                     <field name="name" /> <!-- 1-->
                     <field name="product_url" /> <!-- 100-->
                     <field name="partner_id" /> <!-- 102-->
-                    <field name="final_report" /> <!-- 1000-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -79,7 +78,7 @@
                                     <field name="features" />
                             </page>
                             <page name="reports" string="Reports">
-                                    <field name="final_report" />
+                                    <field name="final_report" widget="md_viewer" />
                             </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="md_viewer" />
