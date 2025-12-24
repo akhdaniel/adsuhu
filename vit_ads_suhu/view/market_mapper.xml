@@ -36,8 +36,8 @@
             <field name="arch" type="xml">
                 <form string="Market Mapper">
                     <header>
-                        <button string="undefined" type="object" name="action_generate" />
-                        <button string="undefined" type="object" name="action_create_audience_profiles" />
+                        <button string="Generate" type="object" name="action_generate" />
+                        <button string="Create Audience Profiles" type="object" name="action_create_audience_profiles" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -47,7 +47,7 @@
                                     <span class="o_stat_value">
                                         <field name="audience_profiler_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">Audience Profiles</span>
                                 </div>
                             </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->

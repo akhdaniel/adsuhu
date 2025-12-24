@@ -37,9 +37,9 @@
             <field name="arch" type="xml">
                 <form string="Angle">
                     <header>
-                        <button string="undefined" type="object" name="action_generate" />
-                        <button string="undefined" type="object" name="action_split_angles" />
-                        <button string="undefined" type="object" name="action_split_hooks" />
+                        <button string="Generate" type="object" name="action_generate" />
+                        <button string="Split Angles" type="object" name="action_split_angles" />
+                        <button string="Split Hooks" type="object" name="action_split_hooks" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -49,7 +49,7 @@
                                     <span class="o_stat_value">
                                         <field name="ads_copy_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">Ads Copy</span>
                                 </div>
                             </button>
                             <button type="object" name="action_view_detail_hook_ids" class="oe_stat_button" icon="fa-search" >
@@ -57,7 +57,7 @@
                                     <span class="o_stat_value">
                                         <field name="hook_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">Hooks</span>
                                 </div>
                             </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->

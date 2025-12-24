@@ -47,7 +47,7 @@
                                     <span class="o_stat_value">
                                         <field name="ads_copy_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">Ads Copy</span>
                                 </div>
                             </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->

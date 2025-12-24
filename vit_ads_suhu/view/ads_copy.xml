@@ -41,9 +41,9 @@
             <field name="arch" type="xml">
                 <form string="Ads Copy">
                     <header>
-                        <button string="undefined" type="object" name="action_generate" />
+                        <button string="Generate" type="object" name="action_generate" />
                         <button string="Split Ads Images" type="object" name="action_split_images" />
-                        <button string="undefined" type="object" name="action_create_lp" />
+                        <button string="Create Lp" type="object" name="action_create_lp" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -53,7 +53,7 @@
                                     <span class="o_stat_value">
                                         <field name="script_writer_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">Scripts</span>
                                 </div>
                             </button>
                             <button type="object" name="action_view_detail_visual_concept_id" class="oe_stat_button" icon="fa-search" >
@@ -61,7 +61,7 @@
                                     <span class="o_stat_value">
                                         <field name="visual_concept_id_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">Visual Concepts</span>
                                 </div>
                             </button>
                             <button type="object" name="action_view_detail_landing_page_builder_ids" class="oe_stat_button" icon="fa-search" >
@@ -69,7 +69,7 @@
                                     <span class="o_stat_value">
                                         <field name="landing_page_builder_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">LPs</span>
                                 </div>
                             </button>
                             <button type="object" name="action_view_detail_image_generator_ids" class="oe_stat_button" icon="fa-search" >
@@ -77,7 +77,7 @@
                                     <span class="o_stat_value">
                                         <field name="image_generator_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">Images</span>
                                 </div>
                             </button>
                             <button type="object" name="action_view_detail_video_director_ids" class="oe_stat_button" icon="fa-search" >
@@ -85,7 +85,7 @@
                                     <span class="o_stat_value">
                                         <field name="video_director_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">Videos</span>
                                 </div>
                             </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->

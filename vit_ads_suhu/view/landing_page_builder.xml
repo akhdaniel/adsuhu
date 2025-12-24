@@ -40,7 +40,7 @@
             <field name="arch" type="xml">
                 <form string="Landing Page Builder">
                     <header>
-                        <button string="undefined" type="object" name="action_generate" />
+                        <button string="Generate" type="object" name="action_generate" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>

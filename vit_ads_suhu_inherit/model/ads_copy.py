@@ -370,6 +370,33 @@ Response in {self.lang_id.name} language.
         js = json.loads(self.clean_md(self.output))
         print(js)
 
+        for i,ad in enumerate(js['ads_copy']):
+            img=self.env['vit.image_generator'].create({
+                'ads_copy_id': self.id, 
+                'name': f'Ads Image {i+1}: {ad['name']}',
+                'description': ad['headline'],
+                'hook_id': self.hook_id.id,
+            })
+            output={
+                'instruction':img.specific_instruction,
+                'headline':ad['headline'],
+                'primary_text':ad['primary_text'],
+                'cta':ad['cta'],
+                'visual_suggestion':ad['visual_suggestion'],
+                'angle_library': js['angle_library'],
+                'hook_library': js['hook_library']
+            }
+            img.output = json.dumps(output, indent=3)
+
     def action_create_lp(self):
         js = json.loads(self.clean_md(self.output))
         print(js)
+
+        output = js['landing_page']
+        output.update({'angle_library': js['angle_library']})
+        output.update({'hook_library': js['hook_library']})
+
+        self.landing_page_builder_ids = [(0,0,{
+            'name': 'LP 1',
+            'output': self.wrap_md(output)
+        })]

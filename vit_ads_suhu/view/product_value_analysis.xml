@@ -35,8 +35,8 @@
             <field name="arch" type="xml">
                 <form string="Product Value Analysis">
                     <header>
-                        <button string="undefined" type="object" name="action_fetch_product_description" />
-                        <button string="undefined" type="object" name="action_generate" />
+                        <button string="Fetch Product Description" type="object" name="action_fetch_product_description" />
+                        <button string="Generate" type="object" name="action_generate" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -46,7 +46,7 @@
                                     <span class="o_stat_value">
                                         <field name="market_mapper_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Details</span>
+                                    <span class="o_stat_text">Market Mappers</span>
                                 </div>
                             </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->

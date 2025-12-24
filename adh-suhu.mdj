@@ -15852,12 +15852,12 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 508,
-									"top": 868,
+									"left": 520,
+									"top": 904,
 									"width": 59.00146484375,
 									"height": 13,
-									"alpha": -0.5235987755982988,
-									"distance": 30,
+									"alpha": -0.049140581866155886,
+									"distance": 61.07372593840988,
 									"hostEdge": {
 										"$ref": "AAAAAAGbRT72QG5QIYA="
 									},
@@ -17729,7 +17729,7 @@
 									"$ref": "AAAAAAGbDOKjUbsWYv4="
 								},
 								"name": "market_mapper_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Market Mappers\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Market Mappers\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOD0srqePoM="
 								},
@@ -17830,7 +17830,7 @@
 									"$ref": "AAAAAAGbDOP3rr4NZMI="
 								},
 								"name": "audience_profiler_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Audience Profiles\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Audience Profiles\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOI+ELrl32I="
 								},
@@ -17932,7 +17932,7 @@
 									"$ref": "AAAAAAGbDOT4hsITrMI="
 								},
 								"name": "angle_hook_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Angles\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Angles\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDON8Br0grWk="
 								},
@@ -18082,7 +18082,7 @@
 									"$ref": "AAAAAAGbDOY/JdWalUw="
 								},
 								"name": "ads_copy_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Ads Copy\",\n       \"icon\":\"fa-search\"\n    },\n    \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Ads Copy\",\n       \"icon\":\"fa-search\"\n    },\n    \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOQsecBzs7U="
 								},
@@ -18178,7 +18178,7 @@
 									"$ref": "AAAAAAGbRUSwv5rNgyM="
 								},
 								"name": "ads_copy_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Ads Copy\",\n       \"icon\":\"fa-search\"\n    },\n    \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Ads Copy\",\n       \"icon\":\"fa-search\"\n    },\n    \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbRT3ekBxh4uw="
 								},
@@ -18254,7 +18254,7 @@
 								"$ref": "AAAAAAGbDOXvd9Q9xBk="
 							},
 							"name": "action_split_images",
-							"documentation": "{\n\"string\":\"Split Ads Images\"\n}"
+							"documentation": "{\n\"label\":\"Split Ads Images\"\n}"
 						},
 						{
 							"_type": "UMLOperation",
@@ -18317,7 +18317,7 @@
 									"$ref": "AAAAAAGbDOfxMfgGQVA="
 								},
 								"name": "script_writer_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Scripts\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Scripts\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOXvd9Q9xBk="
 								},
@@ -18495,7 +18495,7 @@
 									"$ref": "AAAAAAGbDOlVgxJObgw="
 								},
 								"name": "visual_concept_id",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Visual Concepts\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Visual Concepts\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOXvd9Q9xBk="
 								},
@@ -18817,7 +18817,7 @@
 									"$ref": "AAAAAAGbDO0IsdXSVWI="
 								},
 								"name": "landing_page_builder_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"LPs\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"LPs\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOXvd9Q9xBk="
 								},
@@ -19291,7 +19291,7 @@
 									"$ref": "AAAAAAGbJdOWXN7c8rg="
 								},
 								"name": "image_generator_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Images\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Images\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOXvd9Q9xBk="
 								},
@@ -19861,7 +19861,7 @@
 									"$ref": "AAAAAAGbMGOCqQCp5+o="
 								},
 								"name": "video_director_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Videos\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Videos\",\n       \"icon\":\"fa-search\"\n    },\n   \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOXvd9Q9xBk="
 								},
@@ -20127,7 +20127,7 @@
 									"$ref": "AAAAAAGbRT72QG5MziU="
 								},
 								"name": "hook_ids",
-								"documentation": "{\n    \"show:smart_button\":{\n       \"string\":\"Hooks\",\n       \"icon\":\"fa-search\"\n    },\n    \"page:invisible\":true\n}",
+								"documentation": "{\n    \"show:smart_button\":{\n       \"label\":\"Hooks\",\n       \"icon\":\"fa-search\"\n    },\n    \"page:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOQsecBzs7U="
 								},

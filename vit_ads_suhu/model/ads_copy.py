@@ -17,7 +17,7 @@ class ads_copy(models.Model):
     def action_split_images(self, ):
         """
         {
-        "string":"Split Ads Images"
+        "label":"Split Ads Images"
         }
         """
         pass
