@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- action window -->
+        <record id="action_lang" model="ir.actions.act_window">
+            <field name="name">Lang</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.lang</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to add a new Lang
+                </p><p>
+
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_lang" name="Lang" parent="vit_ads_suhu_config_menu" action="action_lang" sequence="220"/>
+    </data>
+</odoo>

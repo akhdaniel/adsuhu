@@ -7,17 +7,123 @@ import logging
 _logger = logging.getLogger(__name__)
 import re
 from typing import List, Dict
+import json
+
 def strip_emoji(text: str) -> str:
     # Remove common emoji ranges (optional)
     return re.sub(r"[\U0001F300-\U0001FAFF\u2600-\u26FF\u2700-\u27BF]", "", text)
 
+DEFAULT_SPECIFIC_INSTRUCTION ="""
+REQUIRED JSON OUTPUT FORMAT:
 
+```json
+{
+  "angle": "...",
+  "hook": "...",
+
+  "ads_copy": [{
+    "name":"COPY A - Relevance Boost",
+    "primary_text": "...",
+    "headline": "...",
+    "cta": "...",
+    "visual_suggestion": "...."
+  },{
+    "name":"COPY B - Intent Boost",
+    "primary_text": "...",
+    "headline": "...",
+    "cta": "...",
+    "visual_suggestion": "...."    
+  },{
+    "name":"COPY C - Emotional Boost",
+    "primary_text": "...",
+    "headline": "...",
+    "cta": "...",
+    "visual_suggestion": "...."    
+  },{
+    "name":"COPY D - AlgoCopy Ultra",
+    "primary_text": "...",
+    "headline": "...",
+    "cta": "...",
+    "visual_suggestion": "...."    
+  }],
+  "angle_library":[
+    "...",
+    "...",
+    "...",
+    "...", 
+    ... # 10 angles
+  ],
+  "hook_library":[
+    "...",
+    "...",
+    "...",
+    "...",
+    # 20 hooks
+  ],
+  "landing_page": {
+    "section_1_hero": {
+      "name":"Hero - Reframing + Output",
+      "headline": "Tenang Saat Audit Bukan Kebetulan",
+      "subheadline": "Bukan auditor yang bikin stres, tapi sistem aset yang tidak siap diperiksa kapan saja.",
+      "primary_cta": "Minta Demo Sistem"
+    },
+    "section_2_proof": {
+      "name":"PROOF OF REALITY — Bikin “ini beneran”",
+      "title": "Kenapa Audit Selalu Terasa Berat?",
+      "points": [
+        "Data aset tersebar di banyak unit",
+        "Pencatatan manual rawan selisih",
+        "Histori aset sulit ditelusuri saat diminta auditor"
+      ]
+    },
+    "section_3_problem": {
+      "name":"PROBLEM CALLOUT — Mirror Moment",
+      "title": "Masalah Utamanya Ada di Sistem",
+      "description": "Selama aset tidak dikelola dalam satu sumber data yang konsisten, audit akan selalu jadi momok. Bukan karena tim tidak kompeten, tapi karena sistemnya tidak mendukung kesiapan audit."
+    },
+    "section_4_solution": {
+      "name":"SOLUTION — Reframe + Path",
+      "title": "Satu Platform EAM yang Siap Audit",
+      "description": "Semua data aset, histori, nilai buku, dan pergerakan tercatat otomatis dalam satu sistem terpusat yang mudah diperiksa kapan saja."
+    },
+    "section_5_value_stack": {
+      "name":"VALUE STACK — Bikin “worth it”",
+      "title": "Apa yang Anda Dapatkan",
+      "values": [
+        "Satu sumber data aset yang akurat",
+        "Jejak audit dan histori aset lengkap",
+        "Pelacakan aset real-time lintas lokasi",
+        "Depresiasi dan nilai buku otomatis"
+      ]
+    },
+    "section_6_objection_handling": {
+      "name":"OBJECTION HANDLING — Turunin Risk",
+      "title": "Takut Implementasi Ribet?",
+      "description": "Sistem dirancang fleksibel, bisa cloud atau on-premise, dan terintegrasi dengan ERP yang sudah ada tanpa mengganggu operasional berjalan."
+    },
+    "section_7_super_benefit": {
+      "name":"SUPER BENEFIT — Emotional Payoff",
+      "title": "Manfaat Terbesarnya: Rasa Aman",
+      "description": "Audit datang mendadak tidak lagi jadi sumber kecemasan. Data sudah rapi, tim lebih percaya diri, dan reputasi institusi tetap terjaga."
+    },
+    "section_8_final_cta": {
+      "name":"FINAL CTA — Calm Conversion",
+      "headline": "Siapkan Sistem Aset Anda Sebelum Audit Berikutnya",
+      "cta": "Jadwalkan Demo Sekarang"
+    }
+  }
+}
+```
+"""
 class ads_copy(models.Model):
     _name = "vit.ads_copy"
     _inherit = "vit.ads_copy"
 
     def action_generate(self, ):
         pass
+    specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
+
+    lang_id = fields.Many2one(comodel_name="res.lang", related="angle_hook_id.product_value_analysis_id.lang_id")
 
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_algo_copy", raise_if_not_found=False)
@@ -41,26 +147,32 @@ class ads_copy(models.Model):
             rec.name = f"AD COPY - ANGLE {rec.angle_hook_id.angle_no} - HOOK {hook}"
             rec.input = f"""
 
-# ✅ HOOK:
+# HOOK:
 ---
-Langsung buat ads copy, focus pada hook ini: 
+Langsung buat Ads copy nya, focus pada hook ini dulu: 
 {rec.hook_id.output}.
-
 
 Setelah itu langsung buat LP 8 section.
 
-# ✅ ANGLE dan HOOK lengkap:
+# ANGLE dan HOOK lengkap:
 ---
 {rec.angle_hook_id.output}
 
-# ✅ AUDIENCE PROFILE:
+# AUDIENCE PROFILE:
 ---
 {rec.audience_profiler_id.output}
 
-# ✅ PRODUCT VALUE:
+# PRODUCT VALUE:
 ---
 {rec.product_value_analysis_id.output}
 
+# INSTRUCTIONS:
+---
+{rec.general_instruction}
+
+{rec.specific_instruction or ''}
+
+Response in {self.lang_id.name} language.
 """
 
     # def action_create_images(self):
@@ -102,7 +214,7 @@ Setelah itu langsung buat LP 8 section.
     #     self.image_generator_ids._get_input()
 
 
-    def action_split_images(self):
+    def action_split_images_md(self):
         def extract_copies(text: str) -> List[Dict]:
             copies = []
             clean_text = strip_emoji(text)
@@ -172,7 +284,7 @@ Setelah itu langsung buat LP 8 section.
         }) for i,cop in enumerate(extracted_copies)]
 
 
-    def action_create_lp(self):
+    def action_create_lp_md(self):
 
         def capture_landing_page(text: str) -> Dict:
             result: Dict = {
@@ -253,3 +365,11 @@ Setelah itu langsung buat LP 8 section.
             'name': 'LP 1',
             'output': output
         })]
+
+    def action_split_images(self):
+        js = json.loads(self.clean_md(self.output))
+        print(js)
+
+    def action_create_lp(self):
+        js = json.loads(self.clean_md(self.output))
+        print(js)

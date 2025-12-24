@@ -60,7 +60,8 @@
 		"view/video_variant.xml",
 		"report/video_variant.xml",
 		"view/hook.xml",
-		"report/hook.xml"
+		"report/hook.xml",
+		"view/lang.xml"
 	],
 	"installable": True,
 	"auto_install": False,

@@ -6,13 +6,85 @@ from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
+
+DEFAULT_SPECIFIC_INSTRUCTION = """
+REQUIRED JSON OUTPUT FORMAT:
+```json
+{
+    "segment_target_utama": "....",
+    "customer_empathy_profile": {
+        "pikir_rasakan": [
+            "...",
+            "...",
+            "...",
+            "..."
+        ],
+        "lihat": [
+            "...",
+            "...",
+            "..."
+        ],
+        "dengar": [
+            "...",
+            "...",
+            "..."
+        ],
+        "katakan_lakukan": [
+            "...",
+            "...",
+            "..."
+        ],
+        "pain_points": [
+            "...",
+            "...",
+            "...",
+            "..."
+        ],
+        "aspirasi_goals": [
+            "...",
+            "...",
+            "...",
+        ],
+        "hambatan_keberatan": [
+            "...",
+            "...",
+            "...",
+        ]
+    },
+    "bahasa_tone_komunikasi_relevan": {
+        "kata_frasa_khas": [
+            "..",
+            "..."
+        ],
+        "gaya_bicara": "..."
+    },
+    "emotion_triggers": [
+        {
+            "emosi": "...",
+            "contoh_situasi": "..."
+        },
+        {
+            "emosi": "...",
+            "contoh_situasi": "..."
+        },
+        {
+            "emosi": "...",
+            "contoh_situasi": "..."
+        }
+    ]
+}
+```
+"""
 class audience_profiler(models.Model):
     _name = "vit.audience_profiler"
     _inherit = "vit.audience_profiler"
 
     def action_generate(self, ):
         pass
+    specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
+
+    lang_id = fields.Many2one(comodel_name="res.lang", related="market_mapper_id.product_value_analysis_id.lang_id")
 
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_audience_profiler", raise_if_not_found=False)
@@ -34,8 +106,21 @@ class audience_profiler(models.Model):
         for rec in self:
             rec.name = f"AUDIENCE PROFILE - {rec.market_mapper_id.product_value_analysis_id.name}"
             rec.input = f"""
-# ✅ MARKET MAP:
+# FOCUS:
+---
+Fokus ke profile ini dulu: {rec.description}.
+Alasan: {rec.alasan}.
+
+# OVERALL MARKET MAP:
 ---
 {rec.market_mapper_id.output}
+
+# INSTRUCTIONS:
+---
+{rec.general_instruction}
+
+{rec.specific_instruction or ''}
+
+Response in {self.lang_id.name} language.
 
 """

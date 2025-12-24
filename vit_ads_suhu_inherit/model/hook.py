@@ -12,6 +12,8 @@ class hook(models.Model):
 
     def action_generate(self, ):
         pass
+    
+    lang_id = fields.Many2one(comodel_name="res.lang", related="angle_hook_id.product_value_analysis_id.lang_id")
 
     # def _get_default_prompt(self):
     #     prompt = self.env.ref("vit_ads_suhu_inherit.gpt_ads_copy", raise_if_not_found=False)
@@ -34,16 +36,24 @@ class hook(models.Model):
             rec.hook_no = hook
             rec.name = f"HOOK {hook} - ANGLE {rec.angle_hook_id.angle_no} "
             rec.input = f"""
-# ✅ ANGLE:
+# ANGLE:
 ---
 {rec.angle_hook_id.output}
 
-# ✅ AUDIENCE PROFILE:
+# AUDIENCE PROFILE:
 ---
 {rec.audience_profiler_id.output}
 
-# ✅ PRODUCT VALUE:
+# PRODUCT VALUE:
 ---
 {rec.product_value_analysis_id.output}
+
+# INSTRUCTIONS:
+---
+{rec.general_instruction}
+
+{rec.specific_instruction or ''}
+
+Response in {self.lang_id.name} language.
 
 """

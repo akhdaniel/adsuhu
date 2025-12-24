@@ -5,13 +5,117 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
-
+import json
+DEFAULT_SPECIFIC_INSTRUCTION = """
+REQUIRED JSON OUTPUT FORMAT:
+```json
+{
+  "big_ideas": [
+    {
+      "judul": "...",
+      "konflik_emosional": "...",
+      "insight": "..."
+    },
+    {
+      "judul": "...",
+      "konflik_emosional": "...",
+      "insight": "..."
+    }
+  ],
+  "angles": [
+    {
+      "angle": "...",
+      "pov": "...",
+      "hooks": [
+        {
+          "text": "...",
+          "emosi": ["...", "...", "..."],
+          "teknik": "..."
+        },
+        {
+          "text": "...",
+          "emosi": ["...", "...", "..."],
+          "teknik": "real-talk"
+        },
+        {
+          "text": "...",
+          "emosi": ["...", "...", "..."],
+          "teknik": "pertanyaan reflektif"
+        },
+        {
+          "text": "...",
+          "emosi": ["...", "...", "..."],
+          "teknik": "..."
+        },
+        {
+          "text": "....",
+          "emosi": ["...", "...", "..."],
+          "teknik": ".."
+        }
+      ]
+    },
+    {
+      "angle": "...",
+      "pov": "...",
+      "hooks": [
+        {
+          "text": "...",
+          "emosi": ["...", "...", "..."],
+          "teknik": "..."
+        },
+        {
+          "text": "...",
+          "emosi": ["...", "...", "..."],
+          "teknik": "real-talk"
+        },
+        {
+          "text": "...",
+          "emosi": ["...", "...", "..."],
+          "teknik": "pertanyaan reflektif"
+        },
+        {
+          "text": "...",
+          "emosi": ["...", "...", "..."],
+          "teknik": "..."
+        },
+        {
+          "text": "....",
+          "emosi": ["...", "...", "..."],
+          "teknik": ".."
+        }
+      ]
+    },
+    ... # more angles
+    
+  ],
+  "catatan_strategis": {
+    "ab_test": [
+      "...",
+      "...",
+      "..."
+    ],
+    "adaptasi_platform": {
+      "meta": "...",
+      "tiktok": "...",
+      "youtube": "..."
+    },
+    "category_entry_points": [
+      "...",
+      "...",
+      "...",
+      "..."
+    ]
+  }
+}
+```
+"""
 class angle_hook(models.Model):
     _name = "vit.angle_hook"
     _inherit = "vit.angle_hook"
 
     def action_generate(self, ):
         pass
+    specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_angle_hook", raise_if_not_found=False)
@@ -21,9 +125,11 @@ class angle_hook(models.Model):
             [("name", "=", "angle_hook")], limit=1
         ).id
     
+    lang_id = fields.Many2one(comodel_name="res.lang", related="product_value_analysis_id.lang_id")
+    
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
 
-    @api.onchange("audience_profiler_id","product_value_analysis_id")
+    @api.onchange("audience_profiler_id","product_value_analysis_id","lang_id")
     def _get_input(self, ):
         """
         {
@@ -43,10 +149,18 @@ class angle_hook(models.Model):
 ---
 {rec.product_value_analysis_id.output}
 
+# INSTRUCTIONS:
+---
+{rec.general_instruction}
+
+{rec.specific_instruction or ''}
+
+Response in {self.lang_id.name} language.
+
 """
 
 
-    def action_split_angles(self, ):
+    def action_split_angles_md(self, ):
         import re
         from typing import List, Dict
 
@@ -109,7 +223,7 @@ class angle_hook(models.Model):
             an = self.create(default)
 
 
-    def action_split_hooks(self, ):
+    def action_split_hooks_md(self, ):
 
         import re
         from typing import List, Dict
@@ -160,3 +274,49 @@ class angle_hook(models.Model):
             'output': f"# {hook['hook']}\n\nEmotion: {hook['emotion']}\ntechnique: {hook['technique']}"
         }) for i,hook in enumerate(extracted_hooks)]
         
+
+    def action_split_angles(self, ):
+        js = json.loads(self.clean_md(self.output))
+        print(js)
+
+        big_ideas= js['big_ideas']
+        angles= js['angles']
+        catatan_strategis= js['catatan_strategis']
+
+        for i,angle in enumerate(angles):
+            output = {
+                'angle': angle,
+                'big_ideas':big_ideas,
+                'catatan_strategis': catatan_strategis
+            }
+            default = dict(
+                audience_profiler_id=self.audience_profiler_id.id,
+                name=f"ANGLE {i+1} - {self.product_value_analysis_id.name}",
+                angle_no=i+1,
+                description=angle['angle'],
+                output="```json\n"+json.dumps(output, indent=4) + "\n```",
+            )
+            an = self.create(default)
+
+
+
+    def action_split_hooks(self, ):
+        js = json.loads(self.clean_md(self.output))
+        angle= js['angle']
+        print(angle)
+        for i,hook in enumerate(angle['hooks']):
+            output = {
+                'angle': {
+                    'angle':angle['angle'],
+                    'pov':angle['pov'],
+                },
+                'hook': hook
+            }
+            default = dict(
+                angle_hook_id=self.id,
+                name = f"HOOK {i+1} - ANGLE {self.angle_no}",
+                hook_no= i+1,
+                description = hook['text'],
+                output="```json\n"+json.dumps(output, indent=4) + "\n```",
+            )
+            hook = self.env['vit.hook'].create(default)

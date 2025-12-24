@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <list string="Audience Profiler">
                     <field name="name" /> <!-- 1-->
+                    <field name="alasan" /> <!-- 100-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -22,6 +23,7 @@
                 <pivot string="Audience Profiler">
                     <field name="market_mapper_id" type="row"/>
                     <field name="gpt_prompt_id" type="row"/>
+                    <field name="lang_id" type="row"/>
                 </pivot>
             </field>
         </record>
@@ -34,7 +36,7 @@
             <field name="arch" type="xml">
                 <form string="Audience Profiler">
                     <header>
-                        <button string="Generate" type="object" name="action_generate" />
+                        <button string="undefined" type="object" name="action_generate" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -44,7 +46,7 @@
                                     <span class="o_stat_value">
                                         <field name="angle_hook_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Angles</span>
+                                    <span class="o_stat_text">Details</span>
                                 </div>
                             </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
@@ -58,20 +60,28 @@
                         </div>
                         <group>
                             <group> <!-- left -->
+                                <field name="alasan"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="market_mapper_id"  />
                                 <field name="gpt_prompt_id"  />
+                                <field name="lang_id"  />
                             </group>
                         </group>
                         <notebook>
                             <page name="output" string="Output">
-                                <field name="output" widget="md_viewer" />
+                                    <field name="output" widget="md_viewer" />
                             </page>
                             <page name="input" string="Input">
-                                <field name="input" widget="md_viewer" />
+                                    <field name="input" widget="md_viewer" />
+                            </page>
+                            <page name="instructions" string="Instructions">
+                                <group>
+                                    <field name="general_instruction" />
+                                    <field name="specific_instruction" />
+                                </group>
                             </page>
                         </notebook>
                         <group name="note_group" col="6" class="mt-2 mt-md-0">
@@ -92,21 +102,29 @@
             <field name="arch" type="xml">
                 <search string="Audience Profiler">
 
+                    <filter string="Alasan" name="filter_by_alasan" domain="[('alasan','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
                     <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
+                    <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
+                    <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
+                    <field name="alasan" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
                     <field name="input" select="True"/>
                     <field name="gpt_url" select="True"/>
                     <field name="description" select="True"/>
+                    <field name="general_instruction" select="True"/>
+                    <field name="specific_instruction" select="True"/>
                     <field name="market_mapper_id" select="True"/>
                     <field name="gpt_prompt_id" select="True"/>
+                    <field name="lang_id" select="True"/>
                     <group string="Group By..">
                         <filter string="Market Mapper" domain="[]" name="group_by_market_mapper_id" context="{'group_by':'market_mapper_id'}"/>
                         <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
+                        <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
                     </group>
                 </search>
             </field>

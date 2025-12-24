@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from . import general_object
 from . import product_value_analysis
 from . import market_mapper
 from . import audience_profiler

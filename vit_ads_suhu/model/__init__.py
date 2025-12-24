@@ -12,6 +12,7 @@ from . import image_prompt
 from . import image_service
 from . import image_variant
 from . import landing_page_builder
+from . import lang
 from . import market_mapper
 from . import product_value_analysis
 from . import script_writer

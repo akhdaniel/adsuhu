@@ -15,6 +15,11 @@ class ads_copy(models.Model):
 
 
     def action_split_images(self, ):
+        """
+        {
+        "string":"Split Ads Images"
+        }
+        """
         pass
 
 
@@ -204,9 +209,9 @@ class ads_copy(models.Model):
     angle_hook_id = fields.Many2one(comodel_name="vit.angle_hook", string="Angle", related="hook_id.angle_hook_id")
     audience_profiler_id = fields.Many2one(comodel_name="vit.audience_profiler", related="angle_hook_id.audience_profiler_id",  string=_("Audience Profiler"))
     product_value_analysis_id = fields.Many2one(comodel_name="vit.product_value_analysis", related="angle_hook_id.product_value_analysis_id",  string=_("Product Value Analysis"))
+    hook_id = fields.Many2one(comodel_name="vit.hook", string="Hook")
     script_writer_ids = fields.One2many(comodel_name="vit.script_writer",  inverse_name="ads_copy_id",  string=_("Script Writer"))
     visual_concept_id = fields.One2many(comodel_name="vit.visual_concept",  inverse_name="ads_copy_id",  string=_("Visual Concept"))
     landing_page_builder_ids = fields.One2many(comodel_name="vit.landing_page_builder",  inverse_name="ads_copy_id",  string=_("Landing Page Builder"))
     image_generator_ids = fields.One2many(comodel_name="vit.image_generator",  inverse_name="ads_copy_id",  string=_("Image Generator"))
     video_director_ids = fields.One2many(comodel_name="vit.video_director",  inverse_name="ads_copy_id",  string=_("Video Director"))
-    hook_id = fields.Many2one(comodel_name="vit.hook", string="Hook")

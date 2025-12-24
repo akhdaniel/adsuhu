@@ -33,6 +33,7 @@ class audience_profiler(models.Model):
 
 
     _inherit = "vit.general_object"
+    alasan = fields.Text( string=_("Alasan"))
 
 
     def action_view_detail_angle_hook_ids(self):

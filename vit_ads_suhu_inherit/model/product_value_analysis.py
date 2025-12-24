@@ -21,9 +21,74 @@ except Exception:  # pragma: no cover - optional dependency
 
 _logger = logging.getLogger(__name__)
 
+
+DEFAULT_SPECIFIC_INSTRUCTION="""
+REQUIRED JSON OUTPUT FORMAT:
+
+```json
+{
+  "product": "...",
+  "category": "...",
+  "level_maslow": "...",
+  "unique_selling_propositions": [
+    "...",
+    "...
+    "...",
+    "...",
+    "..."
+  ],
+  "value_map_extended": [
+    {
+      "fitur": "...",
+      "pain_point": "...",
+      "gain_point": "...",
+      "manfaat_fungsional": "...",
+      "manfaat_emosional": "...",
+      "proof": "...",
+      "motif_pembelian": "...",
+      "buying_trigger": "...’",
+      "level_maslow": "...",
+      "usp_relevan": "..."
+    },
+    ... # list semua fitur 
+  ],
+  "spike_diferensiasi": "...",
+  "buying_triggers": {
+    "rasional": [
+      "...",
+      "...",
+      "..."
+    ],
+    "emosional": [
+      "...",
+      "...",
+      "..."
+    ]
+  },
+  "target_market_awal": {
+    "persona": "...",
+    "pain": "...",
+    "gain": "..."
+  },
+  "copywriting_angle": {
+    "hook": "...",
+    "proof": "....",
+    "path": "..."
+  }
+}
+```
+
+"""
 class product_value_analysis(models.Model):
     _name = "vit.product_value_analysis"
     _inherit = "vit.product_value_analysis"
+    specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
+
+    def _get_default_lang(self):
+        return self.env["res.lang"].search(
+            [("iso_code", "=", "en")], limit=1
+        ).id
+    lang_id = fields.Many2one(comodel_name="res.lang", default=_get_default_lang)
 
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_product_value_analysis", raise_if_not_found=False)
@@ -35,7 +100,7 @@ class product_value_analysis(models.Model):
 
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Gpt Prompt"), default=_get_default_prompt)
 
-    @api.onchange("description","features")
+    @api.onchange("description","features","lang_id")
     def _get_input(self, ):
         """
         {
@@ -44,15 +109,21 @@ class product_value_analysis(models.Model):
         for rec in self:
             rec.input = f"""
 
-# ✅ DESCRIPTION:
-================
+# DESCRIPTION:
+---
 {rec.description}
 
 # PRODUCT FEATURES:
-================
+---
 {rec.features}
 
+# INSTRUCTIONS:
+---
+{self.general_instruction}
 
+{self.specific_instruction or ''}
+
+Response in {self.lang_id.name} language.
 
 """
 

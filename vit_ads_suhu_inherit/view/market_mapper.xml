@@ -21,7 +21,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//form" position="attributes">
                     <attribute name="js_class">ads_form_with_banner</attribute>
-                </xpath>          
+                </xpath>
+                
             </field>
         </record>
         <!-- search -->

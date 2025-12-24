@@ -23,6 +23,7 @@
                 <pivot string="Market Mapper">
                     <field name="product_value_analysis_id" type="row"/>
                     <field name="gpt_prompt_id" type="row"/>
+                    <field name="lang_id" type="row"/>
                 </pivot>
             </field>
         </record>
@@ -35,8 +36,8 @@
             <field name="arch" type="xml">
                 <form string="Market Mapper">
                     <header>
-                        <button string="Generate" type="object" name="action_generate" />
-                        <button string="Create Audience Profiles" type="object" name="action_create_audience_profiles" />
+                        <button string="undefined" type="object" name="action_generate" />
+                        <button string="undefined" type="object" name="action_create_audience_profiles" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -46,7 +47,7 @@
                                     <span class="o_stat_value">
                                         <field name="audience_profiler_ids_count" />
                                     </span>
-                                    <span class="o_stat_text">Audience Profiles</span>
+                                    <span class="o_stat_text">Details</span>
                                 </div>
                             </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
@@ -66,14 +67,21 @@
                             <group> <!-- right -->
                                 <field name="product_value_analysis_id"  />
                                 <field name="gpt_prompt_id"  />
+                                <field name="lang_id"  />
                             </group>
                         </group>
                         <notebook>
                             <page name="output" string="Output">
-                                <field name="output" widget="md_viewer" />
+                                    <field name="output" widget="md_viewer" />
                             </page>
                             <page name="input" string="Input">
-                                <field name="input" widget="md_viewer" />
+                                    <field name="input" widget="md_viewer" />
+                            </page>
+                            <page name="instructions" string="Instructions">
+                                <group>
+                                    <field name="general_instruction" />
+                                    <field name="specific_instruction" />
+                                </group>
                             </page>
                         </notebook>
                         <group name="note_group" col="6" class="mt-2 mt-md-0">
@@ -99,16 +107,22 @@
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
                     <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
+                    <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
+                    <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
                     <field name="input" select="True"/>
                     <field name="gpt_url" select="True"/>
                     <field name="description" select="True"/>
+                    <field name="general_instruction" select="True"/>
+                    <field name="specific_instruction" select="True"/>
                     <field name="product_value_analysis_id" select="True"/>
                     <field name="gpt_prompt_id" select="True"/>
+                    <field name="lang_id" select="True"/>
                     <group string="Group By..">
                         <filter string="Product Value Analysis" domain="[]" name="group_by_product_value_analysis_id" context="{'group_by':'product_value_analysis_id'}"/>
                         <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
+                        <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
                     </group>
                 </search>
             </field>
