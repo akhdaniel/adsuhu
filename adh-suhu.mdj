@@ -12107,12 +12107,32 @@
 									"model": {
 										"$ref": "AAAAAAGbHvslCAoNY5M="
 									},
+									"subViews": [
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGbTsgddZGp9dE=",
+											"_parent": {
+												"$ref": "AAAAAAGbHvslGwoW55o="
+											},
+											"model": {
+												"$ref": "AAAAAAGbTsgdBZFYjEg="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2701,
+											"top": 711,
+											"width": 479,
+											"height": 13,
+											"text": "+reformat_output()",
+											"horizontalAlignment": 0
+										}
+									],
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 2696,
 									"top": 706,
 									"width": 489,
-									"height": 10
+									"height": 23
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -19761,6 +19781,16 @@
 							"name": "specific_instruction",
 							"documentation": "{\n\"tree:invisible\":true,\n\"form:pos\":\"tab:Instructions\"\n}",
 							"type": "Text"
+						}
+					],
+					"operations": [
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGbTsgdBZFYjEg=",
+							"_parent": {
+								"$ref": "AAAAAAGbHvslCAoNY5M="
+							},
+							"name": "reformat_output"
 						}
 					]
 				},

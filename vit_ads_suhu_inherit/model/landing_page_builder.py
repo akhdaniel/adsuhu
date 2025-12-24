@@ -9,6 +9,7 @@ _logger = logging.getLogger(__name__)
 class landing_page_builder(models.Model):
     _name = "vit.landing_page_builder"
     _inherit = "vit.landing_page_builder"
+    lang_id = fields.Many2one(comodel_name="res.lang", related="ads_copy_id.product_value_analysis_id.lang_id")
 
     def action_generate(self, ):
         pass

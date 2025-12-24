@@ -22,10 +22,8 @@ except Exception:  # pragma: no cover - optional dependency
 _logger = logging.getLogger(__name__)
 
 
-DEFAULT_SPECIFIC_INSTRUCTION="""
-REQUIRED JSON OUTPUT FORMAT:
+DEFAULT_SPECIFIC_INSTRUCTION="""REQUIRED JSON OUTPUT FORMAT:
 
-```json
 {
   "product": "...",
   "category": "...",
@@ -76,7 +74,6 @@ REQUIRED JSON OUTPUT FORMAT:
     "path": "..."
   }
 }
-```
 
 """
 class product_value_analysis(models.Model):

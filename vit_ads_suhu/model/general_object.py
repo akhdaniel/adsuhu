@@ -15,6 +15,10 @@ class general_object(models.Model):
     _description = "vit.general_object"
 
 
+    def reformat_output(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 

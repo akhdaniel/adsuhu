@@ -23,4 +23,8 @@ class general_object(models.Model):
         return text.replace("```json","").replace("```","")
     
     def wrap_md(self, text):
-        return json.dumps(text, indent=4) 
+        return json.dumps(text, indent=3) 
+    
+    def reformat_output(self, ):
+        output = self.clean_md(self.clean_md)
+        self.output =  json.dumps(output, indent=3) 
