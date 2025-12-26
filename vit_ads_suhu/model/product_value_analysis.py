@@ -22,6 +22,10 @@ class product_value_analysis(models.Model):
         pass
 
 
+    def action_download_docx(self, ):
+        pass
+
+
     def _get_default_prompt(self, ):
         pass
 
@@ -34,6 +38,10 @@ class product_value_analysis(models.Model):
     product_url = fields.Text( string=_("Product Url"))
     features = fields.Text( string=_("Features"))
     final_report = fields.Text( string=_("Final Report"))
+    report_template = fields.Binary( string=_("Report Template"))
+    report_template_filename = fields.Char( string=_("Report Template Filename"))
+    report_docx = fields.Binary( string=_("Report Docx"))
+    report_docx_filename = fields.Char( string=_("Report Docx Filename"))
 
 
     def action_view_detail_market_mapper_ids(self):

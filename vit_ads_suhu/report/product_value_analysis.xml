@@ -33,6 +33,20 @@
                             <strong>Final Report</strong>
                             <p class="m-0" t-field="doc.final_report" />
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Report Template</strong>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Report Template Filename</strong>
+                            <p class="m-0" t-field="doc.report_template_filename" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Report Docx</strong>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Report Docx Filename</strong>
+                            <p class="m-0" t-field="doc.report_docx_filename" />
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>

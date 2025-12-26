@@ -43,6 +43,7 @@
                             <td> Name</td>
                             <td> Inherit</td>
                             <td>Angle No</td>
+                            <td>Angle</td>
                             <td>Hook No</td>
                             <td>Angle Hook</td>
                             <td>Audience Profiler</td>
@@ -54,6 +55,7 @@
                             <td><span t-field="line._name" /></td>
                             <td><span t-field="line._inherit" /></td>
                             <td><span t-field="line.angle_no" /></td>
+                            <td><span t-field="line.angle" /></td>
                             <td><span t-field="line.hook_no" /></td>
                             <td><span t-field="line.angle_hook_id" /></td>
                             <td><span t-field="line.audience_profiler_id" /></td>

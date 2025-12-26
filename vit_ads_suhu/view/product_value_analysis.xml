@@ -40,6 +40,7 @@
                         <button string="Fetch Product Description" type="object" name="action_fetch_product_description" />
                         <button string="Generate" type="object" name="action_generate" />
                         <button string="Generate Report" type="object" name="action_generate_report" />
+                        <button string="Download Docx" type="object" name="action_download_docx" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -64,6 +65,9 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="product_url"  />
+                                <field name="features"  />
+                                <field name="report_template_filename" invisible="True" />
+                                <field name="report_docx_filename" invisible="True" />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                             </group>
@@ -74,11 +78,12 @@
                             </group>
                         </group>
                         <notebook>
-                            <page name="features" string="Features">
-                                    <field name="features" />
-                            </page>
                             <page name="reports" string="Reports">
+                                <group>
                                     <field name="final_report" widget="md_viewer" />
+                                    <field name="report_template" filename="report_template_filename" />
+                                    <field name="report_docx" filename="report_docx_filename" />
+                                </group>
                             </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="md_viewer" />
@@ -114,6 +119,10 @@
                     <filter string="Product Url" name="filter_by_product_url" domain="[('product_url','=','')]" />
                     <filter string="Features" name="filter_by_features" domain="[('features','=','')]" />
                     <filter string="Final Report" name="filter_by_final_report" domain="[('final_report','=','')]" />
+                    <filter string="Report Template" name="filter_by_report_template" domain="[('report_template','=','')]" />
+                    <filter string="Report Template Filename" name="filter_by_report_template_filename" domain="[('report_template_filename','=','')]" />
+                    <filter string="Report Docx" name="filter_by_report_docx" domain="[('report_docx','=','')]" />
+                    <filter string="Report Docx Filename" name="filter_by_report_docx_filename" domain="[('report_docx_filename','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -124,6 +133,10 @@
                     <field name="product_url" select="True"/>
                     <field name="features" select="True"/>
                     <field name="final_report" select="True"/>
+                    <field name="report_template" select="True"/>
+                    <field name="report_template_filename" select="True"/>
+                    <field name="report_docx" select="True"/>
+                    <field name="report_docx_filename" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
                     <field name="input" select="True"/>

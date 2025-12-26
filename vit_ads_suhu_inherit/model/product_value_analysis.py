@@ -9,6 +9,17 @@ import logging
 import re
 import requests
 import time
+import base64
+import io
+from docx import Document
+from docx.enum.style import WD_STYLE_TYPE
+from docx.shared import Pt, Inches
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.section import WD_ORIENT, WD_SECTION
+from odoo.modules.module import get_module_path
+import markdown
+from bs4 import BeautifulSoup
+# from docx2pdf import convert
 
 try:
     from bs4 import BeautifulSoup
@@ -334,7 +345,7 @@ Response in {self.lang_id.name} language.
 
 
     def action_generate_report(self, ):
-        def json_to_markdown(data, level=3, max_level=4):
+        def json_to_markdown(data, prefix=1, level=3, max_level=4):
             """
             Convert JSON/dict into Markdown with controlled heading depth.
 
@@ -392,9 +403,12 @@ Response in {self.lang_id.name} language.
                 heading_prefix = "#" * level
                 md_lines.append(f"{heading_prefix} {title_case_key(key)}")
 
+                j=1
                 if isinstance(value, dict):
                     for k, v in value.items():
+                        # sub_prefix = f"{prefix}.{j}"
                         render_value(k, v, level + 1)
+                        j+=1
 
                 elif is_list_of_dicts(value):
                     render_table(key, value)
@@ -406,9 +420,11 @@ Response in {self.lang_id.name} language.
                 else:
                     md_lines.append(str(value))
 
+            i=1
             if isinstance(data, dict):
                 for key, value in data.items():
                     render_value(key, value, level)
+                    i+=1
 
             elif isinstance(data, list):
                 for item in data:
@@ -427,35 +443,33 @@ Response in {self.lang_id.name} language.
         report = []
 
         # ------------------------------------------------------------------------
-        # Product value
+        # 1. Product value
         # ------------------------------------------------------------------------
-        report.append(f"# Campaign Generator Report: {product.name}")
-        report.append("---")
-        report.append("## Description")
+        report.append("# Description")
         report.append(f"{product.description}")
         report.append("")
         report.append(f"Product URL: {product.product_url}")
         report.append("")        
-        report.append("## Features")
+        report.append("# Features")
         report.append("---")
         report.append(f"{product.features}")
         report.append("")
-        report.append("# 1. Product Value Analysis")
+        report.append("# Product Value Analysis")
         report.append("---")
         output = json.loads(product.output)
 
-        report.append(f"**Product category**:")
+        report.append(f"## Product category")
         report.append(f"{output['category']}")
         report.append("\n")
 
-        report.append(f"**Level Maslow**:")
+        report.append(f"## Level Maslow")
         report.append(f"{output['level_maslow']}")
         report.append("\n")
 
-        report.append(f"**Unique Selling Propositions**:")
+        report.append(f"## Unique Selling Propositions")
         report.append(list_to_bullet(output['unique_selling_propositions']))
         
-        report.append(f"**Extended Value Map**:")
+        report.append(f"## Extended Value Map")
         for i,val in enumerate(output['value_map_extended']):
             report.append(f"**Fitur {i+1}: {val['fitur']}**")
             report.append(f"- Pain Point: {val['pain_point']}")
@@ -470,28 +484,28 @@ Response in {self.lang_id.name} language.
             report.append(f"- USP Relevan: {val['usp_relevan']}")
         report.append("\n")
         
-        report.append("**Spike Diferensiasi**")
+        report.append("## Spike Diferensiasi")
         report.append(output['spike_diferensiasi'])
         report.append("\n")
         
-        report.append("**Buying Triggers**")
+        report.append("## Buying Triggers")
         buying_triggers=output['buying_triggers']
-        report.append("*Rasional*")
+        report.append("### Rasional")
         report.append(list_to_bullet(buying_triggers['rasional']))
         report.append("\n")
         
-        report.append("*Emosional*")
+        report.append("### Emosional")
         report.append(list_to_bullet(buying_triggers['emosional']))
         report.append("\n")       
 
-        report.append("**Target Market Awal**")
+        report.append("## Target Market Awal")
         target_market_awal = output['target_market_awal']
         report.append(f"- *Persona*: {target_market_awal['persona']}")
         report.append(f"- *Pain*: {target_market_awal['pain']}")
         report.append(f"- *Gain*: {target_market_awal['gain']}")
         report.append("\n")
 
-        report.append("**Copywriting Angles**")
+        report.append("## Copywriting Angles")
         copywriting_angle = output['copywriting_angle']
         report.append(f"- *Hook*: {copywriting_angle['hook']}")
         report.append(f"- *Proof*: {copywriting_angle['proof']}")
@@ -499,50 +513,64 @@ Response in {self.lang_id.name} language.
         report.append("\n")
 
         # ------------------------------------------------------------------------
-        # Market analysis
+        # 2. Market analysis
         # ------------------------------------------------------------------------
         markets = product.market_mapper_ids
         for m, market in enumerate(markets, start=2):
-            report.append(f"# {m}. Market Analysis")
+            report.append(f"# Market Analysis")
             report.append("---")
-            res = json_to_markdown(json.loads(market.output))
+            res = json_to_markdown(json.loads(market.output), level=2, max_level=3, prefix=m)
             report.append(res)
             report.append("\n")
             
             # ------------------------------------------------------------------------
-            # Audience profile
+            # 3..p Audience profile
             # ------------------------------------------------------------------------
             profiles = market.audience_profiler_ids
-            for p, profile in enumerate(profiles, start=1):
-                report.append(f"# {m}.{p} Audience Profiles: {profile['description']}")
+            for p, profile in enumerate(profiles, start=m+1):
+                report.append(f"# Audience Profile {p-2}: {profile['description']}")
                 report.append("---")
 
                 if not profile.output:
                     report.append("--no data--")
                     continue
 
-                res = json_to_markdown(json.loads(profile.output))
+                res = json_to_markdown(json.loads(profile.output), level=2, max_level=3, prefix=p)
                 report.append(res)
                 report.append("\n")
                 report.append("\n")
 
-                # ------------------------------------------------------------------------
-                # Angles
-                # ------------------------------------------------------------------------
-                angles = profile.angle_hook_ids
-                for a, angle in enumerate(angles, start=1):
-                    if not angle.description:
-                        continue
+            # ------------------------------------------------------------------------
+            # p+a ... p+(an) Angles
+            # ------------------------------------------------------------------------
 
-                    report.append(f"# {m}.{p}.{a} {angle['name']}: {angle['description']}")
+            profiles = market.audience_profiler_ids
+            for p, profile in enumerate(profiles, start=p):
+                print(profile['name'], profile['description'], '=',p)
+                angles = profile.angle_hook_ids
+                if not angles:
+                    report.append(f"# NO ANGLES - {profile['name']}")
+                    report.append("--no angles--")
+                    continue
+                
+                for a, angle in enumerate(angles, start=1):
+                    report.append(f"# {angle['name']} - {profile['name']}")
                     report.append("---")
 
+                    if not angle.description:
+                        report.append("--no description--")
+                        continue
+                    
                     if not angle.output:
                         report.append("--no data--")
                         continue
 
+                    report.append("## Audience Profile Details")
+                    report.append(profile['name'])
+                    report.append(profile['description'])
+
                     js = json.loads(self.clean_md(angle.output))
-                    res = json_to_markdown(js)
+                    res = json_to_markdown(js, level=2, max_level=4, prefix=a)
                     report.append(res)
                     report.append("\n")    
                     report.append("\n")    
@@ -551,35 +579,59 @@ Response in {self.lang_id.name} language.
                     # Hooks
                     # ------------------------------------------------------------------------
                     hooks = angle.hook_ids
+                    if not hooks:
+                        report.append("--no hooks--")
+                        continue
                     for h, hook in enumerate(hooks, start=1):
-                        report.append(f"## {m}.{p}.{a}.{h} Hook {hook['hook_no']}: {hook['description']}")
+                        report.append(f"### Hook {hook['hook_no']}: {hook['description']}")
                         report.append("---")
 
                         if not hook.output:
-                            report.append("--no data--")
+                            report.append("--no hook data--")
                             continue
 
                         js = json.loads(self.clean_md(hook.output))
-                        res = json_to_markdown(js['hook'])
+                        res = json_to_markdown(js['hook'],level=4, max_level=5)
                         report.append(res)
                         report.append("\n")                
 
-                        # ------------------------------------------------------------------------
-                        # Ads copy
-                        # ------------------------------------------------------------------------
+
+            # ------------------------------------------------------------------------
+            # Ads copy per market, audience profile, angle, hooks
+            # ------------------------------------------------------------------------
+
+            profiles = market.audience_profiler_ids
+            for p, profile in enumerate(profiles):
+                angles = profile.angle_hook_ids
+                for a, angle in enumerate(angles, start=1):
+                    hooks = angle.hook_ids
+                    for h, hook in enumerate(hooks, start=1):
                         ads = hook.ads_copy_ids
+                        if not ads:
+                            report.append("--no ads--")
+                            continue
+
                         for adx, ad in enumerate(ads, start=1):
-                            report.append(f"### {m}.{p}.{a}.{h}.{adx} Ads: {ad['hook']}")
+                            report.append(f"# Ads: {ad['hook']}")
                             report.append("---")
 
                             if not ad.output:
-                                report.append("--no data--")
+                                report.append("--no ads data--")
                                 continue
 
+                            report.append(f"## Audience Profile")
+                            report.append(f"{profile['name']} - {profile['description']}")
+                            report.append(f"## Angle")
+                            report.append(f"{angle['name']} - {angle['description']}")
+                            report.append(f"## Hook")
+                            report.append(f"{hook['name']} - {hook['description']}")
+                                                     
                             js = json.loads(self.clean_md(ad.output))
+                            js.pop('angle')
+                            js.pop('hook')
                             js.pop('ads_copy')
                             js.pop('landing_page')
-                            res = json_to_markdown(js)
+                            res = json_to_markdown(js, level=2, max_level=3, prefix=a)
                             report.append(res)
                             report.append("\n")  
 
@@ -587,25 +639,267 @@ Response in {self.lang_id.name} language.
                             # Ads images
                             # ------------------------------------------------------------------------  
                             images = ad.image_generator_ids
+                            if not images:
+                                report.append("--no images --")
+                                continue
+
                             for imgx, img in enumerate(images, start=1):
                                 js = json.loads(self.clean_md(img.output))
                                 js.pop('angle_library')
                                 js.pop('hook_library')
                                 js.pop('instruction')
-                                report.append(f"#### {m}.{p}.{a}.{h}.{adx}.{imgx} Ads Image: {img['name']}")
-                                res = json_to_markdown(js, level=5, max_level=6).replace('\n\n','\n')
+                                report.append(f"## Ads Image: {img['name']}")
+                                res = json_to_markdown(js, level=3, max_level=4).replace('\n\n','\n')
                                 report.append(res)
                                 report.append("\n")  
 
-                                for imgvx, variant in enumerate(img.image_variant_ids, start=1):
-                                    report.append(f"##### {m}.{p}.{a}.{h}.{adx}.{imgvx} Image Varian: {variant['name']}")
+                                variants=img.image_variant_ids
+                                if not variants:
+                                    report.append("--no image variants--")  
+                                    continue
+                                for imgvx, variant in enumerate(variants, start=1):
+                                    report.append(f"### Image Variant: {variant['name']}")
                                     res = f"![{ad['name']}](/web/image/vit.image_variant/{variant.id}/image?unique={int(time.time())})"
                                     report.append(res)
                                     report.append("\n")    
 
-                            # ------------------------------------------------------------------------
-                            # landing page
-                            # ------------------------------------------------------------------------                            
+            # ------------------------------------------------------------------------
+            # landing pages per ...
+            # ------------------------------------------------------------------------                            
 
 
         self.final_report = "\n".join(report)
+
+
+    def add_html_to_docx(self, doc, html_content):
+        is_inside_tag = False
+        def process_li_element(doc, li, is_ordered_list):
+            """Process each <li> element, handling nested <strong> and other elements."""
+            if is_ordered_list:
+                p = doc.add_paragraph(style='List Number')
+            else:
+                p = doc.add_paragraph(style='List Bullet')
+
+            for sub_element in li.children:
+                if sub_element.name == 'strong':
+                    run = p.add_run(sub_element.get_text())
+                    run.bold = True
+                elif sub_element.name == 'code':
+                    run = p.add_run(sub_element.get_text())
+                    run.underline = True
+                    run.bold = True
+                elif sub_element.name in ['ol','ul']:
+                    for index, li2 in enumerate(sub_element.find_all('li'), start=1):
+                        process_li_element(doc, li2, is_ordered_list=False)
+                else:
+                    run = p.add_run(sub_element.get_text())
+
+
+        def process_p_element(doc, p_element):
+            """Process a <p> element, handling inline tags like <strong>, <em>, etc."""
+            p = doc.add_paragraph()  # Create a new paragraph for the <p> element
+
+            # Iterate over the children of the <p> element
+            for child in p_element.children:
+                if isinstance(child, str):  # Handle text directly
+                    run = p.add_run(child)
+                elif child.name == 'strong':  # Handle <strong> (bold)
+                    run = p.add_run(child.get_text())
+                    run.bold = True
+                elif child.name == 'code':  # Handle <code> (bold)
+                    run = p.add_run(child.get_text())
+                    run.bold = True
+                    run.underline = True
+                elif child.name == 'em':  # Handle <em> (italic)
+                    run = p.add_run(child.get_text())
+                    run.italic = True
+                elif child.name == 'u':  # Handle <u> (underline)
+                    run = p.add_run(child.get_text())
+                    run.underline = True
+                elif child.name == 'a':  # Handle <a> (hyperlink)
+                    run = p.add_run(f'{child.get_text()} ({child["href"]})')
+                    run.underline = True
+                # You can add more elif cases here for other inline tags
+
+
+        # Parse the HTML content
+        soup = BeautifulSoup(html_content, 'html.parser')
+        ol_count = 0  # Counter to track ordered lists and reset numbering
+        for element in soup.descendants:
+            if element.name == 'h1':
+                doc.add_heading(element.get_text(), level=1)
+            elif element.name == 'h2':
+                doc.add_heading(element.get_text(), level=2)
+            elif element.name == 'h3':
+                doc.add_heading(element.get_text(), level=3)
+            elif element.name == 'h4':
+                doc.add_heading(element.get_text(), level=4)
+            elif element.name == 'h5':
+                doc.add_heading(element.get_text(), level=5)
+            elif element.name == 'h6':
+                doc.add_heading(element.get_text(), level=6)
+
+            elif element.name == 'p' and '```' not in element.get_text():
+                if element.parent.name!='[document]':
+                    continue
+                process_p_element(doc, element)
+
+            elif element.name == 'strong':
+                if element.parent.name!='[document]':
+                    continue
+                p = doc.add_paragraph()
+                run = p.add_run(element.get_text())
+                run.bold = True
+
+            elif element.name == 'em':
+                if element.parent.name!='[document]':
+                    continue
+                p = doc.add_paragraph()
+                run = p.add_run(element.get_text())
+                run.italic = True
+
+            elif element.name in ['ul','ol']:
+                if element.parent.name!='[document]':
+                    continue
+                for index, li in enumerate(element.find_all('li'), start=1):
+                    process_li_element(doc, li, is_ordered_list=False)
+
+            elif element.name == 'code' or '```' in element.get_text():  # and element.parent.name == 'pre':
+                if element.parent.name!='[document]':
+                    continue
+
+                codes = element.get_text()
+                for code in codes.split('\n'):
+                    code = code.strip()
+                    if code in ['bash','sh', 'ini','python','sql','menu', 'csv', 'txt', 'cmd']:
+                        p = doc.add_paragraph(code, style="Coding Head")
+                    else:
+                        p = doc.add_paragraph(code, style="Coding")
+
+            elif element.name == 'a':
+                if element.parent.name!='[document]':
+                    continue
+
+                p = doc.add_paragraph()
+                if 'href' in element:
+                    run = p.add_run(f'{element.get_text()} ({element["href"]})')
+                else:
+                    run = p.add_run(f'{element.get_text()}')
+                run.underline = True
+
+
+    def strip_html_tags(self, text):
+        soup = BeautifulSoup(text, "html.parser")
+        return soup.get_text()
+
+    # Function to read markdown file and convert it to HTML
+    def md_to_html(self, md_content):
+        html_content = markdown.markdown(md_content)
+        return html_content
+
+    # Function to convert HTML to DOCX
+    def html_to_docx(self, html_content, docx_file_path):
+        soup = BeautifulSoup(html_content, 'html.parser')
+        doc = Document()
+
+        # Process each HTML tag and add it to DOCX
+        for tag in soup.find_all(True):  # Finds all HTML tags
+            if tag.name == 'h1':
+                doc.add_heading(tag.get_text(), level=1)
+            elif tag.name == 'h2':
+                doc.add_heading(tag.get_text(), level=2)
+            elif tag.name == 'h3':
+                doc.add_heading(tag.get_text(), level=3)
+            elif tag.name == 'p':
+                doc.add_paragraph(tag.get_text())
+            elif tag.name == 'li':
+                doc.add_paragraph(tag.get_text(), style='ListBullet')
+
+        # Save the DOCX file
+        doc.save(docx_file_path)
+
+
+    def ensure_style_exists(self, doc, style_name, style_type):
+        if style_name not in doc.styles:
+            new_style = doc.styles.add_style(style_name, style_type)
+            if style_type == WD_STYLE_TYPE.PARAGRAPH:
+                new_style.base_style = doc.styles['Normal']
+        return doc.styles[style_name]
+
+    def setup_heading_styles(self, doc):
+        styles = doc.styles
+
+        # Heading 1 style
+        heading1_style = styles.add_style('Custom Heading 1', WD_STYLE_TYPE.PARAGRAPH)
+        heading1_style.base_style = styles['Heading 1']
+        heading1_style.font.size = Pt(30)
+        heading1_style.font.bold = True
+        heading1_format = heading1_style.paragraph_format
+        heading1_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        heading1_format.space_before = Pt(12)
+        heading1_format.space_after = Pt(6)
+        heading1_format.keep_with_next = True
+
+        # Heading 2 style
+        heading2_style = styles.add_style('Custom Heading 2', WD_STYLE_TYPE.PARAGRAPH)
+        heading2_style.base_style = styles['Heading 2']
+        heading2_style.font.size = Pt(14)
+        heading2_style.font.bold = True
+        heading2_format = heading2_style.paragraph_format
+        heading2_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        heading2_format.space_before = Pt(10)
+        heading2_format.space_after = Pt(6)
+        heading2_format.keep_with_next = True
+
+        return heading1_style, heading2_style
+
+
+    def action_download_docx(self, ):
+
+        cover = self.report_template
+        doc = None
+        if cover:
+            decoded_bytes = base64.b64decode(cover)
+            cover_file = io.BytesIO(decoded_bytes)
+            doc = Document(cover_file)
+        else:
+            doc = Document()
+
+        style1 = self.ensure_style_exists(doc, 'Subtitle', WD_STYLE_TYPE.PARAGRAPH)
+        style2 = self.ensure_style_exists(doc, 'List Bullet', WD_STYLE_TYPE.PARAGRAPH)
+        style3 = self.ensure_style_exists(doc, 'List Number', WD_STYLE_TYPE.PARAGRAPH)
+        coding = self.ensure_style_exists(doc, 'Coding', WD_STYLE_TYPE.PARAGRAPH)
+
+        # heading1_style, heading2_style = self.setup_heading_styles(doc)
+        # Title
+        title = self.name
+        doc.add_paragraph(f'{title}', style='Title')
+        doc.add_paragraph(self.description, style='Subtitle' )
+
+        # Introduction
+        # doc.add_heading('Summary', level=1)
+        # self.add_html_to_docx(doc, self.summary)
+
+        # Loop content
+        html_content = self.md_to_html(self.final_report)
+        html_content = html_content.replace('</code></p>', '</code>').replace('<p><code>', '<code>')
+        html_content = re.sub(r'<li>\s*<p>(.*?)</p>\s*</li>', r'<li>\1</li>', html_content, flags=re.DOTALL)
+
+        self.add_html_to_docx(doc, html_content)
+
+
+        # save file
+        tmp = self.name.replace('/','_')
+        filename = f'/tmp/{tmp}.docx'
+        doc.save(filename)
+        with open(filename, 'rb') as final_file:
+            base64_string = base64.b64encode(final_file.read()).decode('utf-8')
+
+        self.report_docx = base64_string
+        self.report_docx_filename = title + '.docx'
+
+        return {
+            "type": "ir.actions.act_url",
+            "url": f"/web/content/vit.product_value_analysis/{self.id}/report_docx/{self.report_docx_filename}",
+            "target": "self",
+        }
