@@ -63,6 +63,7 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="alasan"  />
+                                <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                             </group>
@@ -113,6 +114,7 @@
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
                     <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
+                    <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
                     <field name="alasan" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
@@ -121,6 +123,7 @@
                     <field name="description" select="True"/>
                     <field name="general_instruction" select="True"/>
                     <field name="specific_instruction" select="True"/>
+                    <field name="active" select="True"/>
                     <field name="market_mapper_id" select="True"/>
                     <field name="gpt_prompt_id" select="True"/>
                     <field name="lang_id" select="True"/>

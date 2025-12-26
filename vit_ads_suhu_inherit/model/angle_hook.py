@@ -138,9 +138,9 @@ class angle_hook(models.Model):
         }
         """
         for rec in self:
-            # index = len(rec.audience_profiler_id.angle_hook_ids)+1
-            # rec.angle_no = index
-            rec.name = f"ANGLE  - {rec.product_value_analysis_id.name}"
+            index = len(rec.audience_profiler_id.angle_hook_ids)+1
+            rec.angle_no = index
+            rec.name = f"ANGLE {index}: Master"
             rec.input = f"""
 # ✅ AUDIENCE PROFILE:
 ---
@@ -296,7 +296,7 @@ Response in {self.lang_id.name} language.
             })
             default = dict(
                 audience_profiler_id=self.audience_profiler_id.id,
-                name=f"ANGLE {i+1} - {self.product_value_analysis_id.name}",
+                name=f"ANGLE {i+1}: {angle['angle']}",
                 angle_no=i+1,
                 description=angle['angle'],
                 output= json.dumps(output, indent=4),

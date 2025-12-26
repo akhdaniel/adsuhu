@@ -145,7 +145,7 @@ Response in {rec.lang_id.name} language.
         js = json.loads(output)
 
         self.audience_profiler_ids = [(0,0,{
-            'name':f'AUDIENCE PROFILE {i+1} - {self.product_value_analysis_id.name}',
+            'name':f'AUDIENCE PROFILE {i+1}: {x['nama']}',
             'market_mapper_id': self.id,
             'description': x['nama'],
             'alasan': x['alasan'],

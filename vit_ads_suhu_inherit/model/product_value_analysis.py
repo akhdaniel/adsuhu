@@ -362,12 +362,26 @@ Response in {self.lang_id.name} language.
             md_lines = []
 
             def title_case_key(key):
+                replacements=[
+                    ('Dan','dan'),
+                    ('Dari','dari'),
+                    ('Ke','ke'),
+                    ('And','and'),
+                    ('For','for'),
+                    ('To','to'),
+                    ('From','from'),
+                ]
                 print(key)
                 if key.lower() == 'ab_test':
                     return 'A/B Test'
                 if key.lower() in ['cta','pov']:
                     return key.upper()
-                return key.replace("_", " ").title()
+                res = key.replace("_", " ").title()
+
+                for rep in replacements:
+                    res = res.replace(rep[0], rep[1])
+
+                return res 
 
             def is_list_of_dicts(value):
                 return (
@@ -453,7 +467,8 @@ Response in {self.lang_id.name} language.
         report.append("# Description")
         report.append(f"{product.description}")
         report.append("")
-        report.append(f"Product URL: {product.product_url}")
+        report.append(f"Product URL: {product.product_url or '-'} ")
+        report.append(f"Client Name: {product.partner_id.name}")
         report.append("")        
         report.append("# Features")
         report.append("---")
@@ -606,7 +621,7 @@ Response in {self.lang_id.name} language.
             # ------------------------------------------------------------------------
             # Ads copy per market, audience profile, angle, hooks
             # ------------------------------------------------------------------------
-
+            ads_count = 1
             profiles = market.audience_profiler_ids
             for p, profile in enumerate(profiles):
                 angles = profile.angle_hook_ids
@@ -619,7 +634,7 @@ Response in {self.lang_id.name} language.
                             continue
 
                         for adx, ad in enumerate(ads, start=1):
-                            report.append(f"# Ads: {ad['hook']}")
+                            report.append(f"# Ads {ads_count}: {ad['hook']}")
                             report.append("---")
 
                             if not ad.output:
@@ -641,6 +656,7 @@ Response in {self.lang_id.name} language.
                             res = json_to_markdown(js, level=2, max_level=3, prefix=a)
                             report.append(res)
                             report.append("\n")  
+                            ads_count += 1
 
                             # ------------------------------------------------------------------------
                             # Ads images
@@ -655,7 +671,7 @@ Response in {self.lang_id.name} language.
                                 js.pop('angle_library')
                                 js.pop('hook_library')
                                 js.pop('instruction')
-                                report.append(f"## Ads Image: {img['name']}")
+                                report.append(f"## {img['name']}")
                                 res = json_to_markdown(js, level=3, max_level=4).replace('\n\n','\n')
                                 report.append(res)
                                 report.append("\n")  
@@ -1072,6 +1088,7 @@ Response in {self.lang_id.name} language.
 
     def action_download_docx(self, ):
 
+        self.action_generate_report()
         cover = self.report_template
         doc = None
         if cover:

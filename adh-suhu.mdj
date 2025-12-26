@@ -12000,6 +12000,24 @@
 											"height": 13,
 											"text": "+specific_instruction: Text",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbXMPPrbgt4EQ=",
+											"_parent": {
+												"$ref": "AAAAAAGbHvslGgoVwY0="
+											},
+											"model": {
+												"$ref": "AAAAAAGbXMPPQbffO2Q="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2701,
+											"top": 703,
+											"width": 479,
+											"height": 13,
+											"text": "+active: Boolean = True",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Roboto;13;0",
@@ -12007,7 +12025,7 @@
 									"left": 2696,
 									"top": 593,
 									"width": 489,
-									"height": 113
+									"height": 128
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -12031,7 +12049,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2701,
-											"top": 711,
+											"top": 726,
 											"width": 479,
 											"height": 13,
 											"text": "+reformat_output()",
@@ -12041,7 +12059,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 2696,
-									"top": 706,
+									"top": 721,
 									"width": 489,
 									"height": 23
 								},
@@ -21243,6 +21261,17 @@
 							"name": "specific_instruction",
 							"documentation": "{\n\"tree:invisible\":true,\n\"form:pos\":\"tab:Instructions\"\n}",
 							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbXMPPQbffO2Q=",
+							"_parent": {
+								"$ref": "AAAAAAGbHvslCAoNY5M="
+							},
+							"name": "active",
+							"documentation": "{\n\"tree:invisible\":true\n}",
+							"type": "Boolean",
+							"defaultValue": "True"
 						}
 					],
 					"operations": [

@@ -59,6 +59,7 @@
                             <group> <!-- left -->
                                 <field name="video" filename="video_filename" />
                                 <field name="video_filename" invisible="1" />
+                                <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                             </group>
@@ -130,6 +131,7 @@
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
                     <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
+                    <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
                     <field name="video" select="True"/>
                     <field name="video_filename" select="True"/>
                     <field name="name" select="True"/>
@@ -139,6 +141,7 @@
                     <field name="description" select="True"/>
                     <field name="general_instruction" select="True"/>
                     <field name="specific_instruction" select="True"/>
+                    <field name="active" select="True"/>
                     <field name="visual_concept_id" select="True"/>
                     <field name="video_service_id" select="True"/>
                     <field name="ads_copy_id" select="True"/>
