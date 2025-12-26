@@ -26,6 +26,7 @@
         ],
     },
 	"data": [
+        "security/ir.model.access.csv",
         "data/gpts.xml",
 		"view/product_value_analysis.xml",
 		"view/market_mapper.xml",

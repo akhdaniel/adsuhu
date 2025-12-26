@@ -362,6 +362,11 @@ Response in {self.lang_id.name} language.
             md_lines = []
 
             def title_case_key(key):
+                print(key)
+                if key.lower() == 'ab_test':
+                    return 'A/B Test'
+                if key.lower() in ['cta','pov']:
+                    return key.upper()
                 return key.replace("_", " ").title()
 
             def is_list_of_dicts(value):
@@ -471,17 +476,18 @@ Response in {self.lang_id.name} language.
         
         report.append(f"## Extended Value Map")
         for i,val in enumerate(output['value_map_extended']):
-            report.append(f"**Fitur {i+1}: {val['fitur']}**")
-            report.append(f"- Pain Point: {val['pain_point']}")
-            report.append(f"- Gain Point: {val['gain_point']}")
-            report.append(f"- Manfaat Fungsional: {val['manfaat_fungsional']}")
-            report.append(f"- Manfaat Emosional: {val['manfaat_emosional']}")
-            report.append(f"- Manfaat Emosional: {val['manfaat_emosional']}")
-            report.append(f"- Proof: {val['proof']}")
-            report.append(f"- Motif Pembelian: {val['motif_pembelian']}")
-            report.append(f"- Buying Trigger: {val['buying_trigger']}")
-            report.append(f"- Level Maslow: {val['level_maslow']}")
-            report.append(f"- USP Relevan: {val['usp_relevan']}")
+            report.append(f"### Fitur {i+1}: {val['fitur']}")
+            report.append("\n")
+            report.append(f"* Pain Point: {val['pain_point']}")
+            report.append(f"* Gain Point: {val['gain_point']}")
+            report.append(f"* Manfaat Fungsional: {val['manfaat_fungsional']}")
+            report.append(f"* Manfaat Emosional: {val['manfaat_emosional']}")
+            report.append(f"* Manfaat Emosional: {val['manfaat_emosional']}")
+            report.append(f"* Proof: {val['proof']}")
+            report.append(f"* Motif Pembelian: {val['motif_pembelian']}")
+            report.append(f"* Buying Trigger: {val['buying_trigger']}")
+            report.append(f"* Level Maslow: {val['level_maslow']}")
+            report.append(f"* USP Relevan: {val['usp_relevan']}")
         report.append("\n")
         
         report.append("## Spike Diferensiasi")
@@ -500,16 +506,16 @@ Response in {self.lang_id.name} language.
 
         report.append("## Target Market Awal")
         target_market_awal = output['target_market_awal']
-        report.append(f"- *Persona*: {target_market_awal['persona']}")
-        report.append(f"- *Pain*: {target_market_awal['pain']}")
-        report.append(f"- *Gain*: {target_market_awal['gain']}")
+        report.append(f"* *Persona*: {target_market_awal['persona']}")
+        report.append(f"* *Pain*: {target_market_awal['pain']}")
+        report.append(f"* *Gain*: {target_market_awal['gain']}")
         report.append("\n")
 
         report.append("## Copywriting Angles")
         copywriting_angle = output['copywriting_angle']
-        report.append(f"- *Hook*: {copywriting_angle['hook']}")
-        report.append(f"- *Proof*: {copywriting_angle['proof']}")
-        report.append(f"- *Path*: {copywriting_angle['path']}")
+        report.append(f"* *Hook*: {copywriting_angle['hook']}")
+        report.append(f"* *Proof*: {copywriting_angle['proof']}")
+        report.append(f"* *Path*: {copywriting_angle['path']}")
         report.append("\n")
 
         # ------------------------------------------------------------------------
@@ -578,6 +584,7 @@ Response in {self.lang_id.name} language.
                     # ------------------------------------------------------------------------
                     # Hooks
                     # ------------------------------------------------------------------------
+                    report.append("## Hooks")
                     hooks = angle.hook_ids
                     if not hooks:
                         report.append("--no hooks--")
@@ -591,7 +598,7 @@ Response in {self.lang_id.name} language.
                             continue
 
                         js = json.loads(self.clean_md(hook.output))
-                        res = json_to_markdown(js['hook'],level=4, max_level=5)
+                        res = json_to_markdown(js['hook'],level=4, max_level=4)
                         report.append(res)
                         report.append("\n")                
 
@@ -621,9 +628,9 @@ Response in {self.lang_id.name} language.
 
                             report.append(f"## Audience Profile")
                             report.append(f"{profile['name']} - {profile['description']}")
-                            report.append(f"## Angle")
+                            report.append(f"## Angle: {angle['angle_no']}")
                             report.append(f"{angle['name']} - {angle['description']}")
-                            report.append(f"## Hook")
+                            report.append(f"## Hook: {hook['hook_no']} ")
                             report.append(f"{hook['name']} - {hook['description']}")
                                                      
                             js = json.loads(self.clean_md(ad.output))
@@ -673,6 +680,66 @@ Response in {self.lang_id.name} language.
 
     def add_html_to_docx(self, doc, html_content):
         is_inside_tag = False
+        def target_image_width():
+            """Compute 75% of usable page width for images."""
+            try:
+                section = doc.sections[0]
+                usable_width = section.page_width - section.left_margin - section.right_margin
+                return int(usable_width * 0.75)
+            except Exception:
+                return None
+
+        def add_inline_runs(paragraph, element, default_bold=False):
+            """Render inline children of an element into a paragraph."""
+            for child in element.children:
+                run = None
+                if isinstance(child, str):
+                    if not child:
+                        continue
+                    run = paragraph.add_run(child)
+                    if default_bold:
+                        run.bold = True
+                elif child.name == 'strong':
+                    run = paragraph.add_run(child.get_text())
+                    run.bold = True
+                elif child.name == 'code':
+                    run = paragraph.add_run(child.get_text())
+                    run.bold = True
+                    run.underline = True
+                elif child.name == 'em':
+                    run = paragraph.add_run(child.get_text())
+                    run.italic = True
+                elif child.name == 'u':
+                    run = paragraph.add_run(child.get_text())
+                    run.underline = True
+                elif child.name == 'a':
+                    href = child.get("href", "")
+                    run = paragraph.add_run(f'{child.get_text()} ({href})' if href else child.get_text())
+                    run.underline = True
+                elif child.name == 'br':
+                    paragraph.add_run("\n")
+                elif child.name == 'img':
+                    print(child)
+                    img_bytes, resolved_src = fetch_image_bytes(child.get('src'))
+                    if img_bytes:
+                        try:
+                            run = paragraph.add_run()
+                            width = target_image_width()
+                            if width:
+                                run.add_picture(io.BytesIO(img_bytes), width=width)
+                            else:
+                                run.add_picture(io.BytesIO(img_bytes))
+                            link_run = paragraph.add_run(f"\n{resolved_src}")
+                            link_run.underline = True
+                        except Exception:
+                            run = paragraph.add_run(f"[Image could not be embedded: {child.get('alt', '')}]")
+                    else:
+                        run = paragraph.add_run(f"[Image missing: {child.get('alt', '') or child.get('src', '')}]")
+                else:
+                    run = paragraph.add_run(child.get_text())
+                if default_bold and run:
+                    run.bold = True
+
         def process_li_element(doc, li, is_ordered_list):
             """Process each <li> element, handling nested <strong> and other elements."""
             if is_ordered_list:
@@ -699,27 +766,135 @@ Response in {self.lang_id.name} language.
             """Process a <p> element, handling inline tags like <strong>, <em>, etc."""
             p = doc.add_paragraph()  # Create a new paragraph for the <p> element
 
-            # Iterate over the children of the <p> element
-            for child in p_element.children:
-                if isinstance(child, str):  # Handle text directly
-                    run = p.add_run(child)
-                elif child.name == 'strong':  # Handle <strong> (bold)
-                    run = p.add_run(child.get_text())
-                    run.bold = True
-                elif child.name == 'code':  # Handle <code> (bold)
-                    run = p.add_run(child.get_text())
-                    run.bold = True
-                    run.underline = True
-                elif child.name == 'em':  # Handle <em> (italic)
-                    run = p.add_run(child.get_text())
-                    run.italic = True
-                elif child.name == 'u':  # Handle <u> (underline)
-                    run = p.add_run(child.get_text())
-                    run.underline = True
-                elif child.name == 'a':  # Handle <a> (hyperlink)
-                    run = p.add_run(f'{child.get_text()} ({child["href"]})')
-                    run.underline = True
-                # You can add more elif cases here for other inline tags
+            add_inline_runs(p, p_element)
+
+        def fetch_image_bytes(src):
+            """Fetch image content from a src; supports data URLs and HTTP/HTTPS.
+
+            Returns a tuple of (content_bytes or None, resolved_src_url).
+            """
+            resolved_src = src
+            if not src:
+                return None, resolved_src
+            if src.startswith('data:image'):
+                try:
+                    header, encoded = src.split(',', 1)
+                    return base64.b64decode(encoded), resolved_src
+                except Exception:
+                    return None, resolved_src
+            if src.startswith('/'):
+                try:
+                    base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') or ''
+                except Exception:
+                    base_url = ''
+                if base_url:
+                    resolved_src = base_url.rstrip('/') + src
+            if resolved_src.startswith('http://') or resolved_src.startswith('https://'):
+                try:
+                    resp = requests.get(resolved_src, timeout=10)
+                    resp.raise_for_status()
+                    return resp.content, resolved_src
+                except Exception:
+                    return None, resolved_src
+            try:
+                with open(resolved_src, 'rb') as f:
+                    return f.read(), resolved_src
+            except Exception:
+                return None, resolved_src
+
+        def process_table(doc, table_element):
+            """Render HTML table into docx table."""
+            rows = table_element.find_all('tr')
+            if not rows:
+                return
+
+            col_count = max((len(r.find_all(['th', 'td'])) for r in rows), default=0)
+            if not col_count:
+                return
+
+            table = doc.add_table(rows=len(rows), cols=col_count)
+            self.ensure_table_style(doc, 'Grid Table 4 - Accent 1')
+            try:
+                table.style = 'Grid Table 4 - Accent 1'
+            except KeyError:
+                if 'Table Grid' in doc.styles:
+                    table.style = 'Table Grid'
+
+            for row_idx, row in enumerate(rows):
+                cells = row.find_all(['th', 'td'])
+                for col_idx in range(col_count):
+                    if col_idx >= len(cells):
+                        continue
+                    cell_element = cells[col_idx]
+                    cell = table.rows[row_idx].cells[col_idx]
+                    cell.text = ""
+                    used_first_paragraph = False
+
+                    def next_paragraph(style_name=None):
+                        nonlocal used_first_paragraph
+                        if not used_first_paragraph and cell.paragraphs:
+                            used_first_paragraph = True
+                            para = cell.paragraphs[0]
+                            if style_name:
+                                para.style = style_name
+                            return para
+                        used_first_paragraph = True
+                        return cell.add_paragraph(style=style_name) if style_name else cell.add_paragraph()
+
+                    bold_default = cell_element.name == 'th'
+                    has_child_content = False
+                    for child in cell_element.children:
+                        if isinstance(child, str):
+                            if not child.strip():
+                                continue
+                            para = next_paragraph()
+                            run = para.add_run(child)
+                            if bold_default:
+                                run.bold = True
+                            has_child_content = True
+                        elif child.name == 'p':
+                            para = next_paragraph()
+                            add_inline_runs(para, child, default_bold=bold_default)
+                            has_child_content = True
+                        elif child.name in ['ul', 'ol']:
+                            style = 'List Number' if child.name == 'ol' else 'List Bullet'
+                            first_li = True
+                            for li in child.find_all('li', recursive=False):
+                                if first_li:
+                                    para = next_paragraph(style)
+                                    first_li = False
+                                else:
+                                    para = cell.add_paragraph(style=style)
+                                add_inline_runs(para, li, default_bold=bold_default)
+                            has_child_content = True
+                        elif child.name == 'img':
+                            img_bytes, resolved_src = fetch_image_bytes(child.get('src'))
+                            para = next_paragraph()
+                            if img_bytes:
+                                try:
+                                    run = para.add_run()
+                                    width = target_image_width()
+                                    if width:
+                                        run.add_picture(io.BytesIO(img_bytes), width=width)
+                                    else:
+                                        run.add_picture(io.BytesIO(img_bytes))
+                                    link_run = cell.add_paragraph().add_run(resolved_src)
+                                    link_run.underline = True
+                                except Exception:
+                                    para.add_run(f"[Image could not be embedded: {child.get('alt', '')}]")
+                            else:
+                                para.add_run(f"[Image missing: {child.get('alt', '') or child.get('src', '')}]")
+                            has_child_content = True
+                        else:
+                            para = next_paragraph()
+                            add_inline_runs(para, child, default_bold=bold_default)
+                            has_child_content = True
+
+                    if not has_child_content:
+                        para = next_paragraph()
+                        run = para.add_run(cell_element.get_text())
+                        if bold_default:
+                            run.bold = True
 
 
         # Parse the HTML content
@@ -738,6 +913,32 @@ Response in {self.lang_id.name} language.
                 doc.add_heading(element.get_text(), level=5)
             elif element.name == 'h6':
                 doc.add_heading(element.get_text(), level=6)
+
+            elif element.name == 'table':
+                if element.parent.name!='[document]':
+                    continue
+                process_table(doc, element)
+
+            elif element.name == 'img':
+                src = element.get('src')
+                alt = element.get('alt', '')
+                img_bytes, resolved_src = fetch_image_bytes(src)
+                if img_bytes:
+                    try:
+                        width = target_image_width()
+                        if width:
+                            doc.add_picture(io.BytesIO(img_bytes), width=width)
+                        else:
+                            doc.add_picture(io.BytesIO(img_bytes))
+                        p = doc.add_paragraph()
+                        link_run = p.add_run(resolved_src)
+                        link_run.underline = True
+                    except Exception:
+                        p = doc.add_paragraph()
+                        p.add_run(f"[Image could not be embedded: {alt or src}]")
+                else:
+                    p = doc.add_paragraph()
+                    p.add_run(f"[Image missing: {alt or src}]")
 
             elif element.name == 'p' and '```' not in element.get_text():
                 if element.parent.name!='[document]':
@@ -794,7 +995,8 @@ Response in {self.lang_id.name} language.
 
     # Function to read markdown file and convert it to HTML
     def md_to_html(self, md_content):
-        html_content = markdown.markdown(md_content)
+        # Enable tables so Markdown tables render into HTML for downstream DOCX conversion
+        html_content = markdown.markdown(md_content, extensions=['tables'])
         return html_content
 
     # Function to convert HTML to DOCX
@@ -825,6 +1027,20 @@ Response in {self.lang_id.name} language.
             if style_type == WD_STYLE_TYPE.PARAGRAPH:
                 new_style.base_style = doc.styles['Normal']
         return doc.styles[style_name]
+
+    def ensure_table_style(self, doc, style_name, base_style_name='Table Grid'):
+        """Ensure a table style exists so formatting can be applied safely."""
+        styles = doc.styles
+        print(styles)
+        if style_name in styles:
+            return styles[style_name]
+        new_style = styles.add_style(style_name, WD_STYLE_TYPE.TABLE)
+        try:
+            new_style.base_style = styles[base_style_name]
+        except KeyError:
+            # If base style is missing, leave it with default formatting
+            pass
+        return new_style
 
     def setup_heading_styles(self, doc):
         styles = doc.styles
