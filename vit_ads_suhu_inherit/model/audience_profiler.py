@@ -105,7 +105,7 @@ class audience_profiler(models.Model):
         }
         """
         for rec in self:
-            rec.name = f"AUDIENCE PROFILE - {rec.market_mapper_id.product_value_analysis_id.name}"
+            # rec.name = f"AUDIENCE PROFILE {rec.audience_profile_no}"
             rec.input = f"""
 # FOCUS:
 ---
