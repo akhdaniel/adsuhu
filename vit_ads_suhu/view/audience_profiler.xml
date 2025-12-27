@@ -10,6 +10,7 @@
                 <list string="Audience Profiler">
                     <field name="name" /> <!-- 1-->
                     <field name="alasan" /> <!-- 100-->
+                    <field name="audience_profile_no" /> <!-- 101-->
                     <field name="partner_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
                 </list>
@@ -63,6 +64,7 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="alasan"  />
+                                <field name="audience_profile_no"  />
                                 <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -107,6 +109,7 @@
                 <search string="Audience Profiler">
 
                     <filter string="Alasan" name="filter_by_alasan" domain="[('alasan','=','')]" />
+                    <filter string="Audience Profile No" name="filter_by_audience_profile_no" domain="[('audience_profile_no','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -116,6 +119,7 @@
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
                     <field name="alasan" select="True"/>
+                    <field name="audience_profile_no" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
                     <field name="input" select="True"/>

@@ -145,11 +145,12 @@ Response in {rec.lang_id.name} language.
         js = json.loads(output)
 
         self.audience_profiler_ids = [(0,0,{
-            'name':f'AUDIENCE PROFILE {i+1}: {x['nama']}',
+            'name':f'AUDIENCE PROFILE {i}',
+            'audience_profile_no': i,
             'market_mapper_id': self.id,
             'description': x['nama'],
             'alasan': x['alasan'],
             'lang_id': self.lang_id.id
-        }) for i,x in enumerate(js['segment_prioritas'])]
+        }) for i,x in enumerate(js['segment_prioritas'], start=1)]
 
         self.audience_profiler_ids._get_input()

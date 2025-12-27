@@ -26,6 +26,10 @@
                             <p class="m-0" t-field="doc.alasan" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Audience Profile No</strong>
+                            <p class="m-0" t-field="doc.audience_profile_no" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Market Mapper</strong>
                             <p class="m-0" t-field="doc.market_mapper_id"/>
                         </div>

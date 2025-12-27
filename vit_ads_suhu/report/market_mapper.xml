@@ -35,6 +35,7 @@
                             <td> Name</td>
                             <td> Inherit</td>
                             <td>Alasan</td>
+                            <td>Audience Profile No</td>
                             <td>Market Mapper</td>
                         </tr>
                     </thead>
@@ -43,6 +44,7 @@
                             <td><span t-field="line._name" /></td>
                             <td><span t-field="line._inherit" /></td>
                             <td><span t-field="line.alasan" /></td>
+                            <td><span t-field="line.audience_profile_no" /></td>
                             <td><span t-field="line.market_mapper_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>

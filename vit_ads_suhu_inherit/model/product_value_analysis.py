@@ -641,7 +641,7 @@ Response in {self.lang_id.name} language.
                                 report.append("--no ads data--")
                                 continue
 
-                            report.append(f"## Audience Profile")
+                            report.append(f"## Audience Profile: {profile['audience_profile_no']}")
                             report.append(f"{profile['name']} - {profile['description']}")
                             report.append(f"## Angle: {angle['angle_no']}")
                             report.append(f"{angle['name']} - {angle['description']}")

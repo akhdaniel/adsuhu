@@ -1209,6 +1209,24 @@
 											"height": 13,
 											"text": "+alasan: Text",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbYgcTGOwaQp4=",
+											"_parent": {
+												"$ref": "AAAAAAGbDON8Br0ovQA="
+											},
+											"model": {
+												"$ref": "AAAAAAGbYgcS/OwUNiA="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 1829,
+											"top": 1539,
+											"width": 327,
+											"height": 13,
+											"text": "+audience_profile_no: Integer",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Roboto;13;0",
@@ -1216,7 +1234,7 @@
 									"left": 1824,
 									"top": 1489,
 									"width": 337,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -1240,7 +1258,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1829,
-											"top": 1547,
+											"top": 1562,
 											"width": 327,
 											"height": 13,
 											"text": "+action_generate()",
@@ -1258,7 +1276,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1829,
-											"top": 1562,
+											"top": 1577,
 											"width": 327,
 											"height": 13,
 											"text": "+_get_input()",
@@ -1276,7 +1294,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1829,
-											"top": 1577,
+											"top": 1592,
 											"width": 327,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -1286,7 +1304,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 1824,
-									"top": 1542,
+									"top": 1557,
 									"width": 337,
 									"height": 53
 								},
@@ -19333,6 +19351,15 @@
 							},
 							"name": "alasan",
 							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbYgcS/OwUNiA=",
+							"_parent": {
+								"$ref": "AAAAAAGbDON8Br0grWk="
+							},
+							"name": "audience_profile_no",
+							"type": "Integer"
 						}
 					],
 					"operations": [

@@ -216,7 +216,7 @@ Response in {self.lang_id.name} language.
             print(angle)
             default = dict(
                 audience_profiler_id=self.audience_profiler_id.id,
-                name=f"ANGLE {angle['angle_no']} - {self.product_value_analysis_id.name}",
+                name=f"ANGLE {angle['angle_no']}",
                 angle_no=angle['angle_no'],
                 description=angle['title'],
                 output=f"# ANGLE {angle['angle_no']} {angle['title']}\n\n{angle['content']}\n---\n# BIG_IDEA\n\n{extracted['BIG_IDEA']}\n---\n# CATATAN_STRATEGIS\n\n{extracted['CATATAN_STRATEGIS']}",
