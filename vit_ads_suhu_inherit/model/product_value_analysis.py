@@ -634,7 +634,7 @@ Response in {self.lang_id.name} language.
                             continue
 
                         for adx, ad in enumerate(ads, start=1):
-                            report.append(f"# Ads {ads_count}: {ad['hook']}")
+                            report.append(f"# ADS {ads_count}: {ad['hook']}")
                             report.append("---")
 
                             if not ad.output:
