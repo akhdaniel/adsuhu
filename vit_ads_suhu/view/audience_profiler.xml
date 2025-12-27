@@ -9,10 +9,10 @@
             <field name="arch" type="xml">
                 <list string="Audience Profiler">
                     <field name="name" /> <!-- 1-->
-                    <field name="alasan" /> <!-- 100-->
-                    <field name="audience_profile_no" /> <!-- 101-->
-                    <field name="partner_id" /> <!-- 102-->
+                    <field name="audience_profile_no" /> <!-- 100-->
                     <field name="description" /> <!-- 1500-->
+                    <field name="alasan" /> <!-- 2000-->
+                    <field name="partner_id" /> <!-- 4000-->
                 </list>
             </field>
         </record>
@@ -63,10 +63,10 @@
                         </div>
                         <group>
                             <group> <!-- left -->
-                                <field name="alasan"  />
                                 <field name="audience_profile_no"  />
                                 <field name="active"  />
                                 <field name="description"  />
+                                <field name="alasan"  />
                                 <field name="gpt_url" widget="url" />
                             </group>
                             <group> <!-- right -->

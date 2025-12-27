@@ -12,8 +12,8 @@
                     <field name="ratio" /> <!-- 100-->
                     <field name="angle" /> <!-- 101-->
                     <field name="hook" /> <!-- 102-->
-                    <field name="partner_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
+                    <field name="partner_id" /> <!-- 4000-->
                 </list>
             </field>
         </record>
@@ -72,8 +72,8 @@
                                 <field name="visual_concept_id"  />
                                 <field name="lang_id"  />
                                 <field name="ads_copy_id"  />
-                                <field name="partner_id"  />
                                 <field name="hook_id"  />
+                                <field name="partner_id"  />
                             </group>
                         </group>
                         <notebook>

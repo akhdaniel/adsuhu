@@ -9,8 +9,8 @@
             <field name="arch" type="xml">
                 <list string="General Object">
                     <field name="name" /> <!-- 1-->
-                    <field name="partner_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
+                    <field name="partner_id" /> <!-- 4000-->
                 </list>
             </field>
         </record>

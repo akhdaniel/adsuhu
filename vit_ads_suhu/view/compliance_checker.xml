@@ -11,8 +11,8 @@
                     <field name="name" /> <!-- 1-->
                     <field name="angle" /> <!-- 100-->
                     <field name="hook" /> <!-- 101-->
-                    <field name="partner_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
+                    <field name="partner_id" /> <!-- 4000-->
                 </list>
             </field>
         </record>

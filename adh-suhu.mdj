@@ -19350,6 +19350,7 @@
 								"$ref": "AAAAAAGbDON8Br0grWk="
 							},
 							"name": "alasan",
+							"documentation": "{\n\"form:seq\":2000\n}",
 							"type": "Text"
 						},
 						{
@@ -21199,6 +21200,7 @@
 									"$ref": "AAAAAAGbTuVgqaeffuI="
 								},
 								"name": "partner_id",
+								"documentation": "{\n\"form:seq\":4000\n}",
 								"reference": {
 									"$ref": "AAAAAAGbHvslCAoNY5M="
 								},

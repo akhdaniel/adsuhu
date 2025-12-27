@@ -10,8 +10,8 @@
                 <list string="Angle">
                     <field name="name" /> <!-- 1-->
                     <field name="angle_no" /> <!-- 100-->
-                    <field name="partner_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
+                    <field name="partner_id" /> <!-- 4000-->
                 </list>
             </field>
         </record>

@@ -12,8 +12,8 @@
                     <field name="angle_no" /> <!-- 100-->
                     <field name="angle" /> <!-- 101-->
                     <field name="hook_no" /> <!-- 102-->
-                    <field name="partner_id" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
+                    <field name="partner_id" /> <!-- 4000-->
                 </list>
             </field>
         </record>
@@ -77,8 +77,8 @@
                                 <field name="angle_hook_id"  />
                                 <field name="lang_id"  />
                                 <field name="audience_profiler_id"  />
-                                <field name="partner_id"  />
                                 <field name="product_value_analysis_id"  />
+                                <field name="partner_id"  />
                             </group>
                         </group>
                         <notebook>
