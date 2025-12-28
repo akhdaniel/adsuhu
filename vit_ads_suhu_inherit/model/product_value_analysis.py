@@ -362,7 +362,7 @@ Response in {self.lang_id.name} language.
 
             if isinstance(data, str):
                 data = self.clean_md(data)
-                
+
             md_lines = []
 
             def title_case_key(key):
@@ -468,17 +468,18 @@ Response in {self.lang_id.name} language.
         # ------------------------------------------------------------------------
         # 1. Product value
         # ------------------------------------------------------------------------
-        report.append("# Description")
+        report.append("# PRODUCT DESCRIPTION")
+        report.append("## Description")
         report.append(f"{product.description}")
         report.append("")
         report.append(f"Product URL: {product.product_url or '-'} ")
         report.append(f"Client Name: {product.partner_id.name}")
         report.append("")        
-        report.append("# Features")
+        report.append("## Features")
         report.append("---")
         report.append(f"{product.features}")
         report.append("")
-        report.append("# Product Value Analysis")
+        report.append("# PRODUCT VALUE ANALYSIS")
         report.append("---")
         output = json.loads(product.output)
 
@@ -542,7 +543,7 @@ Response in {self.lang_id.name} language.
         # ------------------------------------------------------------------------
         markets = product.market_mapper_ids
         for m, market in enumerate(markets, start=2):
-            report.append(f"# Market Analysis")
+            report.append(f"# MARKET ANALYSIS")
             report.append("---")
             res = json_to_markdown(json.loads(market.output), level=2, max_level=3, prefix=m)
             report.append(res)
@@ -553,7 +554,7 @@ Response in {self.lang_id.name} language.
             # ------------------------------------------------------------------------
             profiles = market.audience_profiler_ids
             for p, profile in enumerate(profiles, start=m+1):
-                report.append(f"# Audience Profile {p-2}: {profile['description']}")
+                report.append(f"# AUDIENCE PROFILE {p-2}: {profile['description']}")
                 report.append("---")
 
                 if not profile.output:
@@ -590,7 +591,7 @@ Response in {self.lang_id.name} language.
                         report.append("--no data--")
                         continue
 
-                    report.append("## Audience Profile Details")
+                    report.append("## Audience Profile")
                     report.append(profile['name'])
                     report.append(profile['description'])
 
@@ -706,8 +707,6 @@ Response in {self.lang_id.name} language.
                             continue
 
                         for adx, ad in enumerate(ads, start=1):
-                            report.append(f"# LP {ads_count}: {ad['hook']}")
-                            report.append("---")
 
                             if not ad.output:
                                 report.append("--no ads data--")
@@ -719,12 +718,15 @@ Response in {self.lang_id.name} language.
                             if not lps:
                                 report.append("--no LP--")
                                 continue
+                            
                             for lp in lps:
-                                lps_count+=1
+                                report.append(f"# LP {lps_count}: {ad['hook']}")
+                                report.append("---")                                
                                 js = json.loads(lp.output)
                                 res = json_to_markdown(js, level=2, max_level=3)
                                 report.append(res)
                                 report.append("\n")  
+                                lps_count+=1
 
         self.final_report = "\n".join(report)
 
