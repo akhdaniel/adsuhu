@@ -486,7 +486,7 @@ Response in {self.lang_id.name} language.
         report.append("")
         report.append("# PRODUCT VALUE ANALYSIS")
         report.append("---")
-        output = json.loads(product.output)
+        output = json.loads(self.clean_md(product.output))
 
         report.append(f"## Product category")
         report.append(f"{output['category']}")
@@ -566,7 +566,7 @@ Response in {self.lang_id.name} language.
                     report.append("--no data--")
                     continue
 
-                res = json_to_markdown(json.loads(profile.output), level=2, max_level=3, prefix=p)
+                res = json_to_markdown(json.loads(self.clean_md(profile.output)), level=2, max_level=3, prefix=p)
                 report.append(res)
                 report.append("\n")
                 report.append("\n")
@@ -727,7 +727,7 @@ Response in {self.lang_id.name} language.
                             for lp in lps:
                                 report.append(f"# LP {lps_count}: {ad['hook']}")
                                 report.append("---")                                
-                                js = json.loads(lp.output)
+                                js = json.loads(self.clean_md(lp.output))
                                 res = json_to_markdown(js, level=2, max_level=3)
                                 report.append(res)
                                 report.append("\n")  
