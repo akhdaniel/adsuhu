@@ -360,7 +360,9 @@ Response in {self.lang_id.name} language.
             """
 
 
-            data = self.clean_md(data)
+            if isinstance(data, str):
+                data = self.clean_md(data)
+                
             md_lines = []
 
             def title_case_key(key):
@@ -719,7 +721,7 @@ Response in {self.lang_id.name} language.
                                 continue
                             for lp in lps:
                                 lps_count+=1
-                                js = json.loads(self.clean_md(lp.output))
+                                js = json.loads(lp.output)
                                 res = json_to_markdown(js, level=2, max_level=3)
                                 report.append(res)
                                 report.append("\n")  
