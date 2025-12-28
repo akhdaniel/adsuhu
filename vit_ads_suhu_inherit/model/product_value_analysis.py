@@ -374,14 +374,19 @@ Response in {self.lang_id.name} language.
                     ('For','for'),
                     ('To','to'),
                     ('From','from'),
+                    ('Cta','CTA'),
+                    ('cta','CTA'),
+                    ('Pov','POV'),
+                    ('pov','POV'),
+                    ('ab_test','A/B Test'),
+                    ('Ab Test','A/B Test'),
                 ]
-                print(key)
-                if key.lower() == 'ab_test':
-                    return 'A/B Test'
-                if key.lower() in ['cta','pov']:
-                    return key.upper()
+                # print(key)
+                # if key.lower() == 'ab_test':
+                #     return 'A/B Test'
+                # if key.lower() in ['cta','pov']:
+                #     return key.upper()
                 res = key.replace("_", " ").title()
-
                 for rep in replacements:
                     res = res.replace(rep[0], rep[1])
 
