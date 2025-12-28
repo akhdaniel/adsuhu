@@ -484,6 +484,7 @@ Response in {self.lang_id.name} language.
         report.append("---")
         report.append(f"{product.features}")
         report.append("")
+        report.append("--- SECTION 1 PRODUCT VALUE ---")
         report.append("# PRODUCT VALUE ANALYSIS")
         report.append("---")
         output = json.loads(self.clean_md(product.output))
@@ -546,6 +547,7 @@ Response in {self.lang_id.name} language.
         # ------------------------------------------------------------------------
         # 2. Market analysis
         # ------------------------------------------------------------------------
+        report.append("--- SECTION 2 MARKET ANALYSIS AND AUDIENCE PROFILE ---")        
         markets = product.market_mapper_ids
         for m, market in enumerate(markets, start=2):
             report.append(f"# MARKET ANALYSIS")
@@ -574,7 +576,7 @@ Response in {self.lang_id.name} language.
             # ------------------------------------------------------------------------
             # p+a ... p+(an) Angles
             # ------------------------------------------------------------------------
-
+            report.append("--- SECTION 3 ANGLES ---")        
             profiles = market.audience_profiler_ids
             for p, profile in enumerate(profiles, start=p):
                 print(profile['name'], profile['description'], '=',p)
@@ -631,6 +633,7 @@ Response in {self.lang_id.name} language.
             # ------------------------------------------------------------------------
             # Ads copy per market, audience profile, angle, hooks
             # ------------------------------------------------------------------------
+            report.append("--- SECTION 4 ADS COPY ---")        
             ads_count = 1
             profiles = market.audience_profiler_ids
             for p, profile in enumerate(profiles):
@@ -699,6 +702,7 @@ Response in {self.lang_id.name} language.
             # ------------------------------------------------------------------------
             # Landing pages per ads copy...
             # ------------------------------------------------------------------------                            
+            report.append("--- SECTION 5 LANDING PAGES ---")        
             lps_count = 1
             profiles = market.audience_profiler_ids
             for p, profile in enumerate(profiles):
