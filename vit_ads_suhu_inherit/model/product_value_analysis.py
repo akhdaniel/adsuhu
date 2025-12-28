@@ -424,19 +424,15 @@ Response in {self.lang_id.name} language.
                         for item in value:
                             md_lines.append(f"- {item}")
                     else:
-                        # print('key==', key)
                         md_lines.append(f"- **{title_case_key(key)}**: {value}")
                     return
 
                 heading_prefix = "#" * level
-                print('key=',key)
                 md_lines.append(f"{heading_prefix} {title_case_key(key)}")
 
                 j=1
                 if isinstance(value, dict):
                     for k, v in value.items():
-                        # sub_prefix = f"{prefix}.{j}"
-                        # print('keu', key)
                         render_value(k, v, level + 1)
                         j+=1
 
@@ -444,7 +440,6 @@ Response in {self.lang_id.name} language.
                     render_table(key, value)
 
                 elif isinstance(value, list):
-                    # print('list value=',value)
                     for item in value:
                         md_lines.append(f"- {item}")
 
@@ -458,7 +453,6 @@ Response in {self.lang_id.name} language.
                     i+=1
 
             elif isinstance(data, list):
-                print('list value data=',data)
                 for item in data:
                     md_lines.append(f"- {item}")
 
@@ -584,7 +578,6 @@ Response in {self.lang_id.name} language.
             report.append("--- SECTION 3 ANGLES ---")        
             profiles = market.audience_profiler_ids
             for p, profile in enumerate(profiles):
-                print(profile['name'], profile['description'], '=',p)
                 angles = profile.angle_hook_ids
                 if not angles:
                     report.append(f"# NO ANGLES - {profile['name']}")
@@ -788,7 +781,6 @@ Response in {self.lang_id.name} language.
                 elif child.name == 'br':
                     paragraph.add_run("\n")
                 elif child.name == 'img':
-                    print(child)
                     img_bytes, resolved_src = fetch_image_bytes(child.get('src'))
                     if img_bytes:
                         try:
@@ -1109,7 +1101,6 @@ Response in {self.lang_id.name} language.
     def ensure_table_style(self, doc, style_name, base_style_name='Table Grid'):
         """Ensure a table style exists so formatting can be applied safely."""
         styles = doc.styles
-        print(styles)
         if style_name in styles:
             return styles[style_name]
         new_style = styles.add_style(style_name, WD_STYLE_TYPE.TABLE)
