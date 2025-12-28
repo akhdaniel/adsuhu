@@ -422,6 +422,7 @@ Response in {self.lang_id.name} language.
                         for item in value:
                             md_lines.append(f"- {item}")
                     else:
+                        # print('key==', key)
                         md_lines.append(f"- **{title_case_key(key)}**: {value}")
                     return
 
@@ -432,6 +433,7 @@ Response in {self.lang_id.name} language.
                 if isinstance(value, dict):
                     for k, v in value.items():
                         # sub_prefix = f"{prefix}.{j}"
+                        # print('keu', key)
                         render_value(k, v, level + 1)
                         j+=1
 
@@ -439,6 +441,7 @@ Response in {self.lang_id.name} language.
                     render_table(key, value)
 
                 elif isinstance(value, list):
+                    print('list value=',value)
                     for item in value:
                         md_lines.append(f"- {item}")
 
@@ -452,6 +455,7 @@ Response in {self.lang_id.name} language.
                     i+=1
 
             elif isinstance(data, list):
+                print('list value=',value)
                 for item in data:
                     md_lines.append(f"- {item}")
 
