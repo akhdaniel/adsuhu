@@ -381,6 +381,8 @@ Response in {self.lang_id.name} language.
                     ('pov','POV'),
                     ('ab_test','A/B Test'),
                     ('Ab Test','A/B Test'),
+                    ('keyword','Keyword'),
+                    ('keterbatasan','Keterbatasan'),
                 ]
 
                 res = key.replace("_", " ").title()
@@ -427,6 +429,7 @@ Response in {self.lang_id.name} language.
                     return
 
                 heading_prefix = "#" * level
+                print('key=',key)
                 md_lines.append(f"{heading_prefix} {title_case_key(key)}")
 
                 j=1
@@ -441,7 +444,7 @@ Response in {self.lang_id.name} language.
                     render_table(key, value)
 
                 elif isinstance(value, list):
-                    print('list value=',value)
+                    # print('list value=',value)
                     for item in value:
                         md_lines.append(f"- {item}")
 
@@ -455,7 +458,7 @@ Response in {self.lang_id.name} language.
                     i+=1
 
             elif isinstance(data, list):
-                print('list value=',value)
+                print('list value data=',data)
                 for item in data:
                     md_lines.append(f"- {item}")
 
