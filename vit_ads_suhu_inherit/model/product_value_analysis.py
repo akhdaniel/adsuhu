@@ -971,7 +971,7 @@ Response in {self.lang_id.name} language.
                 if section_match:
                     section_title = section_match.group(1).strip()
                     doc.add_page_break()
-                    doc.add_paragraph(section_title, style='Title')
+                    doc.add_paragraph(f"SECTION {section_title}", style='Title')
                     doc.add_page_break()
                     continue
 
