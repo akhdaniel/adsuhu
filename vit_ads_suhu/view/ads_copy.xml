@@ -45,8 +45,8 @@
                     <header>
                         <button string="Generate" type="object" name="action_generate" />
                         <button string="Split Ads Images" type="object" name="action_split_images" />
-                        <button string="Create Lp" type="object" name="action_create_lp" />
-                        <button string="Create Video" type="object" name="action_create_video" />
+                        <button string="Create LP" type="object" name="action_create_lp" />
+                        <button string="Create Video Scripts" type="object" name="action_create_video" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>

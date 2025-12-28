@@ -19752,7 +19752,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGbDOXvd9Q9xBk="
 							},
-							"name": "action_create_lp"
+							"name": "action_create_lp",
+							"documentation": "{\n\"label\":\"Create LP\"\n}"
 						},
 						{
 							"_type": "UMLOperation",
@@ -19760,7 +19761,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGbDOXvd9Q9xBk="
 							},
-							"name": "action_create_video"
+							"name": "action_create_video",
+							"documentation": "{\n\"label\":\"Create Video Scripts\"\n}"
 						},
 						{
 							"_type": "UMLOperation",

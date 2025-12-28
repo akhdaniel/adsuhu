@@ -24,10 +24,20 @@ class ads_copy(models.Model):
 
 
     def action_create_lp(self, ):
+        """
+        {
+        "label":"Create LP"
+        }
+        """
         pass
 
 
     def action_create_video(self, ):
+        """
+        {
+        "label":"Create Video Scripts"
+        }
+        """
         pass
 
 
