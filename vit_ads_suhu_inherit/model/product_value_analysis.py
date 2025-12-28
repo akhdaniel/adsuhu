@@ -361,6 +361,7 @@ Response in {self.lang_id.name} language.
 
 
             if isinstance(data, str):
+                _logger.error(f"isinstance str data={data}")
                 data = self.clean_md(data)
 
             md_lines = []
@@ -381,11 +382,7 @@ Response in {self.lang_id.name} language.
                     ('ab_test','A/B Test'),
                     ('Ab Test','A/B Test'),
                 ]
-                # print(key)
-                # if key.lower() == 'ab_test':
-                #     return 'A/B Test'
-                # if key.lower() in ['cta','pov']:
-                #     return key.upper()
+
                 res = key.replace("_", " ").title()
                 for rep in replacements:
                     res = res.replace(rep[0], rep[1])
