@@ -963,6 +963,15 @@ Response in {self.lang_id.name} language.
         soup = BeautifulSoup(html_content, 'html.parser')
         ol_count = 0  # Counter to track ordered lists and reset numbering
         for element in soup.descendants:
+            if element.name == 'p' and element.parent.name == '[document]':
+                section_match = re.match(r'^\s*---\s*SECTION\s+(.*?)\s*---\s*$', element.get_text().strip(), re.IGNORECASE)
+                if section_match:
+                    section_title = section_match.group(1).strip()
+                    doc.add_page_break()
+                    doc.add_paragraph(section_title, style='Title')
+                    doc.add_page_break()
+                    continue
+
             if element.name == 'h1':
                 doc.add_heading(element.get_text(), level=1)
             elif element.name == 'h2':
