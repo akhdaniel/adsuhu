@@ -33,8 +33,8 @@ REQUIRED JSON OUTPUT FORMAT:
           "...",
           "..."
         ],
-        "nilai_dan_gaya_hidup": "...",
-        "kepribadian": "..."
+        "nilai_dan_gaya_hidup": ["..."],
+        "kepribadian": ["..."]
       },
       "perilaku": {
         "kebiasaan_belanja": "...",
