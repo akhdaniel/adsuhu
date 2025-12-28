@@ -359,6 +359,8 @@ Response in {self.lang_id.name} language.
             - List of objects (list of dict) -> Markdown table
             """
 
+
+            data = self.clean_md(data)
             md_lines = []
 
             def title_case_key(key):
@@ -687,9 +689,40 @@ Response in {self.lang_id.name} language.
                                     report.append("\n")    
 
             # ------------------------------------------------------------------------
-            # landing pages per ...
+            # Landing pages per ads copy...
             # ------------------------------------------------------------------------                            
+            lps_count = 1
+            profiles = market.audience_profiler_ids
+            for p, profile in enumerate(profiles):
+                angles = profile.angle_hook_ids
+                for a, angle in enumerate(angles, start=1):
+                    hooks = angle.hook_ids
+                    for h, hook in enumerate(hooks, start=1):
+                        ads = hook.ads_copy_ids
+                        if not ads:
+                            report.append("--no LP--")
+                            continue
 
+                        for adx, ad in enumerate(ads, start=1):
+                            report.append(f"# LP {ads_count}: {ad['hook']}")
+                            report.append("---")
+
+                            if not ad.output:
+                                report.append("--no ads data--")
+                                continue
+                            # ------------------------------------------------------------------------
+                            # Landing pages
+                            # ------------------------------------------------------------------------  
+                            lps = ad.landing_page_builder_ids
+                            if not lps:
+                                report.append("--no LP--")
+                                continue
+                            for lp in lps:
+                                lps_count+=1
+                                js = json.loads(self.clean_md(lp.output))
+                                res = json_to_markdown(js, level=2, max_level=3)
+                                report.append(res)
+                                report.append("\n")  
 
         self.final_report = "\n".join(report)
 
