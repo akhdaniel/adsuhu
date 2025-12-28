@@ -48,6 +48,7 @@
                             <td> Inherit</td>
                             <td>Angle</td>
                             <td>Hook</td>
+                            <td>Lp Url</td>
                             <td>Compliance Checker</td>
                             <td>Ads Copy</td>
                             <td>Audience Profiler</td>
@@ -60,6 +61,7 @@
                             <td><span t-field="line._inherit" /></td>
                             <td><span t-field="line.angle" /></td>
                             <td><span t-field="line.hook" /></td>
+                            <td><span t-field="line.lp_url" /></td>
                             <td><span t-field="line.compliance_checker_id" /></td>
                             <td><span t-field="line.ads_copy_id" /></td>
                             <td><span t-field="line.audience_profiler_id" /></td>

@@ -30,6 +30,10 @@
                             <p class="m-0" t-field="doc.hook" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Lp Url</strong>
+                            <p class="m-0" t-field="doc.lp_url" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Compliance Checker</strong>
                             <p class="m-0" t-field="doc.compliance_checker_id"/>
                         </div>

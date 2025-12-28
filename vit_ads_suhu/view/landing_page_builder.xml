@@ -11,6 +11,7 @@
                     <field name="name" /> <!-- 1-->
                     <field name="angle" /> <!-- 100-->
                     <field name="hook" /> <!-- 101-->
+                    <field name="lp_url" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
                     <field name="partner_id" /> <!-- 4000-->
                 </list>
@@ -68,6 +69,7 @@
                             <group> <!-- left -->
                                 <field name="angle"  />
                                 <field name="hook"  />
+                                <field name="lp_url"  />
                                 <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -116,6 +118,7 @@
 
                     <filter string="Angle" name="filter_by_angle" domain="[('angle','=','')]" />
                     <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
+                    <filter string="Lp Url" name="filter_by_lp_url" domain="[('lp_url','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -126,6 +129,7 @@
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
                     <field name="angle" select="True"/>
                     <field name="hook" select="True"/>
+                    <field name="lp_url" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
                     <field name="input" select="True"/>

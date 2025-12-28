@@ -6432,6 +6432,24 @@
 											"height": 13,
 											"text": "+hook: Text",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbY9jGRTt02wQ=",
+											"_parent": {
+												"$ref": "AAAAAAGbDOu3F6as6OI="
+											},
+											"model": {
+												"$ref": "AAAAAAGbY9jF6TtNado="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2933,
+											"top": 2642,
+											"width": 687,
+											"height": 13,
+											"text": "+lp_url: Text",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Roboto;13;0",
@@ -6439,7 +6457,7 @@
 									"left": 2928,
 									"top": 2577,
 									"width": 697,
-									"height": 68
+									"height": 83
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -6463,7 +6481,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2933,
-											"top": 2650,
+											"top": 2665,
 											"width": 687,
 											"height": 13,
 											"text": "+action_generate()",
@@ -6481,7 +6499,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2933,
-											"top": 2665,
+											"top": 2680,
 											"width": 687,
 											"height": 13,
 											"text": "+_get_input()",
@@ -6499,7 +6517,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2933,
-											"top": 2680,
+											"top": 2695,
 											"width": 687,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -6509,7 +6527,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 2928,
-									"top": 2645,
+									"top": 2660,
 									"width": 697,
 									"height": 53
 								},
@@ -20427,6 +20445,16 @@
 							},
 							"name": "hook",
 							"documentation": "{\n\"related\":\"ads_copy_id.description\"\n}",
+							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbY9jF6TtNado=",
+							"_parent": {
+								"$ref": "AAAAAAGbDOu3F6akwT0="
+							},
+							"name": "lp_url",
+							"documentation": "{\n\"string\":\"LP URL\",\n\"widget\":\"url\"\n}",
 							"type": "Text"
 						}
 					],
