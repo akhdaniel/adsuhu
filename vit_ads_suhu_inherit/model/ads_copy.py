@@ -191,15 +191,13 @@ class ads_copy(models.Model):
         ).id
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
     
-    @api.onchange("audience_profiler_id","hook_id")
+    @api.onchange("hook_id")
     def _get_input(self, ):
         """
-        {
-        @api.depends("audience_profiler_id"")
-        }
+
         """
         for rec in self:
-            hook = len(rec.hook_id.ads_copy_ids)+1
+            hook = rec.hook_id.hook_no
             rec.hook_no = hook
             rec.name = f"AD COPY - ANGLE {rec.hook_id.angle_no} - HOOK {hook}"
             rec.input = f"""
