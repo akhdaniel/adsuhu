@@ -579,7 +579,7 @@ Response in {self.lang_id.name} language.
             report.append("\n")
             report.append("--- SECTION 3 ANGLES ---")        
             profiles = market.audience_profiler_ids
-            for p, profile in enumerate(profiles, start=p):
+            for p, profile in enumerate(profiles):
                 print(profile['name'], profile['description'], '=',p)
                 angles = profile.angle_hook_ids
                 if not angles:
