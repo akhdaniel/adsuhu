@@ -383,6 +383,7 @@ Response in {self.lang_id.name} language.
                     ('Ab Test','A/B Test'),
                     ('keyword','Keyword'),
                     ('keterbatasan','Keterbatasan'),
+                    ('kepribadian','Kepribadian'),
                 ]
 
                 res = key.replace("_", " ").title()
@@ -609,23 +610,23 @@ Response in {self.lang_id.name} language.
                     # ------------------------------------------------------------------------
                     # Hooks
                     # ------------------------------------------------------------------------
-                    report.append("## Hooks")
-                    hooks = angle.hook_ids
-                    if not hooks:
-                        report.append("--no hooks--")
-                        continue
-                    for h, hook in enumerate(hooks, start=1):
-                        report.append(f"### Hook {hook['hook_no']}: {hook['description']}")
-                        report.append("---")
+                    # report.append("## Hooks")
+                    # hooks = angle.hook_ids
+                    # if not hooks:
+                    #     report.append("--no hooks--")
+                    #     continue
+                    # for h, hook in enumerate(hooks, start=1):
+                    #     report.append(f"### Hook {hook['hook_no']}: {hook['description']}")
+                    #     report.append("---")
 
-                        if not hook.output:
-                            report.append("--no hook data--")
-                            continue
+                    #     if not hook.output:
+                    #         report.append("--no hook data--")
+                    #         continue
 
-                        js = json.loads(self.clean_md(hook.output))
-                        res = json_to_markdown(js['hook'],level=4, max_level=4)
-                        report.append(res)
-                        report.append("\n")                
+                    #     js = json.loads(self.clean_md(hook.output))
+                    #     res = json_to_markdown(js['hook'],level=4, max_level=4)
+                    #     report.append(res)
+                    #     report.append("\n")                
 
 
             # ------------------------------------------------------------------------
