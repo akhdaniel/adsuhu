@@ -65,6 +65,7 @@
                                 <field name="hook"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
+                                <field name="gpt_session" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="landing_page_builder_id"  />
@@ -119,6 +120,7 @@
                     <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
+                    <filter string="Gpt Session" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
                     <field name="angle" select="True"/>
                     <field name="hook" select="True"/>
                     <field name="name" select="True"/>
@@ -129,6 +131,7 @@
                     <field name="general_instruction" select="True"/>
                     <field name="specific_instruction" select="True"/>
                     <field name="active" select="True"/>
+                    <field name="gpt_session" select="True"/>
                     <field name="landing_page_builder_id" select="True"/>
                     <field name="compliance_checker_id" select="True"/>
                     <field name="visual_concept_id" select="True"/>

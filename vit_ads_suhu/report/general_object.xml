@@ -50,6 +50,10 @@
                             <p class="m-0" t-field="doc.active" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Gpt Session</strong>
+                            <p class="m-0" t-field="doc.gpt_session" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Gpt Prompt</strong>
                             <p class="m-0" t-field="doc.gpt_prompt_id"/>
                         </div>

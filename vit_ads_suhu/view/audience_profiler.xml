@@ -68,6 +68,7 @@
                                 <field name="description"  />
                                 <field name="alasan"  />
                                 <field name="gpt_url" widget="url" />
+                                <field name="gpt_session" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="market_mapper_id"  />
@@ -118,6 +119,7 @@
                     <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
+                    <filter string="Gpt Session" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
                     <field name="alasan" select="True"/>
                     <field name="audience_profile_no" select="True"/>
                     <field name="name" select="True"/>
@@ -128,6 +130,7 @@
                     <field name="general_instruction" select="True"/>
                     <field name="specific_instruction" select="True"/>
                     <field name="active" select="True"/>
+                    <field name="gpt_session" select="True"/>
                     <field name="market_mapper_id" select="True"/>
                     <field name="gpt_prompt_id" select="True"/>
                     <field name="lang_id" select="True"/>

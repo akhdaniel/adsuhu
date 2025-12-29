@@ -30,6 +30,7 @@ class general_object(models.Model):
     general_instruction = fields.Text(default="You MUST respond with ONLY valid JSON. Do NOT include explanations, markdown, or extra text. If you cannot comply, return an empty JSON object {}.",  string=_("General Instruction"))
     specific_instruction = fields.Text( string=_("Specific Instruction"))
     active = fields.Boolean( string=_("Active"), default=True)
+    gpt_session = fields.Char( string=_("Gpt Session"))
 
 
     def copy(self, default=None):

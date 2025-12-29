@@ -12054,6 +12054,24 @@
 											"height": 13,
 											"text": "+active: Boolean = True",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGba+nPXgga1tc=",
+											"_parent": {
+												"$ref": "AAAAAAGbHvslGgoVwY0="
+											},
+											"model": {
+												"$ref": "AAAAAAGba+nO5gfMWLA="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2701,
+											"top": 718,
+											"width": 479,
+											"height": 13,
+											"text": "+gpt_session: Char",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Roboto;13;0",
@@ -12061,7 +12079,7 @@
 									"left": 2696,
 									"top": 593,
 									"width": 489,
-									"height": 128
+									"height": 143
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -12085,7 +12103,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2701,
-											"top": 726,
+											"top": 741,
 											"width": 479,
 											"height": 13,
 											"text": "+reformat_output()",
@@ -12095,7 +12113,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 2696,
-									"top": 721,
+									"top": 736,
 									"width": 489,
 									"height": 23
 								},
@@ -21371,6 +21389,16 @@
 							"documentation": "{\n\"tree:invisible\":true\n}",
 							"type": "Boolean",
 							"defaultValue": "True"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGba+nO5gfMWLA=",
+							"_parent": {
+								"$ref": "AAAAAAGbHvslCAoNY5M="
+							},
+							"name": "gpt_session",
+							"documentation": "{\n\"xml:widget\":\"url\",\n\"tree:invisible\":true,\n\"form:seq\":3100\n}",
+							"type": "Char"
 						}
 					],
 					"operations": [
