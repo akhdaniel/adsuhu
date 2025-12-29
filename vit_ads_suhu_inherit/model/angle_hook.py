@@ -22,6 +22,24 @@ REQUIRED JSON OUTPUT FORMAT:
       "insight": "..."
     }
   ],
+  "catatan_strategis": {
+    "ab_test": [
+      "...",
+      "...",
+      "..."
+    ],
+    "adaptasi_platform": {
+      "meta": "...",
+      "tiktok": "...",
+      "youtube": "..."
+    },
+    "category_entry_points": [
+      "...",
+      "...",
+      "...",
+      "..."
+    ]
+  },
   "angles": [
     {
       "angle": "...",
@@ -85,27 +103,8 @@ REQUIRED JSON OUTPUT FORMAT:
         }
       ]
     },
-    ... # more angles
-    
-  ],
-  "catatan_strategis": {
-    "ab_test": [
-      "...",
-      "...",
-      "..."
-    ],
-    "adaptasi_platform": {
-      "meta": "...",
-      "tiktok": "...",
-      "youtube": "..."
-    },
-    "category_entry_points": [
-      "...",
-      "...",
-      "...",
-      "..."
-    ]
-  }
+    ... # more angles 
+  ]  
 }
 ```
 """

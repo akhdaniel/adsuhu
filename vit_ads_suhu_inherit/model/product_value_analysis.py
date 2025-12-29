@@ -602,11 +602,13 @@ Response in {self.lang_id.name} language.
                     report.append(profile['description'])
 
                     js = json.loads(self.clean_md(angle.output))
+                    if a > 1:
+                        js.pop('big_ideas')
+                        js.pop('catatan_strategis')
+                    
                     res = json_to_markdown(js, level=2, max_level=4, prefix=a)
                     # show big ideas only on first angle
-                    if a > 1:
-                        res.pop('big_ideas')
-                        res.pop('catatan_strategis')
+                    
                     report.append(res)
                     report.append("\n")    
                     report.append("\n")    
