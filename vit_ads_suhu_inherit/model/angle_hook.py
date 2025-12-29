@@ -291,11 +291,11 @@ Response in {self.lang_id.name} language.
             #  "pov": "Sistem persuratan bukan soal fitur, tapi soal apakah bisa dipertanggungjawabkan di depan auditor dan pimpinan.",
             #  "hooks": []
             # }
-            output = angle
-            output.update({
+            output={
                 'big_ideas':big_ideas,
                 'catatan_strategis': catatan_strategis
-            })
+            }
+            output.update(angle)
             default = dict(
                 audience_profiler_id=self.audience_profiler_id.id,
                 name=f"ANGLE {i+1}: {angle['angle']}",
