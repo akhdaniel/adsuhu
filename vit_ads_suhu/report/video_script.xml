@@ -26,16 +26,8 @@
                             <p class="m-0" t-field="doc.duration" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
-                            <strong>Visuals</strong>
-                            <p class="m-0" t-field="doc.visuals" />
-                        </div>
-                        <div class="col-auto mw-100 mb-2">
-                            <strong>Text Overlay</strong>
-                            <p class="m-0" t-field="doc.text_overlay" />
-                        </div>
-                        <div class="col-auto mw-100 mb-2">
-                            <strong>Voice Over</strong>
-                            <p class="m-0" t-field="doc.voice_over" />
+                            <strong>Prompt</strong>
+                            <p class="m-0" t-field="doc.prompt" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
                             <strong>Video Director</strong>

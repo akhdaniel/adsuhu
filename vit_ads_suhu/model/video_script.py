@@ -15,9 +15,7 @@ class video_script(models.Model):
 
     name = fields.Char( required=True, copy=False, string=_("Name"))
     duration = fields.Char( string=_("Duration"))
-    visuals = fields.Text( string=_("Visuals"))
-    text_overlay = fields.Text( string=_("Text Overlay"))
-    voice_over = fields.Text( string=_("Voice Over"))
+    prompt = fields.Text( string=_("Prompt"))
 
 
     def copy(self, default=None):

@@ -477,8 +477,6 @@ Response in {self.lang_id.name} language.
             'video_script_ids': [(0,0,{
                 'name': x['name'],
                 'duration': x['duration'],
-                'visuals': ",".join(x['visuals']),
-                'text_overlay': x['text_overlay'],
-                'voice_over': x['voice_over'],
+                'prompt': "Visuals: " + ",".join(x['visuals']) + "\nText Overlay: " + x['text_overlay'] + "\nVoice Over: " +x['voice_over'] ,
             }) for x in output['scripts']]
         })]

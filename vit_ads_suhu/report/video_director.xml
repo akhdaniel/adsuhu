@@ -22,6 +22,14 @@
                     </h2>
                     <div class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Angle</strong>
+                            <p class="m-0" t-field="doc.angle" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Hook</strong>
+                            <p class="m-0" t-field="doc.hook" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Visual Concept</strong>
                             <p class="m-0" t-field="doc.visual_concept_id"/>
                         </div>
@@ -64,9 +72,7 @@
                         <tr>
                             <td>Name</td>
                             <td>Duration</td>
-                            <td>Visuals</td>
-                            <td>Text Overlay</td>
-                            <td>Voice Over</td>
+                            <td>Prompt</td>
                             <td>Video Director</td>
                         </tr>
                     </thead>
@@ -74,9 +80,7 @@
                         <tr t-foreach="doc.video_script_ids" t-as="line">
                             <td><span t-field="line.name" /></td>
                             <td><span t-field="line.duration" /></td>
-                            <td><span t-field="line.visuals" /></td>
-                            <td><span t-field="line.text_overlay" /></td>
-                            <td><span t-field="line.voice_over" /></td>
+                            <td><span t-field="line.prompt" /></td>
                             <td><span t-field="line.video_director_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>

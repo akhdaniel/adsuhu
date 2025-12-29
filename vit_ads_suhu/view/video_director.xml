@@ -9,7 +9,9 @@
             <field name="arch" type="xml">
                 <list string="Video Director">
                     <field name="name" /> <!-- 1-->
+                    <field name="angle" /> <!-- 100-->
                     <field name="visual_concept_id" /> <!-- 100-->
+                    <field name="hook" /> <!-- 101-->
                     <field name="video_service_id" /> <!-- 101-->
                     <field name="description" /> <!-- 1500-->
                     <field name="partner_id" /> <!-- 4000-->
@@ -57,6 +59,8 @@
                         </div>
                         <group>
                             <group> <!-- left -->
+                                <field name="angle"  />
+                                <field name="hook"  />
                                 <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -84,9 +88,7 @@
                                     <list editable="bottom">
                                         <field name="name" /> <!-- 100-->
                                         <field name="duration" /> <!-- 101-->
-                                        <field name="visuals" /> <!-- 102-->
-                                        <field name="text_overlay" /> <!-- 103-->
-                                        <field name="voice_over" /> <!-- 104-->
+                                        <field name="prompt" /> <!-- 102-->
                                     </list>
                                 </field>
                             </page>
@@ -121,6 +123,8 @@
             <field name="arch" type="xml">
                 <search string="Video Director">
 
+                    <filter string="Angle" name="filter_by_angle" domain="[('angle','=','')]" />
+                    <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -129,6 +133,8 @@
                     <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
+                    <field name="angle" select="True"/>
+                    <field name="hook" select="True"/>
                     <field name="name" select="True"/>
                     <field name="output" select="True"/>
                     <field name="input" select="True"/>

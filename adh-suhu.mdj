@@ -12594,6 +12594,44 @@
 											"height": 13,
 											"text": "+_inherit = vit.general_object",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbaJCSqF24THw=",
+											"_parent": {
+												"$ref": "AAAAAAGbJcfJMrQhlo4="
+											},
+											"model": {
+												"$ref": "AAAAAAGbaJCSOl1nOS4="
+											},
+											"fillColor": "#91FFEC",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 973,
+											"top": 4124,
+											"width": 269.328125,
+											"height": 13,
+											"text": "+angle: Text",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbaJCr/2eXQtE=",
+											"_parent": {
+												"$ref": "AAAAAAGbJcfJMrQhlo4="
+											},
+											"model": {
+												"$ref": "AAAAAAGbaJCroGdGZCI="
+											},
+											"fillColor": "#91FFEC",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 973,
+											"top": 4139,
+											"width": 269.328125,
+											"height": 13,
+											"text": "+hook: Text",
+											"horizontalAlignment": 0
 										}
 									],
 									"fillColor": "#91FFEC",
@@ -12602,7 +12640,7 @@
 									"left": 968,
 									"top": 4089,
 									"width": 279.328125,
-									"height": 38
+									"height": 68
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -12627,7 +12665,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 973,
-											"top": 4132,
+											"top": 4162,
 											"width": 269.328125,
 											"height": 13,
 											"text": "+action_generate()",
@@ -12646,7 +12684,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 973,
-											"top": 4147,
+											"top": 4177,
 											"width": 269.328125,
 											"height": 13,
 											"text": "+_get_input()",
@@ -12665,7 +12703,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 973,
-											"top": 4162,
+											"top": 4192,
 											"width": 269.328125,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -12676,7 +12714,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 968,
-									"top": 4127,
+									"top": 4157,
 									"width": 279.328125,
 									"height": 53
 								},
@@ -18401,43 +18439,7 @@
 											"top": 4252,
 											"width": 108.23095703125,
 											"height": 13,
-											"text": "+visuals: Text",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGbTwmIKgQF0fY=",
-											"_parent": {
-												"$ref": "AAAAAAGbTwkZvffIXuI="
-											},
-											"model": {
-												"$ref": "AAAAAAGbTwmIGAOH+O0="
-											},
-											"font": "Roboto;13;0",
-											"parentStyle": true,
-											"left": 1421,
-											"top": 4267,
-											"width": 108.23095703125,
-											"height": 13,
-											"text": "+text_overlay: Text",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGbTwmgNwbuYzY=",
-											"_parent": {
-												"$ref": "AAAAAAGbTwkZvffIXuI="
-											},
-											"model": {
-												"$ref": "AAAAAAGbTwmgIwZws7I="
-											},
-											"font": "Roboto;13;0",
-											"parentStyle": true,
-											"left": 1421,
-											"top": 4282,
-											"width": 108.23095703125,
-											"height": 13,
-											"text": "+voice_over: Text",
+											"text": "+prompt: Text",
 											"horizontalAlignment": 0
 										}
 									],
@@ -18446,7 +18448,7 @@
 									"left": 1416,
 									"top": 4217,
 									"width": 118.23095703125,
-									"height": 83
+									"height": 53
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -18460,7 +18462,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 1416,
-									"top": 4300,
+									"top": 4270,
 									"width": 118.23095703125,
 									"height": 10
 								},
@@ -18609,12 +18611,12 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 1335,
-									"top": 4248,
+									"left": 1304,
+									"top": 4264,
 									"width": 105.06005859375,
 									"height": 13,
-									"alpha": 0.5235987755982988,
-									"distance": 30,
+									"alpha": 0.5535335740070928,
+									"distance": 64.88451279003334,
 									"hostEdge": {
 										"$ref": "AAAAAAGbTwnIiw01cYQ="
 									},
@@ -21508,6 +21510,26 @@
 							"name": "_inherit",
 							"type": "",
 							"defaultValue": "vit.general_object"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbaJCSOl1nOS4=",
+							"_parent": {
+								"$ref": "AAAAAAGbJcfJLrQZcRo="
+							},
+							"name": "angle",
+							"documentation": "{\n\"related\":\"ads_copy_id.angle_hook_id.description\"\n}",
+							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbaJCroGdGZCI=",
+							"_parent": {
+								"$ref": "AAAAAAGbJcfJLrQZcRo="
+							},
+							"name": "hook",
+							"documentation": "{\n\"related\":\"ads_copy_id.hook_id.description\"\n}",
+							"type": "Text"
 						}
 					],
 					"operations": [
@@ -22035,25 +22057,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGbTwkZu/fA9MI="
 							},
-							"name": "visuals",
-							"type": "Text"
-						},
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAGbTwmIGAOH+O0=",
-							"_parent": {
-								"$ref": "AAAAAAGbTwkZu/fA9MI="
-							},
-							"name": "text_overlay",
-							"type": "Text"
-						},
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAGbTwmgIwZws7I=",
-							"_parent": {
-								"$ref": "AAAAAAGbTwkZu/fA9MI="
-							},
-							"name": "voice_over",
+							"name": "prompt",
 							"type": "Text"
 						}
 					]

@@ -27,6 +27,8 @@ class video_director(models.Model):
 
 
     _inherit = "vit.general_object"
+    angle = fields.Text(related="ads_copy_id.angle_hook_id.description",  string=_("Angle"))
+    hook = fields.Text(related="ads_copy_id.hook_id.description",  string=_("Hook"))
 
 
     visual_concept_id = fields.Many2one(comodel_name="vit.visual_concept",  string=_("Visual Concept"))
