@@ -279,6 +279,9 @@ Response in {self.lang_id.name} language.
     def action_split_angles(self, ):
         js = json.loads(self.clean_md(self.output))
 
+        if not 'angles' in js:
+            raise UserError('Split angles only in master angle')
+
         big_ideas= js['big_ideas']
         angles= js['angles']
         catatan_strategis= js['catatan_strategis']
