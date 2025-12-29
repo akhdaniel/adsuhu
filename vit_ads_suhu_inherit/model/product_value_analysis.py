@@ -587,7 +587,7 @@ Response in {self.lang_id.name} language.
                 
                 for a, angle in enumerate(angles, start=1):
                     report.append(f"# {angle['name']} - {profile['name']}")
-                    report.append("---")
+                    report.append("---")                        
 
                     if not angle.description:
                         report.append("--no description--")
@@ -603,6 +603,10 @@ Response in {self.lang_id.name} language.
 
                     js = json.loads(self.clean_md(angle.output))
                     res = json_to_markdown(js, level=2, max_level=4, prefix=a)
+                    # show big ideas only on first angle
+                    if a > 1:
+                        res.pop('big_ideas')
+                        res.pop('catatan_strategis')
                     report.append(res)
                     report.append("\n")    
                     report.append("\n")    
