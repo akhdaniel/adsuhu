@@ -80,10 +80,10 @@
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Duration" name="filter_by_duration" domain="[('duration','=','')]" />
                     <filter string="Prompt" name="filter_by_prompt" domain="[('prompt','=','')]" />
-                    <field name="name" select="True"/>
-                    <field name="duration" select="True"/>
-                    <field name="prompt" select="True"/>
-                    <field name="video_director_id" select="True"/>
+                    <field name="name" string="Name" select="True"/>
+                    <field name="duration" string="Duration" select="True"/>
+                    <field name="prompt" string="Prompt" select="True"/>
+                    <field name="video_director_id" string="Video Director" select="True"/>
                     <group string="Group By..">
                         <filter string="Video Director" domain="[]" name="group_by_video_director_id" context="{'group_by':'video_director_id'}"/>
                     </group>

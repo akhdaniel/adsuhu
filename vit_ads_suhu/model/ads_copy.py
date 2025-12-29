@@ -220,10 +220,11 @@ class ads_copy(models.Model):
     video_director_ids_count = fields.Integer(compute="compute_video_director_ids")
 
 
-    audience_profiler_id = fields.Many2one(comodel_name="vit.audience_profiler", related="hook_id.angle_hook_id.audience_profiler_id",  string=_("Audience Profiler"))
-    product_value_analysis_id = fields.Many2one(comodel_name="vit.product_value_analysis", related="hook_id.angle_hook_id.product_value_analysis_id",  string=_("Product Value Analysis"))
+    audience_profiler_id = fields.Many2one(comodel_name="vit.audience_profiler", related="hook_id.audience_profiler_id",  string=_("Audience Profiler"))
+    product_value_analysis_id = fields.Many2one(comodel_name="vit.product_value_analysis", related="hook_id.product_value_analysis_id",  string=_("Product Value Analysis"))
     hook_id = fields.Many2one(comodel_name="vit.hook", string="Hook")
-    angle_hook_id = fields.Many2one(comodel_name="vit.angle_hook", related="hook_id.angle_hook_id",  string=_("Angle Hook"))
+    angle_hook_id = fields.Many2one(comodel_name="vit.angle_hook", string="Angle", related="hook_id.angle_hook_id")
+    market_mapper_id = fields.Many2one(comodel_name="vit.market_mapper", related="hook_id.market_mapper_id",  string=_("Market Mapper"))
     script_writer_ids = fields.One2many(comodel_name="vit.script_writer",  inverse_name="ads_copy_id",  string=_("Script Writer"))
     visual_concept_id = fields.One2many(comodel_name="vit.visual_concept",  inverse_name="ads_copy_id",  string=_("Visual Concept"))
     landing_page_builder_ids = fields.One2many(comodel_name="vit.landing_page_builder",  inverse_name="ads_copy_id",  string=_("Landing Page Builder"))

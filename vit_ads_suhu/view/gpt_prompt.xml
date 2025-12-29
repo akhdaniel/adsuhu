@@ -70,10 +70,10 @@
                     <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
                     <filter string="System Prompt" name="filter_by_system_prompt" domain="[('system_prompt','=','')]" />
                     <filter string="User Prompt" name="filter_by_user_prompt" domain="[('user_prompt','=','')]" />
-                    <field name="name" select="True"/>
-                    <field name="gpt_url" select="True"/>
-                    <field name="system_prompt" select="True"/>
-                    <field name="user_prompt" select="True"/>
+                    <field name="name" string="Name" select="True"/>
+                    <field name="gpt_url" string="Gpt Url" select="True"/>
+                    <field name="system_prompt" string="System Prompt" select="True"/>
+                    <field name="user_prompt" string="User Prompt" select="True"/>
                     <group string="Group By..">
                     </group>
                 </search>

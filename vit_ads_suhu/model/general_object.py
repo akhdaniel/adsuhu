@@ -40,6 +40,6 @@ class general_object(models.Model):
         })
         return super(general_object, self).copy(default)
 
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Gpt Prompt"))
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt", string="GPT Prompt")
     lang_id = fields.Many2one(comodel_name="res.lang", required=True,  string=_("Lang"))
     partner_id = fields.Many2one(comodel_name="res.partner",  string=_("Partner"))

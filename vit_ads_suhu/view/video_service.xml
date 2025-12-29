@@ -64,8 +64,8 @@
 
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Url" name="filter_by_url" domain="[('url','=','')]" />
-                    <field name="name" select="True"/>
-                    <field name="url" select="True"/>
+                    <field name="name" string="Name" select="True"/>
+                    <field name="url" string="Url" select="True"/>
                     <group string="Group By..">
                     </group>
                 </search>

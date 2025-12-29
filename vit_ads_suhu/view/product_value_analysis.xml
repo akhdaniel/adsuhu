@@ -10,8 +10,8 @@
                 <list string="Product Value Analysis">
                     <field name="name" /> <!-- 1-->
                     <field name="product_url" /> <!-- 100-->
+                    <field name="partner_id" /> <!-- 100-->
                     <field name="description" /> <!-- 1500-->
-                    <field name="partner_id" /> <!-- 4000-->
                 </list>
             </field>
         </record>
@@ -73,9 +73,9 @@
                                 <field name="gpt_session" widget="url" />
                             </group>
                             <group> <!-- right -->
+                                <field name="partner_id"  />
                                 <field name="gpt_prompt_id"  />
                                 <field name="lang_id"  />
-                                <field name="partner_id"  />
                             </group>
                         </group>
                         <notebook>
@@ -136,29 +136,29 @@
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
                     <filter string="Gpt Session" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
-                    <field name="product_url" select="True"/>
-                    <field name="features" select="True"/>
-                    <field name="final_report" select="True"/>
-                    <field name="report_template" select="True"/>
-                    <field name="report_template_filename" select="True"/>
-                    <field name="report_docx" select="True"/>
-                    <field name="report_docx_filename" select="True"/>
-                    <field name="name" select="True"/>
-                    <field name="output" select="True"/>
-                    <field name="input" select="True"/>
-                    <field name="gpt_url" select="True"/>
-                    <field name="description" select="True"/>
-                    <field name="general_instruction" select="True"/>
-                    <field name="specific_instruction" select="True"/>
-                    <field name="active" select="True"/>
-                    <field name="gpt_session" select="True"/>
-                    <field name="gpt_prompt_id" select="True"/>
-                    <field name="lang_id" select="True"/>
-                    <field name="partner_id" select="True"/>
+                    <field name="product_url" string="Product Url" select="True"/>
+                    <field name="features" string="Features" select="True"/>
+                    <field name="final_report" string="Final Report" select="True"/>
+                    <field name="report_template" string="Report Template" select="True"/>
+                    <field name="report_template_filename" string="Report Template Filename" select="True"/>
+                    <field name="report_docx" string="Report Docx" select="True"/>
+                    <field name="report_docx_filename" string="Report Docx Filename" select="True"/>
+                    <field name="name" string="Name" select="True"/>
+                    <field name="output" string="Output" select="True"/>
+                    <field name="input" string="Input" select="True"/>
+                    <field name="gpt_url" string="Gpt Url" select="True"/>
+                    <field name="description" string="Description" select="True"/>
+                    <field name="general_instruction" string="General Instruction" select="True"/>
+                    <field name="specific_instruction" string="Specific Instruction" select="True"/>
+                    <field name="active" string="Active" select="True"/>
+                    <field name="gpt_session" string="Gpt Session" select="True"/>
+                    <field name="partner_id" string="Partner" select="True"/>
+                    <field name="gpt_prompt_id" string="GPT Prompt" select="True"/>
+                    <field name="lang_id" string="Lang" select="True"/>
                     <group string="Group By..">
-                        <filter string="Gpt Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
-                        <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
                         <filter string="Partner" domain="[]" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="GPT Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
+                        <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
                     </group>
                 </search>
             </field>

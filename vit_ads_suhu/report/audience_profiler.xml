@@ -33,6 +33,10 @@
                             <strong>Market Mapper</strong>
                             <p class="m-0" t-field="doc.market_mapper_id"/>
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Product Value Analysis</strong>
+                            <p class="m-0" t-field="doc.product_value_analysis_id"/>
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>
@@ -45,6 +49,7 @@
                             <td>Angle No</td>
                             <td>Audience Profiler</td>
                             <td>Product Value Analysis</td>
+                            <td>Market Mapper</td>
                         </tr>
                     </thead>
                     <tbody class="angle_hook_ids_tbody">
@@ -54,6 +59,7 @@
                             <td><span t-field="line.angle_no" /></td>
                             <td><span t-field="line.audience_profiler_id" /></td>
                             <td><span t-field="line.product_value_analysis_id" /></td>
+                            <td><span t-field="line.market_mapper_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
                 </table>

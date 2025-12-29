@@ -36,3 +36,4 @@ class video_director(models.Model):
     ads_copy_id = fields.Many2one(comodel_name="vit.ads_copy",  string=_("Ads Copy"))
     video_variant_ids = fields.One2many(comodel_name="vit.video_variant",  inverse_name="video_director_id",  string=_("Video Variant"))
     video_script_ids = fields.One2many(comodel_name="vit.video_script",  inverse_name="video_director_id",  string=_("Video Script"))
+    hook_id = fields.Many2one(comodel_name="vit.hook", related="ads_copy_id.hook_id",  string=_("Hook"))

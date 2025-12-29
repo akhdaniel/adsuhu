@@ -33,19 +33,17 @@
             </field>
         </record-->
         <!-- action window -->
-        <!--record id="vit_ads_suhu.action_audience_profiler" model="ir.actions.act_window">
+        <record id="vit_ads_suhu.action_audience_profiler" model="ir.actions.act_window">
             <field name="name">Audience Profiler</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">vit.audience_profiler</field>
             <field name="view_mode">list,form,kanban,pivot,graph</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
-                Click to add a new Audience Profiler
-                </p><p>
-
-                </p>
-            </field>
-        </record-->
+            <field name="context">{
+    "search_default_group_by_product_value_analysis_id":1, 
+    "search_default_group_by_market_mapper_id":1
+    }</field>
+            
+        </record>
 
         <!-- <menuitem id="menu_audience_profiler" name="Audience Profiler" parent="vit_ads_suhu_config_menu" action="action_audience_profiler" sequence="40"/> -->
     </data>

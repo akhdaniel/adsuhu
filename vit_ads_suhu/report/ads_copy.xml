@@ -49,6 +49,10 @@
                             <strong>Angle Hook</strong>
                             <p class="m-0" t-field="doc.angle_hook_id"/>
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Market Mapper</strong>
+                            <p class="m-0" t-field="doc.market_mapper_id"/>
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>
@@ -173,6 +177,7 @@
                             <td>Visual Concept</td>
                             <td>Video Service</td>
                             <td>Ads Copy</td>
+                            <td>Hook</td>
                         </tr>
                     </thead>
                     <tbody class="video_director_ids_tbody">
@@ -184,6 +189,7 @@
                             <td><span t-field="line.visual_concept_id" /></td>
                             <td><span t-field="line.video_service_id" /></td>
                             <td><span t-field="line.ads_copy_id" /></td>
+                            <td><span t-field="line.hook_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
                 </table>

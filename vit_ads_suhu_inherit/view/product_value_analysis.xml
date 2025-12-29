@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//list" position="attributes">
                     <attribute name="js_class">ads_list_with_banner</attribute>
-                </xpath>            
+                </xpath>
             </field>
         </record>
         <!-- form view -->
@@ -33,20 +33,15 @@
             </field>
         </record-->
         <!-- action window -->
-        <!--record id="vit_ads_suhu.action_product_value_analysis" model="ir.actions.act_window">
+        <record id="vit_ads_suhu.action_product_value_analysis" model="ir.actions.act_window">
             <field name="name">Product Value Analysis</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">vit.product_value_analysis</field>
-            <field name="view_mode">list,form,kanban,pivot</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
-                Click to add a new Product Value Analysis
-                </p><p>
-
-                </p>
-            </field>
-        </record-->
+            <field name="view_mode">list,form,kanban</field>
+            <field name="context">{"search_default_group_by_partner_id":1}</field>
+        </record>
 
         <!-- <menuitem id="menu_product_value_analysis" name="Product Value Analysis" parent="vit_ads_suhu_config_menu" action="action_product_value_analysis" sequence="20"/> -->
+
     </data>
 </odoo>

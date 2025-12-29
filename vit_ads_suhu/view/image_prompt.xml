@@ -86,12 +86,12 @@
                     <filter string="Image" name="filter_by_image" domain="[('image','=','')]" />
                     <filter string="Image Filename" name="filter_by_image_filename" domain="[('image_filename','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
-                    <field name="prompt" select="True"/>
-                    <field name="image" select="True"/>
-                    <field name="image_filename" select="True"/>
-                    <field name="name" select="True"/>
-                    <field name="visual_concept_id" select="True"/>
-                    <field name="image_generator_id" select="True"/>
+                    <field name="prompt" string="Prompt" select="True"/>
+                    <field name="image" string="Image" select="True"/>
+                    <field name="image_filename" string="Image Filename" select="True"/>
+                    <field name="name" string="Name" select="True"/>
+                    <field name="visual_concept_id" string="Visual Concept" select="True"/>
+                    <field name="image_generator_id" string="Image Generator" select="True"/>
                     <group string="Group By..">
                         <filter string="Visual Concept" domain="[]" name="group_by_visual_concept_id" context="{'group_by':'visual_concept_id'}"/>
                         <filter string="Image Generator" domain="[]" name="group_by_image_generator_id" context="{'group_by':'image_generator_id'}"/>

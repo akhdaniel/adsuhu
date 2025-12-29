@@ -80,10 +80,10 @@
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Image" name="filter_by_image" domain="[('image','=','')]" />
                     <filter string="Image Filename" name="filter_by_image_filename" domain="[('image_filename','=','')]" />
-                    <field name="name" select="True"/>
-                    <field name="image" select="True"/>
-                    <field name="image_filename" select="True"/>
-                    <field name="image_generator_id" select="True"/>
+                    <field name="name" string="Name" select="True"/>
+                    <field name="image" string="Image" select="True"/>
+                    <field name="image_filename" string="Image Filename" select="True"/>
+                    <field name="image_generator_id" string="Image Generator" select="True"/>
                     <group string="Group By..">
                         <filter string="Image Generator" domain="[]" name="group_by_image_generator_id" context="{'group_by':'image_generator_id'}"/>
                     </group>

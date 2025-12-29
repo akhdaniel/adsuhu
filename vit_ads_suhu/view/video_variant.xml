@@ -80,10 +80,10 @@
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Video" name="filter_by_video" domain="[('video','=','')]" />
                     <filter string="Video Filename" name="filter_by_video_filename" domain="[('video_filename','=','')]" />
-                    <field name="name" select="True"/>
-                    <field name="video" select="True"/>
-                    <field name="video_filename" select="True"/>
-                    <field name="video_director_id" select="True"/>
+                    <field name="name" string="Name" select="True"/>
+                    <field name="video" string="Video" select="True"/>
+                    <field name="video_filename" string="Video Filename" select="True"/>
+                    <field name="video_director_id" string="Video Director" select="True"/>
                     <group string="Group By..">
                         <filter string="Video Director" domain="[]" name="group_by_video_director_id" context="{'group_by':'video_director_id'}"/>
                     </group>

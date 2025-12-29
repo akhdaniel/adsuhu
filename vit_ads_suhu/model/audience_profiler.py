@@ -69,4 +69,5 @@ class audience_profiler(models.Model):
 
 
     market_mapper_id = fields.Many2one(comodel_name="vit.market_mapper",  string=_("Market Mapper"))
+    product_value_analysis_id = fields.Many2one(comodel_name="vit.product_value_analysis", related="market_mapper_id.product_value_analysis_id", store=True,  string=_("Product Value Analysis"))
     angle_hook_ids = fields.One2many(comodel_name="vit.angle_hook",  inverse_name="audience_profiler_id",  string=_("Angle Hook"))

@@ -24,17 +24,19 @@
                 </xpath>           
             </field>
         </record>
-        <!-- search -->
-        <!--record id="view_ads_copy_search" model="ir.ui.view">
-            <field name="name">ads_copy</field>
-            <field name="model">vit.ads_copy</field>
-            <field name="inherit_id" ref="vit_ads_suhu.view_vit_ads_copy_search"/>
-            <field name="arch" type="xml">
-            </field>
-        </record-->
-        <!-- <record id="vit_ads_suhu.action_ads_copy" model="ir.actions.act_window">
-            <field name="context">{'banner_src': '/vit_ads_suhu_inherit/static/src/img/ads_copy.png','default_banner_src': '/vit_ads_suhu_inherit/static/src/img/ads_copy.png','banner_alt': 'Ads Copy flow','default_banner_alt': 'Ads Copy flow'}</field>
-        </record> -->
+        <record id="vit_ads_suhu.action_ads_copy" model="ir.actions.act_window">
+            <field name="name">Ads Copy</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.ads_copy</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{
+                "search_default_group_by_product_value_analysis_id":1, 
+                "search_default_group_by_market_mapper_id":1,
+                "search_default_group_by_audience_profiler_id":1,
+                "search_default_group_by_angle_hook_id":1,
+                "search_default_group_by_hook_id":1,
+            }</field>            
+        </record>
 
         <!-- <menuitem id="menu_ads_copy" name="Ads Copy" parent="vit_ads_suhu_config_menu" action="action_ads_copy" sequence="60"/> -->
     </data>
