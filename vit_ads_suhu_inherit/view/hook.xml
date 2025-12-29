@@ -21,7 +21,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//form" position="attributes">
                     <attribute name="js_class">ads_form_with_banner</attribute>
-                </xpath>           
+                </xpath>
+
+                <xpath expr="//page[@name='input']" position="replace"/>    
+                <xpath expr="//page[@name='instructions']" position="replace"/>    
+                <field name="gpt_prompt_id" position="replace"/>
+                <field name="gpt_url" position="replace"/>
             </field>
         </record>
         <!-- search -->
