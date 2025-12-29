@@ -19158,7 +19158,7 @@
 								"$ref": "AAAAAAGbDOD0srqePoM="
 							},
 							"name": "features",
-							"documentation": "{\n\"tree:invisible\":true\n}",
+							"documentation": "{\n\"tree:invisible\":true,\n\"form:pos\":\"tab:Features\"\n}",
 							"type": "Text"
 						},
 						{

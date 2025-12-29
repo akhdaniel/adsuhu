@@ -65,7 +65,6 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="product_url"  />
-                                <field name="features"  />
                                 <field name="report_template_filename" invisible="True" />
                                 <field name="active"  />
                                 <field name="report_docx_filename" invisible="True" />
@@ -80,6 +79,9 @@
                             </group>
                         </group>
                         <notebook>
+                            <page name="features" string="Features">
+                                    <field name="features" />
+                            </page>
                             <page name="reports" string="Reports">
                                 <group>
                                     <field name="final_report" widget="md_viewer" />
