@@ -13,3 +13,5 @@ from . import campaign_builder
 from . import image_generator
 from . import video_director
 from . import hook
+from . import image_variant
+from . import video_variant

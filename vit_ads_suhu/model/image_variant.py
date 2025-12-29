@@ -10,12 +10,17 @@ class image_variant(models.Model):
     _description = "vit.image_variant"
 
 
+    def _get_image_url(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 
     name = fields.Char( required=True, copy=False, string=_("Name"))
     image = fields.Binary( string=_("Image"))
     image_filename = fields.Char( string=_("Image Filename"))
+    image_url = fields.Char(compute="_get_image_url", widget="url",  string=_("Image Url"))
 
 
     def copy(self, default=None):

@@ -29,6 +29,10 @@
                             <p class="m-0" t-field="doc.video_filename" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Video Url</strong>
+                            <p class="m-0" t-field="doc.video_url" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Video Director</strong>
                             <p class="m-0" t-field="doc.video_director_id"/>
                         </div>

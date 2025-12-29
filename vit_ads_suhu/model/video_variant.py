@@ -10,12 +10,17 @@ class video_variant(models.Model):
     _description = "vit.video_variant"
 
 
+    def _get_video_url(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 
     name = fields.Char( required=True, copy=False, string=_("Name"))
     video = fields.Binary( string=_("Video"))
     video_filename = fields.Char( string=_("Video Filename"))
+    video_url = fields.Char(compute="_get_video_url",  string=_("Video Url"))
 
 
     def copy(self, default=None):

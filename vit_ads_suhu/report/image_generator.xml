@@ -59,6 +59,7 @@
                             <td>Name</td>
                             <td>Image</td>
                             <td>Image Filename</td>
+                            <td>Image Url</td>
                             <td>Image Generator</td>
                         </tr>
                     </thead>
@@ -67,6 +68,7 @@
                             <td><span t-field="line.name" /></td>
                             <td><span t-field="line.image" /></td>
                             <td><span t-field="line.image_filename" /></td>
+                            <td><span t-field="line.image_url" /></td>
                             <td><span t-field="line.image_generator_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>

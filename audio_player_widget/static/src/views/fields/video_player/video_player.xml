@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="audio_player_widget.FieldVideoURL"
+       t-inherit="web.UrlField"
+       t-inherit-mode="primary"
+       owl="1"
+    >
+        <xpath expr="//t[@t-if='props.readonly']" position="replace">
+            <t t-if='props.readonly'>
+                <video controls="controls" preload="none" t-if="props.record.data[props.name]">
+                    <source t-att-src="props.record.data[props.name]"/>
+                    Your browser does not support the video element.
+                </video>
+            </t>
+        </xpath>
+
+    </t>
+
+</templates>

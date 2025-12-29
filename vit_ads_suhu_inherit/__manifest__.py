@@ -5,7 +5,8 @@
 	"version": "1.0",
 	"depends": [
 		"base","web",
-		"vit_ads_suhu"
+		"vit_ads_suhu",
+		"audio_player_widget"
 	],
 	"author": "Akhmad Daniel Sembiring",
 	"category": "Utility",
@@ -39,8 +40,8 @@
 		"view/compliance_checker.xml",
 		"view/landing_page_builder.xml",
 		"view/campaign_builder.xml",
-		"view/image_generator.xml"
-		# "view/video_generator.xml"
+		"view/image_generator.xml",
+		"view/video_director.xml"
 	],
 	"installable": True,
 	"auto_install": False,

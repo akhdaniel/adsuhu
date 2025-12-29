@@ -22,13 +22,6 @@
                     </h2>
                     <div class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-2">
-                            <strong>Video</strong>
-                        </div>
-                        <div class="col-auto mw-100 mb-2">
-                            <strong>Video Filename</strong>
-                            <p class="m-0" t-field="doc.video_filename" />
-                        </div>
-                        <div class="col-auto mw-100 mb-2">
                             <strong>Visual Concept</strong>
                             <p class="m-0" t-field="doc.visual_concept_id"/>
                         </div>
@@ -50,6 +43,7 @@
                             <td>Name</td>
                             <td>Video</td>
                             <td>Video Filename</td>
+                            <td>Video Url</td>
                             <td>Video Director</td>
                         </tr>
                     </thead>
@@ -58,6 +52,7 @@
                             <td><span t-field="line.name" /></td>
                             <td><span t-field="line.video" /></td>
                             <td><span t-field="line.video_filename" /></td>
+                            <td><span t-field="line.video_url" /></td>
                             <td><span t-field="line.video_director_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>

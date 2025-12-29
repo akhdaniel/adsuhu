@@ -81,6 +81,7 @@
                                 <field name="image_variant_ids" >
                                     <list >
                                         <field name="name" /> <!-- 100-->
+                                        <field name="image_url" /> <!-- 103-->
                                     </list>
                                 </field>
                             </page>

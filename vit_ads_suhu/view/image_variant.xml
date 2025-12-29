@@ -10,6 +10,7 @@
                 <list string="Image Variant">
                     <field name="name" /> <!-- 100-->
                     <field name="image_generator_id" /> <!-- 100-->
+                    <field name="image_url" /> <!-- 103-->
                 </list>
             </field>
         </record>
@@ -50,6 +51,7 @@
                             <group> <!-- left -->
                                 <field name="image" filename="image_filename" widget="image" />
                                 <field name="image_filename" invisible="1" />
+                                <field name="image_url"  />
                             </group>
                             <group> <!-- right -->
                                 <field name="image_generator_id"  />

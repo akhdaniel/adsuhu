@@ -98,8 +98,6 @@
                         <tr>
                             <td> Name</td>
                             <td> Inherit</td>
-                            <td>Video</td>
-                            <td>Video Filename</td>
                             <td>Visual Concept</td>
                             <td>Video Service</td>
                             <td>Ads Copy</td>
@@ -109,8 +107,6 @@
                         <tr t-foreach="doc.video_director_ids" t-as="line">
                             <td><span t-field="line._name" /></td>
                             <td><span t-field="line._inherit" /></td>
-                            <td><span t-field="line.video" /></td>
-                            <td><span t-field="line.video_filename" /></td>
                             <td><span t-field="line.visual_concept_id" /></td>
                             <td><span t-field="line.video_service_id" /></td>
                             <td><span t-field="line.ads_copy_id" /></td>

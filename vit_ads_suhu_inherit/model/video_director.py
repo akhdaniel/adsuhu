@@ -4,6 +4,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
+
 class video_director(models.Model):
 
     _name = "vit.video_director"
@@ -11,6 +12,8 @@ class video_director(models.Model):
 
     lang_id = fields.Many2one(comodel_name="res.lang", related="ads_copy_id.product_value_analysis_id.lang_id")
     partner_id = fields.Many2one(comodel_name="res.partner", related="ads_copy_id.product_value_analysis_id.partner_id")
+
+
 
     def action_generate(self, ):
         pass

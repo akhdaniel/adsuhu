@@ -10,6 +10,7 @@
                 <list string="Video Variant">
                     <field name="name" /> <!-- 100-->
                     <field name="video_director_id" /> <!-- 100-->
+                    <field name="video_url" widget="video_player"/> <!-- 103-->
                 </list>
             </field>
         </record>
@@ -48,8 +49,9 @@
                         </div>
                         <group>
                             <group> <!-- left -->
-                                <field name="video" filename="video_filename" widget="image" />
+                                <field name="video" filename="video_filename" />
                                 <field name="video_filename" invisible="1" />
+                                <field name="video_url" widget="video_player" />
                             </group>
                             <group> <!-- right -->
                                 <field name="video_director_id"  />
