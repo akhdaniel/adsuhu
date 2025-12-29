@@ -116,23 +116,23 @@
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
-                    <filter string="Gpt Url" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
+                    <filter string="GPT URL" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
                     <filter string="Description" name="filter_by_description" domain="[('description','=','')]" />
                     <filter string="General Instruction" name="filter_by_general_instruction" domain="[('general_instruction','=','')]" />
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
-                    <filter string="Gpt Session" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
+                    <filter string="GPT Session URL" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
                     <field name="alasan" string="Alasan" select="True"/>
                     <field name="audience_profile_no" string="Audience Profile No" select="True"/>
                     <field name="name" string="Name" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>
-                    <field name="gpt_url" string="Gpt Url" select="True"/>
+                    <field name="gpt_url" string="GPT URL" select="True"/>
                     <field name="description" string="Description" select="True"/>
                     <field name="general_instruction" string="General Instruction" select="True"/>
                     <field name="specific_instruction" string="Specific Instruction" select="True"/>
                     <field name="active" string="Active" select="True"/>
-                    <field name="gpt_session" string="Gpt Session" select="True"/>
+                    <field name="gpt_session" string="GPT Session URL" select="True"/>
                     <field name="partner_id" string="Partner" select="True"/>
                     <field name="product_value_analysis_id" string="Product Value Analysis" select="True"/>
                     <field name="market_mapper_id" string="Market Mapper" select="True"/>

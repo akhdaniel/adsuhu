@@ -25,12 +25,12 @@ class general_object(models.Model):
     name = fields.Char( required=True, copy=False, string=_("Name"))
     output = fields.Text( string=_("Output"))
     input = fields.Text( string=_("Input"))
-    gpt_url = fields.Char(related="gpt_prompt_id.gpt_url",  string=_("Gpt Url"))
+    gpt_url = fields.Char(related="gpt_prompt_id.gpt_url", string="GPT URL")
     description = fields.Text( string=_("Description"))
     general_instruction = fields.Text(default="You MUST respond with ONLY valid JSON. Do NOT include explanations, markdown, or extra text. If you cannot comply, return an empty JSON object {}.",  string=_("General Instruction"))
     specific_instruction = fields.Text( string=_("Specific Instruction"))
     active = fields.Boolean( string=_("Active"), default=True)
-    gpt_session = fields.Char( string=_("Gpt Session"))
+    gpt_session = fields.Char(string="GPT Session URL")
 
 
     def copy(self, default=None):
