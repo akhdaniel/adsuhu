@@ -15,73 +15,73 @@ REQUIRED JSON OUTPUT FORMAT:
 ```json
 {
     "product": "...",
-    "wilayah": "...",
-    "tujuan": "full map",
+    "area": "...",
+    "objective": "full map",
 
-    "segmentasi_pasar": {
-      "demografis": {
-        "usia": "...",
+    "market_segmentation": {
+      "demography": {
+        "age": "...",
         "gender": "L/P",
-        "lokasi": "...",
-        "pekerjaan": "...",
-        "penghasilan": "..."
+        "location": "...",
+        "occupation": "...",
+        "income": "..."
       },
-      "psikografis": {
-        "minat": [
+      "psychographics": {
+        "interests": [
           "...",
           "...",
           "...",
           "..."
         ],
-        "nilai_dan_gaya_hidup": ["..."],
-        "kepribadian": ["..."]
+        "values_lifestyle": ["..."],
+        "personality_traits": ["..."]
       },
-      "perilaku": {
-        "kebiasaan_belanja": "...",
-        "jenis_konten_dikonsumsi": "...",
-        "respons_terhadap_promo": "..."
+      "behaviour": {
+        "shopping_behavior": "...",
+        "content_consumption_preferences": "...",
+        "response_to_promotions": "..."
       }
     },
 
-    "segment_prioritas": [
+    "priority_segments": [
       {
-        "nama": "...",
-        "alasan": "...",
-        "nilai_prioritas": ""
+        "name": "...",
+        "reason": "...",
+        "prioritas_value": ""
       },
       {
-        "nama": "...",
-        "alasan": "...",
-        "nilai_prioritas": ""
+        "name": "...",
+        "reason": "...",
+        "prioritas_value": ""
       },
       {
-        "nama": "...",
-        "alasan": "...",
-        "nilai_prioritas": ""
+        "name": "...",
+        "reason": "...",
+        "prioritas_value": ""
       }
     ],
 
-    "channel_dan_touchpoint": {
-      "platform_utama": ["LinkedIn", "Google Search", "YouTube", "Website (SEO)", "Email B2B", ...],
-      "komunitas_online": [
+    "channel_and_touchpoint": {
+      "main_platform": ["LinkedIn", "Google Search", "YouTube", "Website (SEO)", "Email B2B", ...],
+      "online_communities": [
         "...",
         "...",
         "..."
       ],
-      "influencer_relevan": [
+      "relevan_influencers": [
         "...",
         "...",
         "..."
       ]
     },
 
-    "interest_dan_keyword_targeting": {
-      "interest": [
+    "interest_and_keyword_targeting": {
+      "interests": [
         "...",
         "...",
         "..."
       ],
-      "keyword": [
+      "keywords": [
         "...",
         "...",
         "..."
@@ -89,7 +89,7 @@ REQUIRED JSON OUTPUT FORMAT:
     },
 
     "confidence_score": "",
-    "keterbatasan": "..."
+    "limitation": "..."
 }
 ```
 """

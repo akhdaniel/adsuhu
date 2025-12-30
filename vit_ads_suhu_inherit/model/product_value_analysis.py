@@ -52,30 +52,30 @@ DEFAULT_SPECIFIC_INSTRUCTION="""REQUIRED JSON OUTPUT FORMAT:
       "fitur": "...",
       "pain_point": "...",
       "gain_point": "...",
-      "manfaat_fungsional": "...",
-      "manfaat_emosional": "...",
+      "functional_benefits": "...",
+      "emotional_benefits": "...",
       "proof": "...",
-      "motif_pembelian": "...",
-      "buying_trigger": "...’",
+      "buying_motif": "...",
+      "buying_triggers": "...",
       "level_maslow": "...",
-      "usp_relevan": "..."
+      "relevan_usp": "..."
     },
     ... # list semua fitur 
   ],
-  "spike_diferensiasi": "...",
+  "differentiation_spike": "...",
   "buying_triggers": {
-    "rasional": [
+    "rational": [
       "...",
       "...",
       "..."
     ],
-    "emosional": [
+    "emotional": [
       "...",
       "...",
       "..."
     ]
   },
-  "target_market_awal": {
+  "initial_target_market": {
     "persona": "...",
     "pain": "...",
     "gain": "..."
@@ -505,14 +505,14 @@ Response in {self.lang_id.name} language.
             report.append("\n")
             report.append(f"* Pain Point: {val['pain_point']}")
             report.append(f"* Gain Point: {val['gain_point']}")
-            report.append(f"* Manfaat Fungsional: {val['manfaat_fungsional']}")
-            report.append(f"* Manfaat Emosional: {val['manfaat_emosional']}")
-            report.append(f"* Manfaat Emosional: {val['manfaat_emosional']}")
+            report.append(f"* Manfaat Fungsional: {val['functional_benefits']}")
+            report.append(f"* Manfaat Emosional: {val['emotional_benefits']}")
+            report.append(f"* Manfaat Emosional: {val['emotional_benefits']}")
             report.append(f"* Proof: {val['proof']}")
-            report.append(f"* Motif Pembelian: {val['motif_pembelian']}")
-            report.append(f"* Buying Trigger: {val['buying_trigger']}")
+            report.append(f"* Motif Pembelian: {val['buying_motif']}")
+            report.append(f"* Buying Trigger: {val['buying_triggers']}")
             report.append(f"* Level Maslow: {val['level_maslow']}")
-            report.append(f"* USP Relevan: {val['usp_relevan']}")
+            report.append(f"* USP Relevan: {val['relevan_usp']}")
         report.append("\n")
         
         report.append("## Spike Diferensiasi")
