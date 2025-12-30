@@ -113,7 +113,7 @@
             <field name="arch" type="xml">
                 <search string="Audience Profiler">
 
-                    <filter string="Alasan" name="filter_by_alasan" domain="[('alasan','=','')]" />
+                    <filter string="Reason" name="filter_by_alasan" domain="[('alasan','=','')]" />
                     <filter string="Audience Profile No" name="filter_by_audience_profile_no" domain="[('audience_profile_no','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
@@ -124,7 +124,7 @@
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
                     <filter string="GPT Session URL" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
-                    <field name="alasan" string="Alasan" select="True"/>
+                    <field name="alasan" string="Reason" select="True"/>
                     <field name="audience_profile_no" string="Audience Profile No" select="True"/>
                     <field name="name" string="Name" select="True"/>
                     <field name="output" string="Output" select="True"/>

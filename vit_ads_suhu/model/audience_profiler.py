@@ -33,7 +33,7 @@ class audience_profiler(models.Model):
 
 
     _inherit = "vit.general_object"
-    alasan = fields.Text( string=_("Alasan"))
+    alasan = fields.Text(string="Reason")
     audience_profile_no = fields.Integer( string=_("Audience Profile No"))
 
 
