@@ -148,8 +148,8 @@ Response in {rec.lang_id.name} language.
             'name':f'AUDIENCE PROFILE {i}',
             'audience_profile_no': i,
             'market_mapper_id': self.id,
-            'description': x['nama'],
-            'alasan': x['alasan'],
+            'description': x['name'],
+            'alasan': x['reason'],
             'lang_id': self.lang_id.id
         }) for i,x in enumerate(js['priority_segments'], start=1)]
 
