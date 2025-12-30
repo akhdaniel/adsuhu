@@ -23298,7 +23298,7 @@
 								"$ref": "AAAAAAGbHvslCAoNY5M="
 							},
 							"name": "gpt_session",
-							"documentation": "{\n\"xml:widget\":\"url\",\n\"tree:invisible\":true,\n\"form:seq\":3100,\n\"string\":\"GPT Session URL\"\n}",
+							"documentation": "{\n\"required\":\"True\",\n\"xml:widget\":\"url\",\n\"tree:invisible\":true,\n\"form:seq\":3100,\n\"string\":\"GPT Session URL\"\n}",
 							"type": "Char"
 						}
 					],
