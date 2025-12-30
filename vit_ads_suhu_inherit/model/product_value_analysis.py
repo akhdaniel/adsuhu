@@ -551,7 +551,7 @@ Response in {self.lang_id.name} language.
         for m, market in enumerate(markets, start=2):
             report.append(f"# MARKET ANALYSIS")
             report.append("---")
-            res = json_to_markdown(json.loads(market.output), level=2, max_level=3, prefix=m)
+            res = json_to_markdown(json.loads(self.clean_md(market.output)), level=2, max_level=3, prefix=m)
             report.append(res)
             report.append("\n")
             
