@@ -604,7 +604,7 @@ Response in {self.lang_id.name} language.
                     js = json.loads(self.clean_md(angle.output))
                     if a > 1:
                         js.pop('big_ideas')
-                        js.pop('catatan_strategis')
+                        js.pop('strategic_notes')
                     
                     res = json_to_markdown(js, level=2, max_level=4, prefix=a)
                     # show big ideas only on first angle
