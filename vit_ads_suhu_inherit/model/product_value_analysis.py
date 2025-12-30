@@ -49,7 +49,7 @@ DEFAULT_SPECIFIC_INSTRUCTION="""REQUIRED JSON OUTPUT FORMAT:
   ],
   "value_map_extended": [
     {
-      "fitur": "...",
+      "feature": "...",
       "pain_point": "...",
       "gain_point": "...",
       "functional_benefits": "...",
@@ -60,7 +60,7 @@ DEFAULT_SPECIFIC_INSTRUCTION="""REQUIRED JSON OUTPUT FORMAT:
       "level_maslow": "...",
       "relevan_usp": "..."
     },
-    ... # list semua fitur 
+    ... # list semua feature 
   ],
   "differentiation_spike": "...",
   "buying_triggers": {
@@ -501,39 +501,38 @@ Response in {self.lang_id.name} language.
         
         report.append(f"## Extended Value Map")
         for i,val in enumerate(output['value_map_extended']):
-            report.append(f"### Fitur {i+1}: {val['fitur']}")
+            report.append(f"### Feature {i+1}: {val['feature']}")
             report.append("\n")
             report.append(f"* Pain Point: {val['pain_point']}")
             report.append(f"* Gain Point: {val['gain_point']}")
-            report.append(f"* Manfaat Fungsional: {val['functional_benefits']}")
-            report.append(f"* Manfaat Emosional: {val['emotional_benefits']}")
-            report.append(f"* Manfaat Emosional: {val['emotional_benefits']}")
+            report.append(f"* Functional Benefits: {val['functional_benefits']}")
+            report.append(f"* Emotional Benefits: {val['emotional_benefits']}")
             report.append(f"* Proof: {val['proof']}")
-            report.append(f"* Motif Pembelian: {val['buying_motif']}")
+            report.append(f"* Buying Motif: {val['buying_motif']}")
             report.append(f"* Buying Trigger: {val['buying_triggers']}")
             report.append(f"* Level Maslow: {val['level_maslow']}")
-            report.append(f"* USP Relevan: {val['relevan_usp']}")
+            report.append(f"* Relevan USPs: {val['relevan_usp']}")
         report.append("\n")
         
-        report.append("## Spike Diferensiasi")
-        report.append(output['spike_diferensiasi'])
+        report.append("## Differentiation Spike")
+        report.append(output['differentiation_spike'])
         report.append("\n")
         
         report.append("## Buying Triggers")
         buying_triggers=output['buying_triggers']
-        report.append("### Rasional")
-        report.append(list_to_bullet(buying_triggers['rasional']))
+        report.append("### Rational")
+        report.append(list_to_bullet(buying_triggers['rational']))
         report.append("\n")
         
-        report.append("### Emosional")
-        report.append(list_to_bullet(buying_triggers['emosional']))
+        report.append("### Emotional")
+        report.append(list_to_bullet(buying_triggers['emotional']))
         report.append("\n")       
 
-        report.append("## Target Market Awal")
-        target_market_awal = output['target_market_awal']
-        report.append(f"* *Persona*: {target_market_awal['persona']}")
-        report.append(f"* *Pain*: {target_market_awal['pain']}")
-        report.append(f"* *Gain*: {target_market_awal['gain']}")
+        report.append("## Initial Target Market")
+        initial_target_market = output['initial_target_market']
+        report.append(f"* *Persona*: {initial_target_market['persona']}")
+        report.append(f"* *Pain*: {initial_target_market['pain']}")
+        report.append(f"* *Gain*: {initial_target_market['gain']}")
         report.append("\n")
 
         report.append("## Copywriting Angles")

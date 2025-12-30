@@ -11,7 +11,7 @@ REQUIRED JSON OUTPUT FORMAT:
 ```json
 {
     "product": "...",
-    "area": "...",
+    "target_market": "...",
     "objective": "full map",
 
     "market_segmentation": {
