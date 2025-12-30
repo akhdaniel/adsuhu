@@ -65,6 +65,10 @@
                             <strong>Partner</strong>
                             <p class="m-0" t-field="doc.partner_id"/>
                         </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Gpt Model</strong>
+                            <p class="m-0" t-field="doc.gpt_model_id"/>
+                        </div>
                     </div>
                 </div>
                 <div class="oe_structure"/>

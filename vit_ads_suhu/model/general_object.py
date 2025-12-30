@@ -43,3 +43,4 @@ class general_object(models.Model):
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt", string="GPT Prompt")
     lang_id = fields.Many2one(comodel_name="res.lang", required=True,  string=_("Lang"))
     partner_id = fields.Many2one(comodel_name="res.partner",  string=_("Partner"))
+    gpt_model_id = fields.Many2one(comodel_name="vit.gpt_model", string="GPT Model")

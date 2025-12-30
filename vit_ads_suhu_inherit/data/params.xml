@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+
+    <record id="wavespeed_api_key" model="ir.config_parameter">
+        <field name="key">wavespeed_api_key</field>
+        <field name="value">slxx</field>
+    </record>
+    <record id="musicgpt_api_key" model="ir.config_parameter">
+        <field name="key">musicgpt_api_key</field>
+        <field name="value">slxx</field>
+    </record>
+    <record id="openai_api_key" model="ir.config_parameter">
+        <field name="key">openai_api_key</field>
+        <field name="value">slxx</field>
+    </record>
+    <record id="openai_base_url" model="ir.config_parameter">
+        <field name="key">openai_base_url</field>
+        <field name="value">https://api.deepseek.com/v1</field>
+    </record>
+
+</odoo>

@@ -28,6 +28,7 @@
                     <field name="gpt_prompt_id" type="row"/>
                     <field name="lang_id" type="row"/>
                     <field name="partner_id" type="row"/>
+                    <field name="gpt_model_id" type="row"/>
                 </pivot>
             </field>
         </record>
@@ -77,6 +78,7 @@
                                 <field name="ads_copy_id"  />
                                 <field name="gpt_prompt_id"  />
                                 <field name="lang_id"  />
+                                <field name="gpt_model_id"  />
                             </group>
                         </group>
                         <notebook>
@@ -138,12 +140,14 @@
                     <field name="ads_copy_id" string="Ads Copy" select="True"/>
                     <field name="gpt_prompt_id" string="GPT Prompt" select="True"/>
                     <field name="lang_id" string="Lang" select="True"/>
+                    <field name="gpt_model_id" string="GPT Model" select="True"/>
                     <group string="Group By..">
                         <filter string="Visual Concept" domain="[]" name="group_by_visual_concept_id" context="{'group_by':'visual_concept_id'}"/>
                         <filter string="Partner" domain="[]" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
                         <filter string="Ads Copy" domain="[]" name="group_by_ads_copy_id" context="{'group_by':'ads_copy_id'}"/>
                         <filter string="GPT Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
                         <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
+                        <filter string="GPT Model" domain="[]" name="group_by_gpt_model_id" context="{'group_by':'gpt_model_id'}"/>
                     </group>
                 </search>
             </field>

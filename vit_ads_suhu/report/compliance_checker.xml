@@ -52,7 +52,6 @@
                             <td>Compliance Checker</td>
                             <td>Ads Copy</td>
                             <td>Audience Profiler</td>
-                            <td>Product Value Analysis</td>
                         </tr>
                     </thead>
                     <tbody class="landing_page_builder_ids_tbody">
@@ -65,7 +64,6 @@
                             <td><span t-field="line.compliance_checker_id" /></td>
                             <td><span t-field="line.ads_copy_id" /></td>
                             <td><span t-field="line.audience_profiler_id" /></td>
-                            <td><span t-field="line.product_value_analysis_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
                 </table>

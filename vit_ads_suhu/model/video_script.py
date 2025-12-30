@@ -25,6 +25,7 @@ class video_script(models.Model):
     duration = fields.Char( string=_("Duration"))
     script = fields.Text( string=_("Script"))
     prompt = fields.Text( string=_("Prompt"))
+    video = fields.Binary( string=_("Video"))
     video_filename = fields.Char( string=_("Video Filename"))
     video_url = fields.Char( string=_("Video Url"))
     fal_ai_url = fields.Char( string=_("Fal Ai Url"))

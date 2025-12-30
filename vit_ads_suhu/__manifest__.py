@@ -64,7 +64,9 @@
 		"view/lang.xml",
 		"view/customer.xml",
 		"view/video_script.xml",
-		"report/video_script.xml"
+		"report/video_script.xml",
+		"view/gpt_model.xml",
+		"report/gpt_model.xml"
 	],
 	"installable": True,
 	"auto_install": False,

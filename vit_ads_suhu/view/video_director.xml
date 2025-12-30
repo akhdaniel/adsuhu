@@ -32,6 +32,7 @@
                     <field name="gpt_prompt_id" type="row"/>
                     <field name="lang_id" type="row"/>
                     <field name="partner_id" type="row"/>
+                    <field name="gpt_model_id" type="row"/>
                 </pivot>
             </field>
         </record>
@@ -62,8 +63,6 @@
                             <group> <!-- left -->
                                 <field name="angle"  />
                                 <field name="hook"  />
-                                <field name="main_actor" filename="main_actor_filename" widget="image" />
-                                <field name="main_actor_filename" invisible="1" />
                                 <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -77,6 +76,7 @@
                                 <field name="video_service_id"  />
                                 <field name="gpt_prompt_id"  />
                                 <field name="lang_id"  />
+                                <field name="gpt_model_id"  />
                             </group>
                         </group>
                         <notebook>
@@ -90,16 +90,20 @@
                             </page>
                             <page name="video_script_ids" string="Video Script">
                                 <field name="video_script_ids" >
-                                    <list editable="bottom">
+                                    <list >
                                         <field name="name" /> <!-- 100-->
                                         <field name="duration" /> <!-- 101-->
                                         <field name="script" /> <!-- 102-->
                                         <field name="prompt" /> <!-- 103-->
-                                        <field name="video_filename" /> <!-- 104-->
-                                        <field name="video_url" /> <!-- 105-->
-                                        <field name="fal_ai_url" /> <!-- 106-->
                                     </list>
                                 </field>
+                            </page>
+                            <page name="actor" string="Actor">
+                                <group>
+                                    <field name="main_actor" filename="main_actor_filename" widget="image" />
+                                    <field name="main_actor_filename" invisible="1" />
+                                    <field name="main_character" />
+                                </group>
                             </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="md_viewer" />
@@ -136,6 +140,7 @@
                     <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
                     <filter string="Main Actor" name="filter_by_main_actor" domain="[('main_actor','=','')]" />
                     <filter string="Main Actor Filename" name="filter_by_main_actor_filename" domain="[('main_actor_filename','=','')]" />
+                    <filter string="Main Character" name="filter_by_main_character" domain="[('main_character','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -149,6 +154,7 @@
                     <field name="hook" string="Hook" select="True"/>
                     <field name="main_actor" string="Main Actor" select="True"/>
                     <field name="main_actor_filename" string="Main Actor Filename" select="True"/>
+                    <field name="main_character" string="Main Character" select="True"/>
                     <field name="name" string="Name" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>
@@ -165,6 +171,7 @@
                     <field name="video_service_id" string="Video Service" select="True"/>
                     <field name="gpt_prompt_id" string="GPT Prompt" select="True"/>
                     <field name="lang_id" string="Lang" select="True"/>
+                    <field name="gpt_model_id" string="GPT Model" select="True"/>
                     <group string="Group By..">
                         <filter string="Partner" domain="[]" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
                         <filter string="Hook" domain="[]" name="group_by_hook_id" context="{'group_by':'hook_id'}"/>
@@ -173,6 +180,7 @@
                         <filter string="Video Service" domain="[]" name="group_by_video_service_id" context="{'group_by':'video_service_id'}"/>
                         <filter string="GPT Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
                         <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
+                        <filter string="GPT Model" domain="[]" name="group_by_gpt_model_id" context="{'group_by':'gpt_model_id'}"/>
                     </group>
                 </search>
             </field>

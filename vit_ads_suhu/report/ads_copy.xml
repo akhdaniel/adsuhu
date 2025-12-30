@@ -118,7 +118,6 @@
                             <td>Compliance Checker</td>
                             <td>Ads Copy</td>
                             <td>Audience Profiler</td>
-                            <td>Product Value Analysis</td>
                         </tr>
                     </thead>
                     <tbody class="landing_page_builder_ids_tbody">
@@ -131,7 +130,6 @@
                             <td><span t-field="line.compliance_checker_id" /></td>
                             <td><span t-field="line.ads_copy_id" /></td>
                             <td><span t-field="line.audience_profiler_id" /></td>
-                            <td><span t-field="line.product_value_analysis_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
                 </table>
@@ -176,6 +174,7 @@
                             <td>Hook</td>
                             <td>Main Actor</td>
                             <td>Main Actor Filename</td>
+                            <td>Main Character</td>
                             <td>Visual Concept</td>
                             <td>Video Service</td>
                             <td>Ads Copy</td>
@@ -190,6 +189,7 @@
                             <td><span t-field="line.hook" /></td>
                             <td><span t-field="line.main_actor" /></td>
                             <td><span t-field="line.main_actor_filename" /></td>
+                            <td><span t-field="line.main_character" /></td>
                             <td><span t-field="line.visual_concept_id" /></td>
                             <td><span t-field="line.video_service_id" /></td>
                             <td><span t-field="line.ads_copy_id" /></td>

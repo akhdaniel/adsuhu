@@ -72,5 +72,4 @@ class landing_page_builder(models.Model):
     compliance_checker_id = fields.Many2one(comodel_name="vit.compliance_checker",  string=_("Compliance Checker"))
     ads_copy_id = fields.Many2one(comodel_name="vit.ads_copy",  string=_("Ads Copy"))
     audience_profiler_id = fields.Many2one(comodel_name="vit.audience_profiler", related="compliance_checker_id.ads_copy_id.audience_profiler_id",  string=_("Audience Profiler"))
-    product_value_analysis_id = fields.Many2one(comodel_name="vit.product_value_analysis", related="ads_copy_id.audience_profiler_id.market_mapper_id.product_value_analysis_id",  string=_("Product Value Analysis"))
     campaign_builder_ids = fields.One2many(comodel_name="vit.campaign_builder",  inverse_name="landing_page_builder_id",  string=_("Campaign Builder"))

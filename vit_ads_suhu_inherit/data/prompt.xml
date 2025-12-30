@@ -1,0 +1,30 @@
+<odoo>
+    <data >
+        <record id="actor_prompt" model="vit.gpt_prompt">
+            <field name="name">Actor Prompt</field>
+            <field name="user_prompt"><![CDATA[{{context}}
+{{question}}
+{{additional_command}}
+]]></field>
+            <field name="system_prompt">You are a helpfull video creator assistant</field>
+        </record>
+
+        <record id="video_prompt" model="vit.gpt_prompt">
+            <field name="name">Video Prompt</field>
+            <field name="user_prompt"><![CDATA[{context}
+---
+Create text-to-video prompt, {question}.
+Respons ONLY in this JSON data format without explanation.
+
+```json
+{{
+"video_prompt":"..."
+}}
+```
+
+{additional_command}
+]]></field>
+            <field name="system_prompt">You are a helpfull assistant</field>
+        </record>
+    </data>
+</odoo>

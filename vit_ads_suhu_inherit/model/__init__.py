@@ -15,3 +15,4 @@ from . import video_director
 from . import hook
 from . import image_variant
 from . import video_variant
+from . import video_script

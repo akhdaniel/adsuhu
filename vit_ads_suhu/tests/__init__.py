@@ -7,3 +7,4 @@ from . import test_video_service
 from . import test_image_variant
 from . import test_video_variant
 from . import test_video_script
+from . import test_gpt_model

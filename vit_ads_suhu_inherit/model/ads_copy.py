@@ -469,14 +469,22 @@ Response in {self.lang_id.name} language.
             raise UserError('video_script key not found. regenerate output')
         
         output=js['video_script']
-        # print(output['scripts'])
 
-        self.video_director_ids = [(0,0,{
-            'name': 'VIDEO DIRECTOR 1',
-            'output': self.wrap_md(output),
-            'video_script_ids': [(0,0,{
+        video_script_ids = []
+
+        for x in output['scripts']:
+          script = "Visuals: " + ",".join(x['visuals']) + "\nText Overlay: " + x['text_overlay'] + "\nVoice Over: " +x['voice_over'] 
+          prompt = script
+          video_script_ids.append([(0,0,{
                 'name': x['name'],
                 'duration': x['duration'],
-                'prompt': "Visuals: " + ",".join(x['visuals']) + "\nText Overlay: " + x['text_overlay'] + "\nVoice Over: " +x['voice_over'] ,
-            }) for x in output['scripts']]
-        })]
+                'script': script,
+                'prompt': prompt 
+            })])
+          
+        self.video_director_ids.append((0,0,{
+            'name': 'VIDEO DIRECTOR 1',
+            'output': self.wrap_md(output),
+            'video_script_ids': video_script_ids
+        }))
+    

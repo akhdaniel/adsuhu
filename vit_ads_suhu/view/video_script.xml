@@ -13,9 +13,6 @@
                     <field name="duration" /> <!-- 101-->
                     <field name="script" /> <!-- 102-->
                     <field name="prompt" /> <!-- 103-->
-                    <field name="video_filename" /> <!-- 104-->
-                    <field name="video_url" /> <!-- 105-->
-                    <field name="fal_ai_url" /> <!-- 106-->
                 </list>
             </field>
         </record>
@@ -59,7 +56,8 @@
                                 <field name="duration"  />
                                 <field name="script"  />
                                 <field name="prompt"  />
-                                <field name="video_filename"  />
+                                <field name="video" filename="video_filename" />
+                                <field name="video_filename" invisible="1" />
                                 <field name="video_url"  />
                                 <field name="fal_ai_url"  />
                             </group>
@@ -91,6 +89,7 @@
                     <filter string="Duration" name="filter_by_duration" domain="[('duration','=','')]" />
                     <filter string="Script" name="filter_by_script" domain="[('script','=','')]" />
                     <filter string="Prompt" name="filter_by_prompt" domain="[('prompt','=','')]" />
+                    <filter string="Video" name="filter_by_video" domain="[('video','=','')]" />
                     <filter string="Video Filename" name="filter_by_video_filename" domain="[('video_filename','=','')]" />
                     <filter string="Video Url" name="filter_by_video_url" domain="[('video_url','=','')]" />
                     <filter string="Fal Ai Url" name="filter_by_fal_ai_url" domain="[('fal_ai_url','=','')]" />
@@ -98,6 +97,7 @@
                     <field name="duration" string="Duration" select="True"/>
                     <field name="script" string="Script" select="True"/>
                     <field name="prompt" string="Prompt" select="True"/>
+                    <field name="video" string="Video" select="True"/>
                     <field name="video_filename" string="Video Filename" select="True"/>
                     <field name="video_url" string="Video Url" select="True"/>
                     <field name="fal_ai_url" string="Fal Ai Url" select="True"/>

@@ -31,6 +31,7 @@ class video_director(models.Model):
     hook = fields.Text(related="ads_copy_id.hook_id.description",  string=_("Hook"))
     main_actor = fields.Binary( string=_("Main Actor"))
     main_actor_filename = fields.Char( string=_("Main Actor Filename"))
+    main_character = fields.Char( string=_("Main Character"))
 
 
     visual_concept_id = fields.Many2one(comodel_name="vit.visual_concept",  string=_("Visual Concept"))

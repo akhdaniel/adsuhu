@@ -34,6 +34,9 @@
                             <p class="m-0" t-field="doc.prompt" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Video</strong>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Video Filename</strong>
                             <p class="m-0" t-field="doc.video_filename" />
                         </div>
