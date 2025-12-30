@@ -97,7 +97,7 @@ class audience_profiler(models.Model):
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
     
 
-    @api.onchange("market_mapper_id")
+    @api.onchange("market_mapper_id","specific_instruction","lang_id")
     def _get_input(self, ):
         """
         {
