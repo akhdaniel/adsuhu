@@ -482,9 +482,9 @@ Response in {self.lang_id.name} language.
                 'prompt': prompt 
             })])
           
-        self.video_director_ids.append((0,0,{
+        self.video_director_ids = [(0,0,{
             'name': 'VIDEO DIRECTOR 1',
             'output': self.wrap_md(output),
             'video_script_ids': video_script_ids
-        }))
+        })]
     
