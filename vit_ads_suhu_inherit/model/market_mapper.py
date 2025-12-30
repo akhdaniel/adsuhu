@@ -58,7 +58,12 @@ REQUIRED JSON OUTPUT FORMAT:
     ],
 
     "channel_and_touchpoint": {
-      "main_platform": ["LinkedIn", "Google Search", "YouTube", "Website (SEO)", "Email B2B", ...],
+      "main_platform": [
+        "LinkedIn", 
+        "Google Search", 
+        "YouTube", 
+        "Website (SEO)", 
+        "Email B2B", "..." ], # add more relevant platform for marketing
       "online_communities": [
         "...",
         "...",
