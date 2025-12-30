@@ -11,25 +11,25 @@ DEFAULT_SPECIFIC_INSTRUCTION = """
 REQUIRED JSON OUTPUT FORMAT:
 ```json
 {
-    "segment_target_utama": "....",
+    "main_target_segment": "....",
     "customer_empathy_profile": {
-        "pikir_rasakan": [
+        "think_and_feel": [
             "...",
             "...",
             "...",
             "..."
         ],
-        "lihat": [
+        "look": [
             "...",
             "...",
             "..."
         ],
-        "dengar": [
+        "listen": [
             "...",
             "...",
             "..."
         ],
-        "katakan_lakukan": [
+        "say_and_do": [
             "...",
             "...",
             "..."
@@ -40,36 +40,36 @@ REQUIRED JSON OUTPUT FORMAT:
             "...",
             "..."
         ],
-        "aspirasi_goals": [
+        "aspitations_and_goals": [
             "...",
             "...",
             "...",
         ],
-        "hambatan_keberatan": [
+        "barriers_and_objections": [
             "...",
             "...",
             "...",
         ]
     },
-    "bahasa_tone_komunikasi_relevan": {
-        "kata_frasa_khas": [
+    "communication_tone_and_language": {
+        "key_phrases_and_expressions": [
             "..",
             "..."
         ],
-        "gaya_bicara": "..."
+        "speaking_style": "..."
     },
     "emotion_triggers": [
         {
-            "emosi": "...",
-            "contoh_situasi": "..."
+            "emotion": "...",
+            "situation_example": "..."
         },
         {
-            "emosi": "...",
-            "contoh_situasi": "..."
+            "emotion": "...",
+            "situation_example": "..."
         },
         {
-            "emosi": "...",
-            "contoh_situasi": "..."
+            "emotion": "...",
+            "situation_example": "..."
         }
     ]
 }
