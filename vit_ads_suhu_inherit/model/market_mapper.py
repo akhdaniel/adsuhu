@@ -151,6 +151,6 @@ Response in {rec.lang_id.name} language.
             'description': x['nama'],
             'alasan': x['alasan'],
             'lang_id': self.lang_id.id
-        }) for i,x in enumerate(js['segment_prioritas'], start=1)]
+        }) for i,x in enumerate(js['priority_segments'], start=1)]
 
         self.audience_profiler_ids._get_input()
