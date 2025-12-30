@@ -619,7 +619,7 @@
 											"top": 876,
 											"width": 351,
 											"height": 13,
-											"text": "+target_market: Char",
+											"text": "+target_market: Char = \"US (Global)\"",
 											"horizontalAlignment": 0
 										}
 									],
@@ -21151,7 +21151,9 @@
 								"$ref": "AAAAAAGbDOI+ELrl32I="
 							},
 							"name": "target_market",
-							"type": "Char"
+							"documentation": "{\n\"required\":\"True\"\n}",
+							"type": "Char",
+							"defaultValue": "\"US (Global)\""
 						}
 					],
 					"operations": [
