@@ -14,11 +14,11 @@ class market_mapper(models.Model):
         pass
 
 
-    @api.onchange("product_value_analysis_id")
+    @api.onchange("product_value_analysis_id","target_market","lang_id")
     def _get_input(self, ):
         """
         {
-        "@api.onchange":"product_value_analysis_id"
+        "@api.onchange":["product_value_analysis_id", "target_market", "lang_id"]
         }
         """
         pass
@@ -37,6 +37,7 @@ class market_mapper(models.Model):
 
 
     _inherit = "vit.general_object"
+    target_market = fields.Char( string=_("Target Market"))
 
 
     def action_view_detail_audience_profiler_ids(self):

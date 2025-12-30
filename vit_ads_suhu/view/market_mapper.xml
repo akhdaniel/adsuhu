@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <list string="Market Mapper">
                     <field name="name" /> <!-- 1-->
+                    <field name="target_market" /> <!-- 100-->
                     <field name="partner_id" /> <!-- 100-->
                     <field name="product_value_analysis_id" /> <!-- 200-->
                     <field name="description" /> <!-- 1500-->
@@ -64,6 +65,7 @@
                         </div>
                         <group>
                             <group> <!-- left -->
+                                <field name="target_market"  />
                                 <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -109,6 +111,7 @@
             <field name="arch" type="xml">
                 <search string="Market Mapper">
 
+                    <filter string="Target Market" name="filter_by_target_market" domain="[('target_market','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -118,6 +121,7 @@
                     <filter string="Specific Instruction" name="filter_by_specific_instruction" domain="[('specific_instruction','=','')]" />
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
                     <filter string="GPT Session URL" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
+                    <field name="target_market" string="Target Market" select="True"/>
                     <field name="name" string="Name" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>

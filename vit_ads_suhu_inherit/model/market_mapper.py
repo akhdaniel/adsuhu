@@ -7,10 +7,6 @@ import logging
 _logger = logging.getLogger(__name__)
 import json 
 DEFAULT_SPECIFIC_INSTRUCTION = """
-TUJUAN: Full map.
-TrenScan otomatis sesuai SOP.
-Market Indonesia.
-
 REQUIRED JSON OUTPUT FORMAT:
 ```json
 {
@@ -114,7 +110,7 @@ class market_mapper(models.Model):
         ).id
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
     
-    @api.onchange("product_value_analysis_id","specific_instruction")
+    @api.onchange("product_value_analysis_id","target_market","lang_id","specific_instruction")
     def _get_input(self, ):
         """
         {
@@ -132,10 +128,14 @@ class market_mapper(models.Model):
 ---
 {rec.general_instruction}
 
+---
+TUJUAN: Full Map.
+TrenScan otomatis sesuai SOP.
+Target Market: {rec.target_market or 'Indonesia'}.
+
 {rec.specific_instruction or ''}
 
 Response in {rec.lang_id.name} language.
-
 
 """
 

@@ -603,6 +603,24 @@
 											"height": 13,
 											"text": "+_inherit = vit.general_object",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbbZzaLpFeADQ=",
+											"_parent": {
+												"$ref": "AAAAAAGbDOI+ELrtdHA="
+											},
+											"model": {
+												"$ref": "AAAAAAGbbZzaJ5FbPk4="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 1661,
+											"top": 876,
+											"width": 351,
+											"height": 13,
+											"text": "+target_market: Char",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Roboto;13;0",
@@ -610,7 +628,7 @@
 									"left": 1656,
 									"top": 841,
 									"width": 361,
-									"height": 38
+									"height": 53
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -634,7 +652,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1661,
-											"top": 884,
+											"top": 899,
 											"width": 351,
 											"height": 13,
 											"text": "+action_generate()",
@@ -652,7 +670,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1661,
-											"top": 899,
+											"top": 914,
 											"width": 351,
 											"height": 13,
 											"text": "+_get_input()",
@@ -670,7 +688,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1661,
-											"top": 914,
+											"top": 929,
 											"width": 351,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -688,7 +706,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1661,
-											"top": 929,
+											"top": 944,
 											"width": 351,
 											"height": 13,
 											"text": "+action_create_audience_profiles()",
@@ -698,7 +716,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 1656,
-									"top": 879,
+									"top": 894,
 									"width": 361,
 									"height": 68
 								},
@@ -21125,6 +21143,15 @@
 							"name": "_inherit",
 							"type": "",
 							"defaultValue": "vit.general_object"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbbZzaJ5FbPk4=",
+							"_parent": {
+								"$ref": "AAAAAAGbDOI+ELrl32I="
+							},
+							"name": "target_market",
+							"type": "Char"
 						}
 					],
 					"operations": [
@@ -21143,7 +21170,7 @@
 								"$ref": "AAAAAAGbDOI+ELrl32I="
 							},
 							"name": "_get_input",
-							"documentation": "{\n\"@api.onchange\":\"product_value_analysis_id\"\n}"
+							"documentation": "{\n\"@api.onchange\":[\"product_value_analysis_id\", \"target_market\", \"lang_id\"]\n}"
 						},
 						{
 							"_type": "UMLOperation",

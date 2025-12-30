@@ -56,6 +56,7 @@
                         <tr>
                             <td> Name</td>
                             <td> Inherit</td>
+                            <td>Target Market</td>
                             <td>Product Value Analysis</td>
                         </tr>
                     </thead>
@@ -63,6 +64,7 @@
                         <tr t-foreach="doc.market_mapper_ids" t-as="line">
                             <td><span t-field="line._name" /></td>
                             <td><span t-field="line._inherit" /></td>
+                            <td><span t-field="line.target_market" /></td>
                             <td><span t-field="line.product_value_analysis_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>

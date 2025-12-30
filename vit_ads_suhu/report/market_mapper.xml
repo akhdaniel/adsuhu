@@ -22,6 +22,10 @@
                     </h2>
                     <div class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Target Market</strong>
+                            <p class="m-0" t-field="doc.target_market" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Product Value Analysis</strong>
                             <p class="m-0" t-field="doc.product_value_analysis_id"/>
                         </div>
