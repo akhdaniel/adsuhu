@@ -12,23 +12,23 @@ REQUIRED JSON OUTPUT FORMAT:
 {
   "big_ideas": [
     {
-      "judul": "...",
-      "konflik_emosional": "...",
+      "title": "...",
+      "emotionsal_conflict": "...",
       "insight": "..."
     },
     {
-      "judul": "...",
-      "konflik_emosional": "...",
+      "title": "...",
+      "emotionsal_conflict": "...",
       "insight": "..."
     }
   ],
-  "catatan_strategis": {
+  "strategic_notes": {
     "ab_test": [
       "...",
       "...",
       "..."
     ],
-    "adaptasi_platform": {
+    "platform_adaptation": {
       "meta": "...",
       "tiktok": "...",
       "youtube": "..."
@@ -47,28 +47,28 @@ REQUIRED JSON OUTPUT FORMAT:
       "hooks": [
         {
           "text": "...",
-          "emosi": ["...", "...", "..."],
-          "teknik": "..."
+          "emotions": ["...", "...", "..."],
+          "technique": "..."
         },
         {
           "text": "...",
-          "emosi": ["...", "...", "..."],
-          "teknik": "real-talk"
+          "emotions": ["...", "...", "..."],
+          "technique": "real-talk"
         },
         {
           "text": "...",
-          "emosi": ["...", "...", "..."],
-          "teknik": "pertanyaan reflektif"
+          "emotions": ["...", "...", "..."],
+          "technique": "..."
         },
         {
           "text": "...",
-          "emosi": ["...", "...", "..."],
-          "teknik": "..."
+          "emotions": ["...", "...", "..."],
+          "technique": "..."
         },
         {
           "text": "....",
-          "emosi": ["...", "...", "..."],
-          "teknik": ".."
+          "emotions": ["...", "...", "..."],
+          "technique": ".."
         }
       ]
     },
@@ -78,28 +78,28 @@ REQUIRED JSON OUTPUT FORMAT:
       "hooks": [
         {
           "text": "...",
-          "emosi": ["...", "...", "..."],
-          "teknik": "..."
+          "emotions": ["...", "...", "..."],
+          "technique": "..."
         },
         {
           "text": "...",
-          "emosi": ["...", "...", "..."],
-          "teknik": "real-talk"
+          "emotions": ["...", "...", "..."],
+          "technique": "real-talk"
         },
         {
           "text": "...",
-          "emosi": ["...", "...", "..."],
-          "teknik": "pertanyaan reflektif"
+          "emotions": ["...", "...", "..."],
+          "technique": "pertanyaan reflektif"
         },
         {
           "text": "...",
-          "emosi": ["...", "...", "..."],
-          "teknik": "..."
+          "emotions": ["...", "...", "..."],
+          "technique": "..."
         },
         {
           "text": "....",
-          "emosi": ["...", "...", "..."],
-          "teknik": ".."
+          "emotions": ["...", "...", "..."],
+          "technique": ".."
         }
       ]
     },
@@ -184,7 +184,7 @@ Response in {self.lang_id.name} language.
             )
             catatan_match = catatan_pattern.search(text)
             if catatan_match:
-                result["CATATAN_STRATEGIS"] = catatan_match.group(1).strip()
+                result["strategic_notes"] = catatan_match.group(1).strip()
 
             # --- Extract ANGLES ---
             angle_pattern = re.compile(
@@ -218,7 +218,7 @@ Response in {self.lang_id.name} language.
                 name=f"ANGLE {angle['angle_no']}",
                 angle_no=angle['angle_no'],
                 description=angle['title'],
-                output=f"# ANGLE {angle['angle_no']} {angle['title']}\n\n{angle['content']}\n---\n# BIG_IDEA\n\n{extracted['BIG_IDEA']}\n---\n# CATATAN_STRATEGIS\n\n{extracted['CATATAN_STRATEGIS']}",
+                output=f"# ANGLE {angle['angle_no']} {angle['title']}\n\n{angle['content']}\n---\n# BIG_IDEA\n\n{extracted['BIG_IDEA']}\n---\n# strategic_notes\n\n{extracted['strategic_notes']}",
             )
             an = self.create(default)
 
@@ -245,14 +245,14 @@ Response in {self.lang_id.name} language.
 
             # 2️⃣ Extract setiap hook bernomor
             hook_pattern = re.compile(
-                r"\d+\.\s+\*\*“(.+?)”\*\*\s*\n\s*\*\(Emosi:\s*(.+?)\s*\|\s*Teknik:\s*(.+?)\)",
+                r"\d+\.\s+\*\*“(.+?)”\*\*\s*\n\s*\*\(emotions:\s*(.+?)\s*\|\s*technique:\s*(.+?)\)",
                 re.DOTALL
             )
 
             for match in hook_pattern.finditer(hooks_block):
                 hooks.append({
                     "hook": match.group(1).strip(),
-                    "emotion": match.group(2).strip(),
+                    "emotions": match.group(2).strip(),
                     "technique": match.group(3).strip()
                 })
 
@@ -271,7 +271,7 @@ Response in {self.lang_id.name} language.
             'name':f"HOOK {i+1} - ANGLE {self.angle_no}",
             'hook_no': i+1,
             'description': hook['hook'],
-            'output': f"# {hook['hook']}\n\nEmotion: {hook['emotion']}\ntechnique: {hook['technique']}"
+            'output': f"# {hook['hook']}\n\nEmotion: {hook['emotions']}\ntechnique: {hook['technique']}"
         }) for i,hook in enumerate(extracted_hooks)]
         
 
@@ -283,7 +283,7 @@ Response in {self.lang_id.name} language.
 
         big_ideas= js['big_ideas']
         angles= js['angles']
-        catatan_strategis= js['catatan_strategis']
+        strategic_notes= js['strategic_notes']
 
         for i,angle in enumerate(angles):
             # angle = {
@@ -293,7 +293,7 @@ Response in {self.lang_id.name} language.
             # }
             output={
                 'big_ideas':big_ideas,
-                'catatan_strategis': catatan_strategis
+                'strategic_notes': strategic_notes
             }
             output.update(angle)
             default = dict(

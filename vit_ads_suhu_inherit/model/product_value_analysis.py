@@ -384,6 +384,7 @@ Response in {self.lang_id.name} language.
                     ('keyword','Keyword'),
                     ('keterbatasan','Keterbatasan'),
                     ('kepribadian','Kepribadian'),
+                    ('key','Key'),
                 ]
 
                 res = key.replace("_", " ").title()
