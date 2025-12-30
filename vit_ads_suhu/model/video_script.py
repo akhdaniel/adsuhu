@@ -10,12 +10,24 @@ class video_script(models.Model):
     _description = "vit.video_script"
 
 
+    def action_generate_prompt(self, ):
+        pass
+
+
+    def action_generate_video(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 
     name = fields.Char( required=True, copy=False, string=_("Name"))
     duration = fields.Char( string=_("Duration"))
+    script = fields.Text( string=_("Script"))
     prompt = fields.Text( string=_("Prompt"))
+    video_filename = fields.Char( string=_("Video Filename"))
+    video_url = fields.Char( string=_("Video Url"))
+    fal_ai_url = fields.Char( string=_("Fal Ai Url"))
 
 
     def copy(self, default=None):

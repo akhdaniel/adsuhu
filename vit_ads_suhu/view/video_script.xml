@@ -11,7 +11,11 @@
                     <field name="name" /> <!-- 100-->
                     <field name="video_director_id" /> <!-- 100-->
                     <field name="duration" /> <!-- 101-->
-                    <field name="prompt" /> <!-- 102-->
+                    <field name="script" /> <!-- 102-->
+                    <field name="prompt" /> <!-- 103-->
+                    <field name="video_filename" /> <!-- 104-->
+                    <field name="video_url" /> <!-- 105-->
+                    <field name="fal_ai_url" /> <!-- 106-->
                 </list>
             </field>
         </record>
@@ -35,6 +39,8 @@
             <field name="arch" type="xml">
                 <form string="Video Script">
                     <header>
+                        <button string="Generate Prompt" type="object" name="action_generate_prompt" />
+                        <button string="Generate Video" type="object" name="action_generate_video" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -51,7 +57,11 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="duration"  />
+                                <field name="script"  />
                                 <field name="prompt"  />
+                                <field name="video_filename"  />
+                                <field name="video_url"  />
+                                <field name="fal_ai_url"  />
                             </group>
                             <group> <!-- right -->
                                 <field name="video_director_id"  />
@@ -79,10 +89,18 @@
 
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Duration" name="filter_by_duration" domain="[('duration','=','')]" />
+                    <filter string="Script" name="filter_by_script" domain="[('script','=','')]" />
                     <filter string="Prompt" name="filter_by_prompt" domain="[('prompt','=','')]" />
+                    <filter string="Video Filename" name="filter_by_video_filename" domain="[('video_filename','=','')]" />
+                    <filter string="Video Url" name="filter_by_video_url" domain="[('video_url','=','')]" />
+                    <filter string="Fal Ai Url" name="filter_by_fal_ai_url" domain="[('fal_ai_url','=','')]" />
                     <field name="name" string="Name" select="True"/>
                     <field name="duration" string="Duration" select="True"/>
+                    <field name="script" string="Script" select="True"/>
                     <field name="prompt" string="Prompt" select="True"/>
+                    <field name="video_filename" string="Video Filename" select="True"/>
+                    <field name="video_url" string="Video Url" select="True"/>
+                    <field name="fal_ai_url" string="Fal Ai Url" select="True"/>
                     <field name="video_director_id" string="Video Director" select="True"/>
                     <group string="Group By..">
                         <filter string="Video Director" domain="[]" name="group_by_video_director_id" context="{'group_by':'video_director_id'}"/>

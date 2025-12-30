@@ -26,8 +26,24 @@
                             <p class="m-0" t-field="doc.duration" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Script</strong>
+                            <p class="m-0" t-field="doc.script" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Prompt</strong>
                             <p class="m-0" t-field="doc.prompt" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Video Filename</strong>
+                            <p class="m-0" t-field="doc.video_filename" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Video Url</strong>
+                            <p class="m-0" t-field="doc.video_url" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Fal Ai Url</strong>
+                            <p class="m-0" t-field="doc.fal_ai_url" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
                             <strong>Video Director</strong>

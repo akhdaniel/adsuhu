@@ -85,7 +85,6 @@
                                     <list >
                                         <field name="name" /> <!-- 100-->
                                         <field name="video_url" widget="video_player"/> <!-- 103-->
-                                        <field name="fal_ai_url" /> <!-- 104-->
                                     </list>
                                 </field>
                             </page>
@@ -94,7 +93,11 @@
                                     <list editable="bottom">
                                         <field name="name" /> <!-- 100-->
                                         <field name="duration" /> <!-- 101-->
-                                        <field name="prompt" /> <!-- 102-->
+                                        <field name="script" /> <!-- 102-->
+                                        <field name="prompt" /> <!-- 103-->
+                                        <field name="video_filename" /> <!-- 104-->
+                                        <field name="video_url" /> <!-- 105-->
+                                        <field name="fal_ai_url" /> <!-- 106-->
                                     </list>
                                 </field>
                             </page>

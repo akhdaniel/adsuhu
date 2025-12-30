@@ -63,7 +63,6 @@
                             <td>Video</td>
                             <td>Video Filename</td>
                             <td>Video Url</td>
-                            <td>Fal Ai Url</td>
                             <td>Video Director</td>
                         </tr>
                     </thead>
@@ -73,7 +72,6 @@
                             <td><span t-field="line.video" /></td>
                             <td><span t-field="line.video_filename" /></td>
                             <td><span t-field="line.video_url" /></td>
-                            <td><span t-field="line.fal_ai_url" /></td>
                             <td><span t-field="line.video_director_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
@@ -85,7 +83,11 @@
                         <tr>
                             <td>Name</td>
                             <td>Duration</td>
+                            <td>Script</td>
                             <td>Prompt</td>
+                            <td>Video Filename</td>
+                            <td>Video Url</td>
+                            <td>Fal Ai Url</td>
                             <td>Video Director</td>
                         </tr>
                     </thead>
@@ -93,7 +95,11 @@
                         <tr t-foreach="doc.video_script_ids" t-as="line">
                             <td><span t-field="line.name" /></td>
                             <td><span t-field="line.duration" /></td>
+                            <td><span t-field="line.script" /></td>
                             <td><span t-field="line.prompt" /></td>
+                            <td><span t-field="line.video_filename" /></td>
+                            <td><span t-field="line.video_url" /></td>
+                            <td><span t-field="line.fal_ai_url" /></td>
                             <td><span t-field="line.video_director_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
