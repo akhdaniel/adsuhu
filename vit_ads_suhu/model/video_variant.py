@@ -14,6 +14,10 @@ class video_variant(models.Model):
         pass
 
 
+    def action_generate_video(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 
@@ -21,6 +25,7 @@ class video_variant(models.Model):
     video = fields.Binary( string=_("Video"))
     video_filename = fields.Char( string=_("Video Filename"))
     video_url = fields.Char(compute="_get_video_url",  string=_("Video Url"))
+    fal_ai_url = fields.Char(widget="url",  string=_("Fal Ai Url"))
 
 
     def copy(self, default=None):

@@ -62,6 +62,8 @@
                             <group> <!-- left -->
                                 <field name="angle"  />
                                 <field name="hook"  />
+                                <field name="main_actor" filename="main_actor_filename" widget="image" />
+                                <field name="main_actor_filename" invisible="1" />
                                 <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -83,6 +85,7 @@
                                     <list >
                                         <field name="name" /> <!-- 100-->
                                         <field name="video_url" widget="video_player"/> <!-- 103-->
+                                        <field name="fal_ai_url" /> <!-- 104-->
                                     </list>
                                 </field>
                             </page>
@@ -128,6 +131,8 @@
 
                     <filter string="Angle" name="filter_by_angle" domain="[('angle','=','')]" />
                     <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
+                    <filter string="Main Actor" name="filter_by_main_actor" domain="[('main_actor','=','')]" />
+                    <filter string="Main Actor Filename" name="filter_by_main_actor_filename" domain="[('main_actor_filename','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -139,6 +144,8 @@
                     <filter string="GPT Session URL" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
                     <field name="angle" string="Angle" select="True"/>
                     <field name="hook" string="Hook" select="True"/>
+                    <field name="main_actor" string="Main Actor" select="True"/>
+                    <field name="main_actor_filename" string="Main Actor Filename" select="True"/>
                     <field name="name" string="Name" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>

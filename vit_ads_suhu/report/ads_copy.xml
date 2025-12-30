@@ -174,6 +174,8 @@
                             <td> Inherit</td>
                             <td>Angle</td>
                             <td>Hook</td>
+                            <td>Main Actor</td>
+                            <td>Main Actor Filename</td>
                             <td>Visual Concept</td>
                             <td>Video Service</td>
                             <td>Ads Copy</td>
@@ -186,6 +188,8 @@
                             <td><span t-field="line._inherit" /></td>
                             <td><span t-field="line.angle" /></td>
                             <td><span t-field="line.hook" /></td>
+                            <td><span t-field="line.main_actor" /></td>
+                            <td><span t-field="line.main_actor_filename" /></td>
                             <td><span t-field="line.visual_concept_id" /></td>
                             <td><span t-field="line.video_service_id" /></td>
                             <td><span t-field="line.ads_copy_id" /></td>

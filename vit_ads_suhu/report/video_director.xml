@@ -30,6 +30,13 @@
                             <p class="m-0" t-field="doc.hook" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Main Actor</strong>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Main Actor Filename</strong>
+                            <p class="m-0" t-field="doc.main_actor_filename" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Visual Concept</strong>
                             <p class="m-0" t-field="doc.visual_concept_id"/>
                         </div>
@@ -56,6 +63,7 @@
                             <td>Video</td>
                             <td>Video Filename</td>
                             <td>Video Url</td>
+                            <td>Fal Ai Url</td>
                             <td>Video Director</td>
                         </tr>
                     </thead>
@@ -65,6 +73,7 @@
                             <td><span t-field="line.video" /></td>
                             <td><span t-field="line.video_filename" /></td>
                             <td><span t-field="line.video_url" /></td>
+                            <td><span t-field="line.fal_ai_url" /></td>
                             <td><span t-field="line.video_director_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
