@@ -302,6 +302,7 @@ Response in {self.lang_id.name} language.
                 angle_no=i+1,
                 description=angle['angle'],
                 output= json.dumps(output, indent=4),
+                gpt_session=self.gpt_session,
             )
             an = self.create(default)
 
