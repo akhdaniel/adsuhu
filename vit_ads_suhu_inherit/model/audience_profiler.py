@@ -40,7 +40,7 @@ REQUIRED JSON OUTPUT FORMAT:
             "...",
             "..."
         ],
-        "aspitations_and_goals": [
+        "aspirations_and_goals": [
             "...",
             "...",
             "...",
