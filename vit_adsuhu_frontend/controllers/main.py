@@ -114,11 +114,11 @@ class ProductValueAnalysisController(http.Controller):
                 classes = class_match.group(1).split()
                 if "img" not in classes:
                     classes.append("img")
-                if "img-responsive" not in classes:
-                    classes.append("img-responsive")
+                if "img-fluid" not in classes:
+                    classes.append("img-fluid")
                 new_class_attr = f'class="{" ".join(classes)}"'
                 return tag[: class_match.start()] + new_class_attr + tag[class_match.end() :]
-            return tag.replace("<img", '<img class="img img-responsive"', 1)
+            return tag.replace("<img", '<img class="img img-fluid"', 1)
 
         return re.sub(r"<img\b[^>]*>", _inject, html)
 
