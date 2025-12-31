@@ -2,15 +2,22 @@
     width: 100%;
 }
 
-.o_json_viewer_editor {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    align-items: stretch;
+.o_json_viewer_toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
 }
 
-.o_json_viewer_input {
+.o_json_viewer_editor {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.o_json_viewer_input,
+.o_json_viewer_content {
     min-width: 0;
+    width: 100%;
 }
 
 .o_json_viewer_content {
@@ -30,6 +37,10 @@
 .o_json_viewer_content.o_json_viewer_empty::before {
     content: "No JSON data";
     color: #94a3b8;
+}
+
+.o_field_json_viewer .o_hidden {
+    display: none !important;
 }
 
 .o_field_json_viewer .o_json_key {

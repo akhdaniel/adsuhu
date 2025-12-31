@@ -2,15 +2,37 @@
 <templates xml:space="preserve">
     <t t-name="vit_json_viewer.JSONViewerField" owl="1">
         <div class="o_field_json_viewer" t-ref="root">
+            <div class="o_json_viewer_toolbar">
+                <button
+                    type="button"
+                    class="btn btn-link"
+                    t-on-click="toggleMode"
+                    t-att-title="toggleLabel"
+                    t-att-aria-label="toggleLabel"
+                    t-att-disabled="props.readonly ? true : undefined"
+                >
+                    <t t-esc="toggleLabel"/>
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-link"
+                    t-on-click="copyJson"
+                    t-att-title="'Copy JSON'"
+                    t-att-aria-label="'Copy JSON'"
+                    t-att-disabled="copyDisabled ? true : undefined"
+                >
+                    <i class="fa fa-copy" aria-hidden="true"/>
+                </button>
+            </div>
             <t t-if="props.readonly">
                 <pre class="o_json_viewer_content" t-ref="viewer"/>
             </t>
             <t t-else="">
                 <div class="o_json_viewer_editor">
-                    <div class="o_json_viewer_input">
+                    <div class="o_json_viewer_input" t-att-class="{'o_hidden': isPreview}">
                         <t t-call="web.TextField"/>
                     </div>
-                    <pre class="o_json_viewer_content" t-ref="viewer"/>
+                    <pre class="o_json_viewer_content" t-att-class="{'o_hidden': !isPreview}" t-ref="viewer"/>
                 </div>
             </t>
         </div>

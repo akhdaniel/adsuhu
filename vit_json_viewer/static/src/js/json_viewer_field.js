@@ -1,8 +1,10 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { TextField } from "@web/views/fields/text/text_field";
-import { onMounted, onPatched, useRef } from "@odoo/owl";
+import { onMounted, onPatched, useRef, useState } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
 const escapeHtml = (value = "") =>
     value
@@ -16,6 +18,8 @@ class JSONViewerField extends TextField {
 
     setup() {
         super.setup();
+        this.state = useState({ showPreview: true });
+        this.notification = useService("notification");
         this.viewerRef = useRef("viewer");
         onMounted(() => this.renderPreview());
         onPatched(() => this.renderPreview());
@@ -48,6 +52,71 @@ class JSONViewerField extends TextField {
             return JSON.stringify(value, null, 2);
         } catch {
             return String(value);
+        }
+    }
+
+    get isPreview() {
+        return this.state.showPreview || this.props.readonly;
+    }
+
+    get toggleLabel() {
+        return this.isPreview ? _t("Edit JSON") : _t("View JSON");
+    }
+
+    get copyDisabled() {
+        const value = this.getRawValue();
+        return !value || !String(value).trim();
+    }
+
+    toggleMode() {
+        if (this.props.readonly) {
+            return;
+        }
+        this.state.showPreview = !this.state.showPreview;
+        if (this.state.showPreview) {
+            this.renderPreview();
+        }
+    }
+
+    async copyJson() {
+        const raw = this.getRawValue();
+        const formatted = this.formatValue(raw);
+        if (!formatted) {
+            return;
+        }
+        let copied = false;
+        try {
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(formatted);
+                copied = true;
+            }
+        } catch {
+            copied = false;
+        }
+        if (!copied) {
+            try {
+                const textarea = document.createElement("textarea");
+                textarea.value = formatted;
+                textarea.style.position = "fixed";
+                textarea.style.opacity = "0";
+                textarea.style.pointerEvents = "none";
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                copied = document.execCommand("copy");
+                document.body.removeChild(textarea);
+            } catch {
+                copied = false;
+            }
+        }
+        if (copied) {
+            this.notification.add(_t("JSON copied to clipboard"), { type: "success" });
+        } else {
+            this.notification.add({
+                title: _t("Copy failed"),
+                message: _t("Please copy the JSON manually."),
+                type: "warning",
+            });
         }
     }
 
