@@ -6,7 +6,7 @@
                 <section class="adsuhu-container">
                     <div class="container">
                         <div class="adsuhu-header">
-                            <h1>Product Value Analyses</h1>
+                            <h1>Product Value Analysis</h1>
                             <p class="lead">Explore our in-depth product value breakdowns and market insights.</p>
                             <a href="/product_analysis/create" class="btn btn-primary mt-3">
                                 <i class="fa fa-plus"></i> Create New Analysis
@@ -94,8 +94,12 @@
                                 </div>
                                 <div class="adsuhu-content" t-out="final_report_html"></div>
                             </section>
+                            <section class="adsuhu-section" t-if="not analysis.final_report">
+                                <h2 class="adsuhu-section-title">Processing Final Analysis Report</h2>
+                                <div class="adsuhu-content">Please wait... we are crafting your reports. Will notify you by email when it's done.</div>
+                            </section>
 
-                            <section class="adsuhu-section" t-if="analysis.market_mapper_ids">
+                            <!-- <section class="adsuhu-section" t-if="analysis.market_mapper_ids">
                                 <h2 class="adsuhu-section-title">Market Analysis</h2>
                                 <div class="adsuhu-content">
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
@@ -105,7 +109,7 @@
                                         </div>
                                     </t>
                                 </div>
-                            </section>
+                            </section> -->
 
                         </div>
                     </div>

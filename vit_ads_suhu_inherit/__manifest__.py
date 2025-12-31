@@ -6,7 +6,9 @@
 	"depends": [
 		"base","web",
 		"vit_ads_suhu",
-		"audio_player_widget"
+		"audio_player_widget",
+        "vit_json_viewer",
+        "vit_md_viewer",
 	],
 	"author": "Akhmad Daniel Sembiring",
 	"category": "Utility",
