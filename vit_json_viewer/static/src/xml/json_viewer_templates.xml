@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vit_json_viewer.JSONViewerField" owl="1">
+        <div class="o_field_json_viewer" t-ref="root">
+            <t t-if="props.readonly">
+                <pre class="o_json_viewer_content" t-ref="viewer"/>
+            </t>
+            <t t-else="">
+                <div class="o_json_viewer_editor">
+                    <div class="o_json_viewer_input">
+                        <t t-call="web.TextField"/>
+                    </div>
+                    <pre class="o_json_viewer_content" t-ref="viewer"/>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

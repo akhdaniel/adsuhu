@@ -1,0 +1,186 @@
+/* Modern Card Layout */
+.adsuhu-container {
+    padding: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.adsuhu-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.adsuhu-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+.adsuhu-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eaeaea;
+}
+
+.adsuhu-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.adsuhu-card-body {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.adsuhu-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #1a1a1a;
+}
+
+.adsuhu-card-meta {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.adsuhu-card-text {
+    flex: 1;
+    color: #4a4a4a;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.adsuhu-btn-primary {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    text-align: center;
+    transition: opacity 0.2s;
+}
+
+.adsuhu-btn-primary:hover {
+    opacity: 0.9;
+    color: white;
+}
+
+/* Detail Page */
+.adsuhu-detail-header {
+    background: #f8fafc;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.adsuhu-detail-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+}
+
+.adsuhu-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    border: 1px solid #eaeaea;
+}
+
+.adsuhu-section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #1e293b;
+    border-left: 4px solid #4f46e5;
+    padding-left: 1rem;
+}
+
+.adsuhu-content {
+    color: #334155;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+.adsuhu-content h1,
+.adsuhu-content h2,
+.adsuhu-content h3,
+.adsuhu-content h4,
+.adsuhu-content h5 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.adsuhu-content h1 {
+    font-size: 1.5rem;
+}
+
+.adsuhu-content h2 {
+    font-size: 1.25rem;
+}
+
+.adsuhu-content h3 {
+    font-size: 1.1rem;
+}
+
+.adsuhu-content h4 {
+    font-size: 1rem;
+}
+
+.adsuhu-content h5 {
+    font-size: 0.9rem;
+}
+
+.adsuhu-content ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.adsuhu-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+/* Market Mapper Specifics */
+.market-mapper-item {
+    border-left: 1px solid #e2e8f0;
+    padding-left: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.market-mapper-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0f172a;
+}

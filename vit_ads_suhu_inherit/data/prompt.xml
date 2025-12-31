@@ -26,5 +26,28 @@ Respons ONLY in this JSON data format without explanation.
 ]]></field>
             <field name="system_prompt">You are a helpfull assistant</field>
         </record>
+
+        <record id="write_description_prompt" model="vit.gpt_prompt">
+            <field name="name">Write Description Prompt</field>
+            <field name="user_prompt"><![CDATA[Write short description about this product:
+{context}. Then write list of full list of at least 10 features, max 1 level bullets.
+{question}
+{additional_command}
+Return in this JSON format:
+---
+{{
+    "description":"...",
+    "features":[
+        {{"Feature 1 Title":["...","...","..."..]}},
+        {{"Feature 2 Title":["...","...","..."..]}},
+        {{"Feature 3 Title":["...","...","..."..]}},
+        {{"Feature 4 Title":["...","...","..."..]}},
+        ... add more features necessary
+    ]
+}}
+---
+]]></field>
+            <field name="system_prompt">You are a helpfull assistant</field>
+        </record>
     </data>
 </odoo>

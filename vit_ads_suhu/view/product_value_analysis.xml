@@ -11,6 +11,8 @@
                     <field name="name" /> <!-- 1-->
                     <field name="product_url" /> <!-- 100-->
                     <field name="partner_id" /> <!-- 100-->
+                    <field name="write_gpt_prompt_id" /> <!-- 101-->
+                    <field name="target_market" /> <!-- 106-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -22,6 +24,7 @@
             <field name="type">pivot</field>
             <field name="arch" type="xml">
                 <pivot string="Product Value Analysis">
+                    <field name="write_gpt_prompt_id" type="row"/>
                     <field name="gpt_prompt_id" type="row"/>
                     <field name="lang_id" type="row"/>
                     <field name="partner_id" type="row"/>
@@ -39,6 +42,7 @@
                 <form string="Product Value Analysis">
                     <header>
                         <button string="Fetch Product Description" type="object" name="action_fetch_product_description" />
+                        <button string="Write With Ai" type="object" name="action_write_with_ai" />
                         <button string="Generate" type="object" name="action_generate" />
                         <button string="Generate Report" type="object" name="action_generate_report" />
                         <button string="Download Docx" type="object" name="action_download_docx" />
@@ -69,12 +73,14 @@
                                 <field name="report_template_filename" invisible="True" />
                                 <field name="active"  />
                                 <field name="report_docx_filename" invisible="True" />
+                                <field name="target_market"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                                 <field name="gpt_session" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="partner_id"  />
+                                <field name="write_gpt_prompt_id"  />
                                 <field name="gpt_prompt_id"  />
                                 <field name="lang_id"  />
                                 <field name="gpt_model_id"  />
@@ -129,6 +135,7 @@
                     <filter string="Report Template Filename" name="filter_by_report_template_filename" domain="[('report_template_filename','=','')]" />
                     <filter string="Report Docx" name="filter_by_report_docx" domain="[('report_docx','=','')]" />
                     <filter string="Report Docx Filename" name="filter_by_report_docx_filename" domain="[('report_docx_filename','=','')]" />
+                    <filter string="Target Market" name="filter_by_target_market" domain="[('target_market','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -145,6 +152,7 @@
                     <field name="report_template_filename" string="Report Template Filename" select="True"/>
                     <field name="report_docx" string="Report Docx" select="True"/>
                     <field name="report_docx_filename" string="Report Docx Filename" select="True"/>
+                    <field name="target_market" string="Target Market" select="True"/>
                     <field name="name" string="Name" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>
@@ -155,11 +163,13 @@
                     <field name="active" string="Active" select="True"/>
                     <field name="gpt_session" string="GPT Session URL" select="True"/>
                     <field name="partner_id" string="Partner" select="True"/>
+                    <field name="write_gpt_prompt_id" string="Write Gpt Prompt" select="True"/>
                     <field name="gpt_prompt_id" string="GPT Prompt" select="True"/>
                     <field name="lang_id" string="Lang" select="True"/>
                     <field name="gpt_model_id" string="GPT Model" select="True"/>
                     <group string="Group By..">
                         <filter string="Partner" domain="[]" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="Write Gpt Prompt" domain="[]" name="group_by_write_gpt_prompt_id" context="{'group_by':'write_gpt_prompt_id'}"/>
                         <filter string="GPT Prompt" domain="[]" name="group_by_gpt_prompt_id" context="{'group_by':'gpt_prompt_id'}"/>
                         <filter string="Lang" domain="[]" name="group_by_lang_id" context="{'group_by':'lang_id'}"/>
                         <filter string="GPT Model" domain="[]" name="group_by_gpt_model_id" context="{'group_by':'gpt_model_id'}"/>
@@ -192,7 +202,7 @@
             <field name="model">vit.product_value_analysis</field>
             <field name="arch" type="xml">
                 <graph string="Product Value Analysis" type="bar">
-                    <field name="gpt_prompt_id"/>
+                    <field name="write_gpt_prompt_id"/>
                 </graph>
             </field>
         </record>

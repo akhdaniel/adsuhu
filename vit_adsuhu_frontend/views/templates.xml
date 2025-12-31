@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_analysis_list_template" name="Product Analysis List">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="adsuhu-container">
+                    <div class="container">
+                        <div class="adsuhu-header">
+                            <h1>Product Value Analyses</h1>
+                            <p class="lead">Explore our in-depth product value breakdowns and market insights.</p>
+                            <a href="/product_analysis/create" class="btn btn-primary mt-3">
+                                <i class="fa fa-plus"></i> Create New Analysis
+                            </a>
+                        </div>
+                        
+                        <div class="adsuhu-card-grid">
+                            <t t-foreach="analyses" t-as="analysis">
+                                <div class="adsuhu-card">
+                                    <div class="adsuhu-card-body">
+                                        <div class="adsuhu-card-meta">
+                                            <i class="fa fa-calendar"></i>
+                                            <span t-field="analysis.create_date" t-options='{"widget": "date"}'></span>
+                                        </div>
+                                        <h3 class="adsuhu-card-title">
+                                            <a t-attf-href="/product_analysis/#{analysis.id}" t-field="analysis.name"></a>
+                                        </h3>
+                                        <div class="adsuhu-card-text" t-if="analysis.description">
+                                            <t t-out="analysis.description[:200] + '...' if len(analysis.description) > 200 else analysis.description"/>
+                                        </div>
+                                        <div class="mt-auto pt-3">
+                                            <a t-attf-href="/product_analysis/#{analysis.id}" class="adsuhu-btn-primary">
+                                                View Analysis
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        
+                        <div class="d-flex justify-content-center mt-5">
+                            <t t-call="website.pager"/>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="product_analysis_detail_template" name="Product Analysis Detail">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="adsuhu-detail-header">
+                    <div class="container">
+                        <div class="text-center">
+                            <h1 class="adsuhu-detail-title" t-field="analysis.name"></h1>
+                            <p class="text-muted">
+                                Created on <span t-field="analysis.create_date" t-options='{"widget": "date"}'></span>
+                            </p>
+                            <a href="/product_analysis" class="btn btn-outline-secondary mt-2">
+                                <i class="fa fa-arrow-left"></i> Back
+                            </a>
+                            <a t-if="analysis.product_url" t-att-href="analysis.product_url" target="_blank" class="btn btn-outline-primary mt-2">
+                                <i class="fa fa-external-link"></i> Visit Product URL
+                            </a>
+                            <a t-attf-href="/product_analysis/#{analysis.id}/edit" class="btn btn-outline-secondary mt-2 ms-2">
+                                <i class="fa fa-pencil"></i> Edit
+                            </a>
+                            <a t-if="analysis.report_docx" t-attf-href="/web/content/vit.product_value_analysis/#{analysis.id}/report_docx/#{analysis.report_docx_filename or 'report.docx'}?download=true" class="btn btn-primary mt-2 ms-2">
+                                <i class="fa fa-download"></i> Download DOCX
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container adsuhu-container">
+                    <div class="row">
+                        <div class="col-lg-8 offset-lg-2">
+                            
+                            <section class="adsuhu-section" t-if="analysis.description">
+                                <h2 class="adsuhu-section-title">Description</h2>
+                                <div class="adsuhu-content" t-out="description_html"></div>
+                            </section>
+
+                            <section class="adsuhu-section" t-if="analysis.features">
+                                <h2 class="adsuhu-section-title">Features</h2>
+                                <div class="adsuhu-content" t-out="features_html"></div>
+                            </section>
+
+                            <section class="adsuhu-section" t-if="analysis.final_report">
+                                <h2 class="adsuhu-section-title">Final Analysis Report</h2>
+                                <div class="adsuhu-toc mb-4 p-3 bg-light rounded" t-if="final_report_toc">
+                                    <h4 class="h6 text-muted mb-2">Table of Contents</h4>
+                                    <div t-out="final_report_toc"></div>
+                                </div>
+                                <div class="adsuhu-content" t-out="final_report_html"></div>
+                            </section>
+
+                            <section class="adsuhu-section" t-if="analysis.market_mapper_ids">
+                                <h2 class="adsuhu-section-title">Market Analysis</h2>
+                                <div class="adsuhu-content">
+                                    <t t-foreach="analysis.market_mapper_ids" t-as="market">
+                                        <div class="market-mapper-item">
+                                            <h3 class="market-mapper-title" t-field="market.name"></h3>
+                                            <div t-if="market.output" t-field="market.output"></div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="product_analysis_form" name="Product Analysis Form">
+        <t t-set="analysis" t-value="analysis or False"/>
+        <t t-set="is_edit" t-value="is_edit or False"/>
+        <t t-set="form_action" t-value="is_edit and (f'/product_analysis/{analysis.id}/update') or '/product_analysis/submit'"/>
+        <t t-set="cancel_href" t-value="is_edit and (f'/product_analysis/{analysis.id}') or '/product_analysis'"/>
+        <h2 class="adsuhu-card-title text-center mb-4">
+            <t t-if="is_edit">Edit Product Analysis</t>
+            <t t-if="not is_edit">Create New Product Analysis</t>
+        </h2>
+        <form t-att-action="form_action" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            
+            <div class="mb-3">
+                <label for="product_name" class="form-label">Product Name</label>
+                <input type="text" class="form-control" name="product_name" id="product_name" placeholder="Your great product name..." required="required" t-att-value="analysis.name if is_edit else ''"/>
+            </div>
+
+            <div class="mb-3">
+                <label for="product_url" class="form-label">Product URL</label>
+                <button type="button" class="btn btn-outline-secondary">Fetch Product</button>
+                <input type="text" class="form-control" name="product_url" id="product_url" placeholder="e.g. https://shopee.co.id/..." required="required" t-att-value="analysis.product_url if is_edit else ''"/>
+            </div>
+
+            <div class="mb-3">
+                <label for="target_market" class="form-label">Target Market</label>
+                <input type="text" class="form-control" name="target_market" id="target_market" placeholder="e.g. Indonesia, South East Asia, etc..." required="required" t-att-value="analysis.target_market if is_edit else ''"/>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Product Description</label>
+                <t t-if="is_edit">
+                    <button type="button" class="btn btn-outline-secondary" id="write_ai_btn" t-att-data-analysis-id="analysis.id">
+                        Write Description
+                    </button>
+                    <div class="small text-muted mt-1" id="write_ai_status"></div>
+                </t>
+                <textarea class="form-control" name="description" id="description" rows="5" placeholder="Paste or type product description here..."><t t-esc="analysis.description if is_edit else ''"/></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="features" class="form-label">Key Features</label>
+                <textarea class="form-control" name="features" id="features" rows="4" placeholder="List product features..."><t t-esc="analysis.features if is_edit else ''"/></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="lang_id" class="form-label">Language</label>
+                <select class="form-control" name="lang_id" id="lang_id">
+                    <t t-foreach="langs" t-as="language_rec">
+                        <option t-att-value="language_rec.id" t-att-selected="is_edit and analysis.lang_id and (language_rec.id == analysis.lang_id.id) or (not is_edit and language_rec.code == 'en_US')">
+                            <t t-esc="language_rec.name"/>
+                        </option>
+                    </t>
+                </select>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <t t-if="is_edit">Save Changes</t>
+                    <t t-if="not is_edit">Analyze Product</t>
+                </button>
+                <a t-att-href="cancel_href" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+        <t t-if="is_edit">
+            <script type="text/javascript">
+                document.addEventListener("DOMContentLoaded", () =&gt; {
+                    console.log('loaded')
+                    const aiBtn = document.getElementById("write_ai_btn");
+                    if (!aiBtn) {
+                        return;
+                    }
+                    const form = aiBtn.closest("form");
+                    const descField = form.querySelector("#description");
+                    console.log('descField', descField)
+                    const featuresField = form.querySelector("#features");
+                    const langField = form.querySelector("#lang_id");
+                    const csrfTokenInput = form.querySelector("input[name='csrf_token']");
+                    const analysisId = aiBtn.dataset.analysisId;
+                    const statusEl = document.getElementById("write_ai_status");
+
+                    const setButtonState = (loading) =&gt; {
+                        if (loading) {
+                            aiBtn.dataset.originalText = aiBtn.innerText;
+                            aiBtn.innerText = "Generating...";
+                            aiBtn.disabled = true;
+                        } else {
+                            aiBtn.innerText = aiBtn.dataset.originalText || "Write Description";
+                            aiBtn.disabled = false;
+                        }
+                    };
+
+                    aiBtn.addEventListener("click", async () =&gt; {
+                        if (!analysisId) {
+                            return;
+                        }
+                        if (statusEl) statusEl.textContent = "Saving and generating...";
+                        setButtonState(true);
+                        try {
+                            const formData = new FormData(form);
+                            const saveResponse = await fetch(form.action, {
+                                method: "POST",
+                                body: formData,
+                                credentials: "same-origin",
+                                redirect: "follow",
+                            });
+                            if (!saveResponse.ok) {
+                                throw new Error("Failed to save the record.");
+                            }
+
+                            const rpcResponse = await fetch(`/product_analysis/${analysisId}/write_with_ai`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": csrfTokenInput ? csrfTokenInput.value : "",
+                                },
+                                body: JSON.stringify({}),
+                                credentials: "same-origin",
+                            });
+
+                            if (!rpcResponse.ok) {
+                                const errorText = await rpcResponse.text();
+                                throw new Error(errorText || "AI generation failed.");
+                            }
+
+                            const rpcJson = await rpcResponse.json();
+                            const updated = rpcJson || null;
+                            if (updated) {
+                                if (descField) descField.value = updated.result.description || "";
+                                if (featuresField) featuresField.value = updated.result.features || "";
+                                if (langField &amp;&amp; updated.result.lang_id) {
+                                    langField.value = updated.result.lang_id[0];
+                                }
+                                if (statusEl) statusEl.textContent = "Description updated using AI.";
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            if (statusEl) statusEl.textContent = err.message || "AI generation failed.";
+                            alert(err.message || "Something went wrong while generating the description.");
+                        } finally {
+                            setButtonState(false);
+                            setTimeout(() =&gt; {
+                                if (statusEl) statusEl.textContent = "";
+                            }, 4000);
+                        }
+                    });
+                });
+            </script>
+        </t>
+    </template>
+
+    <template id="product_analysis_create_template" name="Create Product Analysis">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="adsuhu-container">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="adsuhu-card">
+                                    <div class="adsuhu-card-body">
+                                        <t t-call="vit_adsuhu_frontend.product_analysis_form">
+                                            <t t-set="langs" t-value="langs"/>
+                                            <t t-set="analysis" t-value="False"/>
+                                            <t t-set="is_edit" t-value="False"/>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="product_analysis_edit_template" name="Edit Product Analysis">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="adsuhu-container">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="adsuhu-card">
+                                    <div class="adsuhu-card-body">
+                                        <t t-call="vit_adsuhu_frontend.product_analysis_form">
+                                            <t t-set="langs" t-value="langs"/>
+                                            <t t-set="analysis" t-value="analysis"/>
+                                            <t t-set="is_edit" t-value="True"/>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

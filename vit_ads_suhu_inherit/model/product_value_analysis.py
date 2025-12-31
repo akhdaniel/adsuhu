@@ -20,6 +20,7 @@ from odoo.modules.module import get_module_path
 import markdown
 from bs4 import BeautifulSoup
 # from docx2pdf import convert
+from .libs.openai_lib import *
 
 try:
     from bs4 import BeautifulSoup
@@ -88,6 +89,7 @@ DEFAULT_SPECIFIC_INSTRUCTION="""REQUIRED JSON OUTPUT FORMAT:
 }
 
 """
+
 class product_value_analysis(models.Model):
     _name = "vit.product_value_analysis"
     _inherit = "vit.product_value_analysis"
@@ -107,7 +109,63 @@ class product_value_analysis(models.Model):
             [("name", "=", "product_value_analysis")], limit=1
         ).id
 
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Gpt Prompt"), default=_get_default_prompt)
+
+    def _get_default_write_prompt(self):
+        prompt = self.env.ref("vit_ads_suhu_inherit.write_description_prompt", raise_if_not_found=False)
+        if prompt:
+            return prompt.id
+        return self.env["vit.gpt_prompt"].search(
+            [("name", "=", "write_description_prompt")], limit=1
+        ).id
+
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    write_gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Write GPT Prompt"), default=_get_default_write_prompt)
+
+    # write description and features
+    def action_write_with_ai(self, ):
+        def json_to_markdown(features):
+            output = []
+            for feature in features:
+                for title, items in feature.items():
+                    output.append(f"## {title}")
+                    for item in items:
+                        output.append(f"- {item}")
+                    output.append("")  # blank line between features
+            return "\n".join(output)     
+           
+        if not self.write_gpt_prompt_id:
+            raise UserError('Write GPT prompt empty')
+        if not self.gpt_model_id:
+            raise UserError('Write GPT model empty')
+        
+        context = self.description
+        additional_command=f"Reponse in {self.lang_id.name}"
+        system_prompt = self.write_gpt_prompt_id.system_prompt 
+        question = ""
+        user_prompt = self.write_gpt_prompt_id.user_prompt
+
+        openai_api_key = self.env["ir.config_parameter"].sudo().get_param("openai_api_key")
+        openai_base_url = self.env["ir.config_parameter"].sudo().get_param("openai_base_url", None)
+
+        model = self.gpt_model_id.name
+
+        response = generate_content(openai_api_key=openai_api_key, 
+                                openai_base_url=openai_base_url, 
+                                model=model, 
+                                system_prompt=system_prompt, 
+                                user_prompt=user_prompt, 
+                                context=context, 
+                                question=question, 
+                                additional_command=additional_command)    
+
+        response = self.clean_md(response)
+
+        response = json.loads(response)
+        if not 'description' in response:
+            raise UserError(f'Error from GPT: {response}')
+        self.description = response.get('description','')
+        self.features = json_to_markdown(response['features'])
+
 
     @api.onchange("description","features","lang_id","specific_instruction")
     def _get_input(self, ):

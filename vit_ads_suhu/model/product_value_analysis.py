@@ -14,6 +14,10 @@ class product_value_analysis(models.Model):
         pass
 
 
+    def action_write_with_ai(self, ):
+        pass
+
+
     def action_generate(self, ):
         pass
 
@@ -42,6 +46,7 @@ class product_value_analysis(models.Model):
     report_template_filename = fields.Char( string=_("Report Template Filename"))
     report_docx = fields.Binary( string=_("Report Docx"))
     report_docx_filename = fields.Char( string=_("Report Docx Filename"))
+    target_market = fields.Char( string=_("Target Market"), default="US (Global)")
 
 
     def action_view_detail_market_mapper_ids(self):
@@ -76,3 +81,4 @@ class product_value_analysis(models.Model):
 
 
     market_mapper_ids = fields.One2many(comodel_name="vit.market_mapper",  inverse_name="product_value_analysis_id",  string=_("Market Mapper"))
+    write_gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Write Gpt Prompt"))
