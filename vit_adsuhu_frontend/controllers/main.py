@@ -2,6 +2,7 @@ from odoo import http
 from odoo.http import request
 from markupsafe import Markup
 import markdown
+import re
 
 class ProductValueAnalysisController(http.Controller):
 
@@ -102,6 +103,25 @@ class ProductValueAnalysisController(http.Controller):
             'lang_id': result.get('lang_id', False),
         }
 
+    def _add_img_responsive_classes(self, html):
+        if not html:
+            return html
+
+        def _inject(match):
+            tag = match.group(0)
+            class_match = re.search(r'class="([^"]*)"', tag)
+            if class_match:
+                classes = class_match.group(1).split()
+                if "img" not in classes:
+                    classes.append("img")
+                if "img-responsive" not in classes:
+                    classes.append("img-responsive")
+                new_class_attr = f'class="{" ".join(classes)}"'
+                return tag[: class_match.start()] + new_class_attr + tag[class_match.end() :]
+            return tag.replace("<img", '<img class="img img-responsive"', 1)
+
+        return re.sub(r"<img\b[^>]*>", _inject, html)
+
     def _process_markdown(self, text):
         if not text:
             return '', ''
@@ -173,6 +193,7 @@ class ProductValueAnalysisController(http.Controller):
         # Now pass to markdown with 'toc' extension
         md = markdown.Markdown(extensions=['tables', 'toc'])
         html_content = md.convert(numbered_text)
+        html_content = self._add_img_responsive_classes(html_content)
         
         # The 'toc' extension automatically supports [TOC] marker, but we can also access md.toc
         # However, to display TOC separately, we can return md.toc
