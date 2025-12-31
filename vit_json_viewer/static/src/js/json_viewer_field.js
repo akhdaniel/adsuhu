@@ -52,38 +52,52 @@ class JSONViewerField extends TextField {
     }
 
     syntaxHighlight(jsonString) {
-        // Tokenize the raw string and escape each chunk to keep HTML safe.
-        const pattern =
-            /("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*")(\\s*:)?|\\b(?:true|false|null)\\b|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?/g;
-        let result = "";
-        let lastIndex = 0;
-        let match;
-        while ((match = pattern.exec(jsonString)) !== null) {
-            const [token, maybeString, maybeKey] = match;
-            result += escapeHtml(jsonString.slice(lastIndex, match.index));
-            let cls = "o_json_number";
-            let style = "color:#f59e0b";
-            if (maybeString !== undefined) {
-                const isKey = Boolean(maybeKey) || token.trim().endsWith(":");
-                if (isKey) {
-                    cls = "o_json_key";
-                    style = "color:#f87171";
-                } else {
-                    cls = "o_json_string";
-                    style = "color:#22c55e";
+        const renderValue = (val, indent = 0) => {
+            const pad = "  ".repeat(indent);
+            const nextPad = "  ".repeat(indent + 1);
+            if (Array.isArray(val)) {
+                if (!val.length) {
+                    return "[]";
                 }
-            } else if (token === "true" || token === "false") {
-                cls = "o_json_boolean";
-                style = "color:#60a5fa";
-            } else if (token === "null") {
-                cls = "o_json_null";
-                style = "color:#f472b6";
+                const items = val.map((item, index) => {
+                    const comma = index < val.length - 1 ? "," : "";
+                    return `${nextPad}${renderValue(item, indent + 1)}${comma}`;
+                });
+                return `[\n${items.join("\n")}\n${pad}]`;
             }
-            result += `<span class="${cls}" style="${style}">${escapeHtml(token)}</span>`;
-            lastIndex = pattern.lastIndex;
+            if (val && typeof val === "object") {
+                const entries = Object.entries(val);
+                if (!entries.length) {
+                    return "{}";
+                }
+                const items = entries.map(([key, value], index) => {
+                    const comma = index < entries.length - 1 ? "," : "";
+                    const renderedKey = `<span class="o_json_key" style="color:#f87171">"${escapeHtml(key)}"</span>`;
+                    return `${nextPad}${renderedKey}: ${renderValue(value, indent + 1)}${comma}`;
+                });
+                return `{\n${items.join("\n")}\n${pad}}`;
+            }
+            if (typeof val === "string") {
+                return `<span class="o_json_string" style="color:#22c55e">"${escapeHtml(val)}"</span>`;
+            }
+            if (typeof val === "number") {
+                return `<span class="o_json_number" style="color:#f59e0b">${val}</span>`;
+            }
+            if (typeof val === "boolean") {
+                return `<span class="o_json_boolean" style="color:#60a5fa">${val}</span>`;
+            }
+            if (val === null) {
+                return `<span class="o_json_null" style="color:#f472b6">null</span>`;
+            }
+            return escapeHtml(String(val));
+        };
+
+        try {
+            const parsed = JSON.parse(jsonString);
+            return renderValue(parsed, 0);
+        } catch {
+            return escapeHtml(jsonString);
         }
-        result += escapeHtml(jsonString.slice(lastIndex));
-        return result;
     }
 
     renderPreview() {
