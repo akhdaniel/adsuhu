@@ -101,6 +101,12 @@ class product_value_analysis(models.Model):
         ).id
     lang_id = fields.Many2one(comodel_name="res.lang", default=_get_default_lang)
 
+    def _get_default_gpt_model(self):
+        return self.env["vit.gpt_model"].search(
+            [("name", "=", "deepseek-chat")], limit=1
+        ).id
+    gpt_model_id = fields.Many2one(comodel_name="vit.gpt_model", default=_get_default_gpt_model)
+
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_product_value_analysis", raise_if_not_found=False)
         if prompt:

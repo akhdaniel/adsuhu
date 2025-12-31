@@ -18,7 +18,8 @@ class JSONViewerField extends TextField {
 
     setup() {
         super.setup();
-        this.state = useState({ showPreview: true });
+        this.state = useState({ showPreview: true, isReformatting: false });
+        this.orm = useService("orm");
         this.notification = useService("notification");
         this.viewerRef = useRef("viewer");
         onMounted(() => this.renderPreview());
@@ -63,6 +64,19 @@ class JSONViewerField extends TextField {
         return this.isPreview ? _t("Edit JSON") : _t("View JSON");
     }
 
+    get reformatTitle() {
+        return _t("Reformat Output");
+    }
+
+    get reformatDisabled() {
+        const record = this.props.record;
+        return !record?.resId || this.state.isReformatting;
+    }
+
+    get reformatIconClass() {
+        return this.state.isReformatting ? "fa fa-spinner fa-spin" : "fa fa-indent";
+    }
+
     get copyDisabled() {
         const value = this.getRawValue();
         return !value || !String(value).trim();
@@ -75,6 +89,26 @@ class JSONViewerField extends TextField {
         this.state.showPreview = !this.state.showPreview;
         if (this.state.showPreview) {
             this.renderPreview();
+        }
+    }
+
+    async reformatOutput() {
+        const record = this.props.record;
+        if (!record?.resId) {
+            return;
+        }
+        this.state.isReformatting = true;
+        try {
+            const result = await this.orm.call(record.resModel, "reformat_output", [[record.resId]]);
+            const formatted =
+                Array.isArray(result) && result.length ? result[0] : result !== undefined ? result : "";
+            if (this.props.update) {
+                await this.props.update(formatted);
+            } else if (record?.data) {
+                record.data[this.props.name] = formatted;
+            }
+        } finally {
+            this.state.isReformatting = false;
         }
     }
 

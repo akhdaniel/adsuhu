@@ -9,7 +9,6 @@
             <field name="arch" type="xml">
                 <list string="Product Value Analysis">
                     <field name="name" /> <!-- 1-->
-                    <field name="product_url" /> <!-- 100-->
                     <field name="partner_id" /> <!-- 100-->
                     <field name="write_gpt_prompt_id" /> <!-- 101-->
                     <field name="target_market" /> <!-- 106-->

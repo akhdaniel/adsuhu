@@ -16,6 +16,16 @@
                 <button
                     type="button"
                     class="btn btn-link"
+                    t-on-click="reformatOutput"
+                    t-att-title="reformatTitle"
+                    t-att-aria-label="reformatTitle"
+                    t-att-disabled="reformatDisabled ? true : undefined"
+                >
+                    <i t-att-class="reformatIconClass" aria-hidden="true"/>
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-link"
                     t-on-click="copyJson"
                     t-att-title="'Copy JSON'"
                     t-att-aria-label="'Copy JSON'"

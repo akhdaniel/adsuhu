@@ -1,0 +1,7 @@
+<odoo>
+<data>
+    <record id="gpt_model_deepseek" model="vit.gpt_model">
+        <field name="name">deepseek-chat</field>
+    </record>
+</data>
+</odoo>
