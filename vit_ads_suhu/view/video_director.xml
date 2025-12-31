@@ -106,7 +106,7 @@
                                 </group>
                             </page>
                             <page name="output" string="Output">
-                                    <field name="output" widget="md_viewer" />
+                                    <field name="output" widget="json_viewer" />
                             </page>
                             <page name="input" string="Input">
                                     <field name="input" widget="md_viewer" />

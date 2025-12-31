@@ -23654,7 +23654,7 @@
 								"$ref": "AAAAAAGbHvslCAoNY5M="
 							},
 							"name": "output",
-							"documentation": "{\n\"form:pos\":\"tab:Output\",\n\"tree:invisible\":true,\n\"xml:widget\":\"md_viewer\"\n\n}",
+							"documentation": "{\n\"form:pos\":\"tab:Output\",\n\"tree:invisible\":true,\n\"xml:widget\":\"json_viewer\"\n\n}",
 							"type": "Text"
 						},
 						{
