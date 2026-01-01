@@ -475,12 +475,12 @@ Response in {self.lang_id.name} language.
         for x in output['scripts']:
           script = "Visuals: " + ",".join(x['visuals']) + "\nText Overlay: " + x['text_overlay'] + "\nVoice Over: " +x['voice_over'] 
           prompt = script
-          video_script_ids.append([(0,0,{
+          video_script_ids.append((0,0,{
                 'name': x['name'],
                 'duration': x['duration'],
                 'script': script,
                 'prompt': prompt 
-            })])
+            }))
         _logger.error(f'video_script_ids {video_script_ids}')
           
         self.video_director_ids = [(0,0,{
