@@ -46,6 +46,7 @@
                 <form string="Video Director">
                     <header>
                         <button string="Generate" type="object" name="action_generate" />
+                        <button string="Generate Actor" type="object" name="action_generate_actor" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>

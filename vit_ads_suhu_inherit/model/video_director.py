@@ -50,3 +50,9 @@ class video_director(models.Model):
 {rec.visual_concept_id.output or ''}
 
 """
+
+    def action_generate_actor(self):
+        if not self.main_character:
+            raise UserError('Main character empty!')
+        
+        
