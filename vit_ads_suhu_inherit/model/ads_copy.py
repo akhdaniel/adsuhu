@@ -481,6 +481,7 @@ Response in {self.lang_id.name} language.
                 'script': script,
                 'prompt': prompt 
             })])
+        _logger.error(f'video_script_ids {video_script_ids}')
           
         self.video_director_ids = [(0,0,{
             'name': 'VIDEO DIRECTOR 1',
