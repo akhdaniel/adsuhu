@@ -21,7 +21,7 @@ class video_script(models.Model):
         if not self.video_director_id.gpt_model_id:
             raise UserError('Video GPT model empty')
         
-        context = self.script
+        context = f"{self.name} video script. {self.script}"
         additional_command=""
         system_prompt = self.video_director_id.gpt_prompt_id.system_prompt 
         question = self.video_director_id.main_character or ""

@@ -20,11 +20,11 @@ class video_director(models.Model):
 
 
     def _get_default_prompt(self):
-        prompt = self.env.ref("vit_ads_suhu_inherit.gpt_video_director", raise_if_not_found=False)
+        prompt = self.env.ref("vit_ads_suhu_inherit.write_description_prompt", raise_if_not_found=False)
         if prompt:
             return prompt.id
         return self.env["vit.gpt_prompt"].search(
-            [("name", "=", "video_director")], limit=1
+            [("name", "=", "Write Description Prompt")], limit=1
         ).id
     
 
