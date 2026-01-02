@@ -66,7 +66,9 @@
 		"view/video_script.xml",
 		"report/video_script.xml",
 		"view/gpt_model.xml",
-		"report/gpt_model.xml"
+		"report/gpt_model.xml",
+		"view/auto_post_period.xml",
+		"report/auto_post_period.xml"
 	],
 	"installable": True,
 	"auto_install": False,

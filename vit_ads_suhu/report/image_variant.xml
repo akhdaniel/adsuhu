@@ -34,8 +34,36 @@
                             <p class="m-0" t-field="doc.image_url" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Is Autopost</strong>
+                            <p class="m-0" t-field="doc.is_autopost" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Autopost Time</strong>
+                            <p class="m-0" t-field="doc.autopost_time" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Headline</strong>
+                            <p class="m-0" t-field="doc.headline" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Primary Text</strong>
+                            <p class="m-0" t-field="doc.primary_text" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Cta</strong>
+                            <p class="m-0" t-field="doc.cta" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Tags</strong>
+                            <p class="m-0" t-field="doc.tags" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Image Generator</strong>
                             <p class="m-0" t-field="doc.image_generator_id"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Auto Post Period</strong>
+                            <p class="m-0" t-field="doc.auto_post_period_id"/>
                         </div>
                     </div>
                 </div>

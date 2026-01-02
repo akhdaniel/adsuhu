@@ -13,6 +13,7 @@
                     <field name="partner_id" /> <!-- 100-->
                     <field name="angle" /> <!-- 101-->
                     <field name="hook" /> <!-- 102-->
+                    <field name="ads_copy_no" /> <!-- 103-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -63,6 +64,7 @@
                                 <field name="ratio"  />
                                 <field name="angle"  />
                                 <field name="hook"  />
+                                <field name="ads_copy_no"  />
                                 <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -84,7 +86,14 @@
                                 <field name="image_variant_ids" >
                                     <list >
                                         <field name="name" /> <!-- 100-->
+                                        <field name="auto_post_period_id" /> <!-- 101-->
                                         <field name="image_url" /> <!-- 103-->
+                                        <field name="is_autopost" /> <!-- 104-->
+                                        <field name="autopost_time" widget="float_time"/> <!-- 105-->
+                                        <field name="headline" /> <!-- 106-->
+                                        <field name="primary_text" /> <!-- 107-->
+                                        <field name="cta" /> <!-- 108-->
+                                        <field name="tags" /> <!-- 109-->
                                     </list>
                                 </field>
                             </page>
@@ -122,6 +131,7 @@
                     <filter string="Ratio" name="filter_by_ratio" domain="[('ratio','=','')]" />
                     <filter string="Angle" name="filter_by_angle" domain="[('angle','=','')]" />
                     <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
+                    <filter string="Ads Copy No" name="filter_by_ads_copy_no" domain="[('ads_copy_no','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -134,6 +144,7 @@
                     <field name="ratio" string="Ratio" select="True"/>
                     <field name="angle" string="Angle" select="True"/>
                     <field name="hook" string="Hook" select="True"/>
+                    <field name="ads_copy_no" string="Ads Copy No" select="True"/>
                     <field name="name" string="Name" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>

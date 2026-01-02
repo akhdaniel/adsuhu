@@ -271,159 +271,167 @@ Response in {self.lang_id.name} language.
     #     self.image_generator_ids._get_input()
 
 
-    def action_split_images_md(self):
-        def extract_copies(text: str) -> List[Dict]:
-            copies = []
-            clean_text = strip_emoji(text)
+#     def action_split_images_md(self):
+#         def extract_copies(text: str) -> List[Dict]:
+#             copies = []
+#             clean_text = strip_emoji(text)
 
-            # Match ANY "### ... Copy ... — ..." (emoji & letter agnostic)
-            copy_pattern = re.compile(
-                r"(###\s+.*?\bcopy\b.*?—[^\n]+)\n\n(.*?)(?=\n\n---|\n\n###|\Z)",
-                re.DOTALL | re.IGNORECASE
-            )
+#             # Match ANY "### ... Copy ... — ..." (emoji & letter agnostic)
+#             copy_pattern = re.compile(
+#                 r"(###\s+.*?\bcopy\b.*?—[^\n]+)\n\n(.*?)(?=\n\n---|\n\n###|\Z)",
+#                 re.DOTALL | re.IGNORECASE
+#             )
 
-            for idx, match in enumerate(copy_pattern.finditer(clean_text)):
-                copy_header = match.group(1).strip()
-                copy_block = match.group(2).strip()
+#             for idx, match in enumerate(copy_pattern.finditer(clean_text)):
+#                 copy_header = match.group(1).strip()
+#                 copy_block = match.group(2).strip()
 
-                # Primary Text
-                primary_text_match = re.search(
-                    r"\*\*\s*primary\s+text.*?\*\*:?[\s\n]+(.*?)(?=\n\n\*\*\s*headline|\Z)",
-                    copy_block,
-                    re.DOTALL | re.IGNORECASE
-                )
+#                 # Primary Text
+#                 primary_text_match = re.search(
+#                     r"\*\*\s*primary\s+text.*?\*\*:?[\s\n]+(.*?)(?=\n\n\*\*\s*headline|\Z)",
+#                     copy_block,
+#                     re.DOTALL | re.IGNORECASE
+#                 )
 
-                # Headline
-                headline_match = re.search(
-                    r"\*\*\s*headline.*?\*\*:?[\s\n]+(.*?)(?=\n\n\*\*\s*cta|\Z)",
-                    copy_block,
-                    re.DOTALL | re.IGNORECASE
-                )
+#                 # Headline
+#                 headline_match = re.search(
+#                     r"\*\*\s*headline.*?\*\*:?[\s\n]+(.*?)(?=\n\n\*\*\s*cta|\Z)",
+#                     copy_block,
+#                     re.DOTALL | re.IGNORECASE
+#                 )
 
-                # CTA
-                cta_match = re.search(
-                    r"\*\*\s*cta\s*:\*\*\s*(.*)",
-                    copy_block,
-                    re.IGNORECASE
-                )
+#                 # CTA
+#                 cta_match = re.search(
+#                     r"\*\*\s*cta\s*:\*\*\s*(.*)",
+#                     copy_block,
+#                     re.IGNORECASE
+#                 )
 
-                copies.append({
-                    "index": idx,                      # 0,1,2,3
-                    "copy": copy_header,               # FULL header line
-                    "primary_text": primary_text_match.group(1).strip() if primary_text_match else "",
-                    "headline": headline_match.group(1).strip() if headline_match else "",
-                    "cta": cta_match.group(1).strip() if cta_match else ""
-                })
+#                 copies.append({
+#                     "index": idx,                      # 0,1,2,3
+#                     "copy": copy_header,               # FULL header line
+#                     "primary_text": primary_text_match.group(1).strip() if primary_text_match else "",
+#                     "headline": headline_match.group(1).strip() if headline_match else "",
+#                     "cta": cta_match.group(1).strip() if cta_match else ""
+#                 })
 
-            return copies
+#             return copies
 
-        extracted_copies = extract_copies(self.output)
-        from pprint import pprint
-        pprint(extracted_copies)
-        self.image_generator_ids = [(0,0,{
-            'name': f'Ads Image {i+1}',
-            'description': cop['headline'],
-            'hook_id': self.hook_id.id,
-            'output': f"""## Create PNG image, ratio 1:1.
+#         extracted_copies = extract_copies(self.output)
+#         from pprint import pprint
+#         pprint(extracted_copies)
+#         self.image_generator_ids = [(0,0,{
+#             'name': f'Ads Image {i+1}',
+#             'description': cop['headline'],
+#             'hook_id': self.hook_id.id,
+#             'output': f"""## Create PNG image, ratio 1:1.
 
-{cop['copy']}
+# {cop['copy']}
 
-## Headline:
-{cop['headline']}
+# ## Headline:
+# {cop['headline']}
 
-## Primary_text:
-{cop['primary_text']}
+# ## Primary_text:
+# {cop['primary_text']}
 
-## CTA:
-{cop['cta']}
+# ## CTA:
+# {cop['cta']}
 
-"""
-        }) for i,cop in enumerate(extracted_copies)]
-
-
-    def action_create_lp_md(self):
-
-        def capture_landing_page(text: str) -> Dict:
-            result: Dict = {
-                "page_title": "",
-                "sections": []
-            }
-
-            clean_text = strip_emoji(text)
-
-            # ---- page title (flexible): first H1 that contains "LANDING PAGE"
-            for line in clean_text.splitlines():
-                if re.match(r"^\s*#\s+.*landing\s+page", line, flags=re.IGNORECASE):
-                    result["page_title"] = re.sub(r"^\s*#\s+", "", line).strip()
-                    break
-
-            # ---- find section headings (## ...)
-            lines = clean_text.splitlines()
-            header_idx: List[int] = []
-            header_info: List[Dict] = []
-
-            heading_re = re.compile(r"^\s*##\s+(.*)$")
-
-            for i, line in enumerate(lines):
-                m = heading_re.match(line)
-                if not m:
-                    continue
-
-                heading_text = m.group(1).strip()
-
-                # Extract section number anywhere in heading (handles: "1", "1.", "1 HERO", "1️⃣ HERO")
-                num_match = re.search(r"\b(\d{1,2})\b", heading_text)
-                if not num_match:
-                    continue
-
-                section_no = int(num_match.group(1))
-
-                # Title = heading text with the number removed + cleanup
-                title = heading_text
-                title = re.sub(r"\b\d{1,2}\b", "", title, count=1).strip()
-                title = re.sub(r"^[\.\-\)\s]+", "", title).strip()  # remove leading ".-)" etc
-
-                header_idx.append(i)
-                header_info.append({"section_no": section_no, "section_title": title})
-
-            # ---- slice content between headings
-            for j, start_i in enumerate(header_idx):
-                end_i = header_idx[j + 1] if j + 1 < len(header_idx) else len(lines)
-
-                content_lines = lines[start_i + 1:end_i]
-                content = "\n".join(content_lines).strip()
-
-                result["sections"].append({
-                    "section_no": header_info[j]["section_no"],
-                    "section_title": header_info[j]["section_title"],
-                    "content": content
-                })
-
-            # Optional: sort by section_no (keeps order even if headings shuffled)
-            result["sections"].sort(key=lambda x: x["section_no"])
-
-            return result
+# """
+#         }) for i,cop in enumerate(extracted_copies)]
 
 
+#     def action_create_lp_md(self):
 
-        landing_page = capture_landing_page(self.output)
+#         def capture_landing_page(text: str) -> Dict:
+#             result: Dict = {
+#                 "page_title": "",
+#                 "sections": []
+#             }
+
+#             clean_text = strip_emoji(text)
+
+#             # ---- page title (flexible): first H1 that contains "LANDING PAGE"
+#             for line in clean_text.splitlines():
+#                 if re.match(r"^\s*#\s+.*landing\s+page", line, flags=re.IGNORECASE):
+#                     result["page_title"] = re.sub(r"^\s*#\s+", "", line).strip()
+#                     break
+
+#             # ---- find section headings (## ...)
+#             lines = clean_text.splitlines()
+#             header_idx: List[int] = []
+#             header_info: List[Dict] = []
+
+#             heading_re = re.compile(r"^\s*##\s+(.*)$")
+
+#             for i, line in enumerate(lines):
+#                 m = heading_re.match(line)
+#                 if not m:
+#                     continue
+
+#                 heading_text = m.group(1).strip()
+
+#                 # Extract section number anywhere in heading (handles: "1", "1.", "1 HERO", "1️⃣ HERO")
+#                 num_match = re.search(r"\b(\d{1,2})\b", heading_text)
+#                 if not num_match:
+#                     continue
+
+#                 section_no = int(num_match.group(1))
+
+#                 # Title = heading text with the number removed + cleanup
+#                 title = heading_text
+#                 title = re.sub(r"\b\d{1,2}\b", "", title, count=1).strip()
+#                 title = re.sub(r"^[\.\-\)\s]+", "", title).strip()  # remove leading ".-)" etc
+
+#                 header_idx.append(i)
+#                 header_info.append({"section_no": section_no, "section_title": title})
+
+#             # ---- slice content between headings
+#             for j, start_i in enumerate(header_idx):
+#                 end_i = header_idx[j + 1] if j + 1 < len(header_idx) else len(lines)
+
+#                 content_lines = lines[start_i + 1:end_i]
+#                 content = "\n".join(content_lines).strip()
+
+#                 result["sections"].append({
+#                     "section_no": header_info[j]["section_no"],
+#                     "section_title": header_info[j]["section_title"],
+#                     "content": content
+#                 })
+
+#             # Optional: sort by section_no (keeps order even if headings shuffled)
+#             result["sections"].sort(key=lambda x: x["section_no"])
+
+#             return result
 
 
 
-        output = f"""# {landing_page['page_title']}
----
-"""
-        for section in landing_page['sections']:
-            output += f"### SECTION {section['section_no']}\n\n"
-            output += f"### {section['section_title']}\n\n"
-            output += f"{section['content']}\n"
+#         landing_page = capture_landing_page(self.output)
+
+
+
+#         output = f"""# {landing_page['page_title']}
+# ---
+# """
+#         for section in landing_page['sections']:
+#             output += f"### SECTION {section['section_no']}\n\n"
+#             output += f"### {section['section_title']}\n\n"
+#             output += f"{section['content']}\n"
         
-        self.landing_page_builder_ids = [(0,0,{
-            'name': 'LP 1',
-            'output': output
-        })]
+#         self.landing_page_builder_ids = [(0,0,{
+#             'name': 'LP 1',
+#             'output': output
+#         })]
 
     def action_split_images(self):
+        def grep_copy_type(text: str):
+            """
+            Detect COPY type (A, B, C, or D) from text.
+            Returns 'A', 'B', 'C', 'D', or None if not found.
+            """
+            match = re.search(r'\bCOPY\s*([ABCD])\b', text, re.IGNORECASE)
+            return match.group(1).upper() if match else None
+        
         if not self.output:
               raise UserError('Output empty: please regenerate output')
         
@@ -437,6 +445,7 @@ Response in {self.lang_id.name} language.
                 'name': f'Ads Image {i+1}: {ad['name']}',
                 'description': ad['headline'],
                 'hook_id': self.hook_id.id,
+                'ads_copy_no': grep_copy_type(ad['name'])
             })
             output={
                 'instruction':img.specific_instruction,

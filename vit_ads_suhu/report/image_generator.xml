@@ -34,6 +34,10 @@
                             <p class="m-0" t-field="doc.hook" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Ads Copy No</strong>
+                            <p class="m-0" t-field="doc.ads_copy_no" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Image Prompt</strong>
                             <p class="m-0" t-field="doc.image_prompt_id"/>
                         </div>
@@ -60,7 +64,14 @@
                             <td>Image</td>
                             <td>Image Filename</td>
                             <td>Image Url</td>
+                            <td>Is Autopost</td>
+                            <td>Autopost Time</td>
+                            <td>Headline</td>
+                            <td>Primary Text</td>
+                            <td>Cta</td>
+                            <td>Tags</td>
                             <td>Image Generator</td>
+                            <td>Auto Post Period</td>
                         </tr>
                     </thead>
                     <tbody class="image_variant_ids_tbody">
@@ -69,7 +80,14 @@
                             <td><span t-field="line.image" /></td>
                             <td><span t-field="line.image_filename" /></td>
                             <td><span t-field="line.image_url" /></td>
+                            <td><span t-field="line.is_autopost" /></td>
+                            <td><span t-field="line.autopost_time" /></td>
+                            <td><span t-field="line.headline" /></td>
+                            <td><span t-field="line.primary_text" /></td>
+                            <td><span t-field="line.cta" /></td>
+                            <td><span t-field="line.tags" /></td>
                             <td><span t-field="line.image_generator_id" /></td>
+                            <td><span t-field="line.auto_post_period_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
                 </table>

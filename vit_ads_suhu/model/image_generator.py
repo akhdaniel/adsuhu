@@ -36,6 +36,7 @@ class image_generator(models.Model):
     ratio = fields.Selection(selection=[('1:1','1:1'),('9:16','9:16'),('16:9','16:9')], required=True, default="1:1",  string=_("Ratio"))
     angle = fields.Text(related="ads_copy_id.angle_hook_id.description",  string=_("Angle"))
     hook = fields.Text(related="hook_id.description",  string=_("Hook"))
+    ads_copy_no = fields.Char( string=_("Ads Copy No"))
 
 
     image_prompt_id = fields.Many2one(comodel_name="vit.image_prompt",  string=_("Image Prompt"))

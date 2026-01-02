@@ -3,6 +3,7 @@ from . import general_object
 from . import ads_copy
 from . import angle_hook
 from . import audience_profiler
+from . import auto_post_period
 from . import campaign_builder
 from . import compliance_checker
 from . import customer

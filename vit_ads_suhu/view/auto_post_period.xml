@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- tree view -->
+        <record id="view_vit_auto_post_period_tree" model="ir.ui.view">
+            <field name="name">vit_auto_post_period_tree</field>
+            <field name="model">vit.auto_post_period</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="Auto Post Period">
+                    <field name="name" /> <!-- 100-->
+                    <field name="period_days" /> <!-- 101-->
+                </list>
+            </field>
+        </record>
+        <!-- form view -->
+        <record id="view_vit_auto_post_period_form" model="ir.ui.view">
+            <field name="name">vit_auto_post_period_form</field>
+            <field name="model">vit.auto_post_period</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Auto Post Period">
+                    <header>
+                        <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
+                                <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
+                                <!--field name="detail_ids" invisible="1"/-->
+                            <!--/button-->
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Auto Post Period Name"/>
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group> <!-- left -->
+                                <field name="period_days"  />
+                            </group>
+                            <group> <!-- right -->
+                            </group>
+                        </group>
+                        <notebook>
+                        </notebook>
+                        <group name="note_group" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            </group>
+                            <div class="clearfix"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- search -->
+        <record id="view_vit_auto_post_period_search" model="ir.ui.view">
+            <field name="name">vit_auto_post_period</field>
+            <field name="model">vit.auto_post_period</field>
+            <field name="arch" type="xml">
+                <search string="Auto Post Period">
+
+                    <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Period Days" name="filter_by_period_days" domain="[('period_days','=','')]" />
+                    <field name="name" string="Name" select="True"/>
+                    <field name="period_days" string="Period Days" select="True"/>
+                    <group string="Group By..">
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
+        <record id="view_vit_auto_post_period_kanban" model="ir.ui.view" >
+            <field name="name">vit_auto_post_period</field>
+            <field name="model">vit.auto_post_period</field>
+            <field name="arch" type="xml">
+                <kanban version="7.0">
+                    <field name="id" />
+                    <templates>
+                        <t t-name="card" class="flex-row">
+                            <main class="p-2">
+                                <h4>
+                                    <a type="open"><field name="name"/></a>
+                                </h4>
+                            </main>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- action window -->
+        <record id="action_auto_post_period" model="ir.actions.act_window">
+            <field name="name">Auto Post Period</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.auto_post_period</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to add a new Auto Post Period
+                </p><p>
+
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_auto_post_period" name="Auto Post Period" parent="vit_ads_suhu_config_menu" action="action_auto_post_period" sequence="260"/>
+    </data>
+</odoo>

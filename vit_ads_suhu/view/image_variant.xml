@@ -10,7 +10,14 @@
                 <list string="Image Variant">
                     <field name="name" /> <!-- 100-->
                     <field name="image_generator_id" /> <!-- 100-->
+                    <field name="auto_post_period_id" /> <!-- 101-->
                     <field name="image_url" /> <!-- 103-->
+                    <field name="is_autopost" /> <!-- 104-->
+                    <field name="autopost_time" widget="float_time"/> <!-- 105-->
+                    <field name="headline" /> <!-- 106-->
+                    <field name="primary_text" /> <!-- 107-->
+                    <field name="cta" /> <!-- 108-->
+                    <field name="tags" /> <!-- 109-->
                 </list>
             </field>
         </record>
@@ -22,6 +29,7 @@
             <field name="arch" type="xml">
                 <pivot string="Image Variant">
                     <field name="image_generator_id" type="row"/>
+                    <field name="auto_post_period_id" type="row"/>
                 </pivot>
             </field>
         </record>
@@ -34,6 +42,9 @@
             <field name="arch" type="xml">
                 <form string="Image Variant">
                     <header>
+                        <button string="Post Linkedin" type="object" name="action_post_linkedin" />
+                        <button string="Post Facebook" type="object" name="action_post_facebook" />
+                        <button string="Post IG" type="object" name="action_post_ig" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -50,11 +61,18 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="image" filename="image_filename" widget="image" />
+                                <field name="auto_post_period_id"  />
                                 <field name="image_filename" invisible="1" />
                                 <field name="image_url"  />
+                                <field name="is_autopost"  />
+                                <field name="autopost_time" widget="float_time" />
                             </group>
                             <group> <!-- right -->
                                 <field name="image_generator_id"  />
+                                <field name="headline"  />
+                                <field name="primary_text"  />
+                                <field name="cta"  />
+                                <field name="tags"  />
                             </group>
                         </group>
                         <notebook>
@@ -80,12 +98,26 @@
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Image" name="filter_by_image" domain="[('image','=','')]" />
                     <filter string="Image Filename" name="filter_by_image_filename" domain="[('image_filename','=','')]" />
+                    <filter string="Is Autopost" name="filter_by_is_autopost" domain="[('is_autopost','=','')]" />
+                    <filter string="Autopost Time" name="filter_by_autopost_time" domain="[('autopost_time','=','')]" />
+                    <filter string="Headline" name="filter_by_headline" domain="[('headline','=','')]" />
+                    <filter string="Primary Text" name="filter_by_primary_text" domain="[('primary_text','=','')]" />
+                    <filter string="CTA" name="filter_by_cta" domain="[('cta','=','')]" />
+                    <filter string="Tags" name="filter_by_tags" domain="[('tags','=','')]" />
                     <field name="name" string="Name" select="True"/>
                     <field name="image" string="Image" select="True"/>
                     <field name="image_filename" string="Image Filename" select="True"/>
+                    <field name="is_autopost" string="Is Autopost" select="True"/>
+                    <field name="autopost_time" string="Autopost Time" select="True"/>
+                    <field name="headline" string="Headline" select="True"/>
+                    <field name="primary_text" string="Primary Text" select="True"/>
+                    <field name="cta" string="CTA" select="True"/>
+                    <field name="tags" string="Tags" select="True"/>
                     <field name="image_generator_id" string="Image Generator" select="True"/>
+                    <field name="auto_post_period_id" string="Auto Post Period" select="True"/>
                     <group string="Group By..">
                         <filter string="Image Generator" domain="[]" name="group_by_image_generator_id" context="{'group_by':'image_generator_id'}"/>
+                        <filter string="Auto Post Period" domain="[]" name="group_by_auto_post_period_id" context="{'group_by':'auto_post_period_id'}"/>
                     </group>
                 </search>
             </field>
