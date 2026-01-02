@@ -4,20 +4,44 @@ import json
 import time
 import logging
 _logger = logging.getLogger(__name__)
+import requests
 
 class Fal:
     def __init__(self, api_key=None):
         self.api_key=api_key
+        self.model_name=False
 
     def generate(self, model_name, prompt, additional_payload={} ):
-        _logger.info(f"    model: {model_name}")
+        """
+        response=$(curl --request POST \
+        --url https://queue.fal.run/fal-ai/flux-pro/v1.1-ultra \
+        --header "Authorization: Key $FAL_KEY" \
+        --header "Content-Type: application/json" \
+        --data '{
+            "prompt": "Extreme close-up of a single tiger eye, direct frontal view. Detailed iris and pupil. Sharp focus on eye texture and color. 
+            Natural lighting to capture authentic eye shine and depth. The word \"FLUX\" 
+            is painted over it in big, white brush strokes with visible texture."
+        }')
+        REQUEST_ID=$(echo "$response" | grep -o '"request_id": *"[^"]*"' | sed 's/"request_id": *//; s/"//g')
+
+        response:
+        {'status': 'IN_QUEUE', 
+        'request_id':   '80dbb1a2-c0a5-486c-a1b9-bdb370393e43', 
+        'response_url': 'https://queue.fal.run/fal-ai/flux-pro/requests/80dbb1a2-c0a5-486c-a1b9-bdb370393e43', 
+        'status_url':   'https://queue.fal.run/fal-ai/flux-pro/requests/80dbb1a2-c0a5-486c-a1b9-bdb370393e43/status', 
+        'cancel_url':   'https://queue.fal.run/fal-ai/flux-pro/requests/80dbb1a2-c0a5-486c-a1b9-bdb370393e43/cancel', 
+        'logs': None, 'metrics': {}, 'queue_position': 0}
+
+        """        
+        self.model_name = model_name
+        _logger.info(f"    model: {self.model_name}")
         _logger.info(f"    prompt: {prompt}")
         _logger.info(f"    payload: {additional_payload}")
-
-        url = f"https://api.wavespeed.ai/api/v3/{model_name}"
+        
+        url = f"https://queue.fal.run/{model_name}"
         headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.api_key}",
+            "Authorization": f"Key {self.api_key}",
         }
         payload = {}
         if prompt:
@@ -31,34 +55,41 @@ class Fal:
         begin = time.time()
         response = requests.post(url, headers=headers, data=json.dumps(payload))
         if response.status_code == 200:
-            result = response.json()["data"]
-            request_id = result["id"]
-            _logger.info(f"    Task submitted. Request ID: {request_id}")
+            result = response.json()
+            print(result)
+            self.request_id = result["request_id"]
+            self.response_url = result["response_url"]
+            self.status_url = result["status_url"]
+            _logger.info(f"    Task submitted. Request ID: {self.request_id}")
         else:
             _logger.info(f"    Error: {response.status_code}, {response.text}")
             return
 
-        url = f"https://api.wavespeed.ai/api/v3/predictions/{request_id}/result"
-        headers = {"Authorization": f"Bearer {self.api_key}"}
+        # check status
+        # headers = {"Authorization": f"Key {self.api_key}"}
 
         # Poll for results
+        final_url = False
         while True:
-            response = requests.get(url, headers=headers)
+            response = requests.get(self.status_url, headers=headers)
             if response.status_code == 200:
-                result = response.json()["data"]
+                result = response.json()
                 status = result["status"]
 
-                if status == "completed":
+                if status == "COMPLETED":
                     end = time.time()
                     _logger.info(f"    Task completed in {end - begin} seconds.")
-                    final_url = result["outputs"][0]
+                    self._download_request(self.request_id)
+                    final_url = self.response_url
                     _logger.info(f"    URL: {final_url}")
                     break
-                elif status == "failed":
-                    _logger.info(f"    Task failed: {result.get('error')}")
-                    break
-                else:
+                elif status == 'IN_PROGRESS':
                     _logger.info(f"    Task still processing. Status: {status}")
+                elif status == 'IN_QUEUE':
+                    _logger.info(f"    Task still in queue. Status: {status}")
+                else:
+                    _logger.info(f"    Task failed/unknown status: {result.get('error')}")
+                    break                    
             else:
                 _logger.info(f"    Error: {response.status_code}, {response.text}")
                 break
@@ -67,7 +98,21 @@ class Fal:
 
         return final_url
 
-    def generate_image(self, image_prompt, model_name='google/nano-banana/text-to-image', additional_payload={},):
+    def _download_request(self, request_id):
+        
+        headers = {"Authorization": f"Key {self.api_key}"}
+        response = requests.get(self.request_url, headers=headers)
+        if response.status_code == 200:
+            result = response.json()
+            print('---- result --- ')
+            print(result)
+            return '-'
+        else:
+            _logger.info(f"    Error: {response.status_code}, {response.text}")
+
+    def generate_image(self, image_prompt, 
+                       model_name='fal-ai/flux-pro', 
+                       additional_payload={},):
         _logger.info('Generating image...')
         _logger.info(f'    additional_payload={additional_payload}')
         if not additional_payload:

@@ -36,6 +36,7 @@ class video_director(models.Model):
     main_actor = fields.Binary( string=_("Main Actor"))
     main_actor_filename = fields.Char( string=_("Main Actor Filename"))
     main_character = fields.Text( string=_("Main Character"))
+    main_actor_url = fields.Char( string=_("Main Actor Url"))
 
 
     visual_concept_id = fields.Many2one(comodel_name="vit.visual_concept",  string=_("Visual Concept"))

@@ -41,6 +41,10 @@
                             <p class="m-0" t-field="doc.main_character" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Main Actor Url</strong>
+                            <p class="m-0" t-field="doc.main_actor_url" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Visual Concept</strong>
                             <p class="m-0" t-field="doc.visual_concept_id"/>
                         </div>
