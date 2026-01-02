@@ -22,5 +22,29 @@
         <field name="key">fal_api_key</field>
         <field name="value">...</field>
     </record>
+    <record id="linkedin_access_token" model="ir.config_parameter">
+        <field name="key">linkedin_access_token</field>
+        <field name="value">...</field>
+    </record>
+    <record id="linkedin_author_urn" model="ir.config_parameter">
+        <field name="key">linkedin_author_urn</field>
+        <field name="value">urn:li:person:...</field>
+    </record>
+    <record id="facebook_access_token" model="ir.config_parameter">
+        <field name="key">facebook_access_token</field>
+        <field name="value">...</field>
+    </record>
+    <record id="facebook_page_id" model="ir.config_parameter">
+        <field name="key">facebook_page_id</field>
+        <field name="value">1234567890</field>
+    </record>
+    <record id="instagram_access_token" model="ir.config_parameter">
+        <field name="key">instagram_access_token</field>
+        <field name="value">...</field>
+    </record>
+    <record id="instagram_business_account_id" model="ir.config_parameter">
+        <field name="key">instagram_business_account_id</field>
+        <field name="value">1789...</field>
+    </record>
 
 </odoo>

@@ -115,7 +115,7 @@ class market_mapper(models.Model):
         ).id
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
     
-    @api.onchange("product_value_analysis_id","target_market","lang_id","specific_instruction")
+    @api.onchange("product_value_analysis_id","lang_id","specific_instruction")
     def _get_input(self, ):
         """
         {
@@ -124,6 +124,7 @@ class market_mapper(models.Model):
         """
         for rec in self:
             rec.name = f"MARKET MAP - {rec.product_value_analysis_id.name}"
+            rec.target_market = rec.product_value_analysis_id.target_market
             rec.input = f"""
 # ✅ PROODUCT VALUE:
 ---
