@@ -9,8 +9,7 @@
             <field name="arch" type="xml">
                 <list string="Product Value Analysis">
                     <field name="name" /> <!-- 1-->
-                    <field name="partner_id" /> <!-- 100-->
-                    <field name="write_gpt_prompt_id" /> <!-- 101-->
+                    <field name="partner_id" optional="hide"/> <!-- 100-->
                     <field name="target_market" /> <!-- 106-->
                     <field name="description" /> <!-- 1500-->
                 </list>
@@ -78,7 +77,7 @@
                                 <field name="gpt_session" widget="url" />
                             </group>
                             <group> <!-- right -->
-                                <field name="partner_id"  />
+                                <field name="partner_id" optional="hide" />
                                 <field name="write_gpt_prompt_id"  />
                                 <field name="gpt_prompt_id"  />
                                 <field name="lang_id"  />

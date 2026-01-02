@@ -10,7 +10,7 @@
                 <list string="Compliance Checker">
                     <field name="name" /> <!-- 1-->
                     <field name="angle" /> <!-- 100-->
-                    <field name="partner_id" /> <!-- 100-->
+                    <field name="partner_id" optional="hide"/> <!-- 100-->
                     <field name="hook" /> <!-- 101-->
                     <field name="description" /> <!-- 1500-->
                 </list>
@@ -74,7 +74,7 @@
                             </group>
                             <group> <!-- right -->
                                 <field name="visual_concept_id"  />
-                                <field name="partner_id"  />
+                                <field name="partner_id" optional="hide" />
                                 <field name="ads_copy_id"  />
                                 <field name="gpt_prompt_id"  />
                                 <field name="lang_id"  />

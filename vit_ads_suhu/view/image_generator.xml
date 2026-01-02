@@ -10,7 +10,7 @@
                 <list string="Image Generator">
                     <field name="name" /> <!-- 1-->
                     <field name="ratio" /> <!-- 100-->
-                    <field name="partner_id" /> <!-- 100-->
+                    <field name="partner_id" optional="hide"/> <!-- 100-->
                     <field name="angle" /> <!-- 101-->
                     <field name="hook" /> <!-- 102-->
                     <field name="ads_copy_no" /> <!-- 103-->
@@ -71,7 +71,7 @@
                                 <field name="gpt_session" widget="url" />
                             </group>
                             <group> <!-- right -->
-                                <field name="partner_id"  />
+                                <field name="partner_id" optional="hide" />
                                 <field name="hook_id"  />
                                 <field name="ads_copy_id"  />
                                 <field name="image_prompt_id"  />

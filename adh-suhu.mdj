@@ -22059,6 +22059,7 @@
 									"$ref": "AAAAAAGbc23DtLalduI="
 								},
 								"name": "write_gpt_prompt_id",
+								"documentation": "{\n\"tree:invisible\":true\n}",
 								"reference": {
 									"$ref": "AAAAAAGbDOD0srqePoM="
 								},
@@ -24346,7 +24347,7 @@
 									"$ref": "AAAAAAGbTuVgqaeffuI="
 								},
 								"name": "partner_id",
-								"documentation": "{\n\"form:seq\":100\n}",
+								"documentation": "{\n\"xml:optional\":\"hide\",\n\"form:seq\":100\n}",
 								"reference": {
 									"$ref": "AAAAAAGbHvslCAoNY5M="
 								},

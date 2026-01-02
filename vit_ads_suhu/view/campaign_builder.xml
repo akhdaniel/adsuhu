@@ -10,7 +10,7 @@
                 <list string="Campaign Builder">
                     <field name="name" /> <!-- 1-->
                     <field name="angle" /> <!-- 100-->
-                    <field name="partner_id" /> <!-- 100-->
+                    <field name="partner_id" optional="hide"/> <!-- 100-->
                     <field name="visual_concept_id" /> <!-- 102-->
                     <field name="hook" /> <!-- 200-->
                     <field name="description" /> <!-- 1500-->
@@ -70,7 +70,7 @@
                             </group>
                             <group> <!-- right -->
                                 <field name="landing_page_builder_id"  />
-                                <field name="partner_id"  />
+                                <field name="partner_id" optional="hide" />
                                 <field name="compliance_checker_id"  />
                                 <field name="visual_concept_id"  />
                                 <field name="script_writer_id"  />

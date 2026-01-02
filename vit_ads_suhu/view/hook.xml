@@ -10,7 +10,7 @@
                 <list string="Hook">
                     <field name="name" /> <!-- 1-->
                     <field name="angle_no" /> <!-- 100-->
-                    <field name="partner_id" /> <!-- 100-->
+                    <field name="partner_id" optional="hide"/> <!-- 100-->
                     <field name="angle" /> <!-- 101-->
                     <field name="hook_no" /> <!-- 102-->
                     <field name="description" /> <!-- 1500-->
@@ -76,7 +76,7 @@
                                 <field name="gpt_session" widget="url" />
                             </group>
                             <group> <!-- right -->
-                                <field name="partner_id"  />
+                                <field name="partner_id" optional="hide" />
                                 <field name="product_value_analysis_id"  />
                                 <field name="market_mapper_id"  />
                                 <field name="audience_profiler_id"  />

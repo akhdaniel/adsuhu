@@ -10,7 +10,7 @@
                 <list string="Video Director">
                     <field name="name" /> <!-- 1-->
                     <field name="angle" /> <!-- 100-->
-                    <field name="partner_id" /> <!-- 100-->
+                    <field name="partner_id" optional="hide"/> <!-- 100-->
                     <field name="hook" /> <!-- 101-->
                     <field name="visual_concept_id" /> <!-- 800-->
                     <field name="video_service_id" /> <!-- 900-->
@@ -70,7 +70,7 @@
                                 <field name="gpt_session" widget="url" />
                             </group>
                             <group> <!-- right -->
-                                <field name="partner_id"  />
+                                <field name="partner_id" optional="hide" />
                                 <field name="hook_id"  />
                                 <field name="ads_copy_id"  />
                                 <field name="visual_concept_id"  />
