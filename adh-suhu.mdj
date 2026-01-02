@@ -22176,6 +22176,7 @@
 								"$ref": "AAAAAAGbDOD0srqePoM="
 							},
 							"name": "target_market",
+							"documentation": "{\n\"xml:optional\":\"hide\"\n}",
 							"type": "Char",
 							"defaultValue": "\"US (Global)\""
 						}

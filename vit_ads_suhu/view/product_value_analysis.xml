@@ -10,7 +10,7 @@
                 <list string="Product Value Analysis">
                     <field name="name" /> <!-- 1-->
                     <field name="partner_id" optional="hide"/> <!-- 100-->
-                    <field name="target_market" /> <!-- 106-->
+                    <field name="target_market" optional="hide"/> <!-- 106-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -71,7 +71,7 @@
                                 <field name="report_template_filename" invisible="True" />
                                 <field name="active"  />
                                 <field name="report_docx_filename" invisible="True" />
-                                <field name="target_market"  />
+                                <field name="target_market" optional="hide" />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                                 <field name="gpt_session" widget="url" />
