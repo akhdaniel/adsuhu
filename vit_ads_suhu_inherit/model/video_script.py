@@ -24,7 +24,10 @@ class video_script(models.Model):
         context = f"{self.name} video script. {self.script}"
         additional_command=""
         system_prompt = self.video_director_id.gpt_prompt_id.system_prompt 
-        question = self.video_director_id.main_character or ""
+        if 'hook' in self.name:
+            question = self.video_director_id.main_character or ""
+        else:
+            question = ""
         user_prompt = self.video_director_id.gpt_prompt_id.user_prompt
         openai_api_key = self.env["ir.config_parameter"].sudo().get_param("openai_api_key")
         openai_base_url = self.env["ir.config_parameter"].sudo().get_param("openai_base_url", None)
