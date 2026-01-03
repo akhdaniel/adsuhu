@@ -7,6 +7,10 @@ import time
 import json
 from .libs.social_poster import SocialPoster, SocialPostError
 
+import logging
+_logger = logging.getLogger(__name__)
+
+
 class image_variant(models.Model):
 
     _name = "vit.image_variant"
@@ -34,6 +38,7 @@ class image_variant(models.Model):
             rec.image_url = f'{base_url}/web/image/vit.image_variant/{rec.id}/image?unique={int(time.time())}'
 
     def action_post_linkedin(self, ):
+        _logger.info(f"----- {__name__}")
         for rec in self:
             poster, config = rec._build_social_poster()
             author_urn = config.get("linkedin_author_urn")
