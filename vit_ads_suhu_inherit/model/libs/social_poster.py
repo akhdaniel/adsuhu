@@ -52,9 +52,9 @@ class SocialPoster:
     ) -> Dict[str, Any]:
         """Publish a LinkedIn UGC post with optional image URL."""
         token = self._get_linkedin_access_token()
-        author_urn = self._normalize_linkedin_author(
-            author_urn or self._get_linkedin_member_urn_from_token(token)
-        )
+        # author_urn = self._normalize_linkedin_author(
+        #     author_urn or self._get_linkedin_member_urn_from_token(token)
+        # )
 
         url = "https://api.linkedin.com/v2/ugcPosts"
         headers = {
@@ -264,8 +264,8 @@ class SocialPoster:
 
     def _normalize_linkedin_author(self, author_urn: str) -> str:
         # LinkedIn expects member URNs for people (urn:li:member:<id>)
-        # if author_urn.startswith("urn:li:person:"):
-        #     return author_urn.replace("urn:li:person:", "urn:li:member:", 1)
+        if author_urn.startswith("urn:li:person:"):
+            return author_urn.replace("urn:li:person:", "urn:li:member:", 1)
         return author_urn
 
     def _get_linkedin_member_urn_from_token(self, token: str) -> Optional[str]:
