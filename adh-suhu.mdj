@@ -305,6 +305,24 @@
 											"height": 13,
 											"text": "+target_market: Char = \"US (Global)\"",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbgzhbv9lthcI=",
+											"_parent": {
+												"$ref": "AAAAAAGbDOD0tLqmoBs="
+											},
+											"model": {
+												"$ref": "AAAAAAGbgzhbqtlqECg="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 285,
+											"top": 308,
+											"width": 335,
+											"height": 13,
+											"text": "+tags: Text",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Roboto;13;0",
@@ -312,7 +330,7 @@
 									"left": 280,
 									"top": 153,
 									"width": 345,
-									"height": 158
+									"height": 173
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -336,7 +354,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 285,
-											"top": 316,
+											"top": 331,
 											"width": 335,
 											"height": 13,
 											"text": "+action_fetch_product_description()",
@@ -354,7 +372,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 285,
-											"top": 331,
+											"top": 346,
 											"width": 335,
 											"height": 13,
 											"text": "+action_write_with_ai()",
@@ -372,7 +390,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 285,
-											"top": 346,
+											"top": 361,
 											"width": 335,
 											"height": 13,
 											"text": "+action_generate()",
@@ -390,7 +408,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 285,
-											"top": 361,
+											"top": 376,
 											"width": 335,
 											"height": 13,
 											"text": "+action_generate_report()",
@@ -408,7 +426,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 285,
-											"top": 376,
+											"top": 391,
 											"width": 335,
 											"height": 13,
 											"text": "+action_download_docx()",
@@ -426,7 +444,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 285,
-											"top": 391,
+											"top": 406,
 											"width": 335,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -436,7 +454,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 280,
-									"top": 311,
+									"top": 326,
 									"width": 345,
 									"height": 98
 								},
@@ -22236,6 +22254,16 @@
 							"documentation": "{\n\"xml:optional\":\"hide\"\n}",
 							"type": "Char",
 							"defaultValue": "\"US (Global)\""
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbgzhbqtlqECg=",
+							"_parent": {
+								"$ref": "AAAAAAGbDOD0srqePoM="
+							},
+							"name": "tags",
+							"documentation": "{\n\"tree:invisible\":true,\n\"required\":\"True\"\n}",
+							"type": "Text"
 						}
 					],
 					"operations": [

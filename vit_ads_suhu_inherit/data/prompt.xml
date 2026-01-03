@@ -31,12 +31,15 @@ Respons ONLY in this JSON data format without explanation.
             <field name="name">Write Description Prompt</field>
             <field name="user_prompt"><![CDATA[Write short description about this product:
 {context}. Then write list of full list of at least 10 features, max 1 level bullets.
+Write comma separated tags.
+
 {question}
 {additional_command}
 Return in this JSON format:
 ---
 {{
     "description":"...",
+    "tags":"tag1, tag2, tag3, ...",
     "features":[
         {{"Feature 1 Title":["...","...","..."..]}},
         {{"Feature 2 Title":["...","...","..."..]}},

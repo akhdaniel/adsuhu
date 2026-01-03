@@ -47,6 +47,7 @@ class product_value_analysis(models.Model):
     report_docx = fields.Binary( string=_("Report Docx"))
     report_docx_filename = fields.Char( string=_("Report Docx Filename"))
     target_market = fields.Char( string=_("Target Market"), default="US (Global)")
+    tags = fields.Text(required=True,  string=_("Tags"))
 
 
     def action_view_detail_market_mapper_ids(self):

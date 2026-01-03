@@ -72,6 +72,7 @@
                                 <field name="active"  />
                                 <field name="report_docx_filename" invisible="True" />
                                 <field name="target_market" optional="hide" />
+                                <field name="tags"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
                                 <field name="gpt_session" widget="url" />
@@ -134,6 +135,7 @@
                     <filter string="Report Docx" name="filter_by_report_docx" domain="[('report_docx','=','')]" />
                     <filter string="Report Docx Filename" name="filter_by_report_docx_filename" domain="[('report_docx_filename','=','')]" />
                     <filter string="Target Market" name="filter_by_target_market" domain="[('target_market','=','')]" />
+                    <filter string="Tags" name="filter_by_tags" domain="[('tags','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -151,6 +153,7 @@
                     <field name="report_docx" string="Report Docx" select="True"/>
                     <field name="report_docx_filename" string="Report Docx Filename" select="True"/>
                     <field name="target_market" string="Target Market" select="True"/>
+                    <field name="tags" string="Tags" select="True"/>
                     <field name="name" string="Name" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>
