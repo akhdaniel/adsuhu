@@ -292,12 +292,18 @@ class SocialPoster:
     def _post_json(
         self, url: str, payload: Dict[str, Any], headers: Optional[Dict[str, str]] = None
     ) -> Dict[str, Any]:
-        response = self.session.post(url, json=payload, headers=headers, timeout=self.timeout)
-        return self._handle_response(response)
+        try:
+            response = self.session.post(url, json=payload, headers=headers, timeout=self.timeout)
+            return self._handle_response(response)
+        except requests.exceptions.Timeout as exc:
+            raise SocialPostError(f"Request timed out posting to {url}: {exc}")
 
     def _post_form(self, url: str, payload: Dict[str, Any]) -> Dict[str, Any]:
-        response = self.session.post(url, data=payload, timeout=self.timeout)
-        return self._handle_response(response)
+        try:
+            response = self.session.post(url, data=payload, timeout=self.timeout)
+            return self._handle_response(response)
+        except requests.exceptions.Timeout as exc:
+            raise SocialPostError(f"Request timed out posting to {url}: {exc}")
 
     def _normalize_linkedin_author(self, author_urn: str) -> str:
         # LinkedIn expects member URNs for people (urn:li:member:<id>)
