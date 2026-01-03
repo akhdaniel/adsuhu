@@ -5,7 +5,10 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import time
 import json
+import logging
 from .libs.social_poster import SocialPoster, SocialPostError
+
+_logger = logging.getLogger(__name__)
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -50,7 +53,7 @@ class image_variant(models.Model):
                     message=rec._social_caption(),
                     media_url=rec.image_url,
                 )
-                rec._notify_post_success("LinkedIn", response)
+                return rec._notify_post_success("LinkedIn", response)
             except SocialPostError as e:
                 raise UserError(_("LinkedIn post failed: %s") % e)
 
@@ -67,7 +70,7 @@ class image_variant(models.Model):
                     message=rec._social_caption(),
                     image_url=rec.image_url,
                 )
-                rec._notify_post_success("Facebook", response)
+                return rec._notify_post_success("Facebook", response)
             except SocialPostError as e:
                 raise UserError(_("Facebook post failed: %s") % e)
 
@@ -89,12 +92,22 @@ class image_variant(models.Model):
                     image_url=rec.image_url,
                     caption=rec._social_caption(),
                 )
-                rec._notify_post_success("Instagram", response)
+                return rec._notify_post_success("Instagram", response)
             except SocialPostError as e:
                 raise UserError(_("Instagram post failed: %s") % e)
 
     def _social_caption(self):
-        return self.primary_text or self.headline or self.name
+        if self.image_generator_id.ads_copy_id.landing_page_builder_ids:
+            lp = self.image_generator_id.ads_copy_id.landing_page_builder_ids[0].lp_url 
+        else:
+            lp = self.image_generator_id.ads_copy_id.product_value_analysis_id.product_url
+        res = f"""{self.headline}
+
+{self.primary_text}
+
+<a href="{lp}">{self.cta}</a>
+"""
+        return res 
 
     def _build_social_poster(self):
         """Create SocialPoster using tokens from system parameters."""
@@ -133,7 +146,16 @@ class image_variant(models.Model):
         return poster, config
 
     def _notify_post_success(self, platform, response):
-        # Minimal feedback hook; could be extended to chatter notifications.
-        _unused = response
+        # Minimal feedback hook; extend to chatter/notifications if desired.
+        _logger.info("%s post submitted successfully: %s", platform, response)
         message = _("%s post submitted successfully.") % platform
-        return self.env.user.notify_success(message)
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Success"),
+                "message": message,
+                "type": "success",
+                "sticky": False,
+            },
+        }
