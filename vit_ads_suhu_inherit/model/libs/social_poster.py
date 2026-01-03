@@ -52,9 +52,9 @@ class SocialPoster:
     ) -> Dict[str, Any]:
         """Publish a LinkedIn UGC post with optional image URL."""
         token = self._get_linkedin_access_token()
-        # author_urn = self._normalize_linkedin_author(
-        #     author_urn or self._get_linkedin_member_urn_from_token(token)
-        # )
+        author_urn = self._normalize_linkedin_author(
+            author_urn or self._get_linkedin_member_urn_from_token(token)
+        )
 
         url = "https://api.linkedin.com/v2/ugcPosts"
         headers = {
@@ -239,12 +239,19 @@ class SocialPoster:
             body = self._safe_json(response)
             if self._author_error(body):
                 fallback_author = self._get_linkedin_member_urn_from_token(token)
-                if fallback_author and fallback_author != payload.get("author"):
-                    _logger.info("Retrying LinkedIn post with token owner author %s", fallback_author)
-                    payload = dict(payload, author=fallback_author)
-                    response = self.session.post(
-                        url, json=payload, headers=headers, timeout=self.timeout
-                    )
+                attempts = []
+                if fallback_author:
+                    attempts.append(self._normalize_linkedin_author(fallback_author))
+                    attempts.append(self._to_person_urn(fallback_author))
+                for alt_author in attempts:
+                    if alt_author and alt_author != payload.get("author"):
+                        _logger.info("Retrying LinkedIn post with token owner author %s", alt_author)
+                        payload = dict(payload, author=alt_author)
+                        response = self.session.post(
+                            url, json=payload, headers=headers, timeout=self.timeout
+                        )
+                        if response.status_code < 400:
+                            break
 
         return self._handle_response(response)
 
@@ -264,8 +271,17 @@ class SocialPoster:
 
     def _normalize_linkedin_author(self, author_urn: str) -> str:
         # LinkedIn expects member URNs for people (urn:li:member:<id>)
+        if not author_urn:
+            return author_urn
         if author_urn.startswith("urn:li:person:"):
             return author_urn.replace("urn:li:person:", "urn:li:member:", 1)
+        return author_urn
+
+    def _to_person_urn(self, author_urn: str) -> str:
+        if not author_urn:
+            return author_urn
+        if author_urn.startswith("urn:li:member:"):
+            return author_urn.replace("urn:li:member:", "urn:li:person:", 1)
         return author_urn
 
     def _get_linkedin_member_urn_from_token(self, token: str) -> Optional[str]:
