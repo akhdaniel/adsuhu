@@ -1,5 +1,11 @@
 import logging
+from io import BytesIO
 from typing import Any, Callable, Dict, Optional, Tuple
+
+try:
+    from PIL import Image
+except ImportError:  # Pillow is optional until resize is requested
+    Image = None  # type: ignore
 
 import requests
 
@@ -118,7 +124,7 @@ class SocialPoster:
             payload: Dict[str, Any] = {"access_token": token}
             if image_url:
                 url = f"{base_url}/photos"
-                payload.update({"caption": message or "", "url": image_url})
+                payload.update({"caption": message or ""})
             else:
                 url = f"{base_url}/feed"
                 payload.update({"message": message or ""})
@@ -131,6 +137,11 @@ class SocialPoster:
             url, payload = build_request(token)
             _logger.info("Posting to Facebook page %s using %s token", page_id, token_source)
             try:
+                if image_url:
+                    original_bytes = self._download_bytes(image_url)
+                    resized_bytes, mime = self._resize_image_bytes(original_bytes, 0.5)
+                    files = {"source": ("image", resized_bytes, mime)}
+                    return self._post_form(url, payload, files=files)
                 return self._post_form(url, payload)
             except SocialPostError as exc:
                 last_error = exc
@@ -298,9 +309,11 @@ class SocialPoster:
         except requests.exceptions.Timeout as exc:
             raise SocialPostError(f"Request timed out posting to {url}: {exc}")
 
-    def _post_form(self, url: str, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def _post_form(
+        self, url: str, payload: Dict[str, Any], files: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         try:
-            response = self.session.post(url, data=payload, timeout=self.timeout)
+            response = self.session.post(url, data=payload, files=files, timeout=self.timeout)
             return self._handle_response(response)
         except requests.exceptions.Timeout as exc:
             raise SocialPostError(f"Request timed out posting to {url}: {exc}")
@@ -338,7 +351,7 @@ class SocialPoster:
 
     def _upload_linkedin_image(self, media_url: str, owner_urn: str, token: str) -> str:
         """Register and upload an image so it renders inline on LinkedIn."""
-        image_bytes = self._download_bytes(media_url)
+        image_bytes, _ = self._resize_image_bytes(self._download_bytes(media_url), 0.5)
         if not image_bytes:
             raise SocialPostError("Failed to download image for LinkedIn upload.")
 
@@ -396,6 +409,28 @@ class SocialPoster:
         if "Content-Type" not in out:
             out["Content-Type"] = "application/octet-stream"
         return out
+
+    def _resize_image_bytes(self, image_bytes: bytes, scale: float = 0.5) -> Tuple[bytes, str]:
+        """Resize an image by the provided scale and return bytes and mime type."""
+        if Image is None:
+            raise SocialPostError("Pillow is required to resize images. Please install 'pillow'.")
+        if scale <= 0:
+            raise SocialPostError("Scale must be positive.")
+
+        try:
+            with Image.open(BytesIO(image_bytes)) as img:
+                new_size = (
+                    max(1, int(img.width * scale)),
+                    max(1, int(img.height * scale)),
+                )
+                resized = img.resize(new_size, Image.LANCZOS)
+                fmt = (img.format or "JPEG").upper()
+                mime = f"image/{'jpeg' if fmt in ('JPG', 'JPEG') else fmt.lower()}"
+                buffer = BytesIO()
+                resized.save(buffer, format=fmt)
+                return buffer.getvalue(), mime
+        except Exception as exc:
+            raise SocialPostError(f"Failed to resize image: {exc}")
 
     def _safe_json(self, response: requests.Response) -> Dict[str, Any]:
         try:
