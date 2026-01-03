@@ -55,6 +55,9 @@ class SocialPoster:
         author_urn = self._normalize_linkedin_author(
             author_urn or self._get_linkedin_member_urn_from_token(token)
         )
+        asset_urn = None
+        if media_url:
+            asset_urn = self._upload_linkedin_image(media_url, author_urn, token)
 
         url = "https://api.linkedin.com/v2/ugcPosts"
         headers = {
@@ -66,15 +69,15 @@ class SocialPoster:
             "shareMediaCategory": "NONE",
         }
 
-        if media_url:
+        if asset_urn:
             share_content.update(
                 {
-                    "shareMediaCategory": "ARTICLE",
+                    "shareMediaCategory": "IMAGE",
                     "media": [
                         {
                             "status": "READY",
                             "description": {"text": message[:200] if message else ""},
-                            "originalUrl": media_url,
+                            "media": asset_urn,
                             "title": {"text": "Image"},
                         }
                     ],
@@ -299,6 +302,67 @@ class SocialPoster:
         except Exception:
             _logger.exception("Failed to fetch LinkedIn member URN from token")
         return None
+
+    def _upload_linkedin_image(self, media_url: str, owner_urn: str, token: str) -> str:
+        """Register and upload an image so it renders inline on LinkedIn."""
+        image_bytes = self._download_bytes(media_url)
+        if not image_bytes:
+            raise SocialPostError("Failed to download image for LinkedIn upload.")
+
+        register_url = "https://api.linkedin.com/v2/assets?action=registerUpload"
+        payload = {
+            "registerUploadRequest": {
+                "owner": owner_urn,
+                "recipes": ["urn:li:digitalmediaRecipe:feedshare-image"],
+                "serviceRelationships": [
+                    {"relationshipType": "OWNER", "identifier": "urn:li:userGeneratedContent"}
+                ],
+            }
+        }
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        }
+        register_resp = self.session.post(
+            register_url, json=payload, headers=headers, timeout=self.timeout
+        )
+        data = self._handle_response(register_resp)
+        value = data.get("value", {}) if isinstance(data, dict) else {}
+        asset_urn = value.get("asset")
+        upload_info = (
+            value.get("uploadMechanism", {})
+            .get("com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest", {})
+        )
+        upload_url = upload_info.get("uploadUrl")
+        upload_headers = self._normalize_upload_headers(upload_info.get("headers", {}), token)
+
+        if not upload_url or not asset_urn:
+            raise SocialPostError("LinkedIn upload registration failed.")
+
+        upload_resp = self.session.put(
+            upload_url, data=image_bytes, headers=upload_headers, timeout=self.timeout
+        )
+        if upload_resp.status_code >= 300:
+            raise SocialPostError(
+                f"LinkedIn image upload failed ({upload_resp.status_code}): {upload_resp.text}"
+            )
+        return asset_urn
+
+    def _download_bytes(self, url: str) -> bytes:
+        resp = self.session.get(url, timeout=self.timeout)
+        if resp.status_code != 200:
+            raise SocialPostError(f"Failed to download media from {url}: {resp.status_code}")
+        return resp.content
+
+    def _normalize_upload_headers(self, headers: Dict[str, Any], token: str) -> Dict[str, str]:
+        out: Dict[str, str] = {}
+        for key, val in (headers or {}).items():
+            out[str(key)] = str(val)
+        if "Authorization" not in out:
+            out["Authorization"] = f"Bearer {token}"
+        if "Content-Type" not in out:
+            out["Content-Type"] = "application/octet-stream"
+        return out
 
     def _safe_json(self, response: requests.Response) -> Dict[str, Any]:
         try:
