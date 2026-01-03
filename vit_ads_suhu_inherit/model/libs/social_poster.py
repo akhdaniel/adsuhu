@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional, Tuple
 
 import requests
 
@@ -104,19 +104,46 @@ class SocialPoster:
         self._ensure_token(self.facebook_token, "Facebook")
 
         base_url = self._graph_url(page_id)
-        payload: Dict[str, Any] = {"access_token": self.facebook_token}
+        page_token = self._get_facebook_page_token(page_id)
+        tokens_to_try: Tuple[Tuple[str, str], ...] = tuple(
+            token
+            for token in (
+                ("page", page_token) if page_token and page_token != self.facebook_token else None,
+                ("configured", self.facebook_token),
+            )
+            if token
+        )
 
-        if image_url:
-            url = f"{base_url}/photos"
-            payload.update({"caption": message or "", "url": image_url})
-        else:
-            url = f"{base_url}/feed"
-            payload.update({"message": message or ""})
-            if link_url:
-                payload["link"] = link_url
+        def build_request(token: str) -> Tuple[str, Dict[str, Any]]:
+            payload: Dict[str, Any] = {"access_token": token}
+            if image_url:
+                url = f"{base_url}/photos"
+                payload.update({"caption": message or "", "url": image_url})
+            else:
+                url = f"{base_url}/feed"
+                payload.update({"message": message or ""})
+                if link_url:
+                    payload["link"] = link_url
+            return url, payload
 
-        _logger.info("Posting to Facebook page %s", page_id)
-        return self._post_form(url, payload)
+        last_error: Optional[Exception] = None
+        for token_source, token in tokens_to_try:
+            url, payload = build_request(token)
+            _logger.info("Posting to Facebook page %s using %s token", page_id, token_source)
+            try:
+                return self._post_form(url, payload)
+            except SocialPostError as exc:
+                last_error = exc
+                if not self._is_facebook_permission_error(exc):
+                    break
+                _logger.warning(
+                    "Facebook post failed with %s token (%s); trying fallback if available",
+                    token_source,
+                    exc,
+                )
+
+        assert last_error is not None
+        raise last_error
 
     def post_instagram(
         self,
@@ -377,6 +404,30 @@ class SocialPoster:
         if not message:
             return False
         return "/author" in message or "author" in message
+
+    def _is_facebook_permission_error(self, error: Exception) -> bool:
+        text = str(error).lower()
+        return "does not have permission to post" in text or "(#200)" in text
+
+    def _get_facebook_page_token(self, page_id: str) -> Optional[str]:
+        """Return the page access token so posts are made on behalf of the page."""
+        url = self._graph_url(page_id)
+        params = {"fields": "access_token", "access_token": self.facebook_token}
+        try:
+            response = self.session.get(url, params=params, timeout=self.timeout)
+        except Exception:
+            _logger.exception("Failed to call Facebook API for page token")
+            return None
+
+        data = self._safe_json(response)
+        if response.status_code >= 400:
+            _logger.warning("Unable to fetch Facebook page token for %s: %s", page_id, data)
+            return None
+
+        token = data.get("access_token")
+        if not token:
+            _logger.warning("Facebook page token missing in response for %s: %s", page_id, data)
+        return token
 
     def _handle_response(self, response: requests.Response) -> Dict[str, Any]:
         try:
