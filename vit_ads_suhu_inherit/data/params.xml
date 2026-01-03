@@ -26,6 +26,26 @@
         <field name="key">linkedin_access_token</field>
         <field name="value">...</field>
     </record>
+    <record id="linkedin_client_id" model="ir.config_parameter">
+        <field name="key">linkedin_client_id</field>
+        <field name="value">...</field>
+    </record>
+    <record id="linkedin_client_secret" model="ir.config_parameter">
+        <field name="key">linkedin_client_secret</field>
+        <field name="value">...</field>
+    </record>
+    <record id="linkedin_redirect_uri" model="ir.config_parameter">
+        <field name="key">linkedin_redirect_uri</field>
+        <field name="value">https://yourapp.example.com/linkedin/callback</field>
+    </record>
+    <record id="linkedin_refresh_token" model="ir.config_parameter">
+        <field name="key">linkedin_refresh_token</field>
+        <field name="value">...</field>
+    </record>
+    <record id="linkedin_authorization_code" model="ir.config_parameter">
+        <field name="key">linkedin_authorization_code</field>
+        <field name="value">...</field>
+    </record>
     <record id="linkedin_author_urn" model="ir.config_parameter">
         <field name="key">linkedin_author_urn</field>
         <field name="value">urn:li:person:...</field>

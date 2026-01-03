@@ -96,6 +96,11 @@ class image_variant(models.Model):
         params = self.env["ir.config_parameter"].sudo()
         config = {
             "linkedin_token": params.get_param("linkedin_access_token"),
+            "linkedin_client_id": params.get_param("linkedin_client_id"),
+            "linkedin_client_secret": params.get_param("linkedin_client_secret"),
+            "linkedin_redirect_uri": params.get_param("linkedin_redirect_uri"),
+            "linkedin_refresh_token": params.get_param("linkedin_refresh_token"),
+            "linkedin_authorization_code": params.get_param("linkedin_authorization_code"),
             "facebook_token": params.get_param("facebook_access_token"),
             "instagram_token": params.get_param("instagram_access_token"),
             "linkedin_author_urn": params.get_param("linkedin_author_urn"),
@@ -104,6 +109,11 @@ class image_variant(models.Model):
         }
         poster = SocialPoster(
             linkedin_token=config["linkedin_token"],
+            linkedin_client_id=config["linkedin_client_id"],
+            linkedin_client_secret=config["linkedin_client_secret"],
+            linkedin_redirect_uri=config["linkedin_redirect_uri"],
+            linkedin_refresh_token=config["linkedin_refresh_token"],
+            linkedin_authorization_code=config["linkedin_authorization_code"],
             facebook_token=config["facebook_token"],
             instagram_token=config["instagram_token"],
         )

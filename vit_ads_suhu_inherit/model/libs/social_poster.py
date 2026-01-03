@@ -18,6 +18,11 @@ class SocialPoster:
     def __init__(
         self,
         linkedin_token: Optional[str] = None,
+        linkedin_client_id: Optional[str] = None,
+        linkedin_client_secret: Optional[str] = None,
+        linkedin_redirect_uri: Optional[str] = None,
+        linkedin_refresh_token: Optional[str] = None,
+        linkedin_authorization_code: Optional[str] = None,
         facebook_token: Optional[str] = None,
         instagram_token: Optional[str] = None,
         timeout: int = 20,
@@ -25,6 +30,11 @@ class SocialPoster:
         graph_version: str = GRAPH_VERSION,
     ) -> None:
         self.linkedin_token = linkedin_token
+        self.linkedin_client_id = linkedin_client_id
+        self.linkedin_client_secret = linkedin_client_secret
+        self.linkedin_redirect_uri = linkedin_redirect_uri
+        self.linkedin_refresh_token = linkedin_refresh_token
+        self.linkedin_authorization_code = linkedin_authorization_code
         self.facebook_token = facebook_token
         self.instagram_token = instagram_token
         self.timeout = timeout
@@ -39,11 +49,13 @@ class SocialPoster:
         visibility: str = "PUBLIC",
     ) -> Dict[str, Any]:
         """Publish a LinkedIn UGC post with optional image URL."""
-        self._ensure_token(self.linkedin_token, "LinkedIn")
+        token = self._get_linkedin_access_token()
+
+        print('token=,', token)
 
         url = "https://api.linkedin.com/v2/ugcPosts"
         headers = {
-            "Authorization": f"Bearer {self.linkedin_token}",
+            "Authorization": f"Bearer {token}",
             "X-Restli-Protocol-Version": "2.0.0",
         }
         share_content: Dict[str, Any] = {
@@ -134,6 +146,53 @@ class SocialPoster:
 
     def _graph_url(self, path: str) -> str:
         return f"https://graph.facebook.com/{self.graph_version}/{path.lstrip('/')}"
+
+    def _get_linkedin_access_token(self) -> str:
+        """Return a LinkedIn access token, refreshing or exchanging if needed."""
+        if self.linkedin_token:
+            return self.linkedin_token
+
+        self._require_client_credentials()
+
+        if self.linkedin_refresh_token:
+            return self._exchange_linkedin_token(
+                grant_type="refresh_token", refresh_token=self.linkedin_refresh_token
+            )
+
+        if self.linkedin_authorization_code:
+            if not self.linkedin_redirect_uri:
+                raise SocialPostError("LinkedIn redirect URI is required with an authorization code.")
+            return self._exchange_linkedin_token(
+                grant_type="authorization_code",
+                code=self.linkedin_authorization_code,
+                redirect_uri=self.linkedin_redirect_uri,
+            )
+
+        raise SocialPostError(
+            "LinkedIn token is missing. Provide linkedin_refresh_token or linkedin_authorization_code."
+        )
+
+    def _exchange_linkedin_token(self, grant_type: str, **kwargs: str) -> str:
+        token_url = "https://www.linkedin.com/oauth/v2/accessToken"
+        payload = {
+            "grant_type": grant_type,
+            "client_id": self.linkedin_client_id,
+            "client_secret": self.linkedin_client_secret,
+        }
+        payload.update(kwargs)
+
+        _logger.info("Requesting LinkedIn %s token", grant_type)
+        response = self.session.post(token_url, data=payload, timeout=self.timeout)
+        data = self._handle_response(response)
+        access_token = data.get("access_token")
+        if not access_token:
+            raise SocialPostError("LinkedIn token response missing access_token.")
+        self.linkedin_token = access_token
+        return access_token
+
+    def _require_client_credentials(self) -> None:
+        if not (self.linkedin_client_id and self.linkedin_client_secret):
+            raise SocialPostError("LinkedIn client_id or client_secret is missing.")
 
     def _ensure_token(self, token: Optional[str], platform: str) -> None:
         if not token:
