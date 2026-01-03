@@ -24906,6 +24906,7 @@
 								"$ref": "AAAAAAGbJlp+SjxaTcY="
 							},
 							"name": "is_autopost",
+							"documentation": "{\n\"tree:invisible\":true\n}",
 							"type": "Boolean"
 						},
 						{
@@ -24915,7 +24916,7 @@
 								"$ref": "AAAAAAGbJlp+SjxaTcY="
 							},
 							"name": "autopost_time",
-							"documentation": "{\n\"xml:widget\":\"float_time\"\n}",
+							"documentation": "{\n\"xml:widget\":\"float_time\",\n\"tree:invisible\":true\n}",
 							"type": "Float"
 						},
 						{
@@ -24925,7 +24926,7 @@
 								"$ref": "AAAAAAGbJlp+SjxaTcY="
 							},
 							"name": "headline",
-							"documentation": "{\n\"form:pos\":\"right\"\n}",
+							"documentation": "{\n\"form:pos\":\"right\",\n\"tree:invisible\":true\n}",
 							"type": "Text"
 						},
 						{
@@ -24935,7 +24936,7 @@
 								"$ref": "AAAAAAGbJlp+SjxaTcY="
 							},
 							"name": "primary_text",
-							"documentation": "{\n\"form:pos\":\"right\"\n}",
+							"documentation": "{\n\"form:pos\":\"right\",\n\"tree:invisible\":true\n}",
 							"type": "Text"
 						},
 						{
@@ -24945,7 +24946,7 @@
 								"$ref": "AAAAAAGbJlp+SjxaTcY="
 							},
 							"name": "cta",
-							"documentation": "{\n\"string\":\"CTA\",\n\"form:pos\":\"right\"\n}",
+							"documentation": "{\n\"string\":\"CTA\",\n\"form:pos\":\"right\",\n\"tree:invisible\":true\n}",
 							"type": "Char"
 						},
 						{
@@ -24955,7 +24956,7 @@
 								"$ref": "AAAAAAGbJlp+SjxaTcY="
 							},
 							"name": "tags",
-							"documentation": "{\n\"form:pos\":\"right\"\n}",
+							"documentation": "{\n\"form:pos\":\"right\",\n\"tree:invisible\":true\n}",
 							"type": "Text"
 						}
 					],

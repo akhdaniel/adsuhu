@@ -12,12 +12,6 @@
                     <field name="image_generator_id" /> <!-- 100-->
                     <field name="auto_post_period_id" /> <!-- 101-->
                     <field name="image_url" /> <!-- 103-->
-                    <field name="is_autopost" /> <!-- 104-->
-                    <field name="autopost_time" widget="float_time"/> <!-- 105-->
-                    <field name="headline" /> <!-- 106-->
-                    <field name="primary_text" /> <!-- 107-->
-                    <field name="cta" /> <!-- 108-->
-                    <field name="tags" /> <!-- 109-->
                 </list>
             </field>
         </record>
