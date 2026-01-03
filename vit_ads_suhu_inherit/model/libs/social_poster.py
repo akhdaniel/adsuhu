@@ -154,8 +154,11 @@ class SocialPoster:
         if self.linkedin_token:
             return self.linkedin_token
 
+        _logger.info(f"{self.linkedin_client_id} and {self.linkedin_client_secret}")
+        
         self._require_client_credentials()
 
+        _logger.info(f"{self.linkedin_refresh_token}")
         if self.linkedin_refresh_token:
             return self._exchange_linkedin_token(
                 grant_type="refresh_token", refresh_token=self.linkedin_refresh_token
