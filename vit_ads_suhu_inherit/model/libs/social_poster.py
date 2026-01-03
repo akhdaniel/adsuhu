@@ -52,8 +52,7 @@ class SocialPoster:
     ) -> Dict[str, Any]:
         """Publish a LinkedIn UGC post with optional image URL."""
         token = self._get_linkedin_access_token()
-
-        _logger.info('token==============>', token)
+        author_urn = self._normalize_linkedin_author(author_urn)
 
         url = "https://api.linkedin.com/v2/ugcPosts"
         headers = {
@@ -68,12 +67,12 @@ class SocialPoster:
         if media_url:
             share_content.update(
                 {
-                    "shareMediaCategory": "IMAGE",
+                    "shareMediaCategory": "ARTICLE",
                     "media": [
                         {
                             "status": "READY",
                             "description": {"text": message[:200] if message else ""},
-                            "media": media_url,
+                            "originalUrl": media_url,
                             "title": {"text": "Image"},
                         }
                     ],
@@ -248,6 +247,12 @@ class SocialPoster:
     def _post_form(self, url: str, payload: Dict[str, Any]) -> Dict[str, Any]:
         response = self.session.post(url, data=payload, timeout=self.timeout)
         return self._handle_response(response)
+
+    def _normalize_linkedin_author(self, author_urn: str) -> str:
+        # LinkedIn expects member URNs for people (urn:li:member:<id>)
+        if author_urn.startswith("urn:li:person:"):
+            return author_urn.replace("urn:li:person:", "urn:li:member:", 1)
+        return author_urn
 
     def _handle_response(self, response: requests.Response) -> Dict[str, Any]:
         try:
