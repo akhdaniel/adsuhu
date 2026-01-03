@@ -107,6 +107,13 @@ class image_variant(models.Model):
             "facebook_page_id": params.get_param("facebook_page_id"),
             "instagram_business_account_id": params.get_param("instagram_business_account_id"),
         }
+
+        def save_tokens(tokens):
+            if tokens.get("access_token"):
+                params.set_param("linkedin_access_token", tokens["access_token"])
+            if tokens.get("refresh_token"):
+                params.set_param("linkedin_refresh_token", tokens["refresh_token"])
+
         poster = SocialPoster(
             linkedin_token=config["linkedin_token"],
             linkedin_client_id=config["linkedin_client_id"],
@@ -116,6 +123,7 @@ class image_variant(models.Model):
             linkedin_authorization_code=config["linkedin_authorization_code"],
             facebook_token=config["facebook_token"],
             instagram_token=config["instagram_token"],
+            token_saver=save_tokens,
         )
         return poster, config
 

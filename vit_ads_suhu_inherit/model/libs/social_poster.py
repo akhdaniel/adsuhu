@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, Optional
+from typing import Any, Callable, Dict, Optional
 
 import requests
 
@@ -25,6 +25,7 @@ class SocialPoster:
         linkedin_authorization_code: Optional[str] = None,
         facebook_token: Optional[str] = None,
         instagram_token: Optional[str] = None,
+        token_saver: Optional[Callable[[Dict[str, str]], None]] = None,
         timeout: int = 20,
         session: Optional[requests.Session] = None,
         graph_version: str = GRAPH_VERSION,
@@ -37,6 +38,7 @@ class SocialPoster:
         self.linkedin_authorization_code = linkedin_authorization_code
         self.facebook_token = facebook_token
         self.instagram_token = instagram_token
+        self.token_saver = token_saver
         self.timeout = timeout
         self.session = session or requests.Session()
         self.graph_version = graph_version
@@ -85,7 +87,7 @@ class SocialPoster:
             "visibility": {"com.linkedin.ugc.MemberNetworkVisibility": visibility},
         }
         _logger.info("Posting to LinkedIn as %s", author_urn)
-        return self._post_json(url, payload, headers=headers)
+        return self._post_linkedin_with_refresh(url, payload, headers=headers)
 
     def post_facebook(
         self,
@@ -188,11 +190,47 @@ class SocialPoster:
         if not access_token:
             raise SocialPostError("LinkedIn token response missing access_token.")
         self.linkedin_token = access_token
+        if data.get("refresh_token"):
+            self.linkedin_refresh_token = data["refresh_token"]
+        self._save_tokens(
+            {
+                "access_token": self.linkedin_token,
+                "refresh_token": self.linkedin_refresh_token or "",
+            }
+        )
         return access_token
 
     def _require_client_credentials(self) -> None:
         if not (self.linkedin_client_id and self.linkedin_client_secret):
             raise SocialPostError("LinkedIn client_id or client_secret is missing.")
+
+    def _save_tokens(self, tokens: Dict[str, str]) -> None:
+        if self.token_saver:
+            try:
+                self.token_saver(tokens)
+            except Exception:
+                _logger.exception("Failed to persist LinkedIn tokens")
+
+    def _post_linkedin_with_refresh(
+        self, url: str, payload: Dict[str, Any], headers: Dict[str, str]
+    ) -> Dict[str, Any]:
+        response = self.session.post(url, json=payload, headers=headers, timeout=self.timeout)
+        if response.status_code == 401 and self.linkedin_refresh_token:
+            _logger.info("LinkedIn token expired, refreshing and retrying post")
+            try:
+                new_token = self._exchange_linkedin_token(
+                    grant_type="refresh_token", refresh_token=self.linkedin_refresh_token
+                )
+                headers = dict(headers, Authorization=f"Bearer {new_token}")
+                response = self.session.post(
+                    url, json=payload, headers=headers, timeout=self.timeout
+                )
+            except SocialPostError:
+                raise
+            except Exception as exc:
+                raise SocialPostError(f"LinkedIn token refresh failed: {exc}")
+
+        return self._handle_response(response)
 
     def _ensure_token(self, token: Optional[str], platform: str) -> None:
         if not token:
