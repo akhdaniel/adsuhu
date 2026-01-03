@@ -100,16 +100,18 @@ class image_variant(models.Model):
         if self.image_generator_id.ads_copy_id.landing_page_builder_ids:
             lp = self.image_generator_id.ads_copy_id.landing_page_builder_ids[0].lp_url 
         else:
-            lp = self.image_generator_id.ads_copy_id.product_value_analysis_id.product_url
+            lp = self.image_generator_id.ads_copy_id.product_value_analysis_id.product_url or ""
         if self.tags:
             hashtags = ", ".join(f"#{w.strip()}" for w in self.tags.split(","))
         else:
             hashtags =""
+
+        link_text = lp or ""
         res = f"""{self.headline}
 
 {self.primary_text}
 
-<a href="{lp}">{self.cta}</a>
+{self.cta}: {link_text}
 
 {hashtags}
 """
