@@ -70,6 +70,13 @@
                             </group>
                         </group>
                         <notebook>
+                            <page name="post_url" string="Post Url">
+                                <group>
+                                    <field name="linkedin_url" />
+                                    <field name="facebook_url" />
+                                    <field name="ig_url" />
+                                </group>
+                            </page>
                         </notebook>
                         <group name="note_group" col="6" class="mt-2 mt-md-0">
                             <group colspan="4">
@@ -98,6 +105,9 @@
                     <filter string="Primary Text" name="filter_by_primary_text" domain="[('primary_text','=','')]" />
                     <filter string="CTA" name="filter_by_cta" domain="[('cta','=','')]" />
                     <filter string="Tags" name="filter_by_tags" domain="[('tags','=','')]" />
+                    <filter string="LinkedIn URL" name="filter_by_linkedin_url" domain="[('linkedin_url','=','')]" />
+                    <filter string="Facebook URL" name="filter_by_facebook_url" domain="[('facebook_url','=','')]" />
+                    <filter string="IG URL" name="filter_by_ig_url" domain="[('ig_url','=','')]" />
                     <field name="name" string="Name" select="True"/>
                     <field name="image" string="Image" select="True"/>
                     <field name="image_filename" string="Image Filename" select="True"/>
@@ -107,6 +117,9 @@
                     <field name="primary_text" string="Primary Text" select="True"/>
                     <field name="cta" string="CTA" select="True"/>
                     <field name="tags" string="Tags" select="True"/>
+                    <field name="linkedin_url" string="LinkedIn URL" select="True"/>
+                    <field name="facebook_url" string="Facebook URL" select="True"/>
+                    <field name="ig_url" string="IG URL" select="True"/>
                     <field name="image_generator_id" string="Image Generator" select="True"/>
                     <field name="auto_post_period_id" string="Auto Post Period" select="True"/>
                     <group string="Group By..">

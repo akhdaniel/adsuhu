@@ -44,6 +44,9 @@ class image_variant(models.Model):
     primary_text = fields.Text( string=_("Primary Text"))
     cta = fields.Char(string="CTA")
     tags = fields.Text( string=_("Tags"))
+    linkedin_url = fields.Text(string="LinkedIn URL")
+    facebook_url = fields.Text(string="Facebook URL")
+    ig_url = fields.Text(string="IG URL")
 
 
     def copy(self, default=None):

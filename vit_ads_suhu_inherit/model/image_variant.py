@@ -53,6 +53,7 @@ class image_variant(models.Model):
                     message=rec._social_caption(),
                     media_url=rec.image_url,
                 )
+                rec.linkedin_url = rec._extract_linkedin_url(response)
                 return rec._notify_post_success("LinkedIn", response)
             except SocialPostError as e:
                 raise UserError(_("LinkedIn post failed: %s") % e)
@@ -70,6 +71,7 @@ class image_variant(models.Model):
                     message=rec._social_caption(),
                     image_url=rec.image_url,
                 )
+                rec.facebook_url = rec._extract_facebook_url(response)
                 return rec._notify_post_success("Facebook", response)
             except SocialPostError as e:
                 raise UserError(_("Facebook post failed: %s") % e)
@@ -92,6 +94,7 @@ class image_variant(models.Model):
                     image_url=rec.image_url,
                     caption=rec._social_caption(),
                 )
+                rec.ig_url = rec._extract_instagram_url(response)
                 return rec._notify_post_success("Instagram", response)
             except SocialPostError as e:
                 raise UserError(_("Instagram post failed: %s") % e)
@@ -167,3 +170,29 @@ class image_variant(models.Model):
                 "sticky": False,
             },
         }
+
+    def _extract_linkedin_url(self, response):
+        # LinkedIn responses often include URN; URL can be constructed if absent.
+        if isinstance(response, dict):
+            if response.get("id"):
+                return f"https://www.linkedin.com/feed/update/{response['id']}"
+            if response.get("value", {}).get("id"):
+                return f"https://www.linkedin.com/feed/update/{response['value']['id']}"
+        return self.linkedin_url
+
+    def _extract_facebook_url(self, response):
+        if isinstance(response, dict):
+            post_id = response.get("id")
+            page_id = response.get("post_id", "").split("_")[0] if response.get("post_id") else None
+            if post_id and page_id:
+                return f"https://www.facebook.com/{page_id}/posts/{post_id.split('_')[-1]}"
+            if post_id:
+                return f"https://www.facebook.com/{post_id}"
+        return self.facebook_url
+
+    def _extract_instagram_url(self, response):
+        if isinstance(response, dict):
+            ig_id = response.get("id")
+            if ig_id:
+                return f"https://www.instagram.com/p/{ig_id}"
+        return self.ig_url

@@ -70,6 +70,9 @@
                             <td>Primary Text</td>
                             <td>Cta</td>
                             <td>Tags</td>
+                            <td>Linkedin Url</td>
+                            <td>Facebook Url</td>
+                            <td>Ig Url</td>
                             <td>Image Generator</td>
                             <td>Auto Post Period</td>
                         </tr>
@@ -86,6 +89,9 @@
                             <td><span t-field="line.primary_text" /></td>
                             <td><span t-field="line.cta" /></td>
                             <td><span t-field="line.tags" /></td>
+                            <td><span t-field="line.linkedin_url" /></td>
+                            <td><span t-field="line.facebook_url" /></td>
+                            <td><span t-field="line.ig_url" /></td>
                             <td><span t-field="line.image_generator_id" /></td>
                             <td><span t-field="line.auto_post_period_id" /></td>
                         </tr> <!-- foreach-->

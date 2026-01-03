@@ -14061,6 +14061,63 @@
 											"height": 13,
 											"text": "+tags: Text",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbgzJ5R1x51h0=",
+											"_parent": {
+												"$ref": "AAAAAAGbJlp+Tjxi1HE="
+											},
+											"model": {
+												"$ref": "AAAAAAGbgzJ5BlwiorY="
+											},
+											"fillColor": "#D8FFD8",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2485,
+											"top": 4636,
+											"width": 463,
+											"height": 13,
+											"text": "+linkedin_url: Text",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbgzK2s2NkIH8=",
+											"_parent": {
+												"$ref": "AAAAAAGbJlp+Tjxi1HE="
+											},
+											"model": {
+												"$ref": "AAAAAAGbgzK2oWMNV8w="
+											},
+											"fillColor": "#D8FFD8",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2485,
+											"top": 4651,
+											"width": 463,
+											"height": 13,
+											"text": "+facebook_url: Text",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbgzLVlmbd/TE=",
+											"_parent": {
+												"$ref": "AAAAAAGbJlp+Tjxi1HE="
+											},
+											"model": {
+												"$ref": "AAAAAAGbgzLVhWaGx5c="
+											},
+											"fillColor": "#D8FFD8",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2485,
+											"top": 4666,
+											"width": 463,
+											"height": 13,
+											"text": "+ig_url: Text",
+											"horizontalAlignment": 0
 										}
 									],
 									"fillColor": "#D8FFD8",
@@ -14069,7 +14126,7 @@
 									"left": 2480,
 									"top": 4481,
 									"width": 473,
-									"height": 158
+									"height": 203
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -14094,7 +14151,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2485,
-											"top": 4644,
+											"top": 4689,
 											"width": 463,
 											"height": 13,
 											"text": "+_get_image_url()",
@@ -14113,7 +14170,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2485,
-											"top": 4659,
+											"top": 4704,
 											"width": 463,
 											"height": 13,
 											"text": "+action_post_linkedin()",
@@ -14132,7 +14189,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2485,
-											"top": 4674,
+											"top": 4719,
 											"width": 463,
 											"height": 13,
 											"text": "+action_post_facebook()",
@@ -14151,7 +14208,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2485,
-											"top": 4689,
+											"top": 4734,
 											"width": 463,
 											"height": 13,
 											"text": "+action_post_ig()",
@@ -14162,7 +14219,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 2480,
-									"top": 4639,
+									"top": 4684,
 									"width": 473,
 									"height": 68
 								},
@@ -14604,12 +14661,12 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 958,
-									"top": 2141,
+									"left": 1016,
+									"top": 2112,
 									"width": 157.64404296875,
 									"height": 13,
-									"alpha": 0.5235987755982988,
-									"distance": 30,
+									"alpha": 5.3423007931603035,
+									"distance": 60.21627686929839,
 									"hostEdge": {
 										"$ref": "AAAAAAGbL5fkoDBN7yQ="
 									},
@@ -14650,11 +14707,11 @@
 									"font": "Roboto;13;0",
 									"parentStyle": false,
 									"left": 1055,
-									"top": 2136,
+									"top": 2096,
 									"width": 19.7412109375,
 									"height": 13,
-									"alpha": -0.5235987755982988,
-									"distance": 25,
+									"alpha": 5.885778370067294,
+									"distance": 65.19202405202648,
 									"hostEdge": {
 										"$ref": "AAAAAAGbL5fkoDBN7yQ="
 									},
@@ -24957,6 +25014,36 @@
 							},
 							"name": "tags",
 							"documentation": "{\n\"form:pos\":\"right\",\n\"tree:invisible\":true\n}",
+							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbgzJ5BlwiorY=",
+							"_parent": {
+								"$ref": "AAAAAAGbJlp+SjxaTcY="
+							},
+							"name": "linkedin_url",
+							"documentation": "{\n\"form:pos\":\"tab:Post_URL\",\n\"tree:invisible\":true,\n\"string\":\"LinkedIn URL\"\n\n}",
+							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbgzK2oWMNV8w=",
+							"_parent": {
+								"$ref": "AAAAAAGbJlp+SjxaTcY="
+							},
+							"name": "facebook_url",
+							"documentation": "{\n\"form:pos\":\"tab:Post_URL\",\n\"tree:invisible\":true,\n\"string\":\"Facebook URL\"\n}",
+							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbgzLVhWaGx5c=",
+							"_parent": {
+								"$ref": "AAAAAAGbJlp+SjxaTcY="
+							},
+							"name": "ig_url",
+							"documentation": "{\n\"form:pos\":\"tab:Post_URL\",\n\"tree:invisible\":true,\n\"string\":\"IG URL\"\n}",
 							"type": "Text"
 						}
 					],

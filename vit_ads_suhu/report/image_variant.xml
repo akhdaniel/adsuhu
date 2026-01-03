@@ -58,6 +58,18 @@
                             <p class="m-0" t-field="doc.tags" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Linkedin Url</strong>
+                            <p class="m-0" t-field="doc.linkedin_url" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Facebook Url</strong>
+                            <p class="m-0" t-field="doc.facebook_url" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Ig Url</strong>
+                            <p class="m-0" t-field="doc.ig_url" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Image Generator</strong>
                             <p class="m-0" t-field="doc.image_generator_id"/>
                         </div>
