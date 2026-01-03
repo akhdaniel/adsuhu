@@ -27,6 +27,8 @@ class image_variant(models.Model):
         hook = self.image_generator_id.hook_id.hook_no
         ads = 1 #self.image_generator_id.ads_copy_id.hook_no
         ad_copy = self.image_generator_id.ads_copy_no
+        self.tags = self.image_generator_id.ads_copy_id.product_value_analysis_id.tags or ""
+
         self.name = f"AP{ap}-ANGLE{angle}-HOOK{hook}-ADS{ads}-COPY{ad_copy}"
 
         body = json.loads(self.image_generator_id.output)
