@@ -52,7 +52,9 @@ class SocialPoster:
     ) -> Dict[str, Any]:
         """Publish a LinkedIn UGC post with optional image URL."""
         token = self._get_linkedin_access_token()
-        author_urn = self._normalize_linkedin_author(author_urn)
+        author_urn = self._normalize_linkedin_author(
+            author_urn or self._get_linkedin_member_urn_from_token(token)
+        )
 
         url = "https://api.linkedin.com/v2/ugcPosts"
         headers = {
@@ -86,7 +88,7 @@ class SocialPoster:
             "visibility": {"com.linkedin.ugc.MemberNetworkVisibility": visibility},
         }
         _logger.info("Posting to LinkedIn as %s", author_urn)
-        return self._post_linkedin_with_refresh(url, payload, headers=headers)
+        return self._post_linkedin_with_refresh(url, payload, headers=headers, token=token)
 
     def post_facebook(
         self,
@@ -214,7 +216,7 @@ class SocialPoster:
                 _logger.exception("Failed to persist LinkedIn tokens")
 
     def _post_linkedin_with_refresh(
-        self, url: str, payload: Dict[str, Any], headers: Dict[str, str]
+        self, url: str, payload: Dict[str, Any], headers: Dict[str, str], token: str
     ) -> Dict[str, Any]:
         response = self.session.post(url, json=payload, headers=headers, timeout=self.timeout)
         if response.status_code == 401 and self.linkedin_refresh_token:
@@ -223,6 +225,7 @@ class SocialPoster:
                 new_token = self._exchange_linkedin_token(
                     grant_type="refresh_token", refresh_token=self.linkedin_refresh_token
                 )
+                token = new_token
                 headers = dict(headers, Authorization=f"Bearer {new_token}")
                 response = self.session.post(
                     url, json=payload, headers=headers, timeout=self.timeout
@@ -231,6 +234,17 @@ class SocialPoster:
                 raise
             except Exception as exc:
                 raise SocialPostError(f"LinkedIn token refresh failed: {exc}")
+
+        if response.status_code == 403:
+            body = self._safe_json(response)
+            if self._author_error(body):
+                fallback_author = self._get_linkedin_member_urn_from_token(token)
+                if fallback_author and fallback_author != payload.get("author"):
+                    _logger.info("Retrying LinkedIn post with token owner author %s", fallback_author)
+                    payload = dict(payload, author=fallback_author)
+                    response = self.session.post(
+                        url, json=payload, headers=headers, timeout=self.timeout
+                    )
 
         return self._handle_response(response)
 
@@ -253,6 +267,36 @@ class SocialPoster:
         if author_urn.startswith("urn:li:person:"):
             return author_urn.replace("urn:li:person:", "urn:li:member:", 1)
         return author_urn
+
+    def _get_linkedin_member_urn_from_token(self, token: str) -> Optional[str]:
+        """Fetch member URN tied to the access token."""
+        try:
+            resp = self.session.get(
+                "https://api.linkedin.com/v2/me",
+                headers={"Authorization": f"Bearer {token}"},
+                timeout=self.timeout,
+            )
+            data = self._safe_json(resp)
+            member_id = data.get("id")
+            if member_id:
+                return f"urn:li:member:{member_id}"
+        except Exception:
+            _logger.exception("Failed to fetch LinkedIn member URN from token")
+        return None
+
+    def _safe_json(self, response: requests.Response) -> Dict[str, Any]:
+        try:
+            return response.json()
+        except ValueError:
+            return {}
+
+    def _author_error(self, body: Dict[str, Any]) -> bool:
+        if not isinstance(body, dict):
+            return False
+        message = body.get("message", "")
+        if not message:
+            return False
+        return "/author" in message or "author" in message
 
     def _handle_response(self, response: requests.Response) -> Dict[str, Any]:
         try:
