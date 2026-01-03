@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 class LinkedInOAuthController(http.Controller):
     @http.route("/linkedin/callback", type="http", auth="public", csrf=False)
     def linkedin_callback(self, **kwargs):
+        _logger.info('calback-----')
         code = kwargs.get("code")
         state = kwargs.get("state")
         if not code:

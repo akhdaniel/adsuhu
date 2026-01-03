@@ -53,7 +53,7 @@ class SocialPoster:
         """Publish a LinkedIn UGC post with optional image URL."""
         token = self._get_linkedin_access_token()
 
-        print('token=,', token)
+        _logger.info('token==============>', token)
 
         url = "https://api.linkedin.com/v2/ugcPosts"
         headers = {
