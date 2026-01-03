@@ -14136,6 +14136,44 @@
 											"height": 13,
 											"text": "+ig_url: Text",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbg0r1Fm1rlT0=",
+											"_parent": {
+												"$ref": "AAAAAAGbJlp+Tjxi1HE="
+											},
+											"model": {
+												"$ref": "AAAAAAGbg0r1BW0UUUE="
+											},
+											"fillColor": "#D8FFD8",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2485,
+											"top": 4681,
+											"width": 463,
+											"height": 13,
+											"text": "+telegram_url: Text",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbg0sQ73Dk22k=",
+											"_parent": {
+												"$ref": "AAAAAAGbJlp+Tjxi1HE="
+											},
+											"model": {
+												"$ref": "AAAAAAGbg0sQ2XCNzfk="
+											},
+											"fillColor": "#D8FFD8",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2485,
+											"top": 4696,
+											"width": 463,
+											"height": 13,
+											"text": "+whatsapp_url: Text",
+											"horizontalAlignment": 0
 										}
 									],
 									"fillColor": "#D8FFD8",
@@ -14144,7 +14182,7 @@
 									"left": 2480,
 									"top": 4481,
 									"width": 473,
-									"height": 203
+									"height": 233
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -14169,7 +14207,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2485,
-											"top": 4689,
+											"top": 4719,
 											"width": 463,
 											"height": 13,
 											"text": "+_get_image_url()",
@@ -14188,7 +14226,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2485,
-											"top": 4704,
+											"top": 4734,
 											"width": 463,
 											"height": 13,
 											"text": "+action_post_linkedin()",
@@ -14207,7 +14245,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2485,
-											"top": 4719,
+											"top": 4749,
 											"width": 463,
 											"height": 13,
 											"text": "+action_post_facebook()",
@@ -14226,10 +14264,48 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 2485,
-											"top": 4734,
+											"top": 4764,
 											"width": 463,
 											"height": 13,
 											"text": "+action_post_ig()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGbg0qr+V+Vv1I=",
+											"_parent": {
+												"$ref": "AAAAAAGbJlp+TjxjFF4="
+											},
+											"model": {
+												"$ref": "AAAAAAGbg0qroF8+FnE="
+											},
+											"fillColor": "#D8FFD8",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2485,
+											"top": 4779,
+											"width": 463,
+											"height": 13,
+											"text": "+action_post_telegram()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGbg0rTTWaA91s=",
+											"_parent": {
+												"$ref": "AAAAAAGbJlp+TjxjFF4="
+											},
+											"model": {
+												"$ref": "AAAAAAGbg0rTOmYp+qk="
+											},
+											"fillColor": "#D8FFD8",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 2485,
+											"top": 4794,
+											"width": 463,
+											"height": 13,
+											"text": "+action_post_whatsapp()",
 											"horizontalAlignment": 0
 										}
 									],
@@ -14237,9 +14313,9 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 2480,
-									"top": 4684,
+									"top": 4714,
 									"width": 473,
-									"height": 68
+									"height": 98
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -14285,7 +14361,7 @@
 							"left": 2480,
 							"top": 4456,
 							"width": 472,
-							"height": 328,
+							"height": 356,
 							"nameCompartment": {
 								"$ref": "AAAAAAGbJlp+TjxdJeM="
 							},
@@ -14324,7 +14400,7 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2453,
+									"left": 2446,
 									"top": 4380,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -14346,7 +14422,7 @@
 									"visible": null,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2443,
+									"left": 2435,
 									"top": 4391,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -14368,7 +14444,7 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2474,
+									"left": 2467,
 									"top": 4359,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -14389,7 +14465,7 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2456,
+									"left": 2447,
 									"top": 4441,
 									"width": 120.77685546875,
 									"height": 13,
@@ -14413,7 +14489,7 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2506,
+									"left": 2496,
 									"top": 4449,
 									"height": 13,
 									"alpha": 0.7853981633974483,
@@ -14434,7 +14510,7 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2530,
+									"left": 2520,
 									"top": 4424,
 									"width": 19.7412109375,
 									"height": 13,
@@ -14457,8 +14533,8 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2384,
-									"top": 4313,
+									"left": 2378,
+									"top": 4314,
 									"width": 111.40771484375,
 									"height": 13,
 									"alpha": 0.3865611173538913,
@@ -14480,8 +14556,8 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2383,
-									"top": 4330,
+									"left": 2378,
+									"top": 4331,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -14500,7 +14576,7 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2404,
+									"left": 2399,
 									"top": 4297,
 									"width": 7.2998046875,
 									"height": 13,
@@ -14555,7 +14631,7 @@
 								"$ref": "AAAAAAGbJlp+TjxcwBU="
 							},
 							"lineStyle": 1,
-							"points": "2546:4455;2383:4297",
+							"points": "2536:4455;2378:4297",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGbJlsRx1WdC4M="
@@ -21849,7 +21925,7 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2877,
+									"left": 2880,
 									"top": 4400,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -21871,8 +21947,8 @@
 									"visible": null,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2866,
-									"top": 4390,
+									"left": 2868,
+									"top": 4391,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -21893,7 +21969,7 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2900,
+									"left": 2903,
 									"top": 4419,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -21914,7 +21990,7 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2800,
+									"left": 2804,
 									"top": 4419,
 									"width": 123.3603515625,
 									"height": 13,
@@ -21938,7 +22014,7 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2852,
+									"left": 2856,
 									"top": 4409,
 									"height": 13,
 									"alpha": 0.7853981633974483,
@@ -21959,8 +22035,8 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2870,
-									"top": 4440,
+									"left": 2875,
+									"top": 4439,
 									"width": 19.7412109375,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -21983,8 +22059,8 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2893,
-									"top": 4381,
+									"left": 2895,
+									"top": 4382,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -22004,8 +22080,8 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2882,
-									"top": 4375,
+									"left": 2883,
+									"top": 4376,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -22025,7 +22101,7 @@
 									"visible": false,
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 2917,
+									"left": 2919,
 									"top": 4396,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -22074,7 +22150,7 @@
 								"$ref": "AAAAAAGbJlp+TjxcwBU="
 							},
 							"lineStyle": 1,
-							"points": "2856:4455;2922:4378",
+							"points": "2861:4455;2923:4378",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGbgMtB94UewF4="
@@ -25073,6 +25149,26 @@
 							"name": "ig_url",
 							"documentation": "{\n\"form:pos\":\"tab:Post_URL\",\n\"tree:invisible\":true,\n\"string\":\"IG URL\"\n}",
 							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbg0r1BW0UUUE=",
+							"_parent": {
+								"$ref": "AAAAAAGbJlp+SjxaTcY="
+							},
+							"name": "telegram_url",
+							"documentation": "{\n\"form:pos\":\"tab:Post_URL\",\n\"tree:invisible\":true,\n\"string\":\"Telegram URL\"\n}",
+							"type": "Text"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbg0sQ2XCNzfk=",
+							"_parent": {
+								"$ref": "AAAAAAGbJlp+SjxaTcY="
+							},
+							"name": "whatsapp_url",
+							"documentation": "{\n\"form:pos\":\"tab:Post_URL\",\n\"tree:invisible\":true,\n\"string\":\"WhatsApp URL\"\n}",
+							"type": "Text"
 						}
 					],
 					"operations": [
@@ -25108,6 +25204,22 @@
 							},
 							"name": "action_post_ig",
 							"documentation": "{\n\"label\":\"Post IG\"\n}"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGbg0qroF8+FnE=",
+							"_parent": {
+								"$ref": "AAAAAAGbJlp+SjxaTcY="
+							},
+							"name": "action_post_telegram"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGbg0rTOmYp+qk=",
+							"_parent": {
+								"$ref": "AAAAAAGbJlp+SjxaTcY="
+							},
+							"name": "action_post_whatsapp"
 						}
 					]
 				},

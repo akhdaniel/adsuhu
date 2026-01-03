@@ -31,6 +31,14 @@ class image_variant(models.Model):
         pass
 
 
+    def action_post_telegram(self, ):
+        pass
+
+
+    def action_post_whatsapp(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 
@@ -47,6 +55,8 @@ class image_variant(models.Model):
     linkedin_url = fields.Text(string="LinkedIn URL")
     facebook_url = fields.Text(string="Facebook URL")
     ig_url = fields.Text(string="IG URL")
+    telegram_url = fields.Text(string="Telegram URL")
+    whatsapp_url = fields.Text(string="WhatsApp URL")
 
 
     def copy(self, default=None):
