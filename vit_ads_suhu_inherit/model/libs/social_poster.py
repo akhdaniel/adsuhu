@@ -139,7 +139,7 @@ class SocialPoster:
             try:
                 if image_url:
                     original_bytes = self._download_bytes(image_url)
-                    resized_bytes, mime = self._resize_image_bytes(original_bytes, 0.5)
+                    resized_bytes, mime = self._resize_image_bytes(original_bytes, 0.75)
                     files = {"source": ("image", resized_bytes, mime)}
                     return self._post_form(url, payload, files=files)
                 return self._post_form(url, payload)
