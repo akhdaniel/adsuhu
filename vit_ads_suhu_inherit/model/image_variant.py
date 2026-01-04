@@ -38,9 +38,8 @@ class image_variant(models.Model):
     
 
     def _get_image_url(self, ):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') or ''
         for rec in self:
-            rec.image_url = f'{base_url}/web/image/vit.image_variant/{rec.id}/image_1024?unique={int(time.time())}'
+            rec.image_url = rec._image_field_url("image_1024")
 
     def action_post_linkedin(self, ):
         _logger.info(f"----- {__name__}")
@@ -53,7 +52,7 @@ class image_variant(models.Model):
                 response = poster.post_linkedin(
                     author_urn=author_urn,
                     message=rec._social_caption(),
-                    media_url=rec.image_url,
+                    media_url=rec._image_field_url("image_1024"),
                 )
                 rec.linkedin_url = rec._extract_linkedin_url(response)
                 return rec._notify_post_success("LinkedIn", response)
@@ -71,7 +70,7 @@ class image_variant(models.Model):
                 response = poster.post_facebook(
                     page_id=page_id,
                     message=rec._social_caption(),
-                    image_url=rec.image_url,
+                    image_url=rec._image_field_url("image_1024"),
                 )
                 rec.facebook_url = rec._extract_facebook_url(response)
                 return rec._notify_post_success("Facebook", response)
@@ -93,7 +92,7 @@ class image_variant(models.Model):
             try:
                 response = poster.post_instagram(
                     business_account_id=business_account_id,
-                    image_url=rec.image_url,
+                    image_url=rec._image_field_url("image_512"),
                     caption=rec._social_caption(),
                 )
                 rec.ig_url = rec._extract_instagram_url(response)
@@ -121,6 +120,10 @@ class image_variant(models.Model):
 {hashtags}
 """
         return res 
+
+    def _image_field_url(self, field_name: str) -> str:
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url") or ""
+        return f"{base_url}/web/image/vit.image_variant/{self.id}/{field_name}?unique={int(time.time())}"
 
     def _build_social_poster(self):
         """Create SocialPoster using tokens from system parameters."""

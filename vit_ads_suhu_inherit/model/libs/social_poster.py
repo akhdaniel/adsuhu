@@ -1,6 +1,7 @@
 import logging
 from io import BytesIO
 from typing import Any, Callable, Dict, Optional, Tuple
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 try:
     from PIL import Image
@@ -166,32 +167,37 @@ class SocialPoster:
         self._ensure_token(self.instagram_token, "Instagram")
 
         base_url = self._graph_url(business_account_id)
-        media_payload: Dict[str, Any] = {
-            "access_token": self.instagram_token,
-            "image_url": image_url,
-        }
+        media_base_payload: Dict[str, Any] = {"access_token": self.instagram_token}
         if caption:
-            media_payload["caption"] = caption
+            media_base_payload["caption"] = caption
 
-        resized_bytes: Optional[bytes] = None
-        resized_mime: Optional[str] = None
-        try:
-            original_bytes = self._download_bytes(image_url)
-            resized_bytes, resized_mime = self._resize_image_bytes(original_bytes, 0.75)
-        except Exception as exc:
-            _logger.warning("Skipping Instagram resize, will use original URL: %s", exc)
+        url_attempts = [
+            ("0.75x", self._scaled_image_url(image_url, 0.75)),
+            ("0.50x", self._scaled_image_url(image_url, 0.5)),
+            ("original", image_url),
+        ]
 
+        last_error: Optional[Exception] = None
+        media_response: Optional[Dict[str, Any]] = None
         _logger.info("Creating Instagram media container for %s", business_account_id)
-        media_response: Dict[str, Any]
-        if resized_bytes and resized_mime:
+        for label, candidate_url in url_attempts:
+            payload = dict(media_base_payload, image_url=candidate_url)
             try:
-                files = {"source": ("image", resized_bytes, resized_mime)}
-                media_response = self._post_form(f"{base_url}/media", media_payload, files=files)
+                _logger.info("Attempting IG upload with %s image URL", label)
+                media_response = self._post_form(f"{base_url}/media", payload)
+                break
             except SocialPostError as exc:
-                _logger.warning("Resized IG upload failed (%s); retrying with original URL only", exc)
-                media_response = self._post_form(f"{base_url}/media", media_payload)
-        else:
-            media_response = self._post_form(f"{base_url}/media", media_payload)
+                last_error = exc
+                if not self._is_instagram_download_timeout(exc):
+                    break
+                _logger.warning(
+                    "IG upload failed due to download timeout using %s; trying next smaller size",
+                    label,
+                )
+
+        if not media_response:
+            assert last_error is not None
+            raise last_error
 
         creation_id = media_response.get("id")
         if not creation_id:
@@ -450,6 +456,29 @@ class SocialPoster:
         except Exception as exc:
             raise SocialPostError(f"Failed to resize image: {exc}")
 
+    def _scaled_image_url(self, image_url: str, scale: float) -> str:
+        """Append width/height params to ask Odoo to serve a scaled image."""
+        if scale >= 1 or scale <= 0:
+            return image_url
+        width = height = None
+        try:
+            with Image.open(BytesIO(self._download_bytes(image_url))) as img:
+                width = max(1, int(img.width * scale))
+                height = max(1, int(img.height * scale))
+        except Exception:
+            # Fallback to a reasonable bound if we cannot read size
+            width = height = int(1080 * scale)
+
+        parsed = urlparse(image_url)
+        query = dict(parse_qsl(parsed.query, keep_blank_values=True))
+        # Do not override explicit user-provided width/height
+        query.setdefault("width", str(width))
+        query.setdefault("height", str(height))
+        new_query = urlencode(query)
+        return urlunparse(
+            (parsed.scheme, parsed.netloc, parsed.path, parsed.params, new_query, parsed.fragment)
+        )
+
     def _safe_json(self, response: requests.Response) -> Dict[str, Any]:
         try:
             return response.json()
@@ -467,6 +496,10 @@ class SocialPoster:
     def _is_facebook_permission_error(self, error: Exception) -> bool:
         text = str(error).lower()
         return "does not have permission to post" in text or "(#200)" in text
+
+    def _is_instagram_download_timeout(self, error: Exception) -> bool:
+        text = str(error).lower()
+        return "takes too long to download the media" in text or "download the media" in text
 
     def _get_facebook_page_token(self, page_id: str) -> Optional[str]:
         """Return the page access token so posts are made on behalf of the page."""
