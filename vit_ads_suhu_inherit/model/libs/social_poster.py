@@ -166,15 +166,32 @@ class SocialPoster:
         self._ensure_token(self.instagram_token, "Instagram")
 
         base_url = self._graph_url(business_account_id)
-        media_payload: Dict[str, Any] = {
-            "access_token": self.instagram_token,
-            "image_url": image_url,
-        }
+        media_payload: Dict[str, Any] = {"access_token": self.instagram_token}
         if caption:
             media_payload["caption"] = caption
 
+        resized_bytes: Optional[bytes] = None
+        resized_mime: Optional[str] = None
+        try:
+            original_bytes = self._download_bytes(image_url)
+            resized_bytes, resized_mime = self._resize_image_bytes(original_bytes, 0.75)
+        except Exception as exc:
+            _logger.warning("Skipping Instagram resize, will use original URL: %s", exc)
+
         _logger.info("Creating Instagram media container for %s", business_account_id)
-        media_response = self._post_form(f"{base_url}/media", media_payload)
+        media_response: Dict[str, Any]
+        if resized_bytes and resized_mime:
+            try:
+                files = {"source": ("image", resized_bytes, resized_mime)}
+                media_response = self._post_form(f"{base_url}/media", media_payload, files=files)
+            except SocialPostError as exc:
+                _logger.warning("Resized IG upload failed (%s); retrying with original URL", exc)
+                media_payload["image_url"] = image_url
+                media_response = self._post_form(f"{base_url}/media", media_payload)
+        else:
+            media_payload["image_url"] = image_url
+            media_response = self._post_form(f"{base_url}/media", media_payload)
+
         creation_id = media_response.get("id")
         if not creation_id:
             raise SocialPostError("Instagram media container creation failed.")
