@@ -137,6 +137,8 @@ class image_variant(models.Model):
             "linkedin_authorization_code": params.get_param("linkedin_authorization_code"),
             "facebook_token": params.get_param("facebook_access_token"),
             "instagram_token": params.get_param("instagram_access_token"),
+            "telegram_bot_token": params.get_param("telegram_bot_token"),
+            "telegram_chat_id": params.get_param("telegram_chat_id"),
             "linkedin_author_urn": params.get_param("linkedin_author_urn"),
             "facebook_page_id": params.get_param("facebook_page_id"),
             "instagram_business_account_id": params.get_param("instagram_business_account_id"),
@@ -157,6 +159,7 @@ class image_variant(models.Model):
             linkedin_authorization_code=config["linkedin_authorization_code"],
             facebook_token=config["facebook_token"],
             instagram_token=config["instagram_token"],
+            telegram_token=config["telegram_bot_token"],
             token_saver=save_tokens,
         )
         return poster, config
@@ -201,3 +204,27 @@ class image_variant(models.Model):
             if ig_id:
                 return f"https://www.instagram.com/p/{ig_id}"
         return self.ig_url
+
+
+    def action_post_telegram(self, ):
+        for rec in self:
+            poster, config = rec._build_social_poster()
+            chat_id = config.get("telegram_chat_id")
+            if not chat_id:
+                raise UserError(_("Please set telegram_chat_id in system parameters."))
+            try:
+                response = poster.post_telegram(
+                    chat_id=chat_id,
+                    photo_url=rec._image_field_url("image_512"),
+                    caption=rec._social_caption(),
+                )
+                result = response.get("result", {}) if isinstance(response, dict) else {}
+                message_id = result.get("message_id")
+                rec.telegram_url = f"chat:{chat_id} message:{message_id}" if message_id else rec.telegram_url
+                return rec._notify_post_success("Telegram", response)
+            except SocialPostError as e:
+                raise UserError(_("Telegram post failed: %s") % e)
+
+
+    def action_post_whatsapp(self, ):
+        pass

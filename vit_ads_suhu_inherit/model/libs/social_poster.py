@@ -25,6 +25,7 @@ class SocialPoster:
         linkedin_authorization_code: Optional[str] = None,
         facebook_token: Optional[str] = None,
         instagram_token: Optional[str] = None,
+        telegram_token: Optional[str] = None,
         token_saver: Optional[Callable[[Dict[str, str]], None]] = None,
         timeout: int = 20,
         session: Optional[requests.Session] = None,
@@ -38,6 +39,7 @@ class SocialPoster:
         self.linkedin_authorization_code = linkedin_authorization_code
         self.facebook_token = facebook_token
         self.instagram_token = instagram_token
+        self.telegram_token = telegram_token
         self.token_saver = token_saver
         self.timeout = timeout
         self.session = session or requests.Session()
@@ -178,6 +180,28 @@ class SocialPoster:
         publish_response["creation_id"] = creation_id
         return publish_response
 
+    def post_telegram(
+        self,
+        chat_id: str,
+        photo_url: str,
+        caption: Optional[str] = None,
+        parse_mode: str = "HTML",
+    ) -> Dict[str, Any]:
+        """Send a photo message to a Telegram chat."""
+        self._ensure_token(self.telegram_token, "Telegram bot")
+        if not chat_id:
+            raise SocialPostError("Telegram chat_id is missing.")
+
+        url = f"https://api.telegram.org/bot{self.telegram_token}/sendPhoto"
+        payload: Dict[str, Any] = {"chat_id": chat_id, "photo": photo_url}
+        if caption:
+            payload["caption"] = caption[:1024]
+        if parse_mode:
+            payload["parse_mode"] = parse_mode
+
+        _logger.info("Posting photo to Telegram chat %s", chat_id)
+        return self._post_telegram(url, payload)
+
     def _graph_url(self, path: str) -> str:
         return f"https://graph.facebook.com/{self.graph_version}/{path.lstrip('/')}"
 
@@ -307,6 +331,25 @@ class SocialPoster:
             return self._handle_response(response)
         except requests.exceptions.Timeout as exc:
             raise SocialPostError(f"Request timed out posting to {url}: {exc}")
+
+    def _post_telegram(self, url: str, payload: Dict[str, Any]) -> Dict[str, Any]:
+        try:
+            response = self.session.post(url, data=payload, timeout=self.timeout)
+        except requests.exceptions.Timeout as exc:
+            raise SocialPostError(f"Telegram request timed out: {exc}")
+        except Exception as exc:
+            raise SocialPostError(f"Telegram request failed: {exc}")
+
+        try:
+            data = response.json()
+        except ValueError:
+            data = {}
+
+        if response.status_code >= 400 or not data.get("ok", False):
+            raise SocialPostError(
+                f"Telegram request failed ({response.status_code}): {data or response.text}"
+            )
+        return data
 
     def _normalize_linkedin_author(self, author_urn: str) -> str:
         # LinkedIn expects member URNs for people (urn:li:member:<id>)

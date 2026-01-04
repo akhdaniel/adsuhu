@@ -66,5 +66,28 @@
         <field name="key">instagram_business_account_id</field>
         <field name="value">1789...</field>
     </record>
+    <record id="telegram_bot_token" model="ir.config_parameter">
+        <field name="key">telegram_bot_token</field>
+        <field name="value">your-telegram-bot-token</field>
+    </record>
+    <record id="telegram_chat_id" model="ir.config_parameter">
+        <field name="key">telegram_chat_id</field>
+        <field name="value">your-chat-id</field>
+    </record>
+
+    <!--
+    You can grab it from Telegram itself:
+
+    For a 1:1 chat: send any message to your bot, 
+    then call https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates in a browser/curl. 
+    In the JSON response, look at result[...].message.chat.id — that’s the chat id to use.
+
+    For a group/channel: add the bot, send a message in the group, then call getUpdates the same way. 
+    The message.chat.id will be negative (e.g., -1001234567890) for supergroups/channels. 
+    If the bot doesn’t see messages, disable “Group Privacy” in BotFather (/setprivacy → Disable), 
+    then try again.
+
+    Keep the bot token private; once you have the chat_id, set it in telegram_chat_id.
+    -->
 
 </odoo>
