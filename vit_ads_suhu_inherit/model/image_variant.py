@@ -37,6 +37,12 @@ class image_variant(models.Model):
         self.cta = body["cta"]
     
 
+    def _get_lp_url(self, ):
+        for rec in self:
+            rec.lp_url = self.image_generator_id.ads_copy_id.landing_page_builder_ids[0].lp_url \
+                if self.image_generator_id.ads_copy_id.landing_page_builder_ids \
+                    else lp = self.image_generator_id.ads_copy_id.product_value_analysis_id.product_url
+
     def _get_image_url(self, ):
         for rec in self:
             rec.image_url = rec._image_field_url("image_1024")
@@ -101,21 +107,17 @@ class image_variant(models.Model):
                 raise UserError(_("Instagram post failed: %s") % e)
 
     def _social_caption(self):
-        if self.image_generator_id.ads_copy_id.landing_page_builder_ids:
-            lp = self.image_generator_id.ads_copy_id.landing_page_builder_ids[0].lp_url 
-        else:
-            lp = self.image_generator_id.ads_copy_id.product_value_analysis_id.product_url or ""
+
         if self.tags:
             hashtags = ", ".join(f"#{w.strip()}" for w in self.tags.split(","))
         else:
             hashtags =""
 
-        link_text = lp or ""
         res = f"""{self.headline}
 
 {self.primary_text}
 
-{self.cta}: {link_text}
+{self.cta}: {self.lp_url}
 
 {hashtags}
 """

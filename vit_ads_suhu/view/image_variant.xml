@@ -12,6 +12,7 @@
                     <field name="image_generator_id" /> <!-- 100-->
                     <field name="auto_post_period_id" /> <!-- 101-->
                     <field name="image_url" /> <!-- 103-->
+                    <field name="lp_url" widget="url"/> <!-- 115-->
                 </list>
             </field>
         </record>
@@ -62,6 +63,7 @@
                                 <field name="image_url"  />
                                 <field name="is_autopost"  />
                                 <field name="autopost_time" widget="float_time" />
+                                <field name="lp_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="image_generator_id"  />

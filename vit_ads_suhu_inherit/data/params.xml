@@ -80,10 +80,13 @@
 
     For a 1:1 chat: send any message to your bot, 
     then call https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates in a browser/curl. 
+    
     In the JSON response, look at result[...].message.chat.id — that’s the chat id to use.
 
     For a group/channel: add the bot, send a message in the group, then call getUpdates the same way. 
+
     The message.chat.id will be negative (e.g., -1001234567890) for supergroups/channels. 
+
     If the bot doesn’t see messages, disable “Group Privacy” in BotFather (/setprivacy → Disable), 
     then try again.
 

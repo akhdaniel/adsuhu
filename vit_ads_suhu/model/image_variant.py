@@ -45,6 +45,10 @@ class image_variant(models.Model):
         pass
 
 
+    def _get_lp_url(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 
@@ -63,6 +67,7 @@ class image_variant(models.Model):
     ig_url = fields.Text(string="IG URL")
     telegram_url = fields.Text(string="Telegram URL")
     whatsapp_url = fields.Text(string="WhatsApp URL")
+    lp_url = fields.Text(compute="_get_lp_url", string="Landing Page URL")
 
 
     def copy(self, default=None):

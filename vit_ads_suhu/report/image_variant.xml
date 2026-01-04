@@ -78,6 +78,10 @@
                             <p class="m-0" t-field="doc.whatsapp_url" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Lp Url</strong>
+                            <p class="m-0" t-field="doc.lp_url" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Image Generator</strong>
                             <p class="m-0" t-field="doc.image_generator_id"/>
                         </div>

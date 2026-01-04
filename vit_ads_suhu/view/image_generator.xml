@@ -88,6 +88,7 @@
                                         <field name="name" /> <!-- 100-->
                                         <field name="auto_post_period_id" /> <!-- 101-->
                                         <field name="image_url" /> <!-- 103-->
+                                        <field name="lp_url" widget="url"/> <!-- 115-->
                                     </list>
                                 </field>
                             </page>

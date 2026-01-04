@@ -75,6 +75,7 @@
                             <td>Ig Url</td>
                             <td>Telegram Url</td>
                             <td>Whatsapp Url</td>
+                            <td>Lp Url</td>
                             <td>Image Generator</td>
                             <td>Auto Post Period</td>
                         </tr>
@@ -96,6 +97,7 @@
                             <td><span t-field="line.ig_url" /></td>
                             <td><span t-field="line.telegram_url" /></td>
                             <td><span t-field="line.whatsapp_url" /></td>
+                            <td><span t-field="line.lp_url" /></td>
                             <td><span t-field="line.image_generator_id" /></td>
                             <td><span t-field="line.auto_post_period_id" /></td>
                         </tr> <!-- foreach-->
