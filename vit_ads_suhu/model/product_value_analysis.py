@@ -81,5 +81,5 @@ class product_value_analysis(models.Model):
     market_mapper_ids_count = fields.Integer(compute="compute_market_mapper_ids")
 
 
-    market_mapper_ids = fields.One2many(comodel_name="vit.market_mapper",  inverse_name="product_value_analysis_id",  string=_("Market Mapper"))
     write_gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Write Gpt Prompt"))
+    market_mapper_ids = fields.One2many(comodel_name="vit.market_mapper",  inverse_name="product_value_analysis_id",  string=_("Market Mapper"))

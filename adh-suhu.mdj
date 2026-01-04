@@ -25020,6 +25020,7 @@
 							}
 						}
 					],
+					"documentation": "{\n\"inherit_image_mixin\":true\n}",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",

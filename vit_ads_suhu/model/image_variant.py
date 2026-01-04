@@ -5,10 +5,16 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 class image_variant(models.Model):
+    """
+    {
+    "inherit_image_mixin":true
+    }
+    """
 
     _name = "vit.image_variant"
     _description = "vit.image_variant"
 
+    _inherit = ['image.mixin']
 
     def _get_image_url(self, ):
         pass
@@ -43,7 +49,7 @@ class image_variant(models.Model):
         pass
 
     name = fields.Char( required=True, copy=False, string=_("Name"))
-    image = fields.Binary( string=_("Image"))
+    image_1920 = fields.Binary( string=_("Image 1920"))
     image_filename = fields.Char( string=_("Image Filename"))
     image_url = fields.Char(compute="_get_image_url", widget="url",  string=_("Image Url"))
     is_autopost = fields.Boolean( string=_("Is Autopost"))

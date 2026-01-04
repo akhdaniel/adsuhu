@@ -22,8 +22,8 @@
                     </h2>
                     <div class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-2">
-                            <strong>Image</strong>
-                            <img alt="" title="image" class="m-0" style="width:100px" t-attf-src="data:image/*;base64,{{doc.image}}" />
+                            <strong>Image 1920</strong>
+                            <img alt="" title="image_1920" class="m-0" style="width:100px" t-attf-src="data:image/*;base64,{{doc.image_1920}}" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
                             <strong>Image Filename</strong>

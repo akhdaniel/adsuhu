@@ -56,7 +56,7 @@
                         </div>
                         <group>
                             <group> <!-- left -->
-                                <field name="image" filename="image_filename" widget="image" />
+                                <field name="image_1920" filename="image_filename" widget="image" />
                                 <field name="auto_post_period_id"  />
                                 <field name="image_filename" invisible="1" />
                                 <field name="image_url"  />
@@ -101,7 +101,7 @@
                 <search string="Image Variant">
 
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
-                    <filter string="Image" name="filter_by_image" domain="[('image','=','')]" />
+                    <filter string="Image 1920" name="filter_by_image_1920" domain="[('image_1920','=','')]" />
                     <filter string="Image Filename" name="filter_by_image_filename" domain="[('image_filename','=','')]" />
                     <filter string="Is Autopost" name="filter_by_is_autopost" domain="[('is_autopost','=','')]" />
                     <filter string="Autopost Time" name="filter_by_autopost_time" domain="[('autopost_time','=','')]" />
@@ -115,7 +115,7 @@
                     <filter string="Telegram URL" name="filter_by_telegram_url" domain="[('telegram_url','=','')]" />
                     <filter string="WhatsApp URL" name="filter_by_whatsapp_url" domain="[('whatsapp_url','=','')]" />
                     <field name="name" string="Name" select="True"/>
-                    <field name="image" string="Image" select="True"/>
+                    <field name="image_1920" string="Image 1920" select="True"/>
                     <field name="image_filename" string="Image Filename" select="True"/>
                     <field name="is_autopost" string="Is Autopost" select="True"/>
                     <field name="autopost_time" string="Autopost Time" select="True"/>
@@ -147,7 +147,7 @@
                     <templates>
                         <t t-name="card" class="flex-row">
                             <aside class="o_kanban_image m-2">
-                                <field name="image" widget="image" alt="Rooms" options="{'img_class': 'w-100 object-fit-contain'}" invisible="not image"/>
+                                <field name="image_1920" widget="image" alt="Rooms" options="{'img_class': 'w-100 object-fit-contain'}" invisible="not image_1920"/>
                             </aside>
                             <main class="p-2">
                                 <h4>

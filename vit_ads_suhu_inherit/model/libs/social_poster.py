@@ -166,7 +166,10 @@ class SocialPoster:
         self._ensure_token(self.instagram_token, "Instagram")
 
         base_url = self._graph_url(business_account_id)
-        media_payload: Dict[str, Any] = {"access_token": self.instagram_token}
+        media_payload: Dict[str, Any] = {
+            "access_token": self.instagram_token,
+            "image_url": image_url,
+        }
         if caption:
             media_payload["caption"] = caption
 
@@ -185,11 +188,9 @@ class SocialPoster:
                 files = {"source": ("image", resized_bytes, resized_mime)}
                 media_response = self._post_form(f"{base_url}/media", media_payload, files=files)
             except SocialPostError as exc:
-                _logger.warning("Resized IG upload failed (%s); retrying with original URL", exc)
-                media_payload["image_url"] = image_url
+                _logger.warning("Resized IG upload failed (%s); retrying with original URL only", exc)
                 media_response = self._post_form(f"{base_url}/media", media_payload)
         else:
-            media_payload["image_url"] = image_url
             media_response = self._post_form(f"{base_url}/media", media_payload)
 
         creation_id = media_response.get("id")

@@ -61,7 +61,7 @@
                     <thead>
                         <tr>
                             <td>Name</td>
-                            <td>Image</td>
+                            <td>Image 1920</td>
                             <td>Image Filename</td>
                             <td>Image Url</td>
                             <td>Is Autopost</td>
@@ -82,7 +82,7 @@
                     <tbody class="image_variant_ids_tbody">
                         <tr t-foreach="doc.image_variant_ids" t-as="line">
                             <td><span t-field="line.name" /></td>
-                            <td><span t-field="line.image" /></td>
+                            <td><span t-field="line.image_1920" /></td>
                             <td><span t-field="line.image_filename" /></td>
                             <td><span t-field="line.image_url" /></td>
                             <td><span t-field="line.is_autopost" /></td>
