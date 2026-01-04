@@ -63,7 +63,6 @@
                                 <field name="image_url"  />
                                 <field name="is_autopost"  />
                                 <field name="autopost_time" widget="float_time" />
-                                <field name="lp_url" widget="url" />
                             </group>
                             <group> <!-- right -->
                                 <field name="image_generator_id"  />
@@ -71,6 +70,7 @@
                                 <field name="primary_text"  />
                                 <field name="cta"  />
                                 <field name="tags"  />
+                                <field name="lp_url" widget="url" />
                             </group>
                         </group>
                         <notebook>

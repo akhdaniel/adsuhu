@@ -25216,7 +25216,7 @@
 								"$ref": "AAAAAAGbJlp+SjxaTcY="
 							},
 							"name": "lp_url",
-							"documentation": "{\n\"compute\":\"_get_lp_url\",\n\"xml:widget\":\"url\",\n\"string\":\"Landing Page URL\"\n}",
+							"documentation": "{\n\"compute\":\"_get_lp_url\",\n\"xml:widget\":\"url\",\n\"string\":\"Landing Page URL\",\n\"form:pos\":\"right\"\n}",
 							"type": "Text"
 						}
 					],
