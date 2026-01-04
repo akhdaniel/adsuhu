@@ -43,7 +43,7 @@ class image_variant(models.Model):
             if len(lp_builders)>0 and lp_builders[0].lp_url:
                 rec.lp_url = lp_builders[0].lp_url
             else:
-                rec.lp_url = self.image_generator_id.ads_copy_id.product_value_analysis_id.product_url
+                rec.lp_url = rec.image_generator_id.ads_copy_id.product_value_analysis_id.product_url
 
     def _get_image_url(self, ):
         for rec in self:
