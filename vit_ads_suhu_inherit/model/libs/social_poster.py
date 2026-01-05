@@ -120,7 +120,12 @@ class SocialPoster:
             payload: Dict[str, Any] = {"access_token": token}
             if image_url:
                 url = f"{base_url}/photos"
-                payload.update({"caption": message or ""})
+                payload.update(
+                    {
+                        "caption": message or "",
+                        "url": image_url,
+                    }
+                )
             else:
                 url = f"{base_url}/feed"
                 payload.update({"message": message or ""})
