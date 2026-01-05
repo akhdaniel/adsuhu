@@ -1,6 +1,6 @@
 import logging
 from typing import Any, Callable, Dict, Optional, Tuple
-
+import time
 import requests
 
 _logger = logging.getLogger(__name__)
@@ -171,6 +171,8 @@ class SocialPoster:
 
         _logger.info("Creating Instagram media container for %s", business_account_id)
         media_response = self._post_form(f"{base_url}/media", media_payload)
+
+        time.sleep(5)
 
         creation_id = media_response.get("id")
         if not creation_id:
