@@ -93,7 +93,7 @@ class image_variant(models.Model):
         }
         """
         for rec in self:
-            poster, config = rec._build_social_poster()
+            poster, config = rec._build_social_poster(timout=60)
             business_account_id = config.get("instagram_business_account_id")
             if not business_account_id:
                 raise UserError(_("Please set instagram_business_account_id in system parameters."))
@@ -129,7 +129,7 @@ class image_variant(models.Model):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url") or ""
         return f"{base_url}/web/image/vit.image_variant/{self.id}/{field_name}?unique={int(time.time())}"
 
-    def _build_social_poster(self):
+    def _build_social_poster(self, timeout=20):
         """Create SocialPoster using tokens from system parameters."""
         params = self.env["ir.config_parameter"].sudo()
         config = {
@@ -165,6 +165,7 @@ class image_variant(models.Model):
             instagram_token=config["instagram_token"],
             telegram_token=config["telegram_bot_token"],
             token_saver=save_tokens,
+            timeout=timeout
         )
         return poster, config
 
