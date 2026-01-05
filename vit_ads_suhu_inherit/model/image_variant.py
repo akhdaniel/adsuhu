@@ -93,7 +93,7 @@ class image_variant(models.Model):
         }
         """
         for rec in self:
-            poster, config = rec._build_social_poster(timout=60)
+            poster, config = rec._build_social_poster(timeout=60)
             business_account_id = config.get("instagram_business_account_id")
             if not business_account_id:
                 raise UserError(_("Please set instagram_business_account_id in system parameters."))
