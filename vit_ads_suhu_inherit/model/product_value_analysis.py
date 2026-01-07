@@ -766,7 +766,7 @@ Response in {self.lang_id.name} language.
                                 for imgvx, variant in enumerate(variants, start=1):
                                     report.append(f"### Image Variant: {variant['name']}")
                                     src = f"/web/image/vit.image_variant/{variant.id}/image_1024?unique={int(time.time())}"
-                                    res = f"![{ad['name'] or 'image'}](<{src}>)"
+                                    res = f"![{ad['name'] or 'image'}]({src})"
                                     report.append(res)
                                     report.append("\n")    
 
@@ -1137,6 +1137,12 @@ Response in {self.lang_id.name} language.
 
     # Function to read markdown file and convert it to HTML
     def md_to_html(self, md_content):
+        # Replace underscores in /web/image URLs with HTML entities to avoid Markdown emphasis.
+        def escape_web_image_underscores(match):
+            url = match.group(1)
+            return url.replace("_", "&#95;")
+
+        md_content = re.sub(r'(/web/image/[^\s)]+)', escape_web_image_underscores, md_content)
         # Enable tables so Markdown tables render into HTML for downstream DOCX conversion
         html_content = markdown.markdown(md_content, extensions=['tables'])
         return html_content
