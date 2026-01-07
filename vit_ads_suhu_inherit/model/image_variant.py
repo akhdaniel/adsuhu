@@ -100,7 +100,7 @@ class image_variant(models.Model):
             try:
                 response = poster.post_instagram(
                     business_account_id=business_account_id,
-                    image_url=rec._image_field_url("image_512"),
+                    image_url=rec._image_field_url("image_1024"),
                     caption=rec._social_caption(),
                 )
                 rec.ig_url = rec._extract_instagram_url(response)

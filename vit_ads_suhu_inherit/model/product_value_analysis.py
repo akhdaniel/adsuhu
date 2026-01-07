@@ -765,7 +765,7 @@ Response in {self.lang_id.name} language.
                                     continue
                                 for imgvx, variant in enumerate(variants, start=1):
                                     report.append(f"### Image Variant: {variant['name']}")
-                                    res = f"![{ad['name']}](/web/image/vit.image_variant/{variant.id}/image?unique={int(time.time())})"
+                                    res = f"![{ad['name']}](/web/image/vit.image_variant/{variant.id}/image_1024?unique={int(time.time())})"
                                     report.append(res)
                                     report.append("\n")    
 
