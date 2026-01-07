@@ -765,9 +765,8 @@ Response in {self.lang_id.name} language.
                                     continue
                                 for imgvx, variant in enumerate(variants, start=1):
                                     report.append(f"### Image Variant: {variant['name']}")
-                                    alt_text = html.escape(ad['name'] or 'image')
                                     src = f"/web/image/vit.image_variant/{variant.id}/image_1024?unique={int(time.time())}"
-                                    res = f'<img alt="{alt_text}" src="{src}"/>'
+                                    res = f"![{ad['name'] or 'image'}](<{src}>)"
                                     report.append(res)
                                     report.append("\n")    
 
@@ -1138,12 +1137,6 @@ Response in {self.lang_id.name} language.
 
     # Function to read markdown file and convert it to HTML
     def md_to_html(self, md_content):
-        # Escape underscores in Odoo /web/image paths to avoid Markdown emphasis.
-        md_content = re.sub(
-            r'(/web/image/[^\s)]+)',
-            lambda match: match.group(1).replace('_', '\\_'),
-            md_content,
-        )
         # Enable tables so Markdown tables render into HTML for downstream DOCX conversion
         html_content = markdown.markdown(md_content, extensions=['tables'])
         return html_content
