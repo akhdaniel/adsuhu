@@ -1136,6 +1136,12 @@ Response in {self.lang_id.name} language.
 
     # Function to read markdown file and convert it to HTML
     def md_to_html(self, md_content):
+        # Escape underscores in Odoo /web/image paths to avoid Markdown emphasis.
+        md_content = re.sub(
+            r'(/web/image/[^\s)]+)',
+            lambda match: match.group(1).replace('_', '\\_'),
+            md_content,
+        )
         # Enable tables so Markdown tables render into HTML for downstream DOCX conversion
         html_content = markdown.markdown(md_content, extensions=['tables'])
         return html_content
