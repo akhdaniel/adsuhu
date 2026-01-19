@@ -35,6 +35,7 @@
         "data/prompt.xml",
         "data/gpts.xml",
         "data/gpt_model.xml",
+		"view/res_users.xml",
 		"view/product_value_analysis.xml",
 		"view/market_mapper.xml",
 		"view/audience_profiler.xml",

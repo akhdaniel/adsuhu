@@ -16,3 +16,4 @@ from . import hook
 from . import image_variant
 from . import video_variant
 from . import video_script
+from . import res_users
