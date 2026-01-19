@@ -6,7 +6,7 @@ import re
 
 class ProductValueAnalysisController(http.Controller):
 
-    @http.route(['/product_analysis', '/product_analysis/page/<int:page>'], type='http', auth='public', website=True)
+    @http.route(['/product_analysis', '/product_analysis/page/<int:page>'], type='http', auth='user', website=True)
     def list(self, page=1, **kwargs):
         product_analysis_obj = request.env['vit.product_value_analysis']
         domain = []
@@ -30,14 +30,14 @@ class ProductValueAnalysisController(http.Controller):
             'pager': pager,
         })
 
-    @http.route('/product_analysis/create', type='http', auth='public', website=True)
+    @http.route('/product_analysis/create', type='http', auth='user', website=True)
     def create(self, **kwargs):
         langs = request.env['res.lang'].search([('active', '=', True)])
         return request.render('vit_adsuhu_frontend.product_analysis_create_template', {
             'langs': langs,
         })
 
-    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/edit', type='http', auth='public', website=True)
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/edit', type='http', auth='user', website=True)
     def edit(self, analysis, **kwargs):
         langs = request.env['res.lang'].search([('active', '=', True)])
         return request.render('vit_adsuhu_frontend.product_analysis_edit_template', {
@@ -45,7 +45,7 @@ class ProductValueAnalysisController(http.Controller):
             'langs': langs,
         })
 
-    @http.route('/product_analysis/submit', type='http', auth='public', website=True, methods=['POST'])
+    @http.route('/product_analysis/submit', type='http', auth='user', website=True, methods=['POST'])
     def submit(self, **post):
         product_name = post.get('product_name')
         product_url = post.get('product_url')
@@ -69,7 +69,7 @@ class ProductValueAnalysisController(http.Controller):
 
         return request.redirect(f'/product_analysis/{new_analysis.id}')
 
-    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/update', type='http', auth='public', website=True, methods=['POST'])
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/update', type='http', auth='user', website=True, methods=['POST'])
     def update(self, analysis, **post):
         product_name = post.get('product_name')
         product_url = post.get('product_url')
@@ -93,7 +93,7 @@ class ProductValueAnalysisController(http.Controller):
 
         return request.redirect(f'/product_analysis/{analysis.id}')
 
-    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/write_with_ai', type='json', auth='public', website=True, methods=['POST'])
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/write_with_ai', type='json', auth='user', website=True, methods=['POST'])
     def write_with_ai(self, analysis, **kwargs):
         analysis.sudo().action_write_with_ai()
         result = analysis.sudo().read(['description', 'features', 'lang_id'])[0]
@@ -200,7 +200,7 @@ class ProductValueAnalysisController(http.Controller):
         
         return Markup(html_content), Markup(md.toc)
 
-    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>', type='http', auth='public', website=True)
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>', type='http', auth='user', website=True)
     def detail(self, analysis, **kwargs):
         final_report_html, final_report_toc = self._process_markdown(analysis.final_report)
         
