@@ -30,6 +30,7 @@
     },
 	"data": [
         "security/ir.model.access.csv",
+        "security/ir.rule.xml",
         "data/params.xml",
         "data/prompt.xml",
         "data/gpts.xml",

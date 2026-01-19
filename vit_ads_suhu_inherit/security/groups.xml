@@ -1,0 +1,10 @@
+<odoo>
+	<data>
+
+		<!-- <record id="group_ads_suhu_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="module_category_ads_suhu"/>
+		</record> -->
+
+	</data>
+</odoo>

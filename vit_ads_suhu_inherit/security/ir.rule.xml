@@ -1,0 +1,84 @@
+<odoo>
+	<data>
+		<record id="rule_ads_suhu_user_product_value_analysis" model="ir.rule">
+			<field name="name">Ads Suhu User: Product Value Analysis (Own)</field>
+			<field name="model_id" ref="vit_ads_suhu.model_vit_product_value_analysis"/>
+			<field name="domain_force">[('create_uid', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('vit_ads_suhu.group_ads_suhu_user'))]"/>
+			<field name="perm_read" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+		</record>
+		<record id="rule_ads_suhu_user_market_mapper" model="ir.rule">
+			<field name="name">Ads Suhu User: Market Mapper (Own)</field>
+			<field name="model_id" ref="vit_ads_suhu.model_vit_market_mapper"/>
+			<field name="domain_force">[('create_uid', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('vit_ads_suhu.group_ads_suhu_user'))]"/>
+			<field name="perm_read" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+		</record>
+		<record id="rule_ads_suhu_user_audience_profiler" model="ir.rule">
+			<field name="name">Ads Suhu User: Audience Profiler (Own)</field>
+			<field name="model_id" ref="vit_ads_suhu.model_vit_audience_profiler"/>
+			<field name="domain_force">[('create_uid', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('vit_ads_suhu.group_ads_suhu_user'))]"/>
+			<field name="perm_read" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+		</record>
+		<record id="rule_ads_suhu_user_angle_hook" model="ir.rule">
+			<field name="name">Ads Suhu User: Angle Hook (Own)</field>
+			<field name="model_id" ref="vit_ads_suhu.model_vit_angle_hook"/>
+			<field name="domain_force">[('create_uid', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('vit_ads_suhu.group_ads_suhu_user'))]"/>
+			<field name="perm_read" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+		</record>
+		<record id="rule_ads_suhu_user_hook" model="ir.rule">
+			<field name="name">Ads Suhu User: Hook (Own)</field>
+			<field name="model_id" ref="vit_ads_suhu.model_vit_hook"/>
+			<field name="domain_force">[('create_uid', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('vit_ads_suhu.group_ads_suhu_user'))]"/>
+			<field name="perm_read" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+		</record>
+		<record id="rule_ads_suhu_user_ads_copy" model="ir.rule">
+			<field name="name">Ads Suhu User: Ads Copy (Own)</field>
+			<field name="model_id" ref="vit_ads_suhu.model_vit_ads_copy"/>
+			<field name="domain_force">[('create_uid', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('vit_ads_suhu.group_ads_suhu_user'))]"/>
+			<field name="perm_read" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+		</record>
+		<record id="rule_ads_suhu_user_landing_page_builder" model="ir.rule">
+			<field name="name">Ads Suhu User: Landing Page Builder (Own)</field>
+			<field name="model_id" ref="vit_ads_suhu.model_vit_landing_page_builder"/>
+			<field name="domain_force">[('create_uid', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('vit_ads_suhu.group_ads_suhu_user'))]"/>
+			<field name="perm_read" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+		</record>
+		<record id="rule_ads_suhu_user_campaign_builder" model="ir.rule">
+			<field name="name">Ads Suhu User: Campaign Builder (Own)</field>
+			<field name="model_id" ref="vit_ads_suhu.model_vit_campaign_builder"/>
+			<field name="domain_force">[('create_uid', '=', user.id)]</field>
+			<field name="groups" eval="[(4, ref('vit_ads_suhu.group_ads_suhu_user'))]"/>
+			<field name="perm_read" eval="1"/>
+			<field name="perm_write" eval="1"/>
+			<field name="perm_create" eval="1"/>
+			<field name="perm_unlink" eval="1"/>
+		</record>
+	</data>
+</odoo>

@@ -22,6 +22,11 @@
                 <xpath expr="//form" position="attributes">
                     <attribute name="js_class">ads_form_with_banner</attribute>
                 </xpath>              
+                <xpath expr="//form/sheet/group[last()]" position="after">
+                    <group>
+                        <field name="create_uid" groups="base.group_system"/>
+                    </group>
+                </xpath>
             </field>
         </record>
         <!-- search -->
