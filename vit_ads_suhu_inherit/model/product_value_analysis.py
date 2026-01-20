@@ -124,8 +124,8 @@ class product_value_analysis(models.Model):
             [("name", "=", "write_description_prompt")], limit=1
         ).id
 
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
-    write_gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Write GPT Prompt"), default=_get_default_write_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Analyzer Prompt"), default=_get_default_prompt)
+    write_gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Description Writer Prompt"), default=_get_default_write_prompt)
 
     # write description and features
     def action_write_with_ai(self, ):
@@ -215,7 +215,37 @@ Response in {self.lang_id.name} language.
 
 
     def action_generate(self, ):
-        pass
+
+        if not self.gpt_prompt_id:
+            raise UserError('Analyze GPT prompt empty')
+        if not self.gpt_model_id:
+            raise UserError('GPT model empty')
+
+        openai_api_key = self.env["ir.config_parameter"].sudo().get_param("openai_api_key")
+        openai_base_url = self.env["ir.config_parameter"].sudo().get_param("openai_base_url", None)
+
+        model = self.gpt_model_id.name
+
+        user_prompt = self.gpt_prompt_id.user_prompt
+        user_prompt += f"{self.input}\n"
+        system_prompt = self.gpt_prompt_id.system_prompt 
+
+        context = ""
+        additional_command=""
+        question = ""
+
+        response = generate_content(openai_api_key=openai_api_key, 
+                                openai_base_url=openai_base_url, 
+                                model=model, 
+                                system_prompt=system_prompt, 
+                                user_prompt=user_prompt, 
+                                context=context, 
+                                question=question, 
+                                additional_command=additional_command)    
+
+        response = self.clean_md(response)
+        self.output = response
+        
 
     def _get_product_content(self, url):
         if "shopee." in url:
