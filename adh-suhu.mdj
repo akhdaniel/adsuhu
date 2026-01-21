@@ -24238,7 +24238,7 @@
 								"$ref": "AAAAAAGbDPZ/gLayzX8="
 							},
 							"name": "action_generate",
-							"documentation": "{\n   \"label\":\"Generate Image\",\n    \"xml:confirm\":\"Are you sure to re-generate Audience Profiler Output?\"\n}"
+							"documentation": "{\n   \"label\":\"Generate Image\",\n    \"xml:confirm\":\"Are you sure to generate new Image Variant?\"\n}"
 						},
 						{
 							"_type": "UMLOperation",

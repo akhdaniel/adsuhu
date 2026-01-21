@@ -14,7 +14,7 @@ class image_generator(models.Model):
         """
         {
            "label":"Generate Image",
-            "xml:confirm":"Are you sure to re-generate Audience Profiler Output?"
+            "xml:confirm":"Are you sure to generate new Image Variant?"
         }
         """
         pass
