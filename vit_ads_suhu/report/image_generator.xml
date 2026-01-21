@@ -38,10 +38,6 @@
                             <p class="m-0" t-field="doc.ads_copy_no" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
-                            <strong>Image Prompt</strong>
-                            <p class="m-0" t-field="doc.image_prompt_id"/>
-                        </div>
-                        <div class="col-auto mw-100 mb-2">
                             <strong>Visual Concept</strong>
                             <p class="m-0" t-field="doc.visual_concept_id"/>
                         </div>
@@ -52,6 +48,10 @@
                         <div class="col-auto mw-100 mb-2">
                             <strong>Hook</strong>
                             <p class="m-0" t-field="doc.hook_id"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Image Prompt</strong>
+                            <p class="m-0" t-field="doc.image_prompt_id"/>
                         </div>
                     </div>
                 </div>

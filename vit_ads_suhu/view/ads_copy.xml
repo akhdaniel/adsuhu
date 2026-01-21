@@ -45,7 +45,7 @@
             <field name="arch" type="xml">
                 <form string="Ads Copy">
                     <header>
-                        <button string="Generate" type="object" name="action_generate" />
+                        <button string="Generate" type="object" name="action_generate"  confirm="Are you sure to re-generate Ads Copy Output?"/>
                         <button string="Split Ads Images" type="object" name="action_split_images" />
                         <button string="Create LP" type="object" name="action_create_lp" />
                         <button string="Create Video Scripts" type="object" name="action_create_video" />

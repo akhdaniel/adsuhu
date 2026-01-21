@@ -144,10 +144,10 @@
                             <td>Angle</td>
                             <td>Hook</td>
                             <td>Ads Copy No</td>
-                            <td>Image Prompt</td>
                             <td>Visual Concept</td>
                             <td>Ads Copy</td>
                             <td>Hook</td>
+                            <td>Image Prompt</td>
                         </tr>
                     </thead>
                     <tbody class="image_generator_ids_tbody">
@@ -158,10 +158,10 @@
                             <td><span t-field="line.angle" /></td>
                             <td><span t-field="line.hook" /></td>
                             <td><span t-field="line.ads_copy_no" /></td>
-                            <td><span t-field="line.image_prompt_id" /></td>
                             <td><span t-field="line.visual_concept_id" /></td>
                             <td><span t-field="line.ads_copy_id" /></td>
                             <td><span t-field="line.hook_id" /></td>
+                            <td><span t-field="line.image_prompt_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>
                 </table>

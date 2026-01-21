@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
+from .libs.openai_lib import generate_content
 
 DEFAULT_SPECIFIC_INSTRUCTION = """
 REQUIRED JSON OUTPUT FORMAT:
@@ -80,7 +81,38 @@ class audience_profiler(models.Model):
     _inherit = "vit.audience_profiler"
 
     def action_generate(self, ):
-        pass
+
+        if not self.gpt_prompt_id:
+            raise UserError('Market Mapper GPT empty')
+        if not self.gpt_model_id:
+            raise UserError('GPT model empty')
+
+
+        openai_api_key = self.env["ir.config_parameter"].sudo().get_param("deepseek_api_key")
+        openai_base_url = self.env["ir.config_parameter"].sudo().get_param("deepseek_base_url", None)
+
+        model = self.gpt_model_id.name
+
+        user_prompt = self.gpt_prompt_id.user_prompt
+        user_prompt += f"{self.input}\n"
+        system_prompt = self.gpt_prompt_id.system_prompt 
+
+        context = ""
+        additional_command=""
+        question = ""
+
+        response = generate_content(openai_api_key=openai_api_key, 
+                                openai_base_url=openai_base_url, 
+                                model=model, 
+                                system_prompt=system_prompt, 
+                                user_prompt=user_prompt, 
+                                context=context, 
+                                question=question, 
+                                additional_command=additional_command)    
+
+        response = self.clean_md(response)
+        self.output = response
+    
     specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
 

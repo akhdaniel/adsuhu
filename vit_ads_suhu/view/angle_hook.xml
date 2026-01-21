@@ -41,7 +41,7 @@
             <field name="arch" type="xml">
                 <form string="Angle">
                     <header>
-                        <button string="Generate" type="object" name="action_generate" />
+                        <button string="Generate" type="object" name="action_generate"  confirm="Are you sure to re-generate Angles Output?"/>
                         <button string="Split Angles" type="object" name="action_split_angles" />
                         <button string="Split Hooks" type="object" name="action_split_hooks" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>

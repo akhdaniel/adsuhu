@@ -11,6 +11,11 @@ class audience_profiler(models.Model):
 
 
     def action_generate(self, ):
+        """
+        {
+            "xml:confirm":"Are you sure to re-generate Audience Profiler Output?"
+        }
+        """
         pass
 
 

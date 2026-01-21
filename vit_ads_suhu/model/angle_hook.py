@@ -16,6 +16,11 @@ class angle_hook(models.Model):
 
 
     def action_generate(self, ):
+        """
+        {
+            "xml:confirm":"Are you sure to re-generate Angles Output?"
+        }
+        """
         pass
 
 

@@ -150,8 +150,8 @@ class product_value_analysis(models.Model):
         question = ""
         user_prompt = self.write_gpt_prompt_id.user_prompt
 
-        openai_api_key = self.env["ir.config_parameter"].sudo().get_param("openai_api_key")
-        openai_base_url = self.env["ir.config_parameter"].sudo().get_param("openai_base_url", None)
+        openai_api_key = self.env["ir.config_parameter"].sudo().get_param("deepseek_api_key")
+        openai_base_url = self.env["ir.config_parameter"].sudo().get_param("deepseek_base_url", None)
 
         model = self.gpt_model_id.name
 
@@ -221,8 +221,8 @@ Response in {self.lang_id.name} language.
         if not self.gpt_model_id:
             raise UserError('GPT model empty')
 
-        openai_api_key = self.env["ir.config_parameter"].sudo().get_param("openai_api_key")
-        openai_base_url = self.env["ir.config_parameter"].sudo().get_param("openai_base_url", None)
+        openai_api_key = self.env["ir.config_parameter"].sudo().get_param("deepseek_api_key")
+        openai_base_url = self.env["ir.config_parameter"].sudo().get_param("deepseek_base_url", None)
 
         model = self.gpt_model_id.name
 
