@@ -43,6 +43,7 @@ class market_mapper(models.Model):
 
     _inherit = "vit.general_object"
     target_market = fields.Char(required=True,  string=_("Target Market"), default="US (Global)")
+    objective = fields.Char(required=True,  string=_("Objective"), default="Full Map")
 
 
     def action_view_detail_audience_profiler_ids(self):

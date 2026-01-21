@@ -40,7 +40,7 @@
                 <form string="Product Value Analysis">
                     <header>
                         <button string="Fetch Product Description" type="object" name="action_fetch_product_description" />
-                        <button string="Write With Ai" type="object" name="action_write_with_ai" />
+                        <button string="Write With Ai" type="object" name="action_write_with_ai"  confirm="Are you sure to re-generate Product Description anf Features?"/>
                         <button string="Generate" type="object" name="action_generate"  confirm="Are you sure to re-generate Product Analysis Output?"/>
                         <button string="Generate Report" type="object" name="action_generate_report" />
                         <button string="Download Docx" type="object" name="action_download_docx" />

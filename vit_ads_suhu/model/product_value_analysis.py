@@ -15,6 +15,11 @@ class product_value_analysis(models.Model):
 
 
     def action_write_with_ai(self, ):
+        """
+        {
+            "xml:confirm":"Are you sure to re-generate Product Description anf Features?"
+        }
+        """
         pass
 
 

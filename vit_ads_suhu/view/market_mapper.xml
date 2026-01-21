@@ -11,6 +11,7 @@
                     <field name="name" /> <!-- 1-->
                     <field name="target_market" /> <!-- 100-->
                     <field name="partner_id" optional="hide"/> <!-- 100-->
+                    <field name="objective" /> <!-- 101-->
                     <field name="product_value_analysis_id" /> <!-- 200-->
                     <field name="description" /> <!-- 1500-->
                 </list>
@@ -66,6 +67,7 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="target_market"  />
+                                <field name="objective"  />
                                 <field name="active"  />
                                 <field name="description"  />
                                 <field name="gpt_url" widget="url" />
@@ -112,6 +114,7 @@
                 <search string="Market Mapper">
 
                     <filter string="Target Market" name="filter_by_target_market" domain="[('target_market','=','')]" />
+                    <filter string="Objective" name="filter_by_objective" domain="[('objective','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
@@ -122,6 +125,7 @@
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
                     <filter string="GPT Session URL" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
                     <field name="target_market" string="Target Market" select="True"/>
+                    <field name="objective" string="Objective" select="True"/>
                     <field name="name" string="Name" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>

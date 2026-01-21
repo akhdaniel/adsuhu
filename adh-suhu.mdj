@@ -675,6 +675,24 @@
 											"height": 13,
 											"text": "+target_market: Char = \"US (Global)\"",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGb4B05oDEdBLc=",
+											"_parent": {
+												"$ref": "AAAAAAGbDOI+ELrtdHA="
+											},
+											"model": {
+												"$ref": "AAAAAAGb4B05TTEajHU="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 1661,
+											"top": 891,
+											"width": 351,
+											"height": 13,
+											"text": "+objective: Char = \"Full Map\"",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Roboto;13;0",
@@ -682,7 +700,7 @@
 									"left": 1656,
 									"top": 841,
 									"width": 361,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -706,7 +724,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1661,
-											"top": 899,
+											"top": 914,
 											"width": 351,
 											"height": 13,
 											"text": "+action_generate()",
@@ -724,7 +742,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1661,
-											"top": 914,
+											"top": 929,
 											"width": 351,
 											"height": 13,
 											"text": "+_get_input()",
@@ -742,7 +760,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1661,
-											"top": 929,
+											"top": 944,
 											"width": 351,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -760,7 +778,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1661,
-											"top": 944,
+											"top": 959,
 											"width": 351,
 											"height": 13,
 											"text": "+action_create_audience_profiles()",
@@ -770,7 +788,7 @@
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 1656,
-									"top": 894,
+									"top": 909,
 									"width": 361,
 									"height": 68
 								},
@@ -22391,7 +22409,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGbDOD0srqePoM="
 							},
-							"name": "action_write_with_ai"
+							"name": "action_write_with_ai",
+							"documentation": "{\n    \"xml:confirm\":\"Are you sure to re-generate Product Description anf Features?\"\n}"
 						},
 						{
 							"_type": "UMLOperation",
@@ -22502,6 +22521,17 @@
 							"documentation": "{\n\"required\":\"True\"\n}",
 							"type": "Char",
 							"defaultValue": "\"US (Global)\""
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGb4B05TTEajHU=",
+							"_parent": {
+								"$ref": "AAAAAAGbDOI+ELrl32I="
+							},
+							"name": "objective",
+							"documentation": "{\n\"required\":\"True\"\n}",
+							"type": "Char",
+							"defaultValue": "\"Full Map\""
 						}
 					],
 					"operations": [

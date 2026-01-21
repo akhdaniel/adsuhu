@@ -69,6 +69,7 @@
                             <td> Name</td>
                             <td> Inherit</td>
                             <td>Target Market</td>
+                            <td>Objective</td>
                             <td>Product Value Analysis</td>
                         </tr>
                     </thead>
@@ -77,6 +78,7 @@
                             <td><span t-field="line._name" /></td>
                             <td><span t-field="line._inherit" /></td>
                             <td><span t-field="line.target_market" /></td>
+                            <td><span t-field="line.objective" /></td>
                             <td><span t-field="line.product_value_analysis_id" /></td>
                         </tr> <!-- foreach-->
                     </tbody>

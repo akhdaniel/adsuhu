@@ -12,9 +12,9 @@ DEFAULT_SPECIFIC_INSTRUCTION = """
 REQUIRED JSON OUTPUT FORMAT:
 ```json
 {
-    "product": "...",
-    "target_market": "...",
-    "objective": "full map",
+    "product": "{{product_name}}",
+    "target_market": "{{target_market}}",
+    "objective": "{{objective}}",
 
     "market_segmentation": {
       "demography": {
@@ -157,6 +157,12 @@ class market_mapper(models.Model):
         for rec in self:
             rec.name = f"MARKET MAP - {rec.product_value_analysis_id.name}"
             rec.target_market = rec.product_value_analysis_id.target_market
+            rec.specific_instruction = (
+                rec.specific_instruction
+                .replace('{{product_name}}', rec.product_value_analysis_id.name)
+                .replace('{{target_market}}', rec.target_market or 'Indonesia')
+                .replace('{{objective}}', rec.objective or 'Full map')
+            )
             rec.input = f"""
 # ✅ PROODUCT VALUE:
 ---
@@ -167,15 +173,12 @@ class market_mapper(models.Model):
 {rec.general_instruction}
 
 ---
-TUJUAN: Full Map.
 TrenScan otomatis sesuai SOP.
-Target Market: {rec.target_market or 'Indonesia'}.
-
-{rec.specific_instruction or ''}
-
 Response in {rec.lang_id.name} language.
 
+{rec.specific_instruction or ''}
 """
+            
 
 
     def action_create_audience_profiles(self, ):

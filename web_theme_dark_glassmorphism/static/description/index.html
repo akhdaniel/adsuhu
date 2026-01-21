@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Backend Dark Glassmorphism Theme</title>
+    <style>
+      :root {
+        --ink: #e2e8f0;
+        --muted: #94a3b8;
+        --accent: #38bdf8;
+        --panel: rgba(15, 23, 42, 0.72);
+        --border: rgba(148, 163, 184, 0.25);
+      }
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(800px 500px at 15% 15%, rgba(56, 189, 248, 0.18), transparent 60%),
+          radial-gradient(600px 400px at 85% 20%, rgba(34, 211, 238, 0.14), transparent 62%),
+          #0b1020;
+        margin: 24px;
+      }
+      h1 {
+        font-size: 26px;
+        margin: 0 0 12px;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 24px 0 8px;
+      }
+      p {
+        margin: 0 0 10px;
+        color: var(--muted);
+      }
+      ul {
+        margin: 0 0 10px 18px;
+        color: var(--muted);
+      }
+      .badge {
+        display: inline-block;
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        color: var(--ink);
+        margin-right: 6px;
+      }
+      .accent {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .section {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        background: var(--panel);
+        box-shadow: 0 16px 32px rgba(2, 6, 23, 0.5);
+      }
+      .screenshot {
+        width: 100%;
+        max-width: 1100px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        box-shadow: 0 18px 36px rgba(2, 6, 23, 0.55);
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Backend Dark Glassmorphism Theme</h1>
+    <p>
+      A modern <span class="accent">dark glassmorphism</span> theme for the Odoo
+      backend. It blends translucent panels, soft blur, and cyan accents while
+      staying readable in low-light environments.
+    </p>
+    <div class="section">
+      <span class="badge">Odoo 18 Community</span>
+      <span class="badge">Backend Theme</span>
+      <span class="badge">No Data Changes</span>
+    </div>
+
+    <h2>Key Features</h2>
+    <ul>
+      <li>Deep glass background with layered gradients.</li>
+      <li>Translucent panels for control panel, list, kanban, and chatter.</li>
+      <li>Dark, high-contrast inputs and dropdowns with soft highlights.</li>
+      <li>Muted separators and shadows tuned for dark surfaces.</li>
+      <li>Minimal custom CSS, heavy use of Odoo primary variables.</li>
+    </ul>
+
+    <h2>Screenshot</h2>
+    <img src="main_screenshot.png" class="screenshot" alt="Dark glassmorphism theme screenshot" />
+
+    <h2>Installation</h2>
+    <ul>
+      <li>Copy the module into your custom addons path.</li>
+      <li>Update Apps list and install "Backend Dark Glassmorphism Theme".</li>
+      <li>Refresh the browser with assets debug if needed.</li>
+    </ul>
+
+    <h2>Configuration</h2>
+    <p>
+      The theme is enabled once installed. You can tweak colors and translucency
+      from the SCSS files:
+    </p>
+    <ul>
+      <li><code>static/src/scss/dark_glass_variables.scss</code> for Odoo variables.</li>
+      <li><code>static/src/scss/dark_glassmorphism.scss</code> for glass styling.</li>
+    </ul>
+  </body>
+</html>

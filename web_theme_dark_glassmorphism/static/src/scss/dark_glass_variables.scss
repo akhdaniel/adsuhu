@@ -1,0 +1,56 @@
+$o-webclient-color-scheme: dark;
+
+$o-white: #000 !default;
+$o-black: #FFF !default;
+
+$o-gray-100: #1B1D26 !default;
+$o-gray-200: #262A36 !default;
+$o-gray-300: #3C3E4B !default;
+$o-gray-400: #5A5E6B !default;
+$o-gray-500: #6B707F !default;
+$o-gray-600: #7E8392 !default;
+$o-gray-700: #B1B3BC !default;
+$o-gray-800: #D1D1D1 !default;
+$o-gray-900: #E4E4E4 !default;
+
+$o-brand-primary: #38bdf8;
+$o-brand-odoo: $o-brand-primary;
+$o-action: $o-brand-primary;
+$o-brand-secondary: #94a3b8;
+$o-brand-lightsecondary: #111827;
+
+$o-success: #22c55e;
+$o-info: #38bdf8;
+$o-warning: #f59e0b;
+$o-danger: #f87171;
+
+$o-main-text-color: #e2e8f0;
+$o-main-headings-color: #f8fafc;
+$o-main-color-muted: rgba($o-main-text-color, 0.7);
+$o-main-link-color: lighten($o-brand-primary, 6%);
+$o-main-favorite-color: #f8b84a;
+$o-main-code-color: #22d3ee;
+
+$o-view-background-color: rgba(15, 23, 42, 0.55);
+$o-webclient-background-color: #0b1020;
+$o-kanban-background: rgba(5, 7, 14, 0.9);
+$o-shadow-color: #020617;
+
+$o-form-lightsecondary: rgba(148, 163, 184, 0.4);
+
+$o-card-body-bg-opacity: 0.22;
+
+$o-component-active-color: #f8fafc;
+$o-component-active-bg: rgba(56, 189, 248, 0.22);
+$o-component-active-border: rgba(56, 189, 248, 0.65);
+
+$o-input-bg: rgba(15, 23, 42, 0.35);
+$o-input-border-required: $o-brand-primary;
+
+$o-border-radius: o-to-rem(8px);
+$o-border-radius-sm: o-to-rem(6px);
+$o-border-radius-lg: o-to-rem(10px);
+
+$dropdown-bg: rgba(15, 23, 42, 0.92);
+$dropdown-border-color: rgba(148, 163, 184, 0.35);
+$dropdown-link-hover-bg: rgba(148, 163, 184, 0.16);

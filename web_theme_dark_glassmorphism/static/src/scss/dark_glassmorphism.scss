@@ -1,0 +1,194 @@
+body.o_web_client {
+  --glass-bg: rgba(15, 23, 42, 0.55);
+  --glass-bg-strong: rgba(15, 23, 42, 0.72);
+  --glass-border: rgba(148, 163, 184, 0.28);
+  --glass-border-strong: rgba(148, 163, 184, 0.42);
+  --glass-highlight: linear-gradient(135deg, rgba(148, 163, 184, 0.18), rgba(15, 23, 42, 0.45));
+  --glass-shadow: 0 24px 52px rgba(2, 6, 23, 0.55), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  --glass-radius: 16px;
+  --glass-blur: 26px;
+  --glass-text: #e2e8f0;
+  --glass-text-muted: #94a3b8;
+  --glass-accent: #38bdf8;
+  --glass-accent-2: #22d3ee;
+  background:
+    radial-gradient(1200px 800px at 12% 10%, rgba(56, 189, 248, 0.18), transparent 58%),
+    radial-gradient(900px 600px at 85% 18%, rgba(34, 211, 238, 0.14), transparent 62%),
+    radial-gradient(700px 500px at 20% 85%, rgba(14, 116, 144, 0.18), transparent 60%),
+    #0b1020;
+  color: var(--glass-text);
+
+  .o_web_client,
+  .o_action_manager,
+  .o_content {
+    background: transparent;
+  }
+
+  //a {
+  //  color: var(--glass-accent);
+  //
+  //  &:hover {
+  //    color: var(--glass-accent-2);
+  //  }
+  //}
+
+  .o_main_navbar {
+    background-color: rgba(15, 23, 42, 0.72) !important;
+    background-image: var(--glass-highlight) !important;
+    border-bottom: 1px solid var(--glass-border-strong) !important;
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.55);
+    color: var(--glass-text) !important;
+    --NavBar-brand-color: #e2e8f0;
+    --NavBar-brand-hover-color: #f8fafc;
+    --NavBar-entry-backgroundColor: transparent;
+    --NavBar-entry-hover-backgroundColor: transparent;
+    --NavBar-entry-active-backgroundColor: transparent;
+
+    .o_menu_sections a,
+    .o_menu_systray a,
+    button,
+    .dropdown-toggle {
+      color: var(--glass-text) !important;
+    }
+
+    .o_menu_sections .o_nav_entry:hover,
+    .o_menu_sections .o_nav_entry:hover > a,
+    .o_menu_sections .dropdown-toggle:hover {
+      background-color: rgba(148, 163, 184, 0.15) !important;
+      background-image: linear-gradient(180deg, rgba(148, 163, 184, 0.22), rgba(15, 23, 42, 0.35)) !important;
+      box-shadow: 0 10px 22px rgba(2, 6, 23, 0.45);
+      transform: translateY(-1px);
+    }
+  }
+
+  .o_control_panel,
+  .o_searchview,
+  .o_form_sheet,
+  .o_kanban_view .o_kanban_record,
+  .o_dialog .modal-content,
+  .o_popover,
+  .o-mail-ChatterContainer {
+    background-color: var(--glass-bg);
+    background-image: var(--glass-highlight);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius);
+    box-shadow: var(--glass-shadow);
+    color: var(--glass-text);
+  }
+
+  .o_control_panel {
+    border-radius: 0;
+    z-index: 2;
+  }
+
+  .o_searchview {
+    background-color: var(--glass-bg-strong);
+
+    .o_searchview_input {
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+
+      &::placeholder {
+        color: var(--glass-text-muted);
+      }
+    }
+  }
+
+  .o_form_sheet {
+    background: transparent;
+  }
+
+  .o_list_view {
+    background: transparent;
+
+    .o_list_table {
+      background-color: transparent;
+
+      thead th {
+        background-color: rgba(15, 23, 42, 0.72);
+        border-bottom: 1px solid var(--glass-border-strong);
+        color: var(--glass-text);
+      }
+
+      tbody tr {
+        background-color: rgba(15, 23, 42, 0.35);
+
+        &:hover {
+          background-color: rgba(30, 41, 59, 0.5);
+        }
+      }
+
+      td,
+      th {
+        border-color: rgba(148, 163, 184, 0.22);
+      }
+    }
+  }
+
+  .o_kanban_view {
+    background-color: rgba(3, 5, 10, 0.88);
+    background-image: var(--glass-highlight);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    box-shadow: var(--glass-shadow);
+
+    .o_kanban_record {
+      background-color: rgba(5, 7, 14, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      box-shadow: 0 16px 32px rgba(2, 6, 23, 0.6);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 24px 48px rgba(2, 6, 23, 0.6);
+      }
+    }
+
+    .o_kanban_group {
+      --KanbanGroup-background: rgba(7, 11, 22, 0.72);
+      --KanbanColumn__highlight-background: rgba(15, 23, 42, 0.75);
+    }
+  }
+
+  .dropdown-menu,
+  .o-autocomplete--dropdown-menu,
+  .ui-autocomplete,
+  .o_searchview_autocomplete {
+    background-color: rgba(15, 23, 42, 0.9);
+    background-image: var(--glass-highlight);
+    border: 1px solid var(--glass-border-strong);
+    box-shadow: 0 24px 52px rgba(2, 6, 23, 0.6);
+    color: var(--glass-text);
+  }
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  body.o_web_client {
+    .o_main_navbar,
+    .o_control_panel,
+    .o_searchview,
+    .o_form_sheet,
+    .o_kanban_view .o_kanban_record,
+    .o_dialog .modal-content,
+    .o_popover,
+    .o-mail-ChatterContainer,
+    .dropdown-menu,
+    .o-autocomplete--dropdown-menu,
+    .ui-autocomplete,
+    .o_searchview_autocomplete {
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
+      backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  body.o_web_client {
+    --glass-radius: 12px;
+
+    .o_form_sheet,
+    .o-mail-ChatterContainer {
+      border-radius: 12px;
+    }
+  }
+}

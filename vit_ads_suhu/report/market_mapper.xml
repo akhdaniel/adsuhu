@@ -26,6 +26,10 @@
                             <p class="m-0" t-field="doc.target_market" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Objective</strong>
+                            <p class="m-0" t-field="doc.objective" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Product Value Analysis</strong>
                             <p class="m-0" t-field="doc.product_value_analysis_id"/>
                         </div>
