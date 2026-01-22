@@ -7,7 +7,7 @@ import time
 import logging
 _logger = logging.getLogger(__name__)
 from .libs.openai_lib import generate_image
-
+import json 
 DEFAULT_SPECIFIC_INSTRUCTION = "Langsung Create PNG image, ratio 1:1. Jangan terlalu banyak text, pilih yang paling kuat dari primary text, hook library, dan angle library."
 
 class image_generator(models.Model):
@@ -90,3 +90,7 @@ class image_generator(models.Model):
 Response in {self.lang_id.name} language.
 
 """
+
+    def generate_output_html(self):
+        res = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(res)

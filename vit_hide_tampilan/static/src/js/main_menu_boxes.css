@@ -1,0 +1,25 @@
+.o_main_menu_boxes {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+.box {
+    width: 200px;
+    height: 150px;
+    margin: 20px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.box-monitoring {
+    background: #2ecc71;
+}
+.box-simitra {
+    background: #3498db;
+}

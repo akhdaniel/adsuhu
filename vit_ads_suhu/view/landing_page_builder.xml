@@ -48,14 +48,6 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button type="object" name="action_view_detail_campaign_builder_ids" class="oe_stat_button" icon="fa-search" >
-                                <div class="o_form_field o_stat_info">
-                                    <span class="o_stat_value">
-                                        <field name="campaign_builder_ids_count" />
-                                    </span>
-                                    <span class="o_stat_text">Details</span>
-                                </div>
-                            </button>
                             <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
                                 <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
                                 <!--field name="detail_ids" invisible="1"/-->
@@ -86,6 +78,9 @@
                             </group>
                         </group>
                         <notebook>
+                            <page name="report" string="Report">
+                                    <field name="output_html" widget="html" />
+                            </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="json_viewer" />
                             </page>
@@ -121,6 +116,7 @@
                     <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
                     <filter string="LP URL" name="filter_by_lp_url" domain="[('lp_url','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Output Html" name="filter_by_output_html" domain="[('output_html','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
                     <filter string="GPT URL" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
@@ -133,6 +129,7 @@
                     <field name="hook" string="Hook" select="True"/>
                     <field name="lp_url" string="LP URL" select="True"/>
                     <field name="name" string="Name" select="True"/>
+                    <field name="output_html" string="Output Html" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>
                     <field name="gpt_url" string="GPT URL" select="True"/>

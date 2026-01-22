@@ -69,8 +69,8 @@
                             <group> <!-- left -->
                                 <field name="product_url"  />
                                 <field name="report_template_filename" invisible="True" />
-                                <field name="active"  />
                                 <field name="report_docx_filename" invisible="True" />
+                                <field name="active"  />
                                 <field name="target_market" optional="hide" />
                                 <field name="tags"  />
                                 <field name="description"  />
@@ -89,12 +89,15 @@
                             <page name="features" string="Features">
                                     <field name="features" />
                             </page>
-                            <page name="reports" string="Reports">
+                            <page name="final_reports" string="Final Reports">
                                 <group>
                                     <field name="final_report" widget="md_viewer" />
                                     <field name="report_template" filename="report_template_filename" />
                                     <field name="report_docx" filename="report_docx_filename" />
                                 </group>
+                            </page>
+                            <page name="report" string="Report">
+                                    <field name="output_html" widget="html" />
                             </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="json_viewer" />
@@ -137,6 +140,7 @@
                     <filter string="Target Market" name="filter_by_target_market" domain="[('target_market','=','')]" />
                     <filter string="Tags" name="filter_by_tags" domain="[('tags','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Output Html" name="filter_by_output_html" domain="[('output_html','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
                     <filter string="GPT URL" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
@@ -155,6 +159,7 @@
                     <field name="target_market" string="Target Market" select="True"/>
                     <field name="tags" string="Tags" select="True"/>
                     <field name="name" string="Name" select="True"/>
+                    <field name="output_html" string="Output Html" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>
                     <field name="gpt_url" string="GPT URL" select="True"/>

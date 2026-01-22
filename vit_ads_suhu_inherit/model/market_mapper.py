@@ -195,3 +195,8 @@ Response in {rec.lang_id.name} language.
         }) for i,x in enumerate(js['priority_segments'], start=1)]
 
         self.audience_profiler_ids._get_input()
+
+
+    def generate_output_html(self):
+        res = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(res)

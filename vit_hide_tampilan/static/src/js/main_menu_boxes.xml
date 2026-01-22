@@ -1,0 +1,14 @@
+<templates>
+    <t t-name="vit_kerma_tampilan.MainMenuBoxesOWL" owl="1">
+        <div class="o_main_menu_boxes">
+            <div t-on-click="onMonitoringClick" class="box box-monitoring" style="flex-direction:column;align-items:center;justify-content:center;display:flex;">
+                <i class="fa fa-desktop" style="font-size:36px;margin-bottom:10px;"></i>
+                <div>Monitoring</div>
+            </div>
+            <div t-on-click="onSimitraClick" class="box box-simitra" style="flex-direction:column;align-items:center;justify-content:center;display:flex;">
+                <i class="fa fa-cubes" style="font-size:36px;margin-bottom:10px;"></i>
+                <div>Simitra</div>
+            </div>
+        </div>
+    </t>
+</templates>

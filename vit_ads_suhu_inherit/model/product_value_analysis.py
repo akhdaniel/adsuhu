@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 import html
 import json
 import logging
+_logger = logging.getLogger(__name__)
 import re
 import requests
 import time
@@ -17,7 +18,6 @@ from docx.shared import Pt, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.section import WD_ORIENT, WD_SECTION
 from odoo.modules.module import get_module_path
-import markdown
 from bs4 import BeautifulSoup
 # from docx2pdf import convert
 from .libs.openai_lib import *
@@ -439,127 +439,7 @@ Response in {self.lang_id.name} language.
 
 
     def action_generate_report(self, ):
-        def json_to_markdown(data, prefix=1, level=3, max_level=4):
-            """
-            Convert JSON/dict into Markdown with controlled heading depth.
 
-            Rules:
-            - Starting heading level = 3 (###)
-            - Maximum heading level = 4 (####)
-            - Deeper levels (> max_level):
-                **Key**: value
-            - Keys converted to Title Case
-            - List of primitives -> bullet points (-)
-            - List of objects (list of dict) -> Markdown table
-            """
-
-
-            if isinstance(data, str):
-                _logger.error(f"isinstance str data={data}")
-                data = self.clean_md(data)
-
-            md_lines = []
-
-            def title_case_key(key):
-                replacements=[
-                    ('Dan','dan'),
-                    ('Dari','dari'),
-                    ('Ke','ke'),
-                    ('And','and'),
-                    ('For','for'),
-                    ('To','to'),
-                    ('From','from'),
-                    ('Cta','CTA'),
-                    ('cta','CTA'),
-                    ('Pov','POV'),
-                    ('pov','POV'),
-                    ('ab_test','A/B Test'),
-                    ('Ab Test','A/B Test'),
-                    ('keyword','Keyword'),
-                    ('keterbatasan','Keterbatasan'),
-                    ('kepribadian','Kepribadian'),
-                    ('key','Key'),
-                ]
-
-                res = key.replace("_", " ").title()
-                for rep in replacements:
-                    res = res.replace(rep[0], rep[1])
-
-                return res 
-
-            def is_list_of_dicts(value):
-                return (
-                    isinstance(value, list)
-                    and value
-                    and all(isinstance(item, dict) for item in value)
-                )
-
-            def render_table(key, value):
-                # md_lines.append(f"**{title_case_key(key)}**")
-
-                headers = list(value[0].keys())
-                header_row = "| " + " | ".join(title_case_key(h) for h in headers) + " |"
-                separator_row = "| " + " | ".join("---" for _ in headers) + " |"
-
-                md_lines.append(header_row)
-                md_lines.append(separator_row)
-
-                for row in value:
-                    row_line = "| " + " | ".join(str(row.get(h, "")) for h in headers) + " |"
-                    md_lines.append(row_line)
-
-                md_lines.append("\n")
-
-            def render_value(key, value, level):
-                # Beyond max heading depth → paragraph format
-                if level > max_level:
-                    if is_list_of_dicts(value):
-                        render_table(key, value)
-                    elif isinstance(value, list):
-                        md_lines.append(f"**{title_case_key(key)}**:")
-                        for item in value:
-                            md_lines.append(f"- {item}")
-                    else:
-                        md_lines.append(f"- **{title_case_key(key)}**: {value}")
-                    return
-
-                heading_prefix = "#" * level
-                md_lines.append(f"{heading_prefix} {title_case_key(key)}")
-
-                j=1
-                if isinstance(value, dict):
-                    for k, v in value.items():
-                        render_value(k, v, level + 1)
-                        j+=1
-
-                elif is_list_of_dicts(value):
-                    render_table(key, value)
-
-                elif isinstance(value, list):
-                    for item in value:
-                        md_lines.append(f"- {item}")
-
-                else:
-                    md_lines.append(str(value))
-
-            i=1
-            if isinstance(data, dict):
-                for key, value in data.items():
-                    render_value(key, value, level)
-                    i+=1
-
-            elif isinstance(data, list):
-                for item in data:
-                    md_lines.append(f"- {item}")
-
-            return "\n".join(md_lines)
-
-
-        def list_to_bullet(lst):
-            res=[]
-            for l in lst:
-                res.append(f"* {l}")
-            return "\n".join(res)
         
         product = self
         report = []
@@ -592,7 +472,7 @@ Response in {self.lang_id.name} language.
         report.append("\n")
 
         report.append(f"## Unique Selling Propositions")
-        report.append(list_to_bullet(output['unique_selling_propositions']))
+        report.append(self.list_to_bullet(output['unique_selling_propositions']))
         
         report.append(f"## Extended Value Map")
         for i,val in enumerate(output['value_map_extended']):
@@ -616,11 +496,11 @@ Response in {self.lang_id.name} language.
         report.append("## Buying Triggers")
         buying_triggers=output['buying_triggers']
         report.append("### Rational")
-        report.append(list_to_bullet(buying_triggers['rational']))
+        report.append(self.list_to_bullet(buying_triggers['rational']))
         report.append("\n")
         
         report.append("### Emotional")
-        report.append(list_to_bullet(buying_triggers['emotional']))
+        report.append(self.list_to_bullet(buying_triggers['emotional']))
         report.append("\n")       
 
         report.append("## Initial Target Market")
@@ -645,7 +525,7 @@ Response in {self.lang_id.name} language.
         for m, market in enumerate(markets, start=2):
             report.append(f"# MARKET ANALYSIS")
             report.append("---")
-            res = json_to_markdown(json.loads(self.clean_md(market.output)), level=2, max_level=3, prefix=m)
+            res = self.json_to_markdown(json.loads(self.clean_md(market.output)), level=2, max_level=3, prefix=m)
             report.append(res)
             report.append("\n")
             
@@ -661,7 +541,7 @@ Response in {self.lang_id.name} language.
                     report.append("--no data--")
                     continue
 
-                res = json_to_markdown(json.loads(self.clean_md(profile.output)), level=2, max_level=3, prefix=p)
+                res = self.json_to_markdown(json.loads(self.clean_md(profile.output)), level=2, max_level=3, prefix=p)
                 report.append(res)
                 report.append("\n")
                 report.append("\n")
@@ -700,7 +580,7 @@ Response in {self.lang_id.name} language.
                         js.pop('big_ideas')
                         js.pop('strategic_notes')
                     
-                    res = json_to_markdown(js, level=2, max_level=4, prefix=a)
+                    res = self.json_to_markdown(js, level=2, max_level=4, prefix=a)
                     # show big ideas only on first angle
                     
                     report.append(res)
@@ -766,7 +646,7 @@ Response in {self.lang_id.name} language.
                             js.pop('hook')
                             js.pop('ads_copy')
                             js.pop('landing_page')
-                            res = json_to_markdown(js, level=2, max_level=3, prefix=a)
+                            res = self.json_to_markdown(js, level=2, max_level=3, prefix=a)
                             report.append(res)
                             report.append("\n")  
                             ads_count += 1
@@ -785,7 +665,7 @@ Response in {self.lang_id.name} language.
                                 js.pop('hook_library')
                                 js.pop('instruction')
                                 report.append(f"## {img['name']}")
-                                res = json_to_markdown(js, level=3, max_level=4).replace('\n\n','\n')
+                                res = self.json_to_markdown(js, level=3, max_level=4).replace('\n\n','\n')
                                 report.append(res)
                                 report.append("\n")  
 
@@ -834,7 +714,7 @@ Response in {self.lang_id.name} language.
                                 report.append(f"# LP {lps_count}: {ad['hook']}")
                                 report.append("---")                                
                                 js = json.loads(self.clean_md(lp.output))
-                                res = json_to_markdown(js, level=2, max_level=3)
+                                res = self.json_to_markdown(js, level=2, max_level=3)
                                 report.append(res)
                                 report.append("\n")  
                                 lps_count+=1
@@ -1165,17 +1045,7 @@ Response in {self.lang_id.name} language.
         soup = BeautifulSoup(text, "html.parser")
         return soup.get_text()
 
-    # Function to read markdown file and convert it to HTML
-    def md_to_html(self, md_content):
-        # Replace underscores in /web/image URLs with HTML entities to avoid Markdown emphasis.
-        def escape_web_image_underscores(match):
-            url = match.group(1)
-            return url.replace("_", "&#95;")
 
-        md_content = re.sub(r'(/web/image/[^\s)]+)', escape_web_image_underscores, md_content)
-        # Enable tables so Markdown tables render into HTML for downstream DOCX conversion
-        html_content = markdown.markdown(md_content, extensions=['tables'])
-        return html_content
 
     # Function to convert HTML to DOCX
     def html_to_docx(self, html_content, docx_file_path):
@@ -1297,3 +1167,7 @@ Response in {self.lang_id.name} language.
             "url": f"/web/content/vit.product_value_analysis/{self.id}/report_docx/{self.report_docx_filename}",
             "target": "self",
         }
+
+    def generate_output_html(self):
+        res = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(res)

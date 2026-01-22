@@ -6,6 +6,10 @@ from odoo.exceptions import UserError
 import json
 import re
 import unicodedata
+import markdown
+
+import logging
+_logger = logging.getLogger(__name__)
 
 UNICODE_ASCII_MAP = {
     "\u2013": "-",  # en dash
@@ -74,3 +78,137 @@ class general_object(models.Model):
             rec.output = formatted
             outputs.append(formatted)
         return outputs[0] if len(outputs) == 1 else outputs
+
+    def json_to_markdown(self, data, prefix=1, level=3, max_level=4):
+        """
+        Convert JSON/dict into Markdown with controlled heading depth.
+
+        Rules:
+        - Starting heading level = 3 (###)
+        - Maximum heading level = 4 (####)
+        - Deeper levels (> max_level):
+            **Key**: value
+        - Keys converted to Title Case
+        - List of primitives -> bullet points (-)
+        - List of objects (list of dict) -> Markdown table
+        """
+
+
+        if isinstance(data, str):
+            _logger.error(f"isinstance str data={data}")
+            data = self.clean_md(data)
+
+        md_lines = []
+
+        def title_case_key(key):
+            replacements=[
+                ('Dan','dan'),
+                ('Dari','dari'),
+                ('Ke','ke'),
+                ('And','and'),
+                ('For','for'),
+                ('To','to'),
+                ('From','from'),
+                ('Cta','CTA'),
+                ('cta','CTA'),
+                ('Pov','POV'),
+                ('pov','POV'),
+                ('ab_test','A/B Test'),
+                ('Ab Test','A/B Test'),
+                ('keyword','Keyword'),
+                ('keterbatasan','Keterbatasan'),
+                ('kepribadian','Kepribadian'),
+                ('key','Key'),
+            ]
+
+            res = key.replace("_", " ").title()
+            for rep in replacements:
+                res = res.replace(rep[0], rep[1])
+
+            return res 
+
+        def is_list_of_dicts(value):
+            return (
+                isinstance(value, list)
+                and value
+                and all(isinstance(item, dict) for item in value)
+            )
+
+        def render_table(key, value):
+            # md_lines.append(f"**{title_case_key(key)}**")
+
+            headers = list(value[0].keys())
+            header_row = "| " + " | ".join(title_case_key(h) for h in headers) + " |"
+            separator_row = "| " + " | ".join("---" for _ in headers) + " |"
+
+            md_lines.append(header_row)
+            md_lines.append(separator_row)
+
+            for row in value:
+                row_line = "| " + " | ".join(str(row.get(h, "")) for h in headers) + " |"
+                md_lines.append(row_line)
+
+            md_lines.append("\n")
+
+        def render_value(key, value, level):
+            # Beyond max heading depth → paragraph format
+            if level > max_level:
+                if is_list_of_dicts(value):
+                    render_table(key, value)
+                elif isinstance(value, list):
+                    md_lines.append(f"**{title_case_key(key)}**:")
+                    for item in value:
+                        md_lines.append(f"- {item}")
+                else:
+                    md_lines.append(f"- **{title_case_key(key)}**: {value}")
+                return
+
+            heading_prefix = "#" * level
+            md_lines.append(f"{heading_prefix} {title_case_key(key)}")
+
+            j=1
+            if isinstance(value, dict):
+                for k, v in value.items():
+                    render_value(k, v, level + 1)
+                    j+=1
+
+            elif is_list_of_dicts(value):
+                render_table(key, value)
+
+            elif isinstance(value, list):
+                for item in value:
+                    md_lines.append(f"- {item}")
+
+            else:
+                md_lines.append(str(value))
+
+        i=1
+        if isinstance(data, dict):
+            for key, value in data.items():
+                render_value(key, value, level)
+                i+=1
+
+        elif isinstance(data, list):
+            for item in data:
+                md_lines.append(f"- {item}")
+
+        return "\n".join(md_lines)
+
+
+    def list_to_bullet(self, lst):
+        res=[]
+        for l in lst:
+            res.append(f"* {l}")
+        return "\n".join(res)
+    
+    # Function to read markdown file and convert it to HTML
+    def md_to_html(self, md_content):
+        # Replace underscores in /web/image URLs with HTML entities to avoid Markdown emphasis.
+        def escape_web_image_underscores(match):
+            url = match.group(1)
+            return url.replace("_", "&#95;")
+
+        md_content = re.sub(r'(/web/image/[^\s)]+)', escape_web_image_underscores, md_content)
+        # Enable tables so Markdown tables render into HTML for downstream DOCX conversion
+        html_content = markdown.markdown(md_content, extensions=['tables'])
+        return html_content    

@@ -70,68 +70,6 @@ class ads_copy(models.Model):
     hook_no = fields.Integer( string=_("Hook No"))
 
 
-    def action_view_detail_script_writer_ids(self):
-        self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("vit_ads_suhu.action_script_writer")
-        view_tree = self.env.ref("vit_ads_suhu.view_vit_script_writer_tree")
-        view_form = self.env.ref("vit_ads_suhu.view_vit_script_writer_form")
-        action["domain"] = [
-            ("ads_copy_id", "in", self.ids)
-        ]
-        action["context"] = {
-            "default_ads_copy_id": self.id
-        }
-        recs = self.script_writer_ids
-        if len(recs) <= 1:
-            action["views"] = [(view_form.id, "form")]
-            action["view_mode"] = "form"
-            action["view_id"] = view_form.id
-            action["res_id"] = recs.id if recs else False
-        else:
-            action["views"] = [(view_tree.id, "list"), (view_form.id, "form")]
-            action["view_mode"] = "list,form"
-            action["view_id"] = view_tree.id
-            action["res_id"] = False
-        return action
-
-    def compute_script_writer_ids(self):
-        for rec in self:
-            rec.script_writer_ids_count = len(rec.script_writer_ids)
-
-    script_writer_ids_count = fields.Integer(compute="compute_script_writer_ids")
-
-
-    def action_view_detail_visual_concept_id(self):
-        self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("vit_ads_suhu.action_visual_concept")
-        view_tree = self.env.ref("vit_ads_suhu.view_vit_visual_concept_tree")
-        view_form = self.env.ref("vit_ads_suhu.view_vit_visual_concept_form")
-        action["domain"] = [
-            ("ads_copy_id", "in", self.ids)
-        ]
-        action["context"] = {
-            "default_ads_copy_id": self.id
-        }
-        recs = self.visual_concept_ids
-        if len(recs) <= 1:
-            action["views"] = [(view_form.id, "form")]
-            action["view_mode"] = "form"
-            action["view_id"] = view_form.id
-            action["res_id"] = recs.id if recs else False
-        else:
-            action["views"] = [(view_tree.id, "list"), (view_form.id, "form")]
-            action["view_mode"] = "list,form"
-            action["view_id"] = view_tree.id
-            action["res_id"] = False
-        return action
-
-    def compute_visual_concept_id(self):
-        for rec in self:
-            rec.visual_concept_id_count = len(rec.visual_concept_id)
-
-    visual_concept_id_count = fields.Integer(compute="compute_visual_concept_id")
-
-
     def action_view_detail_landing_page_builder_ids(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("vit_ads_suhu.action_landing_page_builder")

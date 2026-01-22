@@ -5,6 +5,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
+import json
 
 class landing_page_builder(models.Model):
     _name = "vit.landing_page_builder"
@@ -54,3 +55,8 @@ class landing_page_builder(models.Model):
 {rec.product_value_analysis_id.output}
 
 """
+
+
+    def generate_output_html(self):
+        res = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(res)

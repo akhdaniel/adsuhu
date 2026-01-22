@@ -355,3 +355,7 @@ Response in {self.lang_id.name} language.
                 output="```json\n"+json.dumps(output, indent=4) + "\n```",
             )
             hook = self.env['vit.hook'].create(default)
+
+    def generate_output_html(self):
+        res = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(res)

@@ -3,6 +3,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import json
 
 class hook(models.Model):
 
@@ -58,3 +59,7 @@ class hook(models.Model):
 Response in {self.lang_id.name} language.
 
 """
+
+    def generate_output_html(self):
+        res = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(res)

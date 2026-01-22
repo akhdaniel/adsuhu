@@ -27,6 +27,16 @@
                         <field name="create_uid" groups="base.group_system"/>
                     </group>
                 </xpath>
+
+                <xpath expr="//notebook/page[@name='report']/field" position="before">
+                    <button type="object" name="generate_output_html" icon="fa-file-text-o">Generate Report</button>
+                </xpath>
+
+                <button name="action_generate_report" position="replace"/>
+                <xpath expr="//notebook/page[@name='final_reports']/group" position="before">
+                    <button type="object" name="action_generate_report">Generate Final Report</button>
+                </xpath>
+
             </field>
         </record>
         <!-- search -->

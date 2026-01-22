@@ -38,37 +38,6 @@ class landing_page_builder(models.Model):
     lp_url = fields.Text(string="LP URL", widget="url")
 
 
-    def action_view_detail_campaign_builder_ids(self):
-        self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("vit_ads_suhu.action_campaign_builder")
-        view_tree = self.env.ref("vit_ads_suhu.view_vit_campaign_builder_tree")
-        view_form = self.env.ref("vit_ads_suhu.view_vit_campaign_builder_form")
-        action["domain"] = [
-            ("landing_page_builder_id", "in", self.ids)
-        ]
-        action["context"] = {
-            "default_landing_page_builder_id": self.id
-        }
-        recs = self.campaign_builder_ids
-        if len(recs) <= 1:
-            action["views"] = [(view_form.id, "form")]
-            action["view_mode"] = "form"
-            action["view_id"] = view_form.id
-            action["res_id"] = recs.id if recs else False
-        else:
-            action["views"] = [(view_tree.id, "list"), (view_form.id, "form")]
-            action["view_mode"] = "list,form"
-            action["view_id"] = view_tree.id
-            action["res_id"] = False
-        return action
-
-    def compute_campaign_builder_ids(self):
-        for rec in self:
-            rec.campaign_builder_ids_count = len(rec.campaign_builder_ids)
-
-    campaign_builder_ids_count = fields.Integer(compute="compute_campaign_builder_ids")
-
-
     compliance_checker_id = fields.Many2one(comodel_name="vit.compliance_checker",  string=_("Compliance Checker"))
     ads_copy_id = fields.Many2one(comodel_name="vit.ads_copy",  string=_("Ads Copy"))
     audience_profiler_id = fields.Many2one(comodel_name="vit.audience_profiler", related="compliance_checker_id.ads_copy_id.audience_profiler_id",  string=_("Audience Profiler"))

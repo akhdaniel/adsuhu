@@ -107,6 +107,9 @@
                                     <field name="main_actor_url" />
                                 </group>
                             </page>
+                            <page name="report" string="Report">
+                                    <field name="output_html" widget="html" />
+                            </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="json_viewer" />
                             </page>
@@ -145,6 +148,7 @@
                     <filter string="Main Character" name="filter_by_main_character" domain="[('main_character','=','')]" />
                     <filter string="Main Actor Url" name="filter_by_main_actor_url" domain="[('main_actor_url','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Output Html" name="filter_by_output_html" domain="[('output_html','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
                     <filter string="GPT URL" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
@@ -160,6 +164,7 @@
                     <field name="main_character" string="Main Character" select="True"/>
                     <field name="main_actor_url" string="Main Actor Url" select="True"/>
                     <field name="name" string="Name" select="True"/>
+                    <field name="output_html" string="Output Html" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>
                     <field name="gpt_url" string="GPT URL" select="True"/>

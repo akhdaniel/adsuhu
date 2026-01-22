@@ -100,6 +100,9 @@
                             </group>
                         </group>
                         <notebook>
+                            <page name="report" string="Report">
+                                    <field name="output_html" widget="html" />
+                            </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="json_viewer" />
                             </page>
@@ -134,6 +137,7 @@
                     <filter string="Angle" name="filter_by_angle" domain="[('angle','=','')]" />
                     <filter string="Hook" name="filter_by_hook" domain="[('hook','=','')]" />
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Output Html" name="filter_by_output_html" domain="[('output_html','=','')]" />
                     <filter string="Output" name="filter_by_output" domain="[('output','=','')]" />
                     <filter string="Input" name="filter_by_input" domain="[('input','=','')]" />
                     <filter string="GPT URL" name="filter_by_gpt_url" domain="[('gpt_url','=','')]" />
@@ -145,6 +149,7 @@
                     <field name="angle" string="Angle" select="True"/>
                     <field name="hook" string="Hook" select="True"/>
                     <field name="name" string="Name" select="True"/>
+                    <field name="output_html" string="Output Html" select="True"/>
                     <field name="output" string="Output" select="True"/>
                     <field name="input" string="Input" select="True"/>
                     <field name="gpt_url" string="GPT URL" select="True"/>

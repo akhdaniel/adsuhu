@@ -19,10 +19,15 @@ class general_object(models.Model):
         pass
 
 
+    def generate_output_html(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 
     name = fields.Char( required=True, copy=False, string=_("Name"))
+    output_html = fields.Text( string=_("Output Html"))
     output = fields.Text( string=_("Output"))
     input = fields.Text( string=_("Input"))
     gpt_url = fields.Char(related="gpt_prompt_id.gpt_url", string="GPT URL")

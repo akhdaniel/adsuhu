@@ -32,6 +32,10 @@
                 <xpath expr="//page[@name='instructions']" position="replace"/>    
                 <field name="gpt_prompt_id" position="replace"/>
                 <field name="gpt_url" position="replace"/>
+
+                <xpath expr="//notebook/page[@name='report']/field" position="before">
+                    <button type="object" name="generate_output_html" icon="fa-file-text-o">Generate Report</button>
+                </xpath>                    
             </field>
         </record>
         <!-- search -->

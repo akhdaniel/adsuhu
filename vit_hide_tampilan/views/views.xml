@@ -1,0 +1,17 @@
+<odoo>
+  
+    <!-- Client Action -->
+    <record id="action_main_menu_boxes" model="ir.actions.client">
+        <field name="name">Main Menu Boxes</field>
+        <field name="tag">main_menu_boxes</field>
+    </record>
+
+    <!-- Menu Item to trigger the client action (optional, for testing) -->
+    <menuitem id="menu_main_menu_boxes"
+              name="Home"
+              action="action_main_menu_boxes"
+              parent="vit_kerma.vit_kerma_top_menu"
+              sequence="0"/>
+
+
+</odoo>

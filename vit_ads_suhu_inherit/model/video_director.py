@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 from .libs.fal import Fal
 import requests
 import base64
+import json 
 
 class video_director(models.Model):
 
@@ -82,3 +83,8 @@ class video_director(models.Model):
             except Exception as e:
                 # optional: log error
                 raise UserError("Error downloading image from %s: %s", image_url, e)
+            
+
+    def generate_output_html(self):
+        res = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(res)
