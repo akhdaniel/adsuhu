@@ -24684,7 +24684,7 @@
 								"$ref": "AAAAAAGbHvslCAoNY5M="
 							},
 							"name": "output_html",
-							"documentation": "{\n\"form:pos\":\"tab:Report\",\n\"tree:invisible\":true,\n\"xml:widget\":\"html\"\n}",
+							"documentation": "{\n\"form:pos\":\"tab:Report\",\n\"tree:invisible\":true,\n\"xml:widget\":\"md_viewer\"\n}",
 							"type": "Text"
 						},
 						{
