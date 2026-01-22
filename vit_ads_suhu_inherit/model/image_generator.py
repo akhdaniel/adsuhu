@@ -95,3 +95,12 @@ Response in {self.lang_id.name} language.
 
     def generate_output_html(self):
         self.output_html = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+
+        # append image variants 
+        variants = []
+        for v in self.image_variant_ids:
+            variants.append(f"({v.name})[{v.image_url}]")
+
+        self.output_html += "## Image Variants"
+        self.output_html += "\n".join(variants)
+
