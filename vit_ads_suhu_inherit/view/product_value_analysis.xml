@@ -35,7 +35,7 @@
                 <button name="action_generate_report" position="replace"/>
                 <button name="action_download_docx" position="replace"/>
                 <xpath expr="//notebook/page[@name='final_reports']/group" position="before">
-                    <button type="object" name="generate_output_html" icon="fa-file-text-o">Generate Report</button>
+                    <button type="object" name="action_generate_report" icon="fa-file-text-o">Generate Final Report</button>
                     <button type="object" name="action_download_docx" icon="fa-file-word-o">Download Docx</button>
                 </xpath>
 
