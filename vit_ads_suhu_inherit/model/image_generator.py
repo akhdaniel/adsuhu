@@ -99,8 +99,8 @@ Response in {self.lang_id.name} language.
         # append image variants 
         variants = []
         for v in self.image_variant_ids:
-            variants.append(f"({v.name})[{v.image_url}]")
+            variants.append(f"![{v.name}]({v.image_url})")
 
-        self.output_html += "## Image Variants"
+        self.output_html += "## Image Variants\n\n"
         self.output_html += "\n".join(variants)
 
