@@ -100,7 +100,13 @@ Response in {self.lang_id.name} language.
         variants = []
         for v in self.image_variant_ids:
             variants.append(f"![{v.name}]({v.image_url})")
+            variants.append(f"Image: [{v.image_url}]({v.image_url})")
+            if v.lp_url:
+                variants.append(f"Landing Page: [{v.lp_url}]({v.lp_url})\n")
+            else:
+                variants.append(f"Landing Page: -")
 
+        self.output_html += "\n\n"
         self.output_html += "## Image Variants\n\n"
         self.output_html += "\n".join(variants)
 
