@@ -136,6 +136,10 @@ class general_object(models.Model):
 
         def render_table(key, value):
             # md_lines.append(f"**{title_case_key(key)}**")
+            def format_cell(cell):
+                text = "" if cell is None else str(cell)
+                # Keep table rows intact by replacing line breaks with <br>.
+                return text.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "<br>")
 
             headers = list(value[0].keys())
             header_row = "| " + " | ".join(title_case_key(h) for h in headers) + " |"
@@ -145,7 +149,7 @@ class general_object(models.Model):
             md_lines.append(separator_row)
 
             for row in value:
-                row_line = "| " + " | ".join(str(row.get(h, "")) for h in headers) + " |"
+                row_line = "| " + " | ".join(format_cell(row.get(h, "")) for h in headers) + " |"
                 md_lines.append(row_line)
 
             md_lines.append("\n")
