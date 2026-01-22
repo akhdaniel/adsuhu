@@ -15,7 +15,7 @@ class landing_page_builder(models.Model):
 
 
     def action_generate(self, ):
-        pass
+        self.generate_output_html()
 
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_landing_page_builder", raise_if_not_found=False)

@@ -209,6 +209,8 @@ class ads_copy(models.Model):
         response = self.clean_md(response)
         self.output = response
 
+        self.generate_output_html()
+
     specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
     lang_id = fields.Many2one(comodel_name="res.lang",    related="angle_hook_id.product_value_analysis_id.lang_id")

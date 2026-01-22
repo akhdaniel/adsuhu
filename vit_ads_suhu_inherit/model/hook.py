@@ -12,7 +12,7 @@ class hook(models.Model):
 
 
     def action_generate(self, ):
-        pass
+        self.generate_output_html()
     
     lang_id = fields.Many2one(comodel_name="res.lang", related="angle_hook_id.product_value_analysis_id.lang_id")
     partner_id = fields.Many2one(comodel_name="res.partner", related="angle_hook_id.product_value_analysis_id.partner_id")

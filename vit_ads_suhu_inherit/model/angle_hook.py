@@ -147,6 +147,9 @@ class angle_hook(models.Model):
         response = self.clean_md(response)
         self.output = response
 
+        self.generate_output_html()
+
+
     specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
     def _get_default_prompt(self):

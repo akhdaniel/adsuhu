@@ -245,6 +245,8 @@ Response in {self.lang_id.name} language.
 
         response = self.clean_md(response)
         self.output = response
+
+        self.generate_output_html()
         
 
     def _get_product_content(self, url):

@@ -51,6 +51,8 @@ class image_generator(models.Model):
         })
         v._get_default_name()
 
+        self.generate_output_html()
+
     lang_id = fields.Many2one(comodel_name="res.lang", related="ads_copy_id.product_value_analysis_id.lang_id")
     partner_id = fields.Many2one(comodel_name="res.partner", related="ads_copy_id.product_value_analysis_id.partner_id")
 

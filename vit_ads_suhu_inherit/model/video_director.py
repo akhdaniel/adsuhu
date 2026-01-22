@@ -19,7 +19,7 @@ class video_director(models.Model):
 
 
     def action_generate(self, ):
-        pass
+        self.generate_output_html()
 
 
     def _get_default_prompt(self):
