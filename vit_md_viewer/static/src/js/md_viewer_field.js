@@ -185,7 +185,7 @@ const renderSimpleMarkdown = (value) => {
                 .join("");
         const body = rows.map((row) => `<tr>${renderRow(row, "td")}</tr>`).join("");
         const bodyHtml = body ? `<tbody>${body}</tbody>` : "";
-        htmlParts.push(`<table style="border:1px #ddd solid; padding: 2px"><thead><tr>${renderRow(headers, "th")}</tr></thead>${bodyHtml}</table></br>`);
+        htmlParts.push(`<div class="table-responsive"><table class="table table-striped table-hover"><thead><tr>${renderRow(headers, "th")}</tr></thead>${bodyHtml}</table></div></br>`);
         resetTable();
     };
 
