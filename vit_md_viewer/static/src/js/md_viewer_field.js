@@ -38,6 +38,8 @@ const applyInlineFormatting = (text) => {
     html = html.replace(/~~(.+?)~~/g, "<del>$1</del>");
     html = html.replace(/\*(?!\*)([^*]+)\*/g, "<em>$1</em>");
     html = html.replace(/_(?!_)([^_]+)_/g, "<em>$1</em>");
+    // Allow explicit <br> tokens for line breaks (escaped earlier).
+    html = html.replace(/&lt;br\s*\/?&gt;/gi, "<br/>");
     return html;
 };
 
