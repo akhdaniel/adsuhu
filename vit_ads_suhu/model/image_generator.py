@@ -48,5 +48,5 @@ class image_generator(models.Model):
     visual_concept_id = fields.Many2one(comodel_name="vit.visual_concept",  string=_("Visual Concept"))
     ads_copy_id = fields.Many2one(comodel_name="vit.ads_copy",  string=_("Ads Copy"))
     hook_id = fields.Many2one(comodel_name="vit.hook", related="ads_copy_id.hook_id",  string=_("Hook"))
-    image_variant_ids = fields.One2many(comodel_name="vit.image_variant",  inverse_name="image_generator_id",  string=_("Image Variant"))
     image_prompt_id = fields.Many2one(comodel_name="vit.image_prompt",  string=_("Image Prompt"))
+    image_variant_ids = fields.One2many(comodel_name="vit.image_variant",  inverse_name="image_generator_id",  string=_("Image Variant"))

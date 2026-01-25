@@ -103,6 +103,48 @@ class ProductValueAnalysisController(http.Controller):
             'lang_id': result.get('lang_id', False),
         }
 
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_product_analysis(self, analysis, **kwargs):
+        analysis.sudo().action_generate()
+        return {
+            'output_html': analysis.sudo().output_html or '',
+        }
+
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/market_mapper/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_market_mapper(self, analysis, **kwargs):
+        analysis.sudo().action_generate_market_mapping()
+        return {
+            'output_html': analysis.sudo().market_mapper_ids[0].output_html or '',
+        }
+
+    @http.route('/product_analysis/audience_profiler/<model("vit.audience_profiler"):audience>/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_audience_profiler(self, audience, **kwargs):
+        audience.sudo().action_generate()
+        return {
+            'output_html': audience.sudo().output_html or '',
+        }
+
+    @http.route('/product_analysis/angle_hook/<model("vit.angle_hook"):angle>/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_angle_hook(self, angle, **kwargs):
+        angle.sudo().action_generate()
+        return {
+            'output_html': angle.sudo().output_html or '',
+        }
+
+    @http.route('/product_analysis/hook/<model("vit.hook"):hook>/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_hook(self, hook, **kwargs):
+        hook.sudo().action_generate()
+        return {
+            'output_html': hook.sudo().output_html or '',
+        }
+
+    @http.route('/product_analysis/ads_copy/<model("vit.ads_copy"):ads>/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_ads_copy(self, ads, **kwargs):
+        ads.sudo().action_generate()
+        return {
+            'output_html': ads.sudo().output_html or '',
+        }
+
     def _add_img_responsive_classes(self, html):
         if not html:
             return html

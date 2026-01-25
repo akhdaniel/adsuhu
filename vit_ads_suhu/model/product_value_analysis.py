@@ -32,6 +32,10 @@ class product_value_analysis(models.Model):
         pass
 
 
+    def action_generate_market_mapping(self, ):
+        pass
+
+
     def action_generate_report(self, ):
         pass
 

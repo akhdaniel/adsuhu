@@ -3,6 +3,7 @@
     <t t-name="vit_ads_suhu_inherit.BannerFormRenderer" t-inherit="web.FormView" t-inherit-mode="primary">
         <xpath expr="//t[@t-set-slot='control-panel-create-button']" position="after">
             <div class="row mx-0">
+                <t t-set="stageIndex" t-value="0"/>
                 <div
                     t-foreach="stages"
                     t-as="stage"
@@ -10,7 +11,16 @@
                     t-if="!stage.hidden or stage.id === props.resModel"
                     t-att-class="`col-lg-1 col-xs-2 col-sm-2 stage_normal ${stage.id === props.resModel ? 'active' : ''} ${stage.id  === 'vit.campaign_builder' ? 'last' : ''}`"
                 >
-                    <span t-esc="stage.label"/>
+                    <t t-set="currentIndex" t-value="stageIndex"/>
+                    <!-- <t t-if="urlParts[currentIndex + 1]">
+                        <a t-att-href="`${urlParts[0]}/${urlParts[currentIndex + 1]}`">
+                            <span t-esc="stage.label"/>
+                        </a>
+                    </t>
+                    <t t-else=""> -->
+                        <span t-esc="stage.label"/>
+                    <!-- </t> -->
+                    <t t-set="stageIndex" t-value="currentIndex + 1"/>
                 </div>
             </div>
         </xpath>

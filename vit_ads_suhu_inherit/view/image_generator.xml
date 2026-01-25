@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <!-- tree view -->
-        <record id="view_image_generator_tree" model="ir.ui.view">
+        <!-- <record id="view_image_generator_tree" model="ir.ui.view">
             <field name="name">image_generator_tree</field>
             <field name="model">vit.image_generator</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_image_generator_tree"/>
@@ -11,7 +11,7 @@
                     <attribute name="js_class">ads_list_with_banner</attribute>
                 </xpath>            
             </field>
-        </record>
+        </record> -->
         <!-- form view -->
         <record id="view_image_generator_form" model="ir.ui.view">
             <field name="name">image_generator_form</field>
@@ -19,9 +19,9 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_image_generator_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//form" position="attributes">
+                <!-- <xpath expr="//form" position="attributes">
                     <attribute name="js_class">ads_form_with_banner</attribute>
-                </xpath>     
+                </xpath>      -->
                 <xpath expr="//page[@name='input']" position="replace"/>    
                 <xpath expr="//page[@name='instructions']" position="replace"/>    
                 <!-- <field name="gpt_prompt_id" position="replace"/> -->

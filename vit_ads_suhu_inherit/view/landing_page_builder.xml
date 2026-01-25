@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <!-- tree view -->
-        <record id="view_landing_page_builder_tree" model="ir.ui.view">
+        <!-- <record id="view_landing_page_builder_tree" model="ir.ui.view">
             <field name="name">landing_page_builder_tree</field>
             <field name="model">vit.landing_page_builder</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_landing_page_builder_tree"/>
@@ -11,7 +11,7 @@
                     <attribute name="js_class">ads_list_with_banner</attribute>
                 </xpath>            
             </field>
-        </record>
+        </record> -->
         <!-- form view -->
         <record id="view_landing_page_builder_form" model="ir.ui.view">
             <field name="name">landing_page_builder_form</field>
@@ -19,9 +19,9 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="vit_ads_suhu.view_vit_landing_page_builder_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//form" position="attributes">
+                <!-- <xpath expr="//form" position="attributes">
                     <attribute name="js_class">ads_form_with_banner</attribute>
-                </xpath>             
+                </xpath>              -->
                 <xpath expr="//form/sheet/group[last()]" position="after">
                     <group>
                         <field name="create_uid" groups="base.group_system"/>

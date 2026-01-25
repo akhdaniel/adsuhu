@@ -157,7 +157,7 @@ class market_mapper(models.Model):
         }
         """
         for rec in self:
-            rec.name = f"MARKET MAP - {rec.product_value_analysis_id.name}"
+            rec.name = f"MARKET MAP"
             rec.target_market = rec.product_value_analysis_id.target_market
             rec.specific_instruction = (
                 rec.specific_instruction
@@ -200,4 +200,19 @@ Response in {rec.lang_id.name} language.
 
 
     def generate_output_html(self):
-        self.output_html = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(
+            self.json_to_markdown(
+                json.loads(self.clean_md(self.output)), level=3, max_level=4
+            )
+        )
+
+    def action_generate_audience_profiler(self):
+        mm = self.env['vit.audience_profiler'].create({
+            'name':'/',
+            'gpt_model_id': self.gpt_model_id.id,
+            'partner_id': self.partner_id.id,
+            'lang_id': self.lang_id.id,
+            'market_mapper_id': self.id,
+        })
+        mm._get_input()
+        mm.action_generate()        

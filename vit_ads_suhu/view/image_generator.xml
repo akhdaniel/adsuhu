@@ -10,9 +10,9 @@
                 <list string="Image Generator">
                     <field name="name" /> <!-- 1-->
                     <field name="ratio" /> <!-- 100-->
+                    <field name="image_prompt_id" /> <!-- 100-->
                     <field name="partner_id" optional="hide"/> <!-- 100-->
                     <field name="angle" /> <!-- 101-->
-                    <field name="image_prompt_id" /> <!-- 101-->
                     <field name="hook" /> <!-- 102-->
                     <field name="ads_copy_no" /> <!-- 103-->
                     <field name="description" /> <!-- 1500-->
@@ -72,8 +72,8 @@
                                 <field name="gpt_session" widget="url" />
                             </group>
                             <group> <!-- right -->
-                                <field name="partner_id" optional="hide" />
                                 <field name="image_prompt_id"  />
+                                <field name="partner_id" optional="hide" />
                                 <field name="hook_id"  />
                                 <field name="ads_copy_id"  />
                                 <field name="visual_concept_id"  />
@@ -94,7 +94,7 @@
                                 </field>
                             </page>
                             <page name="report" string="Report">
-                                    <field name="output_html" widget="md_viewer" />
+                                    <field name="output_html" widget="html" />
                             </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="json_viewer" />
@@ -155,8 +155,8 @@
                     <field name="specific_instruction" string="Specific Instruction" select="True"/>
                     <field name="active" string="Active" select="True"/>
                     <field name="gpt_session" string="GPT Session URL" select="True"/>
-                    <field name="partner_id" string="Partner" select="True"/>
                     <field name="image_prompt_id" string="Image Prompt" select="True"/>
+                    <field name="partner_id" string="Partner" select="True"/>
                     <field name="hook_id" string="Hook" select="True"/>
                     <field name="ads_copy_id" string="Ads Copy" select="True"/>
                     <field name="visual_concept_id" string="Visual Concept" select="True"/>
@@ -164,8 +164,8 @@
                     <field name="lang_id" string="Lang" select="True"/>
                     <field name="gpt_model_id" string="GPT Model" select="True"/>
                     <group string="Group By..">
-                        <filter string="Partner" domain="[]" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
                         <filter string="Image Prompt" domain="[]" name="group_by_image_prompt_id" context="{'group_by':'image_prompt_id'}"/>
+                        <filter string="Partner" domain="[]" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
                         <filter string="Hook" domain="[]" name="group_by_hook_id" context="{'group_by':'hook_id'}"/>
                         <filter string="Ads Copy" domain="[]" name="group_by_ads_copy_id" context="{'group_by':'ads_copy_id'}"/>
                         <filter string="Visual Concept" domain="[]" name="group_by_visual_concept_id" context="{'group_by':'visual_concept_id'}"/>

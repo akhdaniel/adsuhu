@@ -1171,4 +1171,21 @@ Response in {self.lang_id.name} language.
         }
 
     def generate_output_html(self):
-        self.output_html = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(
+            self.json_to_markdown(
+                json.loads(self.clean_md(self.output)), level=2, max_level=3
+            )
+        )
+
+    def action_generate_market_mapping(self):
+        self.market_mapper_ids.active=False
+
+        mm = self.env['vit.market_mapper'].create({
+            'name':'/',
+            'gpt_model_id': self.gpt_model_id.id,
+            'partner_id': self.partner_id.id,
+            'lang_id': self.lang_id.id,
+            'product_value_analysis_id': self.id,
+        })
+        mm._get_input()
+        mm.action_generate()

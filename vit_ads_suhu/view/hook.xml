@@ -88,7 +88,7 @@
                         </group>
                         <notebook>
                             <page name="report" string="Report">
-                                    <field name="output_html" widget="md_viewer" />
+                                    <field name="output_html" widget="html" />
                             </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="json_viewer" />

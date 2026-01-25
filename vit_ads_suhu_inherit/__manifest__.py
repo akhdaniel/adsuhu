@@ -26,6 +26,7 @@
             "vit_ads_suhu_inherit/static/src/js/*.js",
             "vit_ads_suhu_inherit/static/src/xml/*.xml",
             "vit_ads_suhu_inherit/static/src/scss/*.scss",
+            "vit_ads_suhu_inherit/static/src/scss/*.css",
         ],
     },
 	"data": [

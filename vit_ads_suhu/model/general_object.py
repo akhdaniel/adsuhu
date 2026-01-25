@@ -30,7 +30,7 @@ class general_object(models.Model):
     output_html = fields.Text( string=_("Output Html"))
     output = fields.Text( string=_("Output"))
     input = fields.Text( string=_("Input"))
-    gpt_url = fields.Char(related="gpt_prompt_id.gpt_url", string="GPT URL")
+    gpt_url = fields.Char(related="gpt_prompt_id.gpt_url", string="GPT URL", default="-")
     description = fields.Text( string=_("Description"))
     general_instruction = fields.Text(default="You MUST respond with ONLY valid JSON. Do NOT include explanations, markdown, or extra text. If you cannot comply, return an empty JSON object {}.",  string=_("General Instruction"))
     specific_instruction = fields.Text( string=_("Specific Instruction"))
