@@ -234,7 +234,7 @@ class ads_copy(models.Model):
         for rec in self:
             hook = rec.hook_id.hook_no
             rec.hook_no = hook
-            rec.name = f"AD COPY - ANGLE {rec.hook_id.angle_no} - HOOK {hook}"
+            rec.name = f"AP {rec.audience_profiler_id.audience_profile_no} - ANGLE {rec.hook_id.angle_no} - HOOK {hook} "
             rec.input = f"""
 
 # HOOK:
@@ -480,7 +480,8 @@ Response in {self.lang_id.name} language.
                 'name': f'Ads Image {i+1}: {ad['name']}',
                 'description': ad['headline'],
                 'hook_id': self.hook_id.id,
-                'ads_copy_no': grep_copy_type(ad['name'])
+                'ads_copy_no': grep_copy_type(ad['name']),
+                'gpt_model_id': self.gpt_model_id.id
             })
             output={
                 'instruction':img.specific_instruction,
@@ -492,6 +493,7 @@ Response in {self.lang_id.name} language.
                 'hook_library': js['hook_library']
             }
             img.output = json.dumps(output, indent=3)
+            img.generate_output_html()
 
     def action_create_lp(self):
         js = json.loads(self.clean_md(self.output))
@@ -504,8 +506,12 @@ Response in {self.lang_id.name} language.
 
         self.landing_page_builder_ids = [(0,0,{
             'name': 'LP 1',
-            'output': self.wrap_md(output)
+            'output': self.wrap_md(output),
+            'gpt_model_id': self.gpt_model_id.id
         })]
+
+        for lp in self.landing_page_builder_ids:
+            lp.generate_output_html()
 
     def action_create_video(self):
         js = json.loads(self.clean_md(self.output))
@@ -522,15 +528,18 @@ Response in {self.lang_id.name} language.
                 'name': x['name'],
                 'duration': x['duration'],
                 'script': script,
-                'prompt': '' 
+                'prompt': '' ,
             }))
           
         self.video_director_ids = [(0,0,{
             'name': 'VIDEO DIRECTOR 1',
             'output': self.wrap_md(output),
-            'video_script_ids': video_script_ids
+            'video_script_ids': video_script_ids,
+            'gpt_model_id': self.gpt_model_id.id
         })]
-    
+  
+        for vid in self.video_director_ids:
+            vid.generate_output_html()  
 
     def generate_output_html(self):
         self.output_html = self.md_to_html(

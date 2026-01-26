@@ -66,3 +66,17 @@ Response in {self.lang_id.name} language.
                 json.loads(self.clean_md(self.output)), level=3, max_level=4
             )
         )
+
+
+    def action_create_ads_copy(self):
+        ads = self.env['vit.ads_copy'].create({
+            'name':'/',
+            'hook_id': self.id,
+            'gpt_model_id': self.gpt_model_id.id,
+        })
+
+        ads._get_input()
+        ads.action_generate()
+        ads.action_split_images()
+        ads.action_create_lp()
+        ads.action_create_video()

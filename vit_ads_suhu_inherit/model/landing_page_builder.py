@@ -58,4 +58,8 @@ class landing_page_builder(models.Model):
 
 
     def generate_output_html(self):
-        self.output_html = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
+        self.output_html = self.md_to_html(
+            self.json_to_markdown(
+                json.loads(self.clean_md(self.output)), level=3, max_level=4
+            )
+        )

@@ -42,6 +42,7 @@
                 <form string="Audience Profiler">
                     <header>
                         <button string="Generate" type="object" name="action_generate"  confirm="Are you sure to re-generate Audience Profiler Output?"/>
+                        <button string="Generate Angles" type="object" name="action_generate_angles" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>

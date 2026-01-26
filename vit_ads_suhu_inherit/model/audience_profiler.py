@@ -140,7 +140,7 @@ class audience_profiler(models.Model):
         }
         """
         for rec in self:
-            # rec.name = f"AUDIENCE PROFILE {rec.audience_profile_no}"
+            rec.name = f"AP {rec.audience_profile_no}"
             rec.input = f"""
 # FOCUS:
 ---
@@ -169,3 +169,22 @@ Response in {self.lang_id.name} language.
                 json.loads(self.clean_md(self.output)), level=3, max_level=4
             )
         )
+
+    def action_generate_angles(self):
+        an = self.env['vit.angle_hook'].create({
+            'name':'/',
+            'audience_profiler_id': self.id,
+            'gpt_model_id':self.gpt_model_id.id,
+        })
+
+        an._get_input()
+        an.action_generate()
+        an.action_split_angles()
+        an.active=False
+        
+        for an in self.angle_hook_ids:
+            an.action_split_hooks()
+            an.generate_output_html()
+
+            for hook in an.hook_ids:
+                hook.generate_output_html()

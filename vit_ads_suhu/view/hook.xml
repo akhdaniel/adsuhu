@@ -44,6 +44,7 @@
             <field name="arch" type="xml">
                 <form string="Hook">
                     <header>
+                        <button string="Create Ads Copy" type="object" name="action_create_ads_copy" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>

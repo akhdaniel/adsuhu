@@ -188,16 +188,18 @@ Response in {rec.lang_id.name} language.
         js = json.loads(output)
 
         self.audience_profiler_ids = [(0,0,{
-            'name':f'AUDIENCE PROFILE {i}',
+            'name':f'/',
             'audience_profile_no': i,
             'market_mapper_id': self.id,
             'description': x['name'],
             'alasan': x['reason'],
-            'lang_id': self.lang_id.id
+            'lang_id': self.lang_id.id,
+            'gpt_model_id': self.gpt_model_id.id,
         }) for i,x in enumerate(js['priority_segments'], start=1)]
 
-        self.audience_profiler_ids._get_input()
-
+        for x in self.audience_profiler_ids:
+            x._get_input()
+            x.action_generate()   
 
     def generate_output_html(self):
         self.output_html = self.md_to_html(
@@ -205,14 +207,4 @@ Response in {rec.lang_id.name} language.
                 json.loads(self.clean_md(self.output)), level=3, max_level=4
             )
         )
-
-    def action_generate_audience_profiler(self):
-        mm = self.env['vit.audience_profiler'].create({
-            'name':'/',
-            'gpt_model_id': self.gpt_model_id.id,
-            'partner_id': self.partner_id.id,
-            'lang_id': self.lang_id.id,
-            'market_mapper_id': self.id,
-        })
-        mm._get_input()
-        mm.action_generate()        
+  

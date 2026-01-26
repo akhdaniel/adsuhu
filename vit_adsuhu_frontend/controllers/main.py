@@ -106,44 +106,49 @@ class ProductValueAnalysisController(http.Controller):
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_product_analysis(self, analysis, **kwargs):
         analysis.sudo().action_generate()
-        return {
+        return [{
             'output_html': analysis.sudo().output_html or '',
-        }
+        }]
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/market_mapper/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_market_mapper(self, analysis, **kwargs):
         analysis.sudo().action_generate_market_mapping()
-        return {
-            'output_html': analysis.sudo().market_mapper_ids[0].output_html or '',
-        }
+        return [{
+            'name': mm.name,
+            'output_html': mm.output_html or '',
+        } for mm in analysis.market_mapper_ids]
 
-    @http.route('/product_analysis/audience_profiler/<model("vit.audience_profiler"):audience>/regenerate', type='json', auth='user', website=True, methods=['POST'])
-    def regenerate_audience_profiler(self, audience, **kwargs):
-        audience.sudo().action_generate()
-        return {
-            'output_html': audience.sudo().output_html or '',
-        }
+    @http.route('/market_mapper/<model("vit.market_mapper"):market_mapper>/audience_profiler/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_audience_profiler(self, market_mapper, **kwargs):
+        market_mapper.action_create_audience_profiles()
+        return [{
+            'name': ap.name,
+            'output_html': ap.output_html or '',
+        } for ap in market_mapper.audience_profiler_ids]
 
-    @http.route('/product_analysis/angle_hook/<model("vit.angle_hook"):angle>/regenerate', type='json', auth='user', website=True, methods=['POST'])
-    def regenerate_angle_hook(self, angle, **kwargs):
-        angle.sudo().action_generate()
-        return {
-            'output_html': angle.sudo().output_html or '',
-        }
+    @http.route('/audience_profiler/<model("vit.audience_profiler"):audience_profiler>/angle_hook/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_angle_hook(self, audience_profiler, **kwargs):
+        audience_profiler.action_generate_angles()
+        return [{
+            'name': an.name,
+            'output_html': an.output_html or '',
+        } for an in audience_profiler.angle_hook_ids]
 
-    @http.route('/product_analysis/hook/<model("vit.hook"):hook>/regenerate', type='json', auth='user', website=True, methods=['POST'])
-    def regenerate_hook(self, hook, **kwargs):
-        hook.sudo().action_generate()
-        return {
-            'output_html': hook.sudo().output_html or '',
-        }
+    # @http.route('/product_analysis/hook/<model("vit.hook"):hook>/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    # def regenerate_hook(self, hook, **kwargs):
+    #     hook.action_create_ads_copy()
+    #     return [{
+    #         'output_html': ads.output_html or '',
+    #     } for ads in hook.ads_copy_ids]
 
-    @http.route('/product_analysis/ads_copy/<model("vit.ads_copy"):ads>/regenerate', type='json', auth='user', website=True, methods=['POST'])
-    def regenerate_ads_copy(self, ads, **kwargs):
-        ads.sudo().action_generate()
-        return {
-            'output_html': ads.sudo().output_html or '',
-        }
+    @http.route('/hook/<model("vit.hook"):hook>/ads_copy/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_ads_copy(self, hook, **kwargs):
+        hook.action_create_ads_copy()
+
+        return [{
+            'name': ads.name,
+            'output_html': ads.output_html or '',
+        } for ads in hook.ads_copy_ids]
 
     def _add_img_responsive_classes(self, html):
         if not html:

@@ -35,7 +35,7 @@ class general_object(models.Model):
     general_instruction = fields.Text(default="You MUST respond with ONLY valid JSON. Do NOT include explanations, markdown, or extra text. If you cannot comply, return an empty JSON object {}.",  string=_("General Instruction"))
     specific_instruction = fields.Text( string=_("Specific Instruction"))
     active = fields.Boolean( string=_("Active"), default=True)
-    gpt_session = fields.Char(required=True, string="GPT Session URL")
+    gpt_session = fields.Char(required=True, string="GPT Session URL", default="-")
 
 
     def copy(self, default=None):
@@ -48,4 +48,4 @@ class general_object(models.Model):
     gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt", string="GPT Prompt")
     lang_id = fields.Many2one(comodel_name="res.lang", required=True,  string=_("Lang"))
     partner_id = fields.Many2one(comodel_name="res.partner",  string=_("Partner"))
-    gpt_model_id = fields.Many2one(comodel_name="vit.gpt_model", string="GPT Model")
+    gpt_model_id = fields.Many2one(comodel_name="vit.gpt_model", string="GPT Model", required=True)

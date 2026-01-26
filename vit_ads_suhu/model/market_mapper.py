@@ -19,6 +19,10 @@ class market_mapper(models.Model):
         pass
 
 
+    def action_generate_audience_profiler(self, ):
+        pass
+
+
     @api.onchange("product_value_analysis_id","target_market","lang_id")
     def _get_input(self, ):
         """
@@ -30,10 +34,6 @@ class market_mapper(models.Model):
 
 
     def _get_default_prompt(self, ):
-        pass
-
-
-    def action_create_audience_profiles(self, ):
         pass
 
 

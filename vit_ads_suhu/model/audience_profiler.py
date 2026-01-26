@@ -19,6 +19,10 @@ class audience_profiler(models.Model):
         pass
 
 
+    def action_generate_angles(self, ):
+        pass
+
+
     @api.onchange("market_mapper_id")
     def _get_input(self, ):
         """

@@ -42,7 +42,7 @@
                 <form string="Market Mapper">
                     <header>
                         <button string="Generate" type="object" name="action_generate"  confirm="Are you sure to re-generate Market Mapper  Output?"/>
-                        <button string="Create Audience Profiles" type="object" name="action_create_audience_profiles" />
+                        <button string="Generate Audience Profiler" type="object" name="action_generate_audience_profiler" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>

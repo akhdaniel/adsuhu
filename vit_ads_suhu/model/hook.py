@@ -10,6 +10,10 @@ class hook(models.Model):
     _description = "vit.hook"
 
 
+    def action_create_ads_copy(self, ):
+        pass
+
+
     def action_reload_view(self):
         pass
 

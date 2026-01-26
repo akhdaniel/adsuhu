@@ -763,7 +763,7 @@
 											"top": 929,
 											"width": 351,
 											"height": 13,
-											"text": "+action_create_audience_profiles()",
+											"text": "+action_generate_audience_profiler()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1374,6 +1374,24 @@
 										},
 										{
 											"_type": "UMLOperationView",
+											"_id": "AAAAAAGb+HKHawY217c=",
+											"_parent": {
+												"$ref": "AAAAAAGbDON8Br0psro="
+											},
+											"model": {
+												"$ref": "AAAAAAGb+HKHPwYwRVI="
+											},
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 1781,
+											"top": 1473,
+											"width": 327,
+											"height": 13,
+											"text": "+action_generate_angles()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
 											"_id": "AAAAAAGbF0IdeCXs7oc=",
 											"_parent": {
 												"$ref": "AAAAAAGbDON8Br0psro="
@@ -1384,7 +1402,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1781,
-											"top": 1473,
+											"top": 1488,
 											"width": 327,
 											"height": 13,
 											"text": "+_get_input()",
@@ -1402,7 +1420,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1781,
-											"top": 1488,
+											"top": 1503,
 											"width": 327,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -1414,7 +1432,7 @@
 									"left": 1776,
 									"top": 1453,
 									"width": 337,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -11639,7 +11657,7 @@
 											"top": 397,
 											"width": 479,
 											"height": 13,
-											"text": "+gpt_session: Char",
+											"text": "+gpt_session: Char = \"-\"",
 											"horizontalAlignment": 0
 										}
 									],
@@ -15850,13 +15868,34 @@
 									"model": {
 										"$ref": "AAAAAAGbRT3ekBxh4uw="
 									},
+									"subViews": [
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGb+LD0xvYN/5M=",
+											"_parent": {
+												"$ref": "AAAAAAGbRT3ekhxqvWg="
+											},
+											"model": {
+												"$ref": "AAAAAAGb+LD0f/WtheU="
+											},
+											"fillColor": "#00FFD4",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 253,
+											"top": 1809,
+											"width": 455,
+											"height": 13,
+											"text": "+action_create_ads_copy()",
+											"horizontalAlignment": 0
+										}
+									],
 									"fillColor": "#00FFD4",
 									"font": "Roboto;13;0",
 									"parentStyle": true,
 									"left": 248,
 									"top": 1804,
 									"width": 465,
-									"height": 10
+									"height": 23
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -22612,7 +22651,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGbDOI+ELrl32I="
 							},
-							"name": "action_create_audience_profiles"
+							"name": "action_generate_audience_profiler"
 						},
 						{
 							"_type": "UMLOperation",
@@ -22757,6 +22796,14 @@
 							},
 							"name": "action_generate",
 							"documentation": "{\n    \"xml:confirm\":\"Are you sure to re-generate Audience Profiler Output?\"\n}"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGb+HKHPwYwRVI=",
+							"_parent": {
+								"$ref": "AAAAAAGbDON8Br0grWk="
+							},
+							"name": "action_generate_angles"
 						},
 						{
 							"_type": "UMLOperation",
@@ -24672,7 +24719,7 @@
 									"$ref": "AAAAAAGbbV9Illhb1ZA="
 								},
 								"name": "gpt_model_id",
-								"documentation": "{\n\"string\":\"GPT Model\",\n\"tree:invisible\":true,\n\"form:seq\":6000\n}",
+								"documentation": "{\n\"string\":\"GPT Model\",\n\"tree:invisible\":true,\n\"form:seq\":6000,\n\"required\":\"True\"\n}",
 								"reference": {
 									"$ref": "AAAAAAGbHvslCAoNY5M="
 								},
@@ -24793,7 +24840,8 @@
 							},
 							"name": "gpt_session",
 							"documentation": "{\n\"required\":\"True\",\n\"xml:widget\":\"url\",\n\"tree:invisible\":true,\n\"form:seq\":3100,\n\"string\":\"GPT Session URL\"\n}",
-							"type": "Char"
+							"type": "Char",
+							"defaultValue": "\"-\""
 						}
 					],
 					"operations": [
@@ -25671,6 +25719,16 @@
 							},
 							"name": "hook_no",
 							"type": "Integer"
+						}
+					],
+					"operations": [
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGb+LD0f/WtheU=",
+							"_parent": {
+								"$ref": "AAAAAAGbRT3ekBxh4uw="
+							},
+							"name": "action_create_ads_copy"
 						}
 					]
 				},
