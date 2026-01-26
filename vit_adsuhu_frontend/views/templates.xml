@@ -188,6 +188,72 @@
                                     </t>
                                 </ul>
 
+                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Landing Pages</h5>
+                                <ul class="list-group" id="list-landing-pages">
+                                    <!-- landing pages -->
+                                    <t t-foreach="analysis.market_mapper_ids" t-as="market">
+                                        <t t-foreach="market.audience_profiler_ids" t-as="audience">
+                                            <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                                <t t-foreach="angle.hook_ids" t-as="hook">
+                                                    <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                        <t t-foreach="ads.landing_page_builder_ids" t-as="lp">
+                                                            <li class="list-group-item p-0">
+                                                                <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-lp-#{lp.id}">
+                                                                    <t t-out="ads.name"/>
+                                                                </a>
+                                                            </li>
+                                                        </t>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </ul>
+
+                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Images</h5>
+                                <ul class="list-group" id="list-landing-pages">
+                                    <!-- images -->
+                                    <t t-foreach="analysis.market_mapper_ids" t-as="market">
+                                        <t t-foreach="market.audience_profiler_ids" t-as="audience">
+                                            <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                                <t t-foreach="angle.hook_ids" t-as="hook">
+                                                    <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                        <t t-foreach="ads.image_generator_ids" t-as="img">
+                                                            <li class="list-group-item p-0">
+                                                                <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-img-#{img.id}">
+                                                                    <t t-out="ads.name"/>
+                                                                </a>
+                                                            </li>
+                                                        </t>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </ul>
+
+                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Videos</h5>
+                                <ul class="list-group" id="list-landing-pages">
+                                    <!-- videos -->
+                                    <t t-foreach="analysis.market_mapper_ids" t-as="market">
+                                        <t t-foreach="market.audience_profiler_ids" t-as="audience">
+                                            <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                                <t t-foreach="angle.hook_ids" t-as="hook">
+                                                    <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                        <t t-foreach="ads.video_director_ids" t-as="vid">
+                                                            <li class="list-group-item p-0">
+                                                                <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-vid-#{vid.id}">
+                                                                    <t t-out="ads.name"/>
+                                                                </a>
+                                                            </li>
+                                                        </t>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </ul>
+
                             </div>
                         </div>
 
@@ -358,6 +424,66 @@
                                                         <h2 class="adsuhu-section-title" t-field="ads.name"></h2>
                                                         <div class="adsuhu-content" t-if="ads.output_html" t-raw="ads.output_html"></div>
                                                     </section>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </t>
+                            </div>
+
+                            <!-- images -->
+                            <div id="section-ads-copy" >
+                                <t t-foreach="analysis.market_mapper_ids" t-as="market">
+                                    <t t-foreach="market.audience_profiler_ids" t-as="audience">
+                                        <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                            <t t-foreach="angle.hook_ids" t-as="hook">
+                                                <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                    <t t-foreach="ads.image_generator_ids" t-as="img">
+                                                        <section class="adsuhu-section" t-attf-id="section-img-#{img.id}" style="scroll-margin-top: 6rem;">
+                                                            <h2 class="adsuhu-section-title" t-field="img.name"></h2>
+                                                            <div class="adsuhu-content" t-if="img.output_html" t-raw="img.output_html"></div>
+                                                        </section>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </t>
+                            </div>
+
+                            <!-- landing pages -->
+                            <div id="section-ads-copy" >
+                                <t t-foreach="analysis.market_mapper_ids" t-as="market">
+                                    <t t-foreach="market.audience_profiler_ids" t-as="audience">
+                                        <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                            <t t-foreach="angle.hook_ids" t-as="hook">
+                                                <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                    <t t-foreach="ads.landing_page_builder_ids" t-as="lp">
+                                                        <section class="adsuhu-section" t-attf-id="section-lp-#{lp.id}" style="scroll-margin-top: 6rem;">
+                                                            <h2 class="adsuhu-section-title" t-field="lp.name"></h2>
+                                                            <div class="adsuhu-content" t-if="lp.output_html" t-raw="lp.output_html"></div>
+                                                        </section>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </t>
+                            </div>
+
+                            <!-- video scripts -->
+                            <div id="section-ads-copy" >
+                                <t t-foreach="analysis.market_mapper_ids" t-as="market">
+                                    <t t-foreach="market.audience_profiler_ids" t-as="audience">
+                                        <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                            <t t-foreach="angle.hook_ids" t-as="hook">
+                                                <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                    <t t-foreach="ads.video_director_ids" t-as="vid">
+                                                        <section class="adsuhu-section" t-attf-id="section-vid-#{vid.id}" style="scroll-margin-top: 6rem;">
+                                                            <h2 class="adsuhu-section-title" t-field="vid.name"></h2>
+                                                            <div class="adsuhu-content" t-if="vid.output_html" t-raw="vid.output_html"></div>
+                                                        </section>
+                                                    </t>
                                                 </t>
                                             </t>
                                         </t>

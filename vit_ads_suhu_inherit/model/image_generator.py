@@ -94,8 +94,10 @@ Response in {self.lang_id.name} language.
 """
 
     def generate_output_html(self):
-        self.output_html = self.json_to_markdown(json.loads(self.clean_md(self.output)), level=2, max_level=3)
 
+        md = self.json_to_markdown(
+                json.loads(self.clean_md(self.output)), level=3, max_level=4
+            )
         # append image variants 
         variants = []
         for v in self.image_variant_ids:
@@ -106,7 +108,9 @@ Response in {self.lang_id.name} language.
             else:
                 variants.append(f"Landing Page: -")
 
-        self.output_html += "\n\n"
-        self.output_html += "## Image Variants\n\n"
-        self.output_html += "\n".join(variants)
+        md += "\n\n"
+        md += "## Image Variants\n\n"
+        md += "\n".join(variants)
 
+        self.output_html = self.md_to_html(md)
+  
