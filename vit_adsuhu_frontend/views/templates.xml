@@ -72,11 +72,11 @@
                     </div>
                 </div>
 
-                <div class="container adsuhu-container" id="toc">
+                <div class="container adsuhu-container" id="main">
                     <input type="hidden" id="adsuhu-csrf-token" t-att-value="request.csrf_token()"/>
                     <div class="row">
                         <!-- TOC -->
-                        <div class="col-lg-3 mb-4">
+                        <div class="col-lg-3 mb-4" id="toc">
                             <div class="adsuhu-toc" style="position: sticky; top: 6rem; max-height: calc(100vh - 6rem); overflow: auto;">
                                 <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Product</h5>
                                 <ul class="list-group" id="list-description">
@@ -264,7 +264,7 @@
                         </div>
 
                         <!-- content -->
-                        <div class="col-lg-9">
+                        <div class="col-lg-9" id="content">
                             <h1>Product</h1>
                             <!-- description -->
                             <div id="section-description" style="scroll-margin-top: 6rem;">
@@ -458,6 +458,20 @@
                                                             <h2 class="adsuhu-section-title" t-field="img.name"></h2>
                                                             <div class="adsuhu-content" t-if="img.output_html" t-raw="img.output_html"></div>
                                                         </section>
+                                                        <div t-if="not img.image_variant_ids" class="d-flex align-items-center justify-content-center">
+                                                            <button 
+                                                            class="btn btn-secondary js-regenerate" 
+                                                            id="image_variants" 
+                                                            t-att-data-id="img.id" 
+                                                            data-regenerate="image_variants" 
+                                                            t-attf-data-target-section="section-image-variants-#{img.id}">
+                                                                <i class="fa fa-send me-1"></i> Generate Images
+                                                            </button>
+                                                        </div>  
+                                                        <section class="adsuhu-section" t-attf-id="section-image-variants-#{img.id}" style="scroll-margin-top: 6rem;">
+                                                            image variants here
+                                                        </section>
+
                                                     </t>
                                                 </t>
                                             </t>

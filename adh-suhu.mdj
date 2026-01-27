@@ -2289,12 +2289,12 @@
 									},
 									"font": "Roboto;13;0",
 									"parentStyle": false,
-									"left": 1656,
+									"left": 1632,
 									"top": 1464,
 									"width": 96.4462890625,
 									"height": 13,
-									"alpha": 0.36695502561684545,
-									"distance": 71.11258679024411,
+									"alpha": 0.35275689328443516,
+									"distance": 95.08417323613851,
 									"hostEdge": {
 										"$ref": "AAAAAAGbDOT4hsIXfqE="
 									},
@@ -9606,6 +9606,25 @@
 										},
 										{
 											"_type": "UMLOperationView",
+											"_id": "AAAAAAGb/+tfpqbsHB8=",
+											"_parent": {
+												"$ref": "AAAAAAGbDPZ/gLa7BQA="
+											},
+											"model": {
+												"$ref": "AAAAAAGb/+tfZ6at8Eo="
+											},
+											"fillColor": "#91FFEC",
+											"font": "Roboto;13;0",
+											"parentStyle": true,
+											"left": 1845,
+											"top": 4039,
+											"width": 663,
+											"height": 13,
+											"text": "+action_generate_image_variants()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
 											"_id": "AAAAAAGbF0GnSs3Oowo=",
 											"_parent": {
 												"$ref": "AAAAAAGbDPZ/gLa7BQA="
@@ -9617,7 +9636,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1845,
-											"top": 4039,
+											"top": 4054,
 											"width": 663,
 											"height": 13,
 											"text": "+_get_input()",
@@ -9636,7 +9655,7 @@
 											"font": "Roboto;13;0",
 											"parentStyle": true,
 											"left": 1845,
-											"top": 4054,
+											"top": 4069,
 											"width": 663,
 											"height": 13,
 											"text": "+_get_default_prompt()",
@@ -9649,7 +9668,7 @@
 									"left": 1840,
 									"top": 4019,
 									"width": 673,
-									"height": 53
+									"height": 68
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -24378,6 +24397,14 @@
 							},
 							"name": "action_generate",
 							"documentation": "{\n   \"label\":\"Generate Image\",\n    \"xml:confirm\":\"Are you sure to generate new Image Variant?\"\n}"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGb/+tfZ6at8Eo=",
+							"_parent": {
+								"$ref": "AAAAAAGbDPZ/gLayzX8="
+							},
+							"name": "action_generate_image_variants"
 						},
 						{
 							"_type": "UMLOperation",
