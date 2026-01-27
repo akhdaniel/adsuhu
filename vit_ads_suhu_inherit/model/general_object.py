@@ -215,4 +215,11 @@ class general_object(models.Model):
         md_content = re.sub(r'(/web/image/[^\s)]+)', escape_web_image_underscores, md_content)
         # Enable tables so Markdown tables render into HTML for downstream DOCX conversion
         html_content = markdown.markdown(md_content, extensions=['tables'])
+        # Wrap tables to make them responsive in the frontend.
+        html_content = re.sub(
+            r'(<table\b[^>]*>.*?</table>)',
+            r'<div class="table-responsive">\1</div>',
+            html_content,
+            flags=re.DOTALL,
+        )
         return html_content    

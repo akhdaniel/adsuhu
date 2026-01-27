@@ -78,7 +78,7 @@
                         <!-- TOC -->
                         <div class="col-lg-3 mb-4">
                             <div class="adsuhu-toc" style="position: sticky; top: 6rem; max-height: calc(100vh - 6rem); overflow: auto;">
-                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Product</h5>
+                                <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Product</h5>
                                 <ul class="list-group" id="list-description">
                                     <!-- descriptoion-->
                                     <t t-if="analysis.description">
@@ -105,7 +105,7 @@
                                     </li>
                                 </ul>
 
-                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Market Map</h5>
+                                <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Market Map</h5>
                                 <ul class="list-group" id="list-market-mapper">
                                     <!-- market mappers -->
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
@@ -117,7 +117,7 @@
                                     </t>
                                 </ul>
 
-                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Audience Profiles</h5>
+                                <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Audience Profiles</h5>
                                 <ul class="list-group" id="list-audience-profiler">
                                     <!-- audience profiles-->
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
@@ -131,7 +131,7 @@
                                     </t>
                                 </ul>
 
-                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Angles</h5>
+                                <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Angles</h5>
                                 <ul class="list-group" id="list-angle-hook">
                                     <!-- angle hook -->
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
@@ -149,7 +149,7 @@
                                     </t>
                                 </ul>
 
-                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Hooks</h5>
+                                <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Hooks</h5>
                                 <ul class="list-group" id="list-hook">
                                     <!--  hook -->
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
@@ -170,7 +170,7 @@
                                     </t>
                                 </ul>
 
-                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Ads Copy</h5>
+                                <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Ads Copy</h5>
                                 <ul class="list-group" id="list-ads-copy">
                                     <!-- ads copy -->
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
@@ -191,7 +191,7 @@
                                     </t>
                                 </ul>
 
-                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Landing Pages</h5>
+                                <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Landing Pages</h5>
                                 <ul class="list-group" id="list-landing-pages">
                                     <!-- landing pages -->
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
@@ -214,7 +214,7 @@
                                     </t>
                                 </ul>
 
-                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Images</h5>
+                                <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Images</h5>
                                 <ul class="list-group" id="list-landing-pages">
                                     <!-- images -->
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
@@ -237,7 +237,7 @@
                                     </t>
                                 </ul>
 
-                                <h5 class="text-uppercase text-muted small mb-3 mt-3">Videos</h5>
+                                <h5 class="adsuhu-toc-title-1 text-uppercase text-muted small mb-3 mt-3">Videos</h5>
                                 <ul class="list-group" id="list-landing-pages">
                                     <!-- videos -->
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
