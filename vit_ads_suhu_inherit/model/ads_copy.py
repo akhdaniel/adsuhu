@@ -176,6 +176,17 @@ class ads_copy(models.Model):
     _name = "vit.ads_copy"
     _inherit = "vit.ads_copy"
 
+
+    @api.depends("output_html")
+    def _get_output_html_trimmed(self):
+        for rec in self:
+            output_html = rec.output_html or ""
+            marker = "<h3>Landing Page</h3>"
+            idx = output_html.find(marker)
+            trimmed = output_html[:idx] if idx != -1 else output_html
+            rec.output_html_trimmed = trimmed
+    output_html_trimmed = fields.Text('Trimmed Output HTML', compute="_get_output_html_trimmed")
+
     def action_generate(self, ):
 
         if not self.gpt_prompt_id:
