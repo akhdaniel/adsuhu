@@ -150,6 +150,15 @@ class ProductValueAnalysisController(http.Controller):
             'output_html': ads.output_html or '',
         } for ads in hook.ads_copy_ids]
 
+    @http.route('/image_generator/<model("vit.image_generator"):image_generator>/image_variant/regenerate', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_image_variant(self, image_generator, **kwargs):
+        image_generator.action_generate_image_variants()
+
+        return [{
+            'name': iv.name,
+            'output_html': f"<img src='{iv.image_url}'/>" or '',
+        } for iv in image_generator.image_variant_ids]
+    
     def _add_img_responsive_classes(self, html):
         if not html:
             return html

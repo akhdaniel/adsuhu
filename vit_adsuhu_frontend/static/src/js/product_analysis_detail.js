@@ -16,6 +16,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             angle_hook: (id) => `/audience_profiler/${id}/angle_hook/regenerate`,
             // hook: (id) => `/angle_hook/${id}/hook/regenerate`,
             ads_copy: (id) => `/hook/${id}/ads_copy/regenerate`,
+            image_variants: (id) => `/image_generator/${id}/image_variant/regenerate`,
         };
         this.nextChain = {
             product_value_analysis: "market_mapper",

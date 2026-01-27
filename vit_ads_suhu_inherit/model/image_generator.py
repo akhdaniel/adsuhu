@@ -113,4 +113,13 @@ Response in {self.lang_id.name} language.
         md += "\n".join(variants)
 
         self.output_html = self.md_to_html(md)
-  
+
+    def action_generate_image_variants(self):
+        iv = self.env['vit.image_variant'].create({
+            'name':'/',
+            'image_generator_id':self.id,
+        })
+
+        # iv._get_input()
+        # iv.generate_output_html()
+        iv._get_default_name()

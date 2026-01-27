@@ -20,6 +20,10 @@ class image_variant(models.Model):
         pass
 
 
+    def action_generate(self, ):
+        pass
+
+
     def action_post_linkedin(self, ):
         pass
 
