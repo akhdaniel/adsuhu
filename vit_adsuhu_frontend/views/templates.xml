@@ -136,7 +136,7 @@
                                     <!-- angle hook -->
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                         <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                            <li class="text-uppercase small fw-bold mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/></li>
+                                            <li class="adsuhu-toc-title-2 text-uppercase small fw-bold mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/></li>
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
                                                 <li class="list-group-item p-0">
                                                     <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-angle-#{angle.id}">
@@ -155,7 +155,7 @@
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                         <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                <li class="text-uppercase small fw-bold mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/></li>
+                                                <li class="adsuhu-toc-title-2 text-uppercase small fw-bold mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/></li>
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
                                                     <li class="list-group-item p-0">
                                                         <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-hook-#{hook.id}">
@@ -176,7 +176,7 @@
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                         <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                <li class="text-uppercase small  fw-bold mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/></li>
+                                                <li class="adsuhu-toc-title-2 text-uppercase small  fw-bold mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/></li>
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                         <li class="list-group-item p-0">
@@ -197,7 +197,7 @@
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                         <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                <li class="text-uppercase small  fw-bold  mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/></li>
+                                                <li class="adsuhu-toc-title-2 text-uppercase small  fw-bold  mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/></li>
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                         <t t-foreach="ads.landing_page_builder_ids" t-as="lp">
@@ -221,7 +221,7 @@
                                         <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
-                                                    <li class="text-uppercase small  fw-bold  mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/> - Hook <t t-out="hook.hook_no"/></li>
+                                                    <li class="adsuhu-toc-title-2 text-uppercase small  fw-bold  mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/> - Hook <t t-out="hook.hook_no"/></li>
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                         <t t-foreach="ads.image_generator_ids" t-as="img">
                                                             <li class="list-group-item p-0">
@@ -243,7 +243,7 @@
                                     <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                         <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                <li class="text-uppercase small fw-bold mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/></li>
+                                                <li class="adsuhu-toc-title-2 text-uppercase small fw-bold mt-2 mb-2">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/></li>
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                         <t t-foreach="ads.video_director_ids" t-as="vid">
@@ -272,8 +272,8 @@
                                     <h2 class="adsuhu-section-title">Description</h2>
                                     <t t-if="analysis.description">
                                         <div class="adsuhu-content" t-out="description_html"></div>
-                                        <div t-if="features_html" class="d-flex align-items-center justify-content-center">
-                                            <button class="btn btn-secondary js-regenerate" 
+                                        <div t-if="not features_html" class="d-flex align-items-center justify-content-center">
+                                            <button t-if="not analysis" class="btn btn-secondary js-regenerate" 
                                                 id="generate_features" 
                                                 t-att-data-id="analysis.id" 
                                                 data-regenerate="features">

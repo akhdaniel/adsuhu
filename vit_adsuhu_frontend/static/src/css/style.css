@@ -119,10 +119,18 @@
 }
 
 .adsuhu-toc-title-1 {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: #1e293b;
     border-left: 4px solid #4f46e5;
+    padding-left: 1rem;
+}
+
+.adsuhu-toc-title-2 {
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: #1e293b;
+    border-left: 4px solid #5ee955b2;
     padding-left: 1rem;
 }
 
