@@ -134,6 +134,13 @@
     padding-left: 1rem;
 }
 
+.adsuhu-toc .list-group-item-action.is-active {
+    background: #eef2ff;
+    color: #1e293b;
+    font-weight: 600;
+    border-left: 4px solid #4f46e5;
+}
+
 .adsuhu-content {
     color: #334155;
     line-height: 1.7;

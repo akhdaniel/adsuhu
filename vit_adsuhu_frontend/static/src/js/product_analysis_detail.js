@@ -32,7 +32,67 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             hook: "list-hook",
             ads_copy: "list-ads-copy",
         };
-        return this._super(...arguments);
+        const result = this._super(...arguments);
+        this._initTocSync();
+        return result;
+    },
+    _initTocSync() {
+        this.tocRoot = document.querySelector("#toc .adsuhu-toc");
+        if (!this.tocRoot) {
+            return;
+        }
+        this._refreshTocTargets();
+        this._bindTocSync();
+        this._updateActiveToc();
+    },
+    _refreshTocTargets() {
+        this.tocLinks = Array.from(this.tocRoot.querySelectorAll('a[href^="#"]'));
+        this.tocSections = this.tocLinks
+            .map((link) => {
+                const id = link.getAttribute("href")?.slice(1) || "";
+                const section = id ? document.getElementById(id) : null;
+                return section ? { id, link, section } : null;
+            })
+            .filter(Boolean);
+    },
+    _bindTocSync() {
+        if (this._tocScrollHandler) {
+            return;
+        }
+        this._tocScrollHandler = () => {
+            if (this._tocSyncRaf) {
+                return;
+            }
+            this._tocSyncRaf = requestAnimationFrame(() => {
+                this._tocSyncRaf = null;
+                this._updateActiveToc();
+            });
+        };
+        window.addEventListener("scroll", this._tocScrollHandler, { passive: true });
+        window.addEventListener("resize", this._tocScrollHandler);
+        this.tocRoot.addEventListener("click", () => {
+            setTimeout(() => this._updateActiveToc(), 0);
+        });
+    },
+    _updateActiveToc() {
+        if (!this.tocSections || !this.tocSections.length) {
+            return;
+        }
+        const scrollOffset = 96;
+        let activeItem = this.tocSections[0];
+        for (const item of this.tocSections) {
+            const top = item.section.getBoundingClientRect().top - scrollOffset;
+            if (top <= 0) {
+                activeItem = item;
+            } else {
+                break;
+            }
+        }
+        this.tocLinks.forEach((link) => link.classList.remove("is-active"));
+        if (activeItem?.link) {
+            activeItem.link.classList.add("is-active");
+            activeItem.link.scrollIntoView({ block: "nearest", inline: "nearest" });
+        }
     },
     _setButtonState(button, loading) {
         if (!button) {
@@ -63,6 +123,8 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             </a>
         `;
         listEl.appendChild(item);
+        this._refreshTocTargets();
+        this._updateActiveToc();
     },
     _insertOutputSection({ section, modelTitle, modelKey, outputs, nextModel, sourceButton }) {
         if (!section) {
