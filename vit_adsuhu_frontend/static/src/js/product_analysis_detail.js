@@ -98,6 +98,12 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         if (!button) {
             return;
         }
+        if (button.dataset.regenerate === "image_variants") {
+            const generatingImage = document.getElementById("generating_image");
+            if (generatingImage) {
+                generatingImage.style.display = loading ? "block" : "none";
+            }
+        }
         if (loading) {
             button.dataset.originalText = button.innerText;
             button.innerText = "Regenerating...";
@@ -216,8 +222,8 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             const json = await response.json();
             const outputs = json?.result || [];
             const targetSectionId = button.dataset.targetSection || "";
-            const withSection = button.dataset.withSection === "0"? false : true;
-            console.log('withSection',withSection)
+            const withSection = button.dataset.regenerate === "image_variants"? false : true;
+            // console.log('withSection',withSection)
             const section = targetSectionId
                 ? document.getElementById(targetSectionId)
                 : button.closest(".adsuhu-section");

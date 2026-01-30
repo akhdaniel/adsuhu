@@ -477,6 +477,10 @@
                                                                             <img t-att-src="iv.image_url_512" class="img-fluid"/>
                                                                         </a>                                                                        
                                                                     </div>
+
+                                                                    <div class="col-md-6 gap-2 mb-2" id="generating_image" style="background-color: #eee; display:none">
+                                                                        <img src="/vit_adsuhu_frontend/static/src/img/loading.gif" class="img-fluid" style="height:400px;"/>
+                                                                    </div>
                                                                 </div>
 
                                                                 <div class="d-flex align-items-center justify-content-center">
@@ -485,7 +489,6 @@
                                                                     id="image_variants" 
                                                                     t-att-data-id="img.id" 
                                                                     data-regenerate="image_variants" 
-                                                                    data-with-section="0"
                                                                     t-attf-data-target-section="section-image-variants-#{img.id}">
                                                                         <i class="fa fa-send me-1"></i> Generate Images
                                                                     </button>
