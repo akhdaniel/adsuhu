@@ -48,6 +48,12 @@ class image_variant(models.Model):
     def _get_image_url(self, ):
         for rec in self:
             rec.image_url = rec._image_field_url("image_1024")
+    
+    def _get_image_url_512(self, ):
+        for rec in self:
+            rec.image_url_512 = rec._image_field_url("image_512")
+    
+    image_url_512 = fields.Char(compute="_get_image_url_512")
 
     def action_post_linkedin(self, ):
         _logger.info(f"----- {__name__}")
@@ -233,3 +239,7 @@ class image_variant(models.Model):
 
     def action_post_whatsapp(self, ):
         pass
+
+
+    def action_generate_image():
+        prompt=''

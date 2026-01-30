@@ -7,10 +7,10 @@
         <field name="name">gpt-5-mini</field>
     </record>
     <record id="gpt_model_gpt_image_1" model="vit.gpt_model">
-        <field name="name">gpt-image-1</field>
+        <field name="name">fal-ai/gpt-image-1</field>
     </record>
     <record id="gpt_model_gpt_image_1_5" model="vit.gpt_model">
-        <field name="name">gpt-image-1.5</field>
+        <field name="name">fal-ai/gpt-image-1.5</field>
     </record>
     <record id="gpt_model_gpt_image_latest" model="vit.gpt_model">
         <field name="name">chatgpt-image-latest</field>

@@ -37,7 +37,6 @@
             <field name="arch" type="xml">
                 <form string="Image Variant">
                     <header>
-                        <button string="Generate" type="object" name="action_generate" />
                         <button string="Post Linkedin" type="object" name="action_post_linkedin" />
                         <button string="Post Facebook" type="object" name="action_post_facebook" />
                         <button string="Post IG" type="object" name="action_post_ig" />

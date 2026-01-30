@@ -36,7 +36,7 @@ class Fal:
         self.model_name = model_name
         _logger.info(f"    model: {self.model_name}")
         _logger.info(f"    prompt: {prompt}")
-        _logger.info(f"    payload: {additional_payload}")
+        _logger.info(f"    additional_payload: {additional_payload}")
         
         url = f"https://queue.fal.run/{model_name}"
         headers = {
@@ -56,7 +56,7 @@ class Fal:
         response = requests.post(url, headers=headers, data=json.dumps(payload))
         if response.status_code == 200:
             result = response.json()
-            print(result)
+            _logger.info(f"result={result}")
             self.request_id = result["request_id"]
             self.response_url = result["response_url"]
             self.status_url = result["status_url"]
@@ -72,15 +72,15 @@ class Fal:
         final_url = False
         while True:
             response = requests.get(self.status_url, headers=headers)
-            if response.status_code == 200:
+            if response.status_code in [200,202]:
                 result = response.json()
                 status = result["status"]
 
                 if status == "COMPLETED":
                     end = time.time()
                     _logger.info(f"    Task completed in {end - begin} seconds.")
-                    self._download_request(self.request_id)
-                    final_url = self.response_url
+                    self._download_request() # self.final_url filled
+                    final_url = self.final_url
                     _logger.info(f"    URL: {final_url}")
                     break
                 elif status == 'IN_PROGRESS':
@@ -91,22 +91,23 @@ class Fal:
                     _logger.info(f"    Task failed/unknown status: {result.get('error')}")
                     break                    
             else:
-                _logger.info(f"    Error: {response.status_code}, {response.text}")
+                _logger.error(f"    Error: {response.status_code}, {response.text}")
                 break
 
             time.sleep(1)
 
         return final_url
 
-    def _download_request(self, request_id):
+    def _download_request(self,):
         
         headers = {"Authorization": f"Key {self.api_key}"}
-        response = requests.get(self.request_url, headers=headers)
-        if response.status_code == 200:
+        response = requests.get(self.response_url, headers=headers)
+        if response.status_code in [200,202]:
             result = response.json()
             print('---- result --- ')
             print(result)
-            return '-'
+            images = result['images']
+            self.final_url = images[0]['url']
         else:
             _logger.info(f"    Error: {response.status_code}, {response.text}")
 
@@ -129,7 +130,7 @@ class Fal:
             additional_payload=additional_payload
         )
         
-        _logger.info('    Final Image URL', url)
+        _logger.info(f'    Final Image URL: {url}')
         return url
 
     def generate_audio(self, text, model_name='elevenlabs/eleven-v3', voice_id="Alice"):

@@ -6,8 +6,12 @@ from odoo.exceptions import UserError
 import time
 import logging
 _logger = logging.getLogger(__name__)
-from .libs.openai_lib import generate_image
+# from .libs.openai_lib import generate_image
+from .libs.fal import Fal
+import requests
+import base64
 import json 
+
 DEFAULT_SPECIFIC_INSTRUCTION = "Langsung Create PNG image, ratio 1:1. Jangan terlalu banyak text, pilih yang paling kuat dari primary text, hook library, dan angle library."
 
 class image_generator(models.Model):
@@ -22,35 +26,52 @@ class image_generator(models.Model):
         if not self.gpt_model_id:
             raise UserError('GPT model empty')
 
-        openai_api_key = self.env["ir.config_parameter"].sudo().get_param("openai_api_key")
-        openai_base_url = None
+        # openai_api_key = self.env["ir.config_parameter"].sudo().get_param("openai_api_key")
+        # openai_base_url = None
 
-        model = self.gpt_model_id.name
+        image_model = self.env.ref('vit_ads_suhu_inherit.gpt_model_gpt_image_1_5')
 
-        user_prompt = self.gpt_prompt_id.user_prompt
-        user_prompt += f"{self.output}\n"
-        system_prompt = self.gpt_prompt_id.system_prompt 
+        # model = self.gpt_model_id.name
+        model = image_model.name
 
-        context = ""
-        additional_command=""
-        question = ""
+        output = json.loads(self.output)
+        headline = output['headline']
+        primary_text = output['primary_text']
+        cta = output['cta']
+        visual_concept = output['visual_suggestion']
+        brand_personality = "Professional"
 
-        response = generate_image(openai_api_key=openai_api_key, 
-                                openai_base_url=openai_base_url, 
-                                model=model, 
-                                system_prompt=system_prompt, 
-                                user_prompt=user_prompt, 
-                                context=context, 
-                                question=question, 
-                                additional_command=additional_command)    
+        image_prompt = self.gpt_prompt_id.system_prompt
+        image_prompt = (image_prompt
+                       .replace('{campaign_objective}', 'Sales')
+                       .replace('{target_audience}', 'UMKM')
+                       .replace('{headline}', headline)
+                       .replace('{primary_text}', primary_text)
+                       .replace('{cta}', cta)
+                       .replace('{visual_concept}', visual_concept)
+                       .replace('{brand_personality}', brand_personality)
+                       )
+
+        fal_api_key = self.env["ir.config_parameter"].sudo().get_param("fal_api_key")
+        fal = Fal(api_key=fal_api_key)
+
+        image_url = fal.generate_image(image_prompt=image_prompt, 
+                       model_name=model, 
+                       additional_payload={},)
+        
+        if not image_url:
+            raise UserError('fal Image URL Empty!')
+        
+        response = requests.get(image_url)
+        response.raise_for_status()
+        image_b64 = base64.b64encode(response.content).decode("utf-8")
 
         v = self.env['vit.image_variant'].create({
             'image_generator_id':self.id,
             'name': '/',
-            'image_1920': response,
+            'image_1920': image_b64,
         })
         v._get_default_name()
-
         self.generate_output_html()
 
     lang_id = fields.Many2one(comodel_name="res.lang", related="ads_copy_id.product_value_analysis_id.lang_id")
@@ -99,27 +120,18 @@ Response in {self.lang_id.name} language.
                 json.loads(self.clean_md(self.output)), level=3, max_level=4
             )
         # append image variants 
-        variants = []
-        for v in self.image_variant_ids:
-            variants.append(f"![{v.name}]({v.image_url})")
-            variants.append(f"Image: [{v.image_url}]({v.image_url})")
-            if v.lp_url:
-                variants.append(f"Landing Page: [{v.lp_url}]({v.lp_url})\n")
-            else:
-                variants.append(f"Landing Page: -")
+        # variants = []
+        # for v in self.image_variant_ids:
+        #     variants.append(f"![{v.name}]({v.image_url})")
+        #     variants.append(f"Image: [{v.image_url}]({v.image_url})")
+        #     if v.lp_url:
+        #         variants.append(f"Landing Page: [{v.lp_url}]({v.lp_url})\n")
+        #     else:
+        #         variants.append(f"Landing Page: -")
 
-        md += "\n\n"
-        md += "## Image Variants\n\n"
-        md += "\n".join(variants)
+        # md += "\n\n"
+        # md += "## Image Variants\n\n"
+        # md += "\n".join(variants)
 
         self.output_html = self.md_to_html(md)
 
-    def action_generate_image_variants(self):
-        iv = self.env['vit.image_variant'].create({
-            'name':'/',
-            'image_generator_id':self.id,
-        })
-
-        # iv._get_input()
-        # iv.generate_output_html()
-        iv._get_default_name()

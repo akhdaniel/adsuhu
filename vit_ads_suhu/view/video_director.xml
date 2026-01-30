@@ -108,7 +108,7 @@
                                 </group>
                             </page>
                             <page name="report" string="Report">
-                                    <field name="output_html" widget="html" />
+                                    <field name="output_html" widget="html" options="{'codeview': true}" />
                             </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="json_viewer" />

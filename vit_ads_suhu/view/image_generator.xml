@@ -47,7 +47,6 @@
                 <form string="Image Generator">
                     <header>
                         <button string="Generate Image" type="object" name="action_generate"  confirm="Are you sure to generate new Image Variant?"/>
-                        <button string="Generate Image Variants" type="object" name="action_generate_image_variants" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -95,7 +94,7 @@
                                 </field>
                             </page>
                             <page name="report" string="Report">
-                                    <field name="output_html" widget="html" />
+                                    <field name="output_html" widget="html" options="{'codeview': true}" />
                             </page>
                             <page name="output" string="Output">
                                     <field name="output" widget="json_viewer" />

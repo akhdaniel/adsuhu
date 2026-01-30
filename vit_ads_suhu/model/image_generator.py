@@ -20,10 +20,6 @@ class image_generator(models.Model):
         pass
 
 
-    def action_generate_image_variants(self, ):
-        pass
-
-
     @api.onchange("visual_concept_id","image_prompt_id","ads_copy_id")
     def _get_input(self, ):
         """

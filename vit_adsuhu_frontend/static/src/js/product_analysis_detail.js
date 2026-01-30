@@ -126,7 +126,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         this._refreshTocTargets();
         this._updateActiveToc();
     },
-    _insertOutputSection({ section, modelTitle, modelKey, outputs, nextModel, sourceButton }) {
+    _insertOutputSection({ section, modelTitle, modelKey, outputs, nextModel, sourceButton, withSection }) {
         if (!section) {
             return;
         }
@@ -134,41 +134,54 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         // console.log('outputs',outputs)
 
         outputs.forEach((output) => {
-            const newSection = document.createElement("section");
-            newSection.className = "adsuhu-section";
-            newSection.id = `section-${modelKey}`;
-            newSection.style.scrollMarginTop = "6rem";
+            let newSection
 
-            const titleEl = document.createElement("h2");
-            titleEl.className = "adsuhu-section-title";
-            titleEl.textContent = output.name || "Result";
-            newSection.appendChild(titleEl);
+            if (withSection){ // normail sections
+                newSection = document.createElement("section");
+                newSection.className = "adsuhu-section";
+                newSection.id = `section-${modelKey}`;
+                newSection.style.scrollMarginTop = "6rem";
 
-            const contentEl = document.createElement("div");
-            contentEl.className = "adsuhu-content";
-            contentEl.innerHTML = output.output_html || "";
-            newSection.appendChild(contentEl);
+                const titleEl = document.createElement("h2");
+                titleEl.className = "adsuhu-section-title";
+                titleEl.textContent = output.name || "Result";
+                newSection.appendChild(titleEl);
 
-            if (nextModel) {
-                const nextTitle = nextModel
-                    .split("_")
-                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ");
-                const nextButton = document.createElement("button");
-                nextButton.className = "btn btn-secondary js-regenerate";
-                nextButton.id = `regenerate_${nextModel}`;
-                nextButton.dataset.id = sourceButton?.dataset?.id || "";
-                nextButton.dataset.regenerate = nextModel;
-                nextButton.dataset.nextModel = this.nextChain[nextModel] || "";
-                nextButton.innerHTML = `<i class="fa fa-send me-1"></i> Analyze ${nextTitle}`;
-                const buttonWrap = document.createElement("div");
-                buttonWrap.className = "d-flex align-items-center justify-content-center";
-                buttonWrap.appendChild(nextButton);
-                newSection.appendChild(buttonWrap);
+                const contentEl = document.createElement("div");
+                contentEl.className = "adsuhu-content";
+                contentEl.innerHTML = output.output_html || "";
+                newSection.appendChild(contentEl);
+
+                if (nextModel) {
+                    const nextTitle = nextModel
+                        .split("_")
+                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(" ");
+                    const nextButton = document.createElement("button");
+                    nextButton.className = "btn btn-secondary js-regenerate";
+                    nextButton.id = `regenerate_${nextModel}`;
+                    nextButton.dataset.id = sourceButton?.dataset?.id || "";
+                    nextButton.dataset.regenerate = nextModel;
+                    nextButton.dataset.nextModel = this.nextChain[nextModel] || "";
+                    nextButton.innerHTML = `<i class="fa fa-send me-1"></i> Analyze ${nextTitle}`;
+                    const buttonWrap = document.createElement("div");
+                    buttonWrap.className = "d-flex align-items-center justify-content-center";
+                    buttonWrap.appendChild(nextButton);
+                    newSection.appendChild(buttonWrap);
+                }
+
+                this._appendTocItem(this.tocLists[modelKey], titleEl.textContent, newSection.id);            
+
+            } 
+            else
+            { //image 
+                newSection = document.createElement("div");
+                newSection.className="col-md-6 gap-2 mb-2"
+                newSection.innerHTML = output.output_html || "";
+                newSection.id = `section-${modelKey}`;
             }
 
             section.insertAdjacentElement("afterend", newSection);
-            this._appendTocItem(this.tocLists[modelKey], titleEl.textContent, newSection.id);            
         });
 
     },
@@ -201,12 +214,13 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             const json = await response.json();
             const outputs = json?.result || [];
             const targetSectionId = button.dataset.targetSection || "";
-            console.log('targetSectionId',targetSectionId)
+            const withSection = button.dataset.withSection || true;
+            // console.log('targetSectionId',targetSectionId)
             const section = targetSectionId
                 ? document.getElementById(targetSectionId)
                 : button.closest(".adsuhu-section");
 
-            console.log('section',section)
+            // console.log('section',section)
             if (section) {
                 const titleEl = section.querySelector(".adsuhu-section-title");
                 const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
@@ -219,6 +233,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                     outputs,
                     nextModel,
                     sourceButton: button,
+                    withSection
                 });
             }
         } catch (err) {

@@ -152,11 +152,11 @@ class ProductValueAnalysisController(http.Controller):
 
     @http.route('/image_generator/<model("vit.image_generator"):image_generator>/image_variant/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_image_variant(self, image_generator, **kwargs):
-        image_generator.action_generate_image_variants()
+        image_generator.action_generate()
 
         return [{
             'name': iv.name,
-            'output_html': f"<img src='{iv.image_url}'/>" or '',
+            'output_html': f"<div class='col-md-6 gap-2 mb-2'><img src='{iv.image_url}' class='img-fluid'/></div>" or '',
         } for iv in image_generator.image_variant_ids]
     
     def _add_img_responsive_classes(self, html):
