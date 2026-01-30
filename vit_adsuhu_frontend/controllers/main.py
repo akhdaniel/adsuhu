@@ -156,8 +156,11 @@ class ProductValueAnalysisController(http.Controller):
 
         return [{
             'name': iv.name,
-            'output_html': f"<div class='col-md-6 gap-2 mb-2'><img src='{iv.image_url}' class='img-fluid'/></div>" or '',
-        } for iv in image_generator.image_variant_ids]
+            'output_html': f"""<a href="{iv.image_url}" target="_new">
+    <img src='{iv.image_url_512}' class='img-fluid'/>
+</a>
+""",
+        } for iv in image_generator.image_variant_ids[-1]]
     
     def _add_img_responsive_classes(self, html):
         if not html:

@@ -171,6 +171,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 }
 
                 this._appendTocItem(this.tocLists[modelKey], titleEl.textContent, newSection.id);            
+                section.insertAdjacentElement("afterend", newSection);
 
             } 
             else
@@ -179,9 +180,10 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 newSection.className="col-md-6 gap-2 mb-2"
                 newSection.innerHTML = output.output_html || "";
                 newSection.id = `section-${modelKey}`;
+
+                section.appendChild(newSection)
             }
 
-            section.insertAdjacentElement("afterend", newSection);
         });
 
     },
@@ -214,13 +216,13 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             const json = await response.json();
             const outputs = json?.result || [];
             const targetSectionId = button.dataset.targetSection || "";
-            const withSection = button.dataset.withSection || true;
-            // console.log('targetSectionId',targetSectionId)
+            const withSection = button.dataset.withSection === "0"? false : true;
+            console.log('withSection',withSection)
             const section = targetSectionId
                 ? document.getElementById(targetSectionId)
                 : button.closest(".adsuhu-section");
 
-            // console.log('section',section)
+            console.log('section',section)
             if (section) {
                 const titleEl = section.querySelector(".adsuhu-section-title");
                 const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";

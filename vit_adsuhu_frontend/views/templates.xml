@@ -485,7 +485,7 @@
                                                                     id="image_variants" 
                                                                     t-att-data-id="img.id" 
                                                                     data-regenerate="image_variants" 
-                                                                    data-with-section="false"
+                                                                    data-with-section="0"
                                                                     t-attf-data-target-section="section-image-variants-#{img.id}">
                                                                         <i class="fa fa-send me-1"></i> Generate Images
                                                                     </button>
