@@ -81,22 +81,20 @@
                                 <details class="adsuhu-toc-section" open="open">
                                     <summary class="adsuhu-toc-section-title">Product</summary>
                                     <ul class="list-group adsuhu-toc-tree" id="list-description">
-                                        <!-- descriptoion-->
-                                        <t t-if="analysis.description">
-                                            <li class="list-group-item p-0">
-                                                <a class="list-group-item list-group-item-action border-0" href="#section-description">
-                                                    Description
-                                                </a>
-                                            </li>
-                                        </t>
+                                        <!-- descriptoion-->                                        
+                                        <li class="list-group-item p-0">
+                                            <a class="list-group-item list-group-item-action border-0" href="#section-description">
+                                                Description
+                                            </a>
+                                        </li>
+
                                         <!-- features-->
-                                        <t t-if="analysis.features">
-                                            <li class="list-group-item p-0">
-                                                <a class="list-group-item list-group-item-action border-0" href="#section-features">
-                                                    Features
-                                                </a>
-                                            </li>
-                                        </t>
+                                        <li class="list-group-item p-0">
+                                            <a class="list-group-item list-group-item-action border-0" href="#section-features">
+                                                Features
+                                            </a>
+                                        </li>
+
 
                                         <!-- product analys-->
                                         <li class="list-group-item p-0">
