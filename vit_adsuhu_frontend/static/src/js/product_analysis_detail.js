@@ -142,7 +142,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         this._refreshTocTargets();
         this._updateActiveToc();
     },
-    _insertOutputSection({ section, modelTitle, modelKey, outputs, nextModel, sourceButton, withSection }) {
+    _insertOutputSection({ section, modelTitle, modelKey, outputs, nextRegenerate, sourceButton, withSection }) {
         if (!section) {
             return;
         }
@@ -168,18 +168,19 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 contentEl.innerHTML = output.output_html || "";
                 newSection.appendChild(contentEl);
 
-                if (nextModel) {
-                    const nextTitle = nextModel
+                if (nextRegenerate) {
+                    const nextTitle = nextRegenerate
                         .split("_")
                         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                         .join(" ");
+
                     const nextButton = document.createElement("button");
                     nextButton.className = "btn btn-secondary js-regenerate";
-                    nextButton.id = `regenerate_${nextModel}`;
+                    nextButton.id = `regenerate_${nextRegenerate}`;
                     nextButton.dataset.id = sourceButton?.dataset?.id || "";
                     nextButton.dataset.regenerate = nextModel;
-                    nextButton.dataset.nextModel = this.nextChain[nextModel] || "";
-                    nextButton.innerHTML = `<i class="fa fa-send me-1"></i> Analyze ${nextTitle}`;
+                    nextButton.innerHTML = `<i class="fa fa-send me-1"></i> Generate ${nextTitle}`;
+                    
                     const buttonWrap = document.createElement("div");
                     buttonWrap.className = "d-flex align-items-center justify-content-center";
                     buttonWrap.appendChild(nextButton);
@@ -243,13 +244,13 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 const titleEl = section.querySelector(".adsuhu-section-title");
                 const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
                 const modelKey = regenerateType || "result";
-                const nextModel = button.dataset.nextModel || "";
+                const nextRegenerate = button.dataset.nextRegenerate || "";
                 this._insertOutputSection({
                     section,
                     modelTitle,
                     modelKey,
                     outputs,
-                    nextModel,
+                    nextRegenerate,
                     sourceButton: button,
                     withSection
                 });
