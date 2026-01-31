@@ -359,7 +359,7 @@
 
                             <!-- product analysis -->
                             <div id="section-product-analysis" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" t-if="analysis.output_html">
+                                <section class="adsuhu-section" t-if="analysis.output">
                                     <h2 class="adsuhu-section-title">Product Value Analysis</h2>
                                     <div class="adsuhu-content" t-raw="analysis.output_html"></div>
                                     <div t-if="not analysis.market_mapper_ids" class="d-flex align-items-center justify-content-center">
