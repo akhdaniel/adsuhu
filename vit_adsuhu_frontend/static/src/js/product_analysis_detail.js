@@ -90,6 +90,13 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         }
         this.tocLinks.forEach((link) => link.classList.remove("is-active"));
         if (activeItem?.link) {
+            let node = activeItem.link.parentElement;
+            while (node) {
+                if (node.tagName && node.tagName.toLowerCase() === "details") {
+                    node.open = true;
+                }
+                node = node.parentElement;
+            }
             activeItem.link.classList.add("is-active");
             activeItem.link.scrollIntoView({ block: "nearest", inline: "nearest" });
         }
@@ -243,6 +250,12 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                     sourceButton: button,
                     withSection
                 });
+                button.style.display = "none";
+                const viewEl = document.getElementById(`view-${regenerateType}-${recordId}`);
+                console.log('viewEl', viewEl)
+                if (viewEl) {
+                    viewEl.style.display = "block";
+                }
             }
         } catch (err) {
             console.error(err);

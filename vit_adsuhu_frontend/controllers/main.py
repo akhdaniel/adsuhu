@@ -130,7 +130,7 @@ class ProductValueAnalysisController(http.Controller):
     def regenerate_angle_hook(self, audience_profiler, **kwargs):
         audience_profiler.action_generate_angles()
         return [{
-            'name': an.name,
+            'name': f"AP {audience_profiler.audience_profile_no} - ANGLE {an.angle_no}",
             'output_html': an.output_html or '',
         } for an in audience_profiler.angle_hook_ids]
 
