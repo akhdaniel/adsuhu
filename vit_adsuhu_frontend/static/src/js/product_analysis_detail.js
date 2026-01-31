@@ -178,7 +178,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                     nextButton.className = "btn btn-secondary js-regenerate";
                     nextButton.id = `regenerate_${nextRegenerate}`;
                     nextButton.dataset.id = sourceButton?.dataset?.id || "";
-                    nextButton.dataset.regenerate = nextModel;
+                    nextButton.dataset.regenerate = nextRegenerate;
                     nextButton.innerHTML = `<i class="fa fa-send me-1"></i> Generate ${nextTitle}`;
                     
                     const buttonWrap = document.createElement("div");
