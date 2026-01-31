@@ -118,7 +118,7 @@ class ProductValueAnalysisController(http.Controller):
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/market_mapper/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_market_mapper(self, analysis, **kwargs):
-        analysis.sudo().action_generate_market_mapping()
+        analysis.action_generate_market_mapping()
         return [{
             'name': mm.name,
             'output_html': mm.output_html or '',
@@ -126,7 +126,7 @@ class ProductValueAnalysisController(http.Controller):
 
     @http.route('/market_mapper/<model("vit.market_mapper"):market_mapper>/audience_profiler/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_audience_profiler(self, market_mapper, **kwargs):
-        market_mapper.action_generate()
+        # market_mapper.action_generate()
         market_mapper.action_create_audience_profiles()
         return [{
             'name': ap.name,
