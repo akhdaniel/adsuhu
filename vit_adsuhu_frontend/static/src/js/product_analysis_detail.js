@@ -245,6 +245,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
                 const modelKey = regenerateType || "result";
                 const nextRegenerate = button.dataset.nextRegenerate || "";
+                console.log('nextRegenerate',nextRegenerate)
                 this._insertOutputSection({
                     section,
                     modelTitle,

@@ -383,7 +383,8 @@
                                         <h2 class="adsuhu-section-title" t-field="market.name"></h2>
                                         <div class="adsuhu-content"  t-raw="market.output_html"></div>
                                         <div class="d-flex align-items-center justify-content-center">
-                                            <button t-if="not market.audience_profiler_ids"  class="btn btn-secondary js-regenerate" 
+                                            <button t-if="not market.audience_profiler_ids"  
+                                                class="btn btn-secondary js-regenerate" 
                                                 id="audience_profiler" 
                                                 t-att-data-id="market.id" 
                                                 data-regenerate="audience_profiler"
