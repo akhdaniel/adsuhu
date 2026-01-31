@@ -326,7 +326,8 @@
                                                 id="generate_features" 
                                                 t-att-data-id="analysis.id" 
                                                 data-regenerate="write_with_ai"
-                                                data-target-section="section-features">
+                                                data-target-section="section-features"
+                                            >
                                                 <i class="fa fa-send me-1"></i> Rewrite Features
                                             </button>
                                         </div>
@@ -336,23 +337,22 @@
 
                             <!-- features -->
                             <div id="section-features" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" >
+                                <section class="adsuhu-section" t-if="analysis.features">
                                     <h2 class="adsuhu-section-title">Features</h2>
-                                    <t t-if="analysis.features">
-                                        <div class="adsuhu-content" t-out="features_html"></div>
+                                    <div class="adsuhu-content" t-out="features_html"></div>
 
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <button t-if="not analysis.output_html" class="btn btn-secondary js-regenerate" 
-                                                id="generate_product_value_analysis" 
-                                                t-att-data-id="analysis.id" 
-                                                data-regenerate="product_value_analysis"
-                                                data-next-model="market_mapper"
-                                                data-target-section="section-product-analysis"
-                                            >
-                                                <i class="fa fa-send me-1"></i> Analyze Product Value 
-                                            </button>
-                                        </div>
-                                    </t>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <button t-if="not analysis.output_html" class="btn btn-secondary js-regenerate" 
+                                            id="generate_product_value_analysis" 
+                                            t-att-data-id="analysis.id" 
+                                            data-regenerate="product_value_analysis"
+                                            data-next-model="market_mapper"
+                                            data-target-section="section-product-analysis"
+                                        >
+                                            <i class="fa fa-send me-1"></i> Analyze Product Value 
+                                        </button>
+                                    </div>
+
                                 </section>
                             </div>
 
