@@ -690,6 +690,11 @@
             </div-->
 
             <div class="mb-3">
+                <label for="tags" class="form-label">Tags</label>
+                <textarea class="form-control" name="tags" id="tags" rows="4" required="1" placeholder="List product tags..."><t t-esc="analysis.tags if is_edit else ''"/></textarea>
+            </div>
+
+            <div class="mb-3">
                 <label for="lang_id" class="form-label">Language</label>
                 <select class="form-control" name="lang_id" id="lang_id">
                     <t t-foreach="langs" t-as="language_rec">
