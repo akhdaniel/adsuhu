@@ -129,15 +129,15 @@ class product_value_analysis(models.Model):
 
     # write description and features
     def action_write_with_ai(self, ):
-        # def json_to_markdown(features):
-        #     output = []
-        #     for feature in features:
-        #         for title, items in feature.items():
-        #             output.append(f"## {title}")
-        #             for item in items:
-        #                 output.append(f"- {item}")
-        #             output.append("")  # blank line between features
-        #     return "\n".join(output)     
+        def json_to_markdown(features):
+            output = []
+            for feature in features:
+                for title, items in feature.items():
+                    output.append(f"## {title}")
+                    for item in items:
+                        output.append(f"- {item}")
+                    output.append("")  # blank line between features
+            return "\n".join(output)     
            
         if not self.write_gpt_prompt_id:
             raise UserError('Write GPT prompt empty')
@@ -174,9 +174,7 @@ class product_value_analysis(models.Model):
         _logger.info(response.get('features'))
         # self.features = json_to_markdown(response['features'])
         self.features = self.md_to_html( 
-            self.json_to_markdown(
-                json.loads(response.get('features')), level=2, max_level=3                
-            )            
+            json_to_markdown(response.get('features'))            
         )
 
 
