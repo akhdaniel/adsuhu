@@ -20,11 +20,12 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             image_variants: (id) => `/image_generator/${id}/image_variant/regenerate`,
         };
         this.nextChain = {
-            product_value_analysis: "market_mapper",
-            market_mapper: "audience_profiler",
-            audience_profiler: "angle_hook",
-            angle_hook: "hook",
-            hook: "ads_copy",
+            write_with_ai: "product_value_analysis",
+            product_value_analysis: "market_map_analysis",
+            market_map_analysis: "audience_profile_analysis",
+            audience_profile_analysis: "angle_hook",
+            angle_hook: "ads_copy",
+            ads_copy: "image_variants",
         };
         this.tocLists = {
             market_mapper: "list-market-mapper",
@@ -168,6 +169,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 contentEl.innerHTML = output.output_html || "";
                 newSection.appendChild(contentEl);
 
+
                 if (nextRegenerate) {
                     const nextTitle = nextRegenerate
                         .split("_")
@@ -244,7 +246,8 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 const titleEl = section.querySelector(".adsuhu-section-title");
                 const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
                 const modelKey = regenerateType || "result";
-                const nextRegenerate = button.dataset.nextRegenerate || "";
+                // const nextRegenerate = button.dataset.nextRegenerate || "";
+                const nextRegenerate = this.nextChain[regenerateType]
                 console.log('nextRegenerate',nextRegenerate)
                 this._insertOutputSection({
                     section,
