@@ -94,6 +94,17 @@ class product_value_analysis(models.Model):
     _name = "vit.product_value_analysis"
     _inherit = "vit.product_value_analysis"
     specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
+    status = fields.Selection(
+        [
+            ("idle", "Idle"),
+            ("processing", "Processing"),
+            ("done", "Done"),
+            ("failed", "Failed"),
+        ],
+        string=_("Status"),
+        default="idle",
+        copy=False,
+    )
 
     def _get_default_lang(self):
         return self.env["res.lang"].search(

@@ -1,10 +1,98 @@
-from odoo import http
+from odoo import http, api
 from odoo.http import request
 from markupsafe import Markup
 import markdown
 import re
+import threading
+import odoo
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class ProductValueAnalysisController(http.Controller):
+    def _run_background(self, model_name, record_id, action):
+        dbname = request.env.cr.dbname
+        uid = request.env.uid
+        context = dict(request.env.context)
+
+        def _target():
+            with api.Environment.manage():
+                registry = odoo.registry(dbname)
+                with registry.cursor() as cr:
+                    env = api.Environment(cr, uid, context)
+                    rec = env[model_name].sudo().browse(record_id)
+                    try:
+                        action(rec)
+                        rec.write({"status": "done"})
+                    except Exception:
+                        _logger.exception("Background job failed for %s(%s)", model_name, record_id)
+                        rec.write({"status": "failed"})
+                    cr.commit()
+
+        threading.Thread(target=_target, daemon=True).start()
+
+    def _build_result(self, regenerate_type, record):
+        if regenerate_type == "product_value_analysis":
+            return [{
+                "name": "Product Value Analysis",
+                "output_html": record.sudo().output_html or "",
+            }]
+        if regenerate_type == "market_map_analysis":
+            return [{
+                "name": mm.name,
+                "output_html": mm.output_html or "",
+            } for mm in record.market_mapper_ids]
+        if regenerate_type == "audience_profile_analysis":
+            return [{
+                "name": ap.name,
+                "output_html": ap.output_html or "",
+            } for ap in record.audience_profiler_ids]
+        if regenerate_type == "angle_hook":
+            return [{
+                "name": f"AP {record.audience_profile_no} - ANGLE {an.angle_no}",
+                "output_html": an.output_html or "",
+            } for an in record.angle_hook_ids]
+        if regenerate_type == "ads_copy":
+            return [{
+                "name": f"Ads Copy: {ads.name}",
+                "output_html": f"""{ads.output_html_trimmed}
+<div class="d-flex align-items-center justify-content-center">
+    <a class="btn btn-primary" href="#section-hook-{record.id}"> <i class="fa fa-arrow-left me-1"></i> Back to Hook {record.hook_no}</a>
+    <a class="btn btn-primary" href="#ads-copy-images-{ads.id}">View Images</a>
+    <a class="btn btn-primary" href="#ads-copy-lp-{ads.id}">View Landing Page</a>
+    <a class="btn btn-primary" href="#ads-copy-video-{ads.id}">View Video Script</a>
+</div>
+"""} for ads in record.ads_copy_ids]
+        if regenerate_type == "image_variants":
+            return [{
+                "name": iv.name,
+                "output_html": f"""<a href="{iv.image_url}" target="_new">
+    <img src='{iv.image_url_512}' class='img-fluid'/>
+</a>
+""",
+            } for iv in record.image_variant_ids[-1]]
+        return []
+
+    @http.route('/regenerate_status/<string:regenerate_type>/<int:record_id>', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_status(self, regenerate_type, record_id, **kwargs):
+        model_map = {
+            "product_value_analysis": "vit.product_value_analysis",
+            "market_map_analysis": "vit.product_value_analysis",
+            "audience_profile_analysis": "vit.market_mapper",
+            "angle_hook": "vit.audience_profiler",
+            "ads_copy": "vit.hook",
+            "image_variants": "vit.image_generator",
+        }
+        model_name = model_map.get(regenerate_type)
+        if not model_name:
+            return {"status": "failed", "error": "Unknown regenerate type."}
+
+        record = request.env[model_name].sudo().browse(record_id)
+        status = record.status or "idle"
+        result = []
+        if status == "done":
+            result = self._build_result(regenerate_type, record)
+        return {"status": status, "result": result}
 
     @http.route(['/product_analysis', '/product_analysis/page/<int:page>'], type='http', auth='user', website=True)
     def list(self, page=1, **kwargs):
@@ -110,36 +198,27 @@ class ProductValueAnalysisController(http.Controller):
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_product_analysis(self, analysis, **kwargs):
-        analysis.sudo().action_generate()
-        return [{
-            'name': 'Product Value Analysis',
-            'output_html': analysis.sudo().output_html or '',
-        }]
+        analysis.sudo().write({"status": "processing"})
+        self._run_background("vit.product_value_analysis", analysis.id, lambda rec: rec.action_generate())
+        return {"status": "processing"}
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/market_mapper/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_market_mapper(self, analysis, **kwargs):
-        analysis.action_generate_market_mapping()
-        return [{
-            'name': mm.name,
-            'output_html': mm.output_html or '',
-        } for mm in analysis.market_mapper_ids]
+        analysis.sudo().write({"status": "processing"})
+        self._run_background("vit.product_value_analysis", analysis.id, lambda rec: rec.action_generate_market_mapping())
+        return {"status": "processing"}
 
     @http.route('/market_mapper/<model("vit.market_mapper"):market_mapper>/audience_profiler/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_audience_profiler(self, market_mapper, **kwargs):
-        # market_mapper.action_generate()
-        market_mapper.action_create_audience_profiles()
-        return [{
-            'name': ap.name,
-            'output_html': ap.output_html or '',
-        } for ap in market_mapper.audience_profiler_ids]
+        market_mapper.sudo().write({"status": "processing"})
+        self._run_background("vit.market_mapper", market_mapper.id, lambda rec: rec.action_create_audience_profiles())
+        return {"status": "processing"}
 
     @http.route('/audience_profiler/<model("vit.audience_profiler"):audience_profiler>/angle_hook/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_angle_hook(self, audience_profiler, **kwargs):
-        audience_profiler.action_generate_angles()
-        return [{
-            'name': f"AP {audience_profiler.audience_profile_no} - ANGLE {an.angle_no}",
-            'output_html': an.output_html or '',
-        } for an in audience_profiler.angle_hook_ids]
+        audience_profiler.sudo().write({"status": "processing"})
+        self._run_background("vit.audience_profiler", audience_profiler.id, lambda rec: rec.action_generate_angles())
+        return {"status": "processing"}
 
     # @http.route('/product_analysis/hook/<model("vit.hook"):hook>/regenerate', type='json', auth='user', website=True, methods=['POST'])
     # def regenerate_hook(self, hook, **kwargs):
@@ -150,30 +229,15 @@ class ProductValueAnalysisController(http.Controller):
 
     @http.route('/hook/<model("vit.hook"):hook>/ads_copy/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_ads_copy(self, hook, **kwargs):
-        hook.action_create_ads_copy()
-
-        return [{
-            'name': f"Ads Copy: {ads.name}",
-            'output_html': f"""{ads.output_html_trimmed}
-<div class="d-flex align-items-center justify-content-center">
-    <a class="btn btn-primary" href="#section-hook-{hook.id}"> <i class="fa fa-arrow-left me-1"></i> Back to Hook {hook.hook_no}</a>
-    <a class="btn btn-primary" href="#ads-copy-images-{ads.id}">View Images</a>
-    <a class="btn btn-primary" href="#ads-copy-lp-{ads.id}">View Landing Page</a>
-    <a class="btn btn-primary" href="#ads-copy-video-{ads.id}">View Video Script</a>
-</div>
-"""} for ads in hook.ads_copy_ids]
+        hook.sudo().write({"status": "processing"})
+        self._run_background("vit.hook", hook.id, lambda rec: rec.action_create_ads_copy())
+        return {"status": "processing"}
 
     @http.route('/image_generator/<model("vit.image_generator"):image_generator>/image_variant/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_image_variant(self, image_generator, **kwargs):
-        image_generator.action_generate()
-
-        return [{
-            'name': iv.name,
-            'output_html': f"""<a href="{iv.image_url}" target="_new">
-    <img src='{iv.image_url_512}' class='img-fluid'/>
-</a>
-""",
-        } for iv in image_generator.image_variant_ids[-1]]
+        image_generator.sudo().write({"status": "processing"})
+        self._run_background("vit.image_generator", image_generator.id, lambda rec: rec.action_generate())
+        return {"status": "processing"}
     
     def _add_img_responsive_classes(self, html):
         if not html:

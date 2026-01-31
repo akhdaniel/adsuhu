@@ -18,6 +18,17 @@ class image_generator(models.Model):
     _name = "vit.image_generator"
     _inherit = "vit.image_generator"
     specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
+    status = fields.Selection(
+        [
+            ("idle", "Idle"),
+            ("processing", "Processing"),
+            ("done", "Done"),
+            ("failed", "Failed"),
+        ],
+        string=_("Status"),
+        default="idle",
+        copy=False,
+    )
 
     def action_generate(self, ):
 
@@ -134,4 +145,3 @@ Response in {self.lang_id.name} language.
         # md += "\n".join(variants)
 
         self.output_html = self.md_to_html(md)
-

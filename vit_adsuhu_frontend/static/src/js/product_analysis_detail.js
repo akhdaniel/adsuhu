@@ -19,6 +19,14 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             ads_copy: (id) => `/hook/${id}/ads_copy/regenerate`,
             image_variants: (id) => `/image_generator/${id}/image_variant/regenerate`,
         };
+        this.statusEndpoints = {
+            product_value_analysis: (id) => `/regenerate_status/product_value_analysis/${id}`,
+            market_map_analysis: (id) => `/regenerate_status/market_map_analysis/${id}`,
+            audience_profile_analysis: (id) => `/regenerate_status/audience_profile_analysis/${id}`,
+            angle_hook: (id) => `/regenerate_status/angle_hook/${id}`,
+            ads_copy: (id) => `/regenerate_status/ads_copy/${id}`,
+            image_variants: (id) => `/regenerate_status/image_variants/${id}`,
+        };
         this.nextChain = {
             write_with_ai: "product_value_analysis",
             product_value_analysis: "market_map_analysis",
@@ -143,6 +151,66 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         this._refreshTocTargets();
         this._updateActiveToc();
     },
+    async _pollRegenerateStatus({ regenerateType, recordId, section, withSection, button }) {
+        const statusEndpointFactory = this.statusEndpoints[regenerateType];
+        if (!statusEndpointFactory) {
+            return;
+        }
+        const statusUrl = statusEndpointFactory(recordId);
+        const maxAttempts = 120;
+        const intervalMs = 2000;
+
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            await new Promise((resolve) => setTimeout(resolve, intervalMs));
+            const response = await fetch(statusUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": this.csrfToken,
+                },
+                body: JSON.stringify({}),
+                credentials: "same-origin",
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "Failed to fetch regenerate status.");
+            }
+            const json = await response.json();
+            const result = json?.result || {};
+            const status = result?.status || "idle";
+            if (status === "failed") {
+                throw new Error(result?.error || "Regenerate failed.");
+            }
+            if (status === "done") {
+                const outputs = result?.result || [];
+                if (section) {
+                    const titleEl = section.querySelector(".adsuhu-section-title");
+                    const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
+                    const modelKey = regenerateType || "result";
+                    const nextRegenerate = this.nextChain[regenerateType];
+                    this._insertOutputSection({
+                        section,
+                        modelTitle,
+                        modelKey,
+                        outputs,
+                        nextRegenerate,
+                        sourceButton: button,
+                        withSection
+                    });
+                }
+                if (button) {
+                    button.style.display = "none";
+                    const viewEl = document.getElementById(`view-${regenerateType}-${recordId}`);
+                    if (viewEl) {
+                        viewEl.style.display = "block";
+                    }
+                }
+                this._setButtonState(button, false);
+                return;
+            }
+        }
+        throw new Error("Regenerate timed out. Please try again.");
+    },
     _insertOutputSection({ section, modelTitle, modelKey, outputs, nextRegenerate, sourceButton, withSection }) {
         if (!section) {
             return;
@@ -218,6 +286,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         }
 
         this._setButtonState(button, true);
+        let usesPolling = false;
         try {
             const response = await fetch(endpointFactory(recordId), {
                 method: "POST",
@@ -233,7 +302,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 throw new Error(errorText || "Failed to regenerate.");
             }
             const json = await response.json();
-            const outputs = json?.result || [];
+            const result = json?.result;
             const targetSectionId = button.dataset.targetSection || "";
             const withSection = button.dataset.regenerate === "image_variants"? false : true;
             // console.log('withSection',withSection)
@@ -242,6 +311,19 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 : button.closest(".adsuhu-section");
 
             console.log('section',section)
+            const statusEndpointFactory = this.statusEndpoints[regenerateType];
+            if (statusEndpointFactory) {
+                usesPolling = true;
+                await this._pollRegenerateStatus({
+                    regenerateType,
+                    recordId,
+                    section,
+                    withSection,
+                    button,
+                });
+                return;
+            }
+            const outputs = Array.isArray(result) ? result : [];
             if (section) {
                 const titleEl = section.querySelector(".adsuhu-section-title");
                 const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
@@ -269,7 +351,9 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             console.error(err);
             alert(err.message || "Regenerate failed.");
         } finally {
-            this._setButtonState(button, false);
+            if (!usesPolling) {
+                this._setButtonState(button, false);
+            }
         }
     },
 });

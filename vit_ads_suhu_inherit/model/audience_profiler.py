@@ -80,6 +80,17 @@ REQUIRED JSON OUTPUT FORMAT:
 class audience_profiler(models.Model):
     _name = "vit.audience_profiler"
     _inherit = "vit.audience_profiler"
+    status = fields.Selection(
+        [
+            ("idle", "Idle"),
+            ("processing", "Processing"),
+            ("done", "Done"),
+            ("failed", "Failed"),
+        ],
+        string=_("Status"),
+        default="idle",
+        copy=False,
+    )
 
     def action_generate(self, ):
 
