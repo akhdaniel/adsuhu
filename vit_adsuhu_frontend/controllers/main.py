@@ -97,13 +97,14 @@ class ProductValueAnalysisController(http.Controller):
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/write_with_ai', type='json', auth='user', website=True, methods=['POST'])
     def write_with_ai(self, analysis, **kwargs):
-        analysis.sudo().action_write_with_ai()
-        result = analysis.sudo().read(['description', 'features', 'lang_id'])[0]
-        return {
+        analysis.action_write_with_ai()
+        result = analysis.read(['description', 'features', 'lang_id'])[0]
+        return [{
+            'output_html': result.get('features', ''),
             'description': result.get('description', ''),
             'features': result.get('features', ''),
             'lang_id': result.get('lang_id', False),
-        }
+        }]
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_product_analysis(self, analysis, **kwargs):
