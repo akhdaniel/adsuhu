@@ -112,6 +112,7 @@ class ProductValueAnalysisController(http.Controller):
     def regenerate_product_analysis(self, analysis, **kwargs):
         analysis.sudo().action_generate()
         return [{
+            'name': 'Product Value Analysis',
             'output_html': analysis.sudo().output_html or '',
         }]
 
