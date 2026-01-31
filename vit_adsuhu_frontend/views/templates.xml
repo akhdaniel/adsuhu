@@ -406,10 +406,13 @@
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <section class="adsuhu-section" t-attf-id="section-audience-#{audience.id}" style="scroll-margin-top: 6rem;">
-                                            <h2 class="adsuhu-section-title" t-field="audience.name"></h2>
+                                            <h2 class="adsuhu-section-title">AP <t t-out="audience.name"/></h2>
                                                 
                                             <div class="adsuhu-content" t-if="audience.output_html" t-raw="audience.output_html"></div>
                                             <div class="d-flex align-items-center justify-content-center">
+                                                <a class="btn btn-primary" t-attf-href="#section-market-#{market.id}">
+                                                    <i class="fa fa-arrow-left me-1"></i> Back to Market Mapper
+                                                </a>                                            
                                                 <button t-if="not audience.angle_hook_ids" class="btn btn-secondary js-regenerate" 
                                                     id="regenerate_angles" 
                                                     t-att-data-id="audience.id" 
@@ -419,15 +422,11 @@
                                                     <i class="fa fa-send me-1"></i> Create Angles &amp; Hooks
                                                 </button>
 
-                                                <t  t-else="" >
-                                                    <a class="btn btn-primary" t-attf-href="#section-market-#{market.id}">
-                                                        Back
-                                                    </a>
-
-                                                    <a t-attf-href="#audience-profile-angles-#{audience.id}"  class="btn btn-primary" 
-                                                        id="view-angle_hook">View Angles &amp; Hooks
-                                                    </a>
-                                                </t>
+                                                <a t-attf-href="#audience-profile-angles-#{audience.id}" 
+                                                    t-attf-id="view-angle_hook-#{audience.id}"
+                                                    class="btn btn-primary" 
+                                                    >View Angles &amp; Hooks
+                                                </a>
                                             </div>
                                         </section>
                                     </t>
@@ -439,15 +438,15 @@
                             <div id="section-angle-hook" style="scroll-margin-top: 6rem;">
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                        <div t-attf-id="audience-profile-angles-#{audience.id}">
+                                        <div t-attf-id="audience-profile-angles-#{audience.id}" style="scroll-margin-top: 6rem;">
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
                                                 <section class="adsuhu-section" t-attf-id="section-angle-#{angle.id}" style="scroll-margin-top: 6rem;">
-                                                    <h2 class="adsuhu-section-title" t-field="angle.name"></h2>
+                                                    <h2 class="adsuhu-section-title">Angle: <t t-out="angle.name"/></h2>
                                                     <div class="adsuhu-content" t-raw="angle.output_html"></div>
 
                                                     <div class="d-flex align-items-center justify-content-center">
                                                         <a class="btn btn-primary" t-attf-href="#section-audience-#{audience.id}">
-                                                            Back
+                                                            <i class="fa fa-arrow-left me-1"></i> Back to AP <t t-out="audience.audience_profile_no"/>
                                                         </a>
                                                         <a class="btn btn-primary" t-attf-href="#section-angle-hook-#{angle.id}">
                                                             <i class="fa fa-send me-1"></i> View Hooks
@@ -469,13 +468,12 @@
                                             <div t-attf-id="section-angle-hook-#{angle.id}" style="scroll-margin-top: 6rem;">
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
                                                     <section class="adsuhu-section" t-attf-id="section-hook-#{hook.id}" style="scroll-margin-top: 6rem;">
-                                                        <h2 class="adsuhu-section-title" t-field="hook.name"></h2>
+                                                        <h2 class="adsuhu-section-title">Hook: <t t-out="hook.name"/></h2>
                                                         <div class="adsuhu-content" t-if="hook.output_html" t-raw="hook.output_html"></div>
-                                                        
                                                         
                                                         <div class="d-flex align-items-center justify-content-center">
                                                             <a t-attf-href="#section-angle-#{angle.id}" class="btn btn-primary">
-                                                                Back
+                                                                <i class="fa fa-arrow-left me-1"></i> Back to Angle <t t-out="angle.angle_no"/>
                                                             </a>
 
                                                             <button 
@@ -484,7 +482,6 @@
                                                                 id="ads_copy" 
                                                                 t-att-data-id="hook.id" 
                                                                 data-regenerate="ads_copy" 
-                                                                data-next-model="ads_copy"
                                                                 data-target-section="section-ads-copy"
                                                             >
                                                                 <i class="fa fa-send me-1"></i> Create Ads Copy
@@ -514,14 +511,14 @@
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <t t-foreach="audience.angle_hook_ids" t-as="angle">
                                             <t t-foreach="angle.hook_ids" t-as="hook">
-                                                <div t-attf-id="hook-ads-copies-#{hook.id}">
+                                                <div t-attf-id="hook-ads-copies-#{hook.id}" style="scroll-margin-top: 6rem;">
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                         <section class="adsuhu-section" t-attf-id="section-ads-#{ads.id}" style="scroll-margin-top: 6rem;">
-                                                            <h2 class="adsuhu-section-title" t-field="ads.name"></h2>
+                                                            <h2 class="adsuhu-section-title">Ads Copy: <t t-out="ads.name"/></h2>
                                                             <div class="adsuhu-content" t-if="ads.output_html" t-raw="ads.output_html_trimmed"></div>
 
                                                             <div class="d-flex align-items-center justify-content-center">
-                                                                <a class="btn btn-primary" t-attf-href="#section-hook-#{hook.id}">&lt; Back</a>
+                                                                <a class="btn btn-primary" t-attf-href="#section-hook-#{hook.id}"> <i class="fa fa-arrow-left me-1"></i> Back to Hook <t t-out="hook.hook_no"/></a>
                                                                 <a class="btn btn-primary" t-attf-href="#ads-copy-images-#{ads.id}">View Images</a>
                                                                 <a class="btn btn-primary" t-attf-href="#ads-copy-lp-#{ads.id}">View Landing Page</a>
                                                                 <a class="btn btn-primary" t-attf-href="#ads-copy-video-#{ads.id}">View Video Script</a>
@@ -546,7 +543,7 @@
                                                     <div t-attf-id="ads-copy-images-#{ads.id}">
                                                         <t t-foreach="ads.image_generator_ids" t-as="img">
                                                             <section class="adsuhu-section" t-attf-id="section-img-#{img.id}" style="scroll-margin-top: 6rem;">
-                                                                <h2 class="adsuhu-section-title" t-field="img.name"></h2>
+                                                                <h2 class="adsuhu-section-title">Image: <t t-out="img.name"/></h2>
                                                                 <div class="adsuhu-content" t-if="img.output_html" t-raw="img.output_html"></div>
 
                                                                 <div class="row" t-attf-id="section-image-variants-#{img.id}">
@@ -562,6 +559,10 @@
                                                                 </div>
 
                                                                 <div class="d-flex align-items-center justify-content-center">
+                                                                    <a class="btn btn-primary" t-attf-href="#section-ads-#{ads.id}">
+                                                                        <i class="fa fa-arrow-left me-1"></i> Back to Ads Copy <t t-out="ads.name"/>
+                                                                    </a>
+
                                                                     <button 
                                                                     class="btn btn-secondary js-regenerate" 
                                                                     id="image_variants" 
@@ -592,8 +593,14 @@
                                                     <div t-attf-id="ads-copy-lp-#{ads.id}">
                                                         <t t-foreach="ads.landing_page_builder_ids" t-as="lp">
                                                             <section class="adsuhu-section" t-attf-id="section-lp-#{lp.id}" style="scroll-margin-top: 6rem;">
-                                                                <h2 class="adsuhu-section-title" t-field="lp.name"></h2>
+                                                                <h2 class="adsuhu-section-title">LP: <t t-out="lp.name"/></h2>
                                                                 <div class="adsuhu-content" t-if="lp.output_html" t-raw="lp.output_html"></div>
+                                                                
+                                                                <div class="d-flex align-items-center justify-content-center">
+                                                                    <a class="btn btn-primary" t-attf-href="#section-ads-#{ads.id}">
+                                                                        <i class="fa fa-arrow-left me-1"></i> Back to Ads Copy <t t-out="ads.name"/>
+                                                                    </a> 
+                                                                </div>                                                               
                                                             </section>
                                                         </t>
                                                     </div>
@@ -615,8 +622,13 @@
                                                     <div t-attf-id="ads-copy-video-#{ads.id}">
                                                         <t t-foreach="ads.video_director_ids" t-as="vid">
                                                             <section class="adsuhu-section" t-attf-id="section-vid-#{vid.id}" style="scroll-margin-top: 6rem;">
-                                                                <h2 class="adsuhu-section-title" t-field="vid.name"></h2>
+                                                                <h2 class="adsuhu-section-title">Video: <t t-out="vid.name"/></h2>
                                                                 <div class="adsuhu-content" t-if="vid.output_html" t-raw="vid.output_html"></div>
+                                                                <div class="d-flex align-items-center justify-content-center">
+                                                                    <a class="btn btn-primary" t-attf-href="#section-ads-#{ads.id}">
+                                                                        <i class="fa fa-arrow-left me-1"></i> Back to Ads Copy <t t-out="ads.name"/>
+                                                                    </a> 
+                                                                </div> 
                                                             </section>
                                                         </t>
                                                     </div>

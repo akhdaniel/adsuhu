@@ -115,9 +115,11 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             button.dataset.originalText = button.innerText;
             button.innerText = "Regenerating...";
             button.disabled = true;
+            button.classList.add("adsuhu-btn-loading");
         } else {
             button.innerText = button.dataset.originalText || "Regenerate";
             button.disabled = false;
+            button.classList.remove("adsuhu-btn-loading");
         }
     },
     _appendTocItem(listId, title, sectionId) {
@@ -252,7 +254,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 });
                 button.style.display = "none";
                 const viewEl = document.getElementById(`view-${regenerateType}-${recordId}`);
-                console.log('viewEl', viewEl)
+                // console.log('viewEl', viewEl)
                 if (viewEl) {
                     viewEl.style.display = "block";
                 }

@@ -146,9 +146,15 @@ class ProductValueAnalysisController(http.Controller):
         hook.action_create_ads_copy()
 
         return [{
-            'name': ads.name,
-            'output_html': ads.output_html or '',
-        } for ads in hook.ads_copy_ids]
+            'name': f"Ads Copy: {ads.name}",
+            'output_html': f"""{ads.output_html_trimmed}
+<div class="d-flex align-items-center justify-content-center">
+    <a class="btn btn-primary" href="#section-hook-{hook.id}"> <i class="fa fa-arrow-left me-1"></i> Back to Hook {hook.hook_no}</a>
+    <a class="btn btn-primary" href="#ads-copy-images-{ads.id}">View Images</a>
+    <a class="btn btn-primary" href="#ads-copy-lp-{ads.id}">View Landing Page</a>
+    <a class="btn btn-primary" href="#ads-copy-video-{ads.id}">View Video Script</a>
+</div>
+"""} for ads in hook.ads_copy_ids]
 
     @http.route('/image_generator/<model("vit.image_generator"):image_generator>/image_variant/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_image_variant(self, image_generator, **kwargs):
