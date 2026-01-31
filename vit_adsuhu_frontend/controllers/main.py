@@ -22,9 +22,9 @@ class ProductValueAnalysisController(http.Controller):
                     env = api.Environment(cr, uid, context)
                     rec = env[model_name].sudo().browse(record_id)
                     try:
-                        _logger.infor(f'executing action: {action}...')
+                        _logger.info("Background job start: %s(%s) action=%s", model_name, record_id, action)
                         action(rec)
-                        _logger.infor('done executing action...')
+                        _logger.info("Background job done: %s(%s)", model_name, record_id)
                         rec.write({"status": "done"})
                     except Exception:
                         _logger.exception("Background job failed for %s(%s)", model_name, record_id)
