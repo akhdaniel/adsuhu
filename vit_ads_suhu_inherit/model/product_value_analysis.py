@@ -163,8 +163,8 @@ class product_value_analysis(models.Model):
                                 context=context, 
                                 question=question, 
                                 additional_command=additional_command)    
-        _logger.info(response)
         response = self.clean_md(response)
+        _logger.info(response)
 
         response = json.loads(response)
         if not 'description' in response:
