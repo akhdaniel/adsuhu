@@ -388,7 +388,7 @@
                                                 id="audience_profiler" 
                                                 t-att-data-id="market.id" 
                                                 data-regenerate="audience_profiler"
-                                                data-next-model="angle_hoook"
+                                                data-next-model="angle_hook"
                                                 data-target-section="section-audience-profiler"
                                             >
                                                 <i class="fa fa-send me-1"></i> Analyze Auidence Profile 

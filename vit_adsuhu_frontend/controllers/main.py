@@ -100,6 +100,7 @@ class ProductValueAnalysisController(http.Controller):
         analysis.action_write_with_ai()
         result = analysis.read(['description', 'features', 'lang_id'])[0]
         return [{
+            'name':'Features',
             'output_html': result.get('features', ''),
             'description': result.get('description', ''),
             'features': result.get('features', ''),
