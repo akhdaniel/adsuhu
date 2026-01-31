@@ -186,6 +186,7 @@ Response in {rec.lang_id.name} language.
     def action_create_audience_profiles(self, ):
         output = self.clean_md(self.output)
         js = json.loads(output)
+        _logger.info(js)
 
         self.audience_profiler_ids = [(0,0,{
             'name':f'/',
