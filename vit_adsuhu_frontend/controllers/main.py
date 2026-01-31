@@ -15,7 +15,10 @@ class ProductValueAnalysisController(http.Controller):
         uid = request.env.uid
         context = dict(request.env.context)
 
+        _logger.info("Background thread spawn: %s(%s) action=%s", model_name, record_id, action)
+
         def _target():
+            _logger.info("Background thread started: %s(%s)", model_name, record_id)
             with api.Environment.manage():
                 registry = odoo.registry(dbname)
                 with registry.cursor() as cr:
