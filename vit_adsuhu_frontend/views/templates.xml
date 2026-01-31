@@ -364,6 +364,7 @@
                                             id="regenerate_market_mapper" 
                                             t-att-data-id="analysis.id" 
                                             data-regenerate="market_map_analysis"
+                                        >
                                             <i class="fa fa-send me-1"></i> Generate Market Map Analysis
                                         </button>
                                     </div>
