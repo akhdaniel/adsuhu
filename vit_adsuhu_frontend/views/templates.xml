@@ -325,7 +325,8 @@
                                             <button class="btn btn-secondary js-regenerate" 
                                                 id="generate_features" 
                                                 t-att-data-id="analysis.id" 
-                                                data-regenerate="features">
+                                                data-regenerate="write_with_ai"
+                                                data-target-section="section-features">
                                                 <i class="fa fa-send me-1"></i> Rewrite Features
                                             </button>
                                         </div>

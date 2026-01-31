@@ -10,6 +10,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
         this.endpoints = {
+            write_with_ai: (id) => `/product_analysis/${id}/write_with_ai`,
             product_value_analysis: (id) => `/product_analysis/${id}/regenerate`,
             market_mapper: (id) => `/product_analysis/market_mapper/${id}/regenerate`,
             audience_profiler: (id) => `/market_mapper/${id}/audience_profiler/regenerate`,
