@@ -215,7 +215,31 @@ class general_object(models.Model):
         md_content = re.sub(r'(/web/image/[^\s)]+)', escape_web_image_underscores, md_content)
         # Enable tables so Markdown tables render into HTML for downstream DOCX conversion
         html_content = markdown.markdown(md_content, extensions=['tables'])
-        # Wrap tables to make them responsive in the frontend.
+        # Ensure tables have Bootstrap classes and wrap them to be responsive in the frontend.
+        def add_table_classes(match):
+            attrs = match.group(1) or ""
+            if re.search(r"\bclass\s*=", attrs, flags=re.IGNORECASE):
+                attrs = re.sub(
+                    r'class\s*=\s*"([^"]*)"',
+                    lambda m: f'class="{m.group(1)} table table-striped"',
+                    attrs,
+                    flags=re.IGNORECASE,
+                )
+                attrs = re.sub(
+                    r"class\s*=\s*'([^']*)'",
+                    lambda m: f"class='{m.group(1)} table table-striped'",
+                    attrs,
+                    flags=re.IGNORECASE,
+                )
+                return f"<table{attrs}>"
+            return f'<table class="table table-striped"{attrs}>'
+
+        html_content = re.sub(
+            r"<table\b([^>]*)>",
+            add_table_classes,
+            html_content,
+            flags=re.IGNORECASE,
+        )
         html_content = re.sub(
             r'(<table\b[^>]*>.*?</table>)',
             r'<div class="table-responsive">\1</div>',
