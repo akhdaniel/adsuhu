@@ -725,6 +725,7 @@
                     const descField = form.querySelector("#description");
                     console.log('descField', descField)
                     const featuresField = form.querySelector("#features");
+                    const tagdField = form.querySelector("#tags");
                     const langField = form.querySelector("#lang_id");
                     const csrfTokenInput = form.querySelector("input[name='csrf_token']");
                     const analysisId = aiBtn.dataset.analysisId;
