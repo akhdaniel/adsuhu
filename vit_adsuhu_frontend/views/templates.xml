@@ -348,8 +348,9 @@
                                             t-att-data-id="analysis.id" 
                                             data-regenerate="product_value_analysis"
                                             data-target-section="section-product-analysis"
+                                            data-next-regenerate="market_map_analysis"
                                         >
-                                            <i class="fa fa-send me-1"></i> Analyze Product Value 
+                                            <i class="fa fa-send me-1"></i> Generate Product Value Analysis
                                         </button>
                                     </div>
 
@@ -367,9 +368,9 @@
                                                 id="regenerate_market_mapper" 
                                                 t-att-data-id="analysis.id" 
                                                 data-regenerate="market_mapper"
-                                                data-next-model="audience_profiler"
+                                                data-next-model="audience_profile_analysis"
                                                 data-target-section="section-market-mapper">
-                                                <i class="fa fa-send me-1"></i> Analyze Market Map
+                                                <i class="fa fa-send me-1"></i> Generate Market Map Analysis
                                             </button>
                                         </div>
                                     </t>
@@ -391,7 +392,7 @@
                                                 data-next-model="angle_hook"
                                                 data-target-section="section-audience-profiler"
                                             >
-                                                <i class="fa fa-send me-1"></i> Analyze Auidence Profile 
+                                                <i class="fa fa-send me-1"></i> Generate Auidence Profile Analysis
                                             </button>
                                         </div>
                                     </section>
@@ -417,7 +418,7 @@
                                                     data-regenerate="angle_hook" 
                                                     data-next-model="hook"
                                                     data-target-section="section-angle-hook">
-                                                    <i class="fa fa-send me-1"></i> Create Angles &amp; Hooks
+                                                    <i class="fa fa-send me-1"></i> Generate Angles &amp; Hooks
                                                 </button>
 
                                                 <a t-attf-href="#audience-profile-angles-#{audience.id}" 
