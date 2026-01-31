@@ -171,11 +171,7 @@ class product_value_analysis(models.Model):
             raise UserError(f'Error from GPT: {response}')
         self.description = response.get('description','')
         # self.features = json_to_markdown(response['features'])
-        self.features = self.md_to_html(
-            self.json_to_markdown(
-                json.loads( response['features'] ), level=2, max_level=3
-            )
-        )
+        self.features = self.md_to_html( response['features'] )
 
 
     @api.onchange("description","features","lang_id","specific_instruction")
