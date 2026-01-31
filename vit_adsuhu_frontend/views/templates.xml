@@ -322,7 +322,7 @@
                                     <t t-if="analysis.description">
                                         <div class="adsuhu-content" t-out="description_html"></div>
                                         <div t-if="not analysis.features" class="d-flex align-items-center justify-content-center">
-                                            <button t-if="not analysis" class="btn btn-secondary js-regenerate" 
+                                            <button class="btn btn-secondary js-regenerate" 
                                                 id="generate_features" 
                                                 t-att-data-id="analysis.id" 
                                                 data-regenerate="features">
