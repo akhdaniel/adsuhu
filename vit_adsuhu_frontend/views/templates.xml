@@ -343,7 +343,7 @@
                                     <div class="adsuhu-content" t-out="features_html"></div>
 
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <button t-if="not analysis.output_html" class="btn btn-secondary js-regenerate" 
+                                        <button t-if="not analysis.output" class="btn btn-secondary js-regenerate" 
                                             id="generate_product_value_analysis" 
                                             t-att-data-id="analysis.id" 
                                             data-regenerate="product_value_analysis"
