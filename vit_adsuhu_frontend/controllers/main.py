@@ -126,6 +126,7 @@ class ProductValueAnalysisController(http.Controller):
 
     @http.route('/market_mapper/<model("vit.market_mapper"):market_mapper>/audience_profiler/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_audience_profiler(self, market_mapper, **kwargs):
+        market_mapper.action_generate()
         market_mapper.action_create_audience_profiles()
         return [{
             'name': ap.name,
