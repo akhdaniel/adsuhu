@@ -164,12 +164,14 @@ class product_value_analysis(models.Model):
                                 question=question, 
                                 additional_command=additional_command)    
         response = self.clean_md(response)
-        _logger.info(response)
+        # _logger.info(response)
 
         response = json.loads(response)
         if not 'description' in response:
             raise UserError(f'Error from GPT: {response}')
         self.description = response.get('description','')
+
+        _logger.info(response.get('features'))
         # self.features = json_to_markdown(response['features'])
         self.features = self.md_to_html( 
             self.json_to_markdown(
