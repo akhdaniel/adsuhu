@@ -19,20 +19,26 @@ class ProductValueAnalysisController(http.Controller):
 
         def _target():
             _logger.info("Background thread started: %s(%s)", model_name, record_id)
-            with api.Environment.manage():
-                registry = odoo.registry(dbname)
-                with registry.cursor() as cr:
-                    env = api.Environment(cr, uid, context)
-                    rec = env[model_name].sudo().browse(record_id)
-                    try:
-                        _logger.info("Background job start: %s(%s) action=%s", model_name, record_id, action)
-                        action(rec)
-                        _logger.info("Background job done: %s(%s)", model_name, record_id)
-                        rec.write({"status": "done"})
-                    except Exception:
-                        _logger.exception("Background job failed for %s(%s)", model_name, record_id)
-                        rec.write({"status": "failed"})
-                    cr.commit()
+            try:
+                _logger.info("Background thread entering Odoo env: %s(%s)", model_name, record_id)
+                with api.Environment.manage():
+                    _logger.info("Background thread got registry: %s(%s)", model_name, record_id)
+                    registry = odoo.registry(dbname)
+                    with registry.cursor() as cr:
+                        _logger.info("Background thread got cursor: %s(%s)", model_name, record_id)
+                        env = api.Environment(cr, uid, context)
+                        rec = env[model_name].sudo().browse(record_id)
+                        try:
+                            _logger.info("Background job start: %s(%s) action=%s", model_name, record_id, action)
+                            action(rec)
+                            _logger.info("Background job done: %s(%s)", model_name, record_id)
+                            rec.write({"status": "done"})
+                        except Exception:
+                            _logger.exception("Background job failed for %s(%s)", model_name, record_id)
+                            rec.write({"status": "failed"})
+                        cr.commit()
+            except Exception:
+                _logger.exception("Background thread crashed before job execution for %s(%s)", model_name, record_id)
 
         threading.Thread(target=_target, daemon=True).start()
 
