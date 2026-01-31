@@ -52,18 +52,20 @@ class ProductValueAnalysisController(http.Controller):
         target_market = post.get('target_market')
         description = post.get('description')
         features = post.get('features')
+        tags = post.get('tags')
         deafult_lang = request.env['res.lang'].search([('active', '=', True)], limit=1)
         lang_id = int(post.get('lang_id')) if post.get('lang_id') else deafult_lang.id
 
         # if not product_url:
         #     return request.redirect('/product_analysis/create')
 
-        new_analysis = request.env['vit.product_value_analysis'].sudo().create({
+        new_analysis = request.env['vit.product_value_analysis'].create({
             'name': product_name,
             'product_url': product_url,
             'target_market': target_market,
             'description': description,
             'features': features,
+            'tags': tags,
             'lang_id': lang_id,
         })
 
