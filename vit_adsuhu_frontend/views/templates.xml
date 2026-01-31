@@ -367,7 +367,7 @@
                                             id="regenerate_market_mapper" 
                                             t-att-data-id="analysis.id" 
                                             data-regenerate="market_map_analysis"
-                                            data-next-model="audience_profile_analysis"
+                                            data-next-regenerate="audience_profile_analysis"
                                             data-target-section="section-market-mapper">
                                             <i class="fa fa-send me-1"></i> Generate Market Map Analysis
                                         </button>
@@ -387,7 +387,7 @@
                                                 id="audience_profiler" 
                                                 t-att-data-id="market.id" 
                                                 data-regenerate="audience_profiler"
-                                                data-next-model="angle_hook"
+                                                data-next-regenerate="angle_hook"
                                                 data-target-section="section-audience-profiler"
                                             >
                                                 <i class="fa fa-send me-1"></i> Generate Auidence Profile Analysis
@@ -414,7 +414,7 @@
                                                     id="regenerate_angles" 
                                                     t-att-data-id="audience.id" 
                                                     data-regenerate="angle_hook" 
-                                                    data-next-model="hook"
+                                                    data-next-regenerate="hook"
                                                     data-target-section="section-angle-hook">
                                                     <i class="fa fa-send me-1"></i> Generate Angles &amp; Hooks
                                                 </button>
