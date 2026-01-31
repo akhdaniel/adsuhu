@@ -683,10 +683,10 @@
                 <textarea class="form-control" name="description" id="description" rows="5" placeholder="Paste or type product description here..."><t t-esc="analysis.description if is_edit else ''"/></textarea>
             </div>
 
-            <!--div class="mb-3">
+            <div class="mb-3">
                 <label for="features" class="form-label">Key Features</label>
-                <textarea class="form-control" name="features" id="features" rows="4" placeholder="List product features..."><t t-esc="analysis.features if is_edit else ''"/></textarea>
-            </div-->
+                <textarea class="form-control" name="features" id="features" rows="4" placeholder="List product features (leave blank for auto AI generated)..."><t t-esc="analysis.features if is_edit else ''"/></textarea>
+            </div>
 
             <div class="mb-3">
                 <label for="tags" class="form-label">Tags</label>
