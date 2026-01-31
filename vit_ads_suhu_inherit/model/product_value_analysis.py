@@ -173,7 +173,7 @@ class product_value_analysis(models.Model):
         # self.features = json_to_markdown(response['features'])
         self.features = self.md_to_html(
             self.json_to_markdown(
-                json.loads(self.clean_md(response['features'])), level=2, max_level=3
+                json.loads( response['features'] ), level=2, max_level=3
             )
         )
 
