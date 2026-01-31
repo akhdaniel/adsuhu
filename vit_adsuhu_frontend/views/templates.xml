@@ -323,7 +323,7 @@
                                     <h2 class="adsuhu-section-title">Description</h2>
                                     <t t-if="analysis.description">
                                         <div class="adsuhu-content" t-out="description_html"></div>
-                                        <div t-if="not features_html" class="d-flex align-items-center justify-content-center">
+                                        <div t-if="not analysis.features" class="d-flex align-items-center justify-content-center">
                                             <button t-if="not analysis" class="btn btn-secondary js-regenerate" 
                                                 id="generate_features" 
                                                 t-att-data-id="analysis.id" 
@@ -342,14 +342,14 @@
                                     <t t-if="analysis.features">
                                         <div class="adsuhu-content" t-out="features_html"></div>
 
-                                        <div t-if="features_html" class="d-flex align-items-center justify-content-center">
+                                        <div t-if="not features_html" class="d-flex align-items-center justify-content-center">
                                             <button t-if="not analysis.output_html" class="btn btn-secondary js-regenerate" 
                                                 id="generate_product_value_analysis" 
                                                 t-att-data-id="analysis.id" 
                                                 data-regenerate="product_value_analysis"
                                                 data-next-model="market_mapper"
                                                 data-target-section="section-product-analysis"
-                                                >
+                                            >
                                                 <i class="fa fa-send me-1"></i> Analyze Product Value 
                                             </button>
                                         </div>
@@ -398,7 +398,6 @@
                                     </section>
                                 </t>
                             </div>
-
 
                             <h1>Audience Profile</h1>
                             <!-- audience profile-->
