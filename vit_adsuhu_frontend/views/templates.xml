@@ -684,10 +684,10 @@
                 <textarea class="form-control" name="description" id="description" rows="5" placeholder="Paste or type product description here..."><t t-esc="analysis.description if is_edit else ''"/></textarea>
             </div>
 
-            <div class="mb-3">
+            <!--div class="mb-3">
                 <label for="features" class="form-label">Key Features</label>
                 <textarea class="form-control" name="features" id="features" rows="4" placeholder="List product features..."><t t-esc="analysis.features if is_edit else ''"/></textarea>
-            </div>
+            </div-->
 
             <div class="mb-3">
                 <label for="lang_id" class="form-label">Language</label>
@@ -703,7 +703,7 @@
             <div class="d-grid gap-2 mt-4">
                 <button type="submit" class="btn btn-primary btn-lg">
                     <t t-if="is_edit">Save Changes</t>
-                    <t t-if="not is_edit">Analyze Product</t>
+                    <t t-if="not is_edit">Start Product Analyzer</t>
                 </button>
                 <a t-att-href="cancel_href" class="btn btn-outline-secondary">Cancel</a>
             </div>
