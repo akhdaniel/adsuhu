@@ -359,21 +359,19 @@
 
                             <!-- product analysis -->
                             <div id="section-product-analysis" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" >
-                                    <h2 class="adsuhu-section-title">Product Analysis</h2>
-                                    <t t-if="analysis.output_html" >
-                                        <div class="adsuhu-content" t-raw="analysis.output_html"></div>
-                                        <div t-if="not analysis.market_mapper_ids" class="d-flex align-items-center justify-content-center">
-                                            <button class="btn btn-secondary js-regenerate" 
-                                                id="regenerate_market_mapper" 
-                                                t-att-data-id="analysis.id" 
-                                                data-regenerate="market_mapper"
-                                                data-next-model="audience_profile_analysis"
-                                                data-target-section="section-market-mapper">
-                                                <i class="fa fa-send me-1"></i> Generate Market Map Analysis
-                                            </button>
-                                        </div>
-                                    </t>
+                                <section class="adsuhu-section" t-if="analysis.output_html">
+                                    <h2 class="adsuhu-section-title">Product Value Analysis</h2>
+                                    <div class="adsuhu-content" t-raw="analysis.output_html"></div>
+                                    <div t-if="not analysis.market_mapper_ids" class="d-flex align-items-center justify-content-center">
+                                        <button class="btn btn-secondary js-regenerate" 
+                                            id="regenerate_market_mapper" 
+                                            t-att-data-id="analysis.id" 
+                                            data-regenerate="market_map_analysis"
+                                            data-next-model="audience_profile_analysis"
+                                            data-target-section="section-market-mapper">
+                                            <i class="fa fa-send me-1"></i> Generate Market Map Analysis
+                                        </button>
+                                    </div>
                                 </section>
                             </div>
 
