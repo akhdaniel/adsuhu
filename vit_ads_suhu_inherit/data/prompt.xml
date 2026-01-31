@@ -30,7 +30,7 @@ Respons ONLY in this JSON data format without explanation.
         <record id="write_description_prompt" model="vit.gpt_prompt">
             <field name="name">Write Description Prompt</field>
             <field name="user_prompt"><![CDATA[Write short description about this product:
-{context}. Then write list of full list of at least 10 features, max 1 level bullets.
+{context}. Then write list of full list of at least 10 features, max 1 level bullets, each feature at least has 3 description points.
 Write comma separated tags.
 
 {question}
@@ -41,7 +41,12 @@ Return in this JSON format:
     "description":"...",
     "tags":"tag1, tag2, tag3, ...",
     "features":[
-        {{"Feature 1 Title":["...","...","..."..]}},
+        {{"Feature 1 Title":[
+            "...",
+            "...",
+            "...", 
+            ]
+        }},
         {{"Feature 2 Title":["...","...","..."..]}},
         {{"Feature 3 Title":["...","...","..."..]}},
         {{"Feature 4 Title":["...","...","..."..]}},
