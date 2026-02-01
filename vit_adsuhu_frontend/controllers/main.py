@@ -12,6 +12,17 @@ import psycopg2
 _logger = logging.getLogger(__name__)
 
 class ProductValueAnalysisController(http.Controller):
+    def _clear_record_output(self, record):
+        vals = {}
+        if "output" in record._fields:
+            vals["output"] = False
+        if "output_html" in record._fields:
+            vals["output_html"] = False
+        if "features" in record._fields:
+            vals["features"] = False
+        if vals:
+            record.sudo().write(vals)
+
     def _run_background(self, model_name, record_id, action):
         dbname = request.env.cr.dbname
         uid = request.env.uid
@@ -61,30 +72,60 @@ class ProductValueAnalysisController(http.Controller):
     def _build_result(self, regenerate_type, record):
         if regenerate_type == "product_value_analysis":
             return [{
+                "id": record.id,
                 "name": "Product Value Analysis",
                 "output_html": record.sudo().output_html or "",
+                "clear_url": f"/product_analysis/{record.id}/celar",
             }]
         if regenerate_type == "market_map_analysis":
             return [{
+                "id": mm.id,
                 "name": mm.name,
                 "output_html": mm.output_html or "",
+                "clear_url": f"/market_mapper/{mm.id}/celar",
             } for mm in record.market_mapper_ids]
         if regenerate_type == "audience_profile_analysis":
             return [{
+                "id": ap.id,
                 "name": ap.name,
                 "output_html": ap.output_html or "",
+                "clear_url": f"/audience_profiler/{ap.id}/celar",
             } for ap in record.audience_profiler_ids.sorted(key=lambda rec: rec.audience_profile_no or "")]
         if regenerate_type == "angle_hook":
             return [{
+                "id": an.id,
                 "name": f"AP {record.audience_profile_no} - ANGLE {an.angle_no}",
                 "output_html": an.output_html or "",
+                "clear_url": f"/angle_hook/{an.id}/celar",
             } for an in record.angle_hook_ids.sorted(key=lambda rec: rec.angle_no or "")]
         if regenerate_type == "ads_copy":
             return [{
+                "id": ads.id,
                 "name": f"Ads Copy: {ads.name}",
-                "images":[ {"name":im.name, "output_html":im.output_html} for im in ads.image_generator_ids],
-                "lps":[ {"name":lp.name, "output_html":lp.output_html} for lp in ads.landing_page_builder_ids],
-                "videos":[ {"name":vid.name, "output_html":vid.output_html }for vid in ads.video_director_ids],
+                "images":[
+                    {
+                        "id": im.id,
+                        "name": im.name,
+                        "output_html": im.output_html,
+                        "clear_url": f"/image_generator/{im.id}/celar",
+                    } for im in ads.image_generator_ids
+                ],
+                "lps":[
+                    {
+                        "id": lp.id,
+                        "name": lp.name,
+                        "output_html": lp.output_html,
+                        "clear_url": f"/landing_page/{lp.id}/celar",
+                    } for lp in ads.landing_page_builder_ids
+                ],
+                "videos":[
+                    {
+                        "id": vid.id,
+                        "name": vid.name,
+                        "output_html": vid.output_html,
+                        "clear_url": f"/video_director/{vid.id}/celar",
+                    } for vid in ads.video_director_ids
+                ],
                 "output_html": f"""{ads.output_html_trimmed}
 <div class="d-flex align-items-center justify-content-center">
     <a class="btn btn-primary" href="#section-hook-{record.id}"> <i class="fa fa-arrow-left me-1"></i> Back to Hook {record.hook_no}</a>
@@ -92,16 +133,65 @@ class ProductValueAnalysisController(http.Controller):
     <a class="btn btn-primary" href="#ads-copy-lp-{ads.id}">View Landing Page</a>
     <a class="btn btn-primary" href="#ads-copy-video-{ads.id}">View Video Script</a>
 </div>
-"""} for ads in record.ads_copy_ids.sorted(key=lambda rec: rec.name or "")]
+""",
+                "clear_url": f"/ads_copy/{ads.id}/celar",
+            } for ads in record.ads_copy_ids.sorted(key=lambda rec: rec.name or "")]
         if regenerate_type == "image_variants":
             return [{
+                "id": record.id,
                 "name": iv.name,
                 "output_html": f"""<a href="{iv.image_url}" target="_new">
     <img src='{iv.image_url_512}' class='img-fluid'/>
 </a>
 """,
+                "clear_url": f"/image_generator/{record.id}/celar",
             } for iv in record.image_variant_ids[-1]]
         return []
+
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/celar', type='json', auth='user', website=True, methods=['POST'])
+    def clear_product_analysis(self, analysis, **kwargs):
+        self._clear_record_output(analysis)
+        return {"status": "ok"}
+
+    @http.route('/market_mapper/<model("vit.market_mapper"):market_mapper>/celar', type='json', auth='user', website=True, methods=['POST'])
+    def clear_market_mapper(self, market_mapper, **kwargs):
+        self._clear_record_output(market_mapper)
+        return {"status": "ok"}
+
+    @http.route('/audience_profiler/<model("vit.audience_profiler"):audience_profiler>/celar', type='json', auth='user', website=True, methods=['POST'])
+    def clear_audience_profiler(self, audience_profiler, **kwargs):
+        self._clear_record_output(audience_profiler)
+        return {"status": "ok"}
+
+    @http.route('/angle_hook/<model("vit.angle_hook"):angle_hook>/celar', type='json', auth='user', website=True, methods=['POST'])
+    def clear_angle_hook(self, angle_hook, **kwargs):
+        self._clear_record_output(angle_hook)
+        return {"status": "ok"}
+
+    @http.route('/hook/<model("vit.hook"):hook>/celar', type='json', auth='user', website=True, methods=['POST'])
+    def clear_hook(self, hook, **kwargs):
+        self._clear_record_output(hook)
+        return {"status": "ok"}
+
+    @http.route('/ads_copy/<model("vit.ads_copy"):ads_copy>/celar', type='json', auth='user', website=True, methods=['POST'])
+    def clear_ads_copy(self, ads_copy, **kwargs):
+        self._clear_record_output(ads_copy)
+        return {"status": "ok"}
+
+    @http.route('/image_generator/<model("vit.image_generator"):image_generator>/celar', type='json', auth='user', website=True, methods=['POST'])
+    def clear_image_generator(self, image_generator, **kwargs):
+        self._clear_record_output(image_generator)
+        return {"status": "ok"}
+
+    @http.route('/video_director/<model("vit.video_director"):video_director>/celar', type='json', auth='user', website=True, methods=['POST'])
+    def clear_video_director(self, video_director, **kwargs):
+        self._clear_record_output(video_director)
+        return {"status": "ok"}
+
+    @http.route('/landing_page/<model("vit.landing_page_builder"):landing_page>/celar', type='json', auth='user', website=True, methods=['POST'])
+    def clear_landing_page(self, landing_page, **kwargs):
+        self._clear_record_output(landing_page)
+        return {"status": "ok"}
 
     @http.route('/regenerate_status/<string:regenerate_type>/<int:record_id>', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_status(self, regenerate_type, record_id, **kwargs):

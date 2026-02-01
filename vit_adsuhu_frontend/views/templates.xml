@@ -320,7 +320,7 @@
                             <h1>Product</h1>
                             <!-- description -->
                             <div id="section-description" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" >
+                                <section class="adsuhu-section" t-attf-data-clear-url="/product_analysis/#{analysis.id}/celar">
                                     <h2 class="adsuhu-section-title">Description</h2>
                                     <t t-if="analysis.description">
                                         <div class="adsuhu-content" t-out="description_html"></div>
@@ -340,7 +340,7 @@
 
                             <!-- features -->
                             <div id="section-features" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" t-if="analysis.features">
+                                <section class="adsuhu-section" t-if="analysis.features" t-attf-data-clear-url="/product_analysis/#{analysis.id}/celar">
                                     <h2 class="adsuhu-section-title">Features</h2>
                                     <div class="adsuhu-content" t-out="features_html"></div>
 
@@ -359,7 +359,7 @@
 
                             <!-- product analysis -->
                             <div id="section-product-analysis" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" t-if="analysis.output">
+                                <section class="adsuhu-section" t-if="analysis.output" t-attf-data-clear-url="/product_analysis/#{analysis.id}/celar">
                                     <h2 class="adsuhu-section-title">Product Value Analysis</h2>
                                     <div class="adsuhu-content" t-raw="analysis.output_html"></div>
                                     <div t-if="not analysis.market_mapper_ids" class="d-flex align-items-center justify-content-center">
@@ -378,7 +378,7 @@
                             <!-- market mappers-->
                             <div id="section-market-mapper" >
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
-                                    <section class="adsuhu-section" t-if="market.output_html" t-attf-id="section-market-#{market.id}" style="scroll-margin-top: 6rem;">
+                                    <section class="adsuhu-section" t-if="market.output_html" t-attf-id="section-market-#{market.id}" t-attf-data-clear-url="/market_mapper/#{market.id}/celar" style="scroll-margin-top: 6rem;">
                                         <h2 class="adsuhu-section-title" t-field="market.name"></h2>
                                         <div class="adsuhu-content"  t-raw="market.output_html"></div>
                                         <div class="d-flex align-items-center justify-content-center">
@@ -401,7 +401,7 @@
                             <div id="section-audience-profiler" >
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                        <section class="adsuhu-section" t-attf-id="section-audience-#{audience.id}" style="scroll-margin-top: 6rem;">
+                                        <section class="adsuhu-section" t-attf-id="section-audience-#{audience.id}" t-attf-data-clear-url="/audience_profiler/#{audience.id}/celar" style="scroll-margin-top: 6rem;">
                                             <h2 class="adsuhu-section-title">AP <t t-out="audience.name"/></h2>
                                                 
                                             <div class="adsuhu-content" t-if="audience.output_html" t-raw="audience.output_html"></div>
@@ -435,7 +435,7 @@
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <div t-attf-id="audience-profile-angles-#{audience.id}" style="scroll-margin-top: 6rem;">
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                <section class="adsuhu-section" t-attf-id="section-angle-#{angle.id}" style="scroll-margin-top: 6rem;">
+                                            <section class="adsuhu-section" t-attf-id="section-angle-#{angle.id}" t-attf-data-clear-url="/angle_hook/#{angle.id}/celar" style="scroll-margin-top: 6rem;">
                                                     <h2 class="adsuhu-section-title">Angle: <t t-out="angle.name"/></h2>
                                                     <div class="adsuhu-content" t-raw="angle.output_html"></div>
 
@@ -462,7 +462,7 @@
                                         <t t-foreach="audience.angle_hook_ids" t-as="angle">
                                             <div t-attf-id="section-angle-hook-#{angle.id}" style="scroll-margin-top: 6rem;">
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
-                                                    <section class="adsuhu-section" t-attf-id="section-hook-#{hook.id}" style="scroll-margin-top: 6rem;">
+                                                    <section class="adsuhu-section" t-attf-id="section-hook-#{hook.id}" t-attf-data-clear-url="/hook/#{hook.id}/celar" style="scroll-margin-top: 6rem;">
                                                         <h2 class="adsuhu-section-title">Hook: <t t-out="hook.name"/></h2>
                                                         <div class="adsuhu-content" t-if="hook.output_html" t-raw="hook.output_html"></div>
                                                         
@@ -508,7 +508,7 @@
                                             <t t-foreach="angle.hook_ids" t-as="hook">
                                                 <div t-attf-id="hook-ads-copies-#{hook.id}" style="scroll-margin-top: 6rem;">
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
-                                                        <section class="adsuhu-section" t-attf-id="section-ads-#{ads.id}" style="scroll-margin-top: 6rem;">
+                                                        <section class="adsuhu-section" t-attf-id="section-ads-#{ads.id}" t-attf-data-clear-url="/ads_copy/#{ads.id}/celar" style="scroll-margin-top: 6rem;">
                                                             <h2 class="adsuhu-section-title">Ads Copy: <t t-out="ads.name"/></h2>
                                                             <div class="adsuhu-content" t-if="ads.output_html" t-raw="ads.output_html_trimmed"></div>
 
@@ -537,7 +537,7 @@
                                                 <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                     <div t-attf-id="ads-copy-images-#{ads.id}">
                                                         <t t-foreach="ads.image_generator_ids" t-as="img">
-                                                            <section class="adsuhu-section" t-attf-id="section-img-#{img.id}" style="scroll-margin-top: 6rem;">
+                                                            <section class="adsuhu-section" t-attf-id="section-img-#{img.id}" t-attf-data-clear-url="/image_generator/#{img.id}/celar" style="scroll-margin-top: 6rem;">
                                                                 <h2 class="adsuhu-section-title">Image: <t t-out="img.name"/></h2>
                                                                 <div class="adsuhu-content" t-if="img.output_html" t-raw="img.output_html"></div>
 
@@ -587,7 +587,7 @@
                                                 <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                     <div t-attf-id="ads-copy-lp-#{ads.id}">
                                                         <t t-foreach="ads.landing_page_builder_ids" t-as="lp">
-                                                            <section class="adsuhu-section" t-attf-id="section-lp-#{lp.id}" style="scroll-margin-top: 6rem;">
+                                                            <section class="adsuhu-section" t-attf-id="section-lp-#{lp.id}" t-attf-data-clear-url="/landing_page/#{lp.id}/celar" style="scroll-margin-top: 6rem;">
                                                                 <h2 class="adsuhu-section-title">LP: <t t-out="lp.name"/></h2>
                                                                 <div class="adsuhu-content" t-if="lp.output_html" t-raw="lp.output_html"></div>
                                                                 
@@ -616,7 +616,7 @@
                                                 <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                     <div t-attf-id="ads-copy-video-#{ads.id}">
                                                         <t t-foreach="ads.video_director_ids" t-as="vid">
-                                                            <section class="adsuhu-section" t-attf-id="section-vid-#{vid.id}" style="scroll-margin-top: 6rem;">
+                                                            <section class="adsuhu-section" t-attf-id="section-vid-#{vid.id}" t-attf-data-clear-url="/video_director/#{vid.id}/celar" style="scroll-margin-top: 6rem;">
                                                                 <h2 class="adsuhu-section-title">Video: <t t-out="vid.name"/></h2>
                                                                 <div class="adsuhu-content" t-if="vid.output_html" t-raw="vid.output_html"></div>
                                                                 <div class="d-flex align-items-center justify-content-center">

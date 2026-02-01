@@ -6,6 +6,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
     selector: ".adsuhu-container",
     events: {
         "click .js-regenerate": "_onRegenerateClick",
+        "click .js-clear-output": "_onClearOutputClick",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
@@ -44,6 +45,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         };
         const result = this._super(...arguments);
         this._initTocSync();
+        this._injectClearButtons();
         return result;
     },
     _initTocSync() {
@@ -151,6 +153,56 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         this._refreshTocTargets();
         this._updateActiveToc();
     },
+    _injectClearButtons() {
+        const sections = document.querySelectorAll(".adsuhu-section");
+        sections.forEach((section) => {
+            const clearUrl = section.dataset.clearUrl;
+            if (!clearUrl || section.querySelector(".js-clear-output")) {
+                return;
+            }
+            const titleEl = section.querySelector(".adsuhu-section-title");
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "btn btn-sm btn-outline-danger ms-2 js-clear-output";
+            button.title = "Clear output";
+            button.innerHTML = `<i class="fa fa-trash"></i>`;
+            if (titleEl) {
+                titleEl.appendChild(button);
+            } else {
+                section.prepend(button);
+            }
+        });
+    },
+    async _onClearOutputClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        const section = button.closest(".adsuhu-section");
+        const clearUrl = section?.dataset?.clearUrl;
+        if (!clearUrl) {
+            return;
+        }
+        try {
+            const response = await fetch(clearUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": this.csrfToken,
+                },
+                body: JSON.stringify({}),
+                credentials: "same-origin",
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "Failed to clear output.");
+            }
+            section.querySelectorAll(".adsuhu-content").forEach((el) => {
+                el.innerHTML = "";
+            });
+        } catch (err) {
+            console.error(err);
+            alert(err.message || "Clear output failed.");
+        }
+    },
     async _pollRegenerateStatus({ regenerateType, recordId, section, withSection, button }) {
         const statusEndpointFactory = this.statusEndpoints[regenerateType];
         if (!statusEndpointFactory) {
@@ -235,6 +287,9 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 const itemId = item.id ?? index;
                 generated.id = `section-${prefix}-${itemId}`;
                 generated.style.scrollMarginTop = "6rem";
+                if (item.clear_url) {
+                    generated.dataset.clearUrl = item.clear_url;
+                }
 
                 const titleEl = document.createElement("h2");
                 titleEl.className = "adsuhu-section-title";
@@ -248,6 +303,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
 
                 container.appendChild(generated);
             });
+            this._injectClearButtons();
         };
 
         outputs.forEach((output) => {
@@ -289,8 +345,12 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                     newSection.appendChild(buttonWrap);
                 }
 
+                if (output.clear_url) {
+                    newSection.dataset.clearUrl = output.clear_url;
+                }
                 this._appendTocItem(this.tocLists[modelKey], titleEl.textContent, newSection.id);            
                 section.insertAdjacentElement("afterend", newSection);
+                this._injectClearButtons();
 
                 if (modelKey === "ads_copy") {
                     appendGeneratedSections("section-images", output.images, "img");
@@ -306,6 +366,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 newSection.id = `section-${modelKey}`;
 
                 section.appendChild(newSection)
+                this._injectClearButtons();
             }
 
         });
