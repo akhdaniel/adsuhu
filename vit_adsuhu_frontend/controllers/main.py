@@ -6,6 +6,8 @@ import re
 import threading
 import odoo
 import logging
+import time
+import psycopg2
 
 _logger = logging.getLogger(__name__)
 
@@ -23,19 +25,34 @@ class ProductValueAnalysisController(http.Controller):
                 _logger.info("Background thread entering Odoo env: %s(%s)", model_name, record_id)
                 registry = odoo.registry(dbname)
                 _logger.info("Background thread got registry: %s(%s)", model_name, record_id)
-                with registry.cursor() as cr:
-                    _logger.info("Background thread got cursor: %s(%s)", model_name, record_id)
-                    env = api.Environment(cr, uid, context)
-                    rec = env[model_name].sudo().browse(record_id)
+                max_attempts = 3
+                for attempt in range(1, max_attempts + 1):
                     try:
-                        _logger.info("Background job start: %s(%s) action=%s", model_name, record_id, action)
-                        action(rec)
-                        _logger.info("Background job done: %s(%s)", model_name, record_id)
-                        rec.write({"status": "done"})
-                    except Exception:
-                        _logger.exception("Background job failed for %s(%s)", model_name, record_id)
-                        rec.write({"status": "failed"})
-                    cr.commit()
+                        with registry.cursor() as cr:
+                            _logger.info("Background thread got cursor: %s(%s)", model_name, record_id)
+                            env = api.Environment(cr, uid, context)
+                            rec = env[model_name].sudo().browse(record_id)
+                            try:
+                                _logger.info("Background job start: %s(%s) action=%s", model_name, record_id, action)
+                                action(rec)
+                                _logger.info("Background job done: %s(%s)", model_name, record_id)
+                                rec.write({"status": "done"})
+                                cr.commit()
+                            except Exception:
+                                _logger.exception("Background job failed for %s(%s)", model_name, record_id)
+                                rec.write({"status": "failed"})
+                        break
+                    except psycopg2.errors.SerializationFailure:
+                        _logger.warning(
+                            "Serialization failure for %s(%s) attempt %s/%s",
+                            model_name,
+                            record_id,
+                            attempt,
+                            max_attempts,
+                        )
+                        if attempt >= max_attempts:
+                            raise
+                        time.sleep(0.2 * attempt)
             except Exception:
                 _logger.exception("Background thread crashed before job execution for %s(%s)", model_name, record_id)
 
@@ -209,24 +226,28 @@ class ProductValueAnalysisController(http.Controller):
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_product_analysis(self, analysis, **kwargs):
         analysis.sudo().write({"status": "processing"})
+        request.env.cr.commit()
         self._run_background("vit.product_value_analysis", analysis.id, lambda rec: rec.action_generate())
         return {"status": "processing"}
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/market_mapper/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_market_mapper(self, analysis, **kwargs):
         analysis.sudo().write({"status": "processing"})
+        request.env.cr.commit()
         self._run_background("vit.product_value_analysis", analysis.id, lambda rec: rec.action_generate_market_mapping())
         return {"status": "processing"}
 
     @http.route('/market_mapper/<model("vit.market_mapper"):market_mapper>/audience_profiler/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_audience_profiler(self, market_mapper, **kwargs):
         market_mapper.sudo().write({"status": "processing"})
+        request.env.cr.commit()
         self._run_background("vit.market_mapper", market_mapper.id, lambda rec: rec.action_create_audience_profiles())
         return {"status": "processing"}
 
     @http.route('/audience_profiler/<model("vit.audience_profiler"):audience_profiler>/angle_hook/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_angle_hook(self, audience_profiler, **kwargs):
         audience_profiler.sudo().write({"status": "processing"})
+        request.env.cr.commit()
         self._run_background("vit.audience_profiler", audience_profiler.id, lambda rec: rec.action_generate_angles())
         return {"status": "processing"}
 
@@ -240,12 +261,14 @@ class ProductValueAnalysisController(http.Controller):
     @http.route('/hook/<model("vit.hook"):hook>/ads_copy/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_ads_copy(self, hook, **kwargs):
         hook.sudo().write({"status": "processing"})
+        request.env.cr.commit()
         self._run_background("vit.hook", hook.id, lambda rec: rec.action_create_ads_copy())
         return {"status": "processing"}
 
     @http.route('/image_generator/<model("vit.image_generator"):image_generator>/image_variant/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_image_variant(self, image_generator, **kwargs):
         image_generator.sudo().write({"status": "processing"})
+        request.env.cr.commit()
         self._run_background("vit.image_generator", image_generator.id, lambda rec: rec.action_generate())
         return {"status": "processing"}
     
