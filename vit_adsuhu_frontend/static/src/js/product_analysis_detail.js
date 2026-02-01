@@ -218,6 +218,38 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         // const outputs = Array.isArray(outputHtml) ? outputHtml : [outputHtml];
         // console.log('outputs',outputs)
 
+        const appendGeneratedSections = (containerId, items, prefix) => {
+            if (!items || !Array.isArray(items)) {
+                return;
+            }
+            const container = document.getElementById(containerId);
+            if (!container) {
+                return;
+            }
+            items.forEach((item, index) => {
+                if (!item || !item.output_html) {
+                    return;
+                }
+                const generated = document.createElement("section");
+                generated.className = "adsuhu-section";
+                const itemId = item.id ?? index;
+                generated.id = `section-${prefix}-${itemId}`;
+                generated.style.scrollMarginTop = "6rem";
+
+                const titleEl = document.createElement("h2");
+                titleEl.className = "adsuhu-section-title";
+                titleEl.textContent = item.name || "Result";
+                generated.appendChild(titleEl);
+
+                const contentEl = document.createElement("div");
+                contentEl.className = "adsuhu-content";
+                contentEl.innerHTML = item.output_html || "";
+                generated.appendChild(contentEl);
+
+                container.appendChild(generated);
+            });
+        };
+
         outputs.forEach((output) => {
             let newSection
 
@@ -260,6 +292,11 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 this._appendTocItem(this.tocLists[modelKey], titleEl.textContent, newSection.id);            
                 section.insertAdjacentElement("afterend", newSection);
 
+                if (modelKey === "ads_copy") {
+                    appendGeneratedSections("section-images", output.images, "img");
+                    appendGeneratedSections("section-landing-page", output.lps, "lp");
+                    appendGeneratedSections("section-video-script", output.videos, "vid");
+                }
             } 
             else
             { //image 

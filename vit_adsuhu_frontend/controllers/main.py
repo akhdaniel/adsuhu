@@ -82,9 +82,9 @@ class ProductValueAnalysisController(http.Controller):
         if regenerate_type == "ads_copy":
             return [{
                 "name": f"Ads Copy: {ads.name}",
-                "images":[ im.output_html for im in ads.image_generator_ids],
-                "lps":[ lp.output_html for lp in ads.landing_page_builder_ids],
-                "videos":[ vid.output_html for vid in ads.video_director_ids],
+                "images":[ {"name":im.name, "output_html":im.output_html} for im in ads.image_generator_ids],
+                "lps":[ {"name":lp.name, "output_html":lp.output_html} for lp in ads.landing_page_builder_ids],
+                "videos":[ {"name":vid.name, "output_html":vid.output_html }for vid in ads.video_director_ids],
                 "output_html": f"""{ads.output_html_trimmed}
 <div class="d-flex align-items-center justify-content-center">
     <a class="btn btn-primary" href="#section-hook-{record.id}"> <i class="fa fa-arrow-left me-1"></i> Back to Hook {record.hook_no}</a>
