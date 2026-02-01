@@ -12,6 +12,7 @@ import requests
 import time
 import base64
 import io
+import os
 from docx import Document
 from docx.enum.style import WD_STYLE_TYPE
 from docx.shared import Pt, Inches
@@ -94,17 +95,7 @@ class product_value_analysis(models.Model):
     _name = "vit.product_value_analysis"
     _inherit = "vit.product_value_analysis"
     specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
-    status = fields.Selection(
-        [
-            ("idle", "Idle"),
-            ("processing", "Processing"),
-            ("done", "Done"),
-            ("failed", "Failed"),
-        ],
-        string=_("Status"),
-        default="idle",
-        copy=False,
-    )
+    report_template = fields.Binary( string=_("Report Template"))
 
     def _get_default_lang(self):
         return self.env["res.lang"].search(
@@ -456,7 +447,7 @@ Response in {self.lang_id.name} language.
         return None
 
 
-    def action_generate_report(self, ):
+    def action_generate_report_old(self, ):
 
         
         product = self
@@ -737,6 +728,280 @@ Response in {self.lang_id.name} language.
                                 report.append("\n")  
                                 lps_count+=1
 
+
+        report = ["" if isinstance(item, bool) else item for item in report]
+        self.final_report = "\n".join(report)
+
+
+
+    def action_generate_report(self, ):
+
+        product = self
+        report = []
+
+        # ------------------------------------------------------------------------
+        # 1. Product value
+        # ------------------------------------------------------------------------
+        report.append("<h1>PRODUCT DESCRIPTION</h1>")
+        report.append("<h2>Description</h2>")
+        report.append(f"<p>{product.description}</p>")
+        report.append("")
+        report.append(f"<p>Product URL: {product.product_url or '-'} </p>")
+        report.append(f"<p>Client Name: {product.partner_id.name}</p>")
+        report.append("")        
+        report.append("<h2>Features</h2>")
+        report.append("")
+        
+        _logger.info(product.features)
+        report.append(f"{product.features}")
+        report.append("")
+        report.append("--- SECTION 1 PRODUCT VALUE ---")
+        report.append("<h1>PRODUCT VALUE ANALYSIS</h1>")
+        report.append("")
+        output = json.loads(self.clean_md(product.output))
+
+        report.append(f"<h2> Product category</h2>")
+        report.append(f"<p>{output['category']}</p>")
+        report.append("\n")
+
+        report.append(f"<h2>Level Maslow</h2>")
+        report.append(f"<p>{output['level_maslow']}</p>")
+        report.append("\n")
+
+        report.append(f"<h2> Unique Selling Propositions</h2>")
+        report.append(self.list_to_bullet(output['unique_selling_propositions']))
+        
+        report.append(f"<h2>Extended Value Map</h2>")
+        for i,val in enumerate(output['value_map_extended']):
+            report.append(f"<h3>Feature {i+1}: {val['feature']}</h3>")
+            report.append("<ul>")
+            report.append(f"<li> Pain Point: {val['pain_point']}</li>")
+            report.append(f"<li> Gain Point: {val['gain_point']}</li>")
+            report.append(f"<li> Functional Benefits: {val['functional_benefits']}</li>")
+            report.append(f"<li> Emotional Benefits: {val['emotional_benefits']}</li>")
+            report.append(f"<li> Proof: {val['proof']}</li>")
+            report.append(f"<li> Buying Motif: {val['buying_motif']}</li>")
+            report.append(f"<li> Buying Trigger: {val['buying_triggers']}</li>")
+            report.append(f"<li> Level Maslow: {val['level_maslow']}</li>")
+            report.append(f"<li> Relevan USPs: {val['relevan_usp']}</li>")
+            report.append("</ul>")
+        report.append("\n")
+        
+        report.append("<h2>Differentiation Spike</h2>")
+        report.append(output['differentiation_spike'])
+        report.append("\n")
+        
+        report.append("<h2> Buying Triggers</h2>")
+        buying_triggers=output['buying_triggers']
+        report.append("<h3> Rational</h3>")
+        report.append(self.list_to_bullet(buying_triggers['rational']))
+        report.append("\n")
+        
+            
+        report.append("<h3> Emotional</h3>")
+        report.append(self.list_to_bullet(buying_triggers['emotional']))
+        report.append("\n")       
+
+        report.append("<h2> Initial Target Market</h2>")
+        initial_target_market = output['initial_target_market']
+        report.append("<ul>")
+        report.append(f"<li> <em>Persona</em>: {initial_target_market['persona']} </li>")
+        report.append(f"<li> <em>Pain</em>: {initial_target_market['pain']} </li>")
+        report.append(f"<li> <em>Gain</em>: {initial_target_market['gain']} </li>")
+        report.append("</ul>")
+
+        report.append("<h2>Copywriting Angles</h2>")
+        copywriting_angle = output['copywriting_angle']
+        report.append("<ul>")
+        report.append(f"<li> *Hook*: {copywriting_angle['hook']}</li>")
+        report.append(f"<li> *Proof*: {copywriting_angle['proof']}</li>")
+        report.append(f"<li> *Path*: {copywriting_angle['path']}</li>")
+        report.append("</ul>")
+        report.append("\n")
+
+        # ------------------------------------------------------------------------
+        # 2. Market analysis
+        # ------------------------------------------------------------------------
+        report.append("--- SECTION 2 MARKET ANALYSIS AND AUDIENCE PROFILE ---")        
+        markets = product.market_mapper_ids
+        for m, market in enumerate(markets, start=2):
+            report.append(f"<h1> MARKET ANALYSIS</h1>")
+            # report.append("---")
+            report.append(market.output_html)
+            report.append("\n")
+            
+            # ------------------------------------------------------------------------
+            # 3..p Audience profile
+            # ------------------------------------------------------------------------
+            profiles = market.audience_profiler_ids
+            for p, profile in enumerate(profiles, start=m+1):
+                report.append(f"<h1> AUDIENCE PROFILE {p-2}: {profile['description']}</h1>")
+                # report.append("---")
+
+                if not profile.output:
+                    report.append("--no data--")
+                    continue
+
+                # res = self.json_to_markdown(json.loads(self.clean_md(profile.output)), level=2, max_level=3, prefix=p)
+                report.append(profile.output_html)
+                report.append("\n")
+
+            # ------------------------------------------------------------------------
+            # p+a ... p+(an) Angles
+            # ------------------------------------------------------------------------
+            report.append("\n")
+            report.append("--- SECTION 3 ANGLES ---")        
+            profiles = market.audience_profiler_ids
+            for p, profile in enumerate(profiles):
+                angles = profile.angle_hook_ids
+                if not angles:
+                    report.append(f"<h1>NO ANGLES - {profile['name']}</h1>")
+                    report.append("--no angles--")
+                    continue
+                
+                for a, angle in enumerate(angles, start=1):
+                    report.append(f"<h1> {angle['name']} - {profile['name']}</h1>")
+                    # report.append("---")                        
+
+                    if not angle.description:
+                        report.append("--no description--")
+                        continue
+                    
+                    if not angle.output:
+                        report.append("--no data--")
+                        continue
+
+                    report.append("<h2> Audience Profile</h2>")
+                    report.append(profile['name'])
+                    report.append(profile['description'])
+
+                    js = json.loads(self.clean_md(angle.output))
+                    if a > 1:
+                        js.pop('big_ideas')
+                        js.pop('strategic_notes')
+                    
+                    # res = self.json_to_markdown(js, level=2, max_level=4, prefix=a)
+                    # show big ideas only on first angle
+                    
+                    report.append(profile.output_html)
+                    report.append("\n")    
+                    report.append("\n")                    
+
+
+            # ------------------------------------------------------------------------
+            # Ads copy per market, audience profile, angle, hooks
+            # ------------------------------------------------------------------------
+            report.append("\n")
+            report.append("--- SECTION 4 ADS COPY ---")        
+            ads_count = 1
+            profiles = market.audience_profiler_ids
+            for p, profile in enumerate(profiles):
+                angles = profile.angle_hook_ids
+                for a, angle in enumerate(angles, start=1):
+                    hooks = angle.hook_ids
+                    for h, hook in enumerate(hooks, start=1):
+                        ads = hook.ads_copy_ids
+                        if not ads:
+                            report.append("--no ads--")
+                            continue
+
+                        for adx, ad in enumerate(ads, start=1):
+                            report.append(f"<h1> ADS {ads_count}: {ad['hook']}</h1>")
+                            report.append("---")
+
+                            if not ad.output:
+                                report.append("--no ads data--")
+                                continue
+
+                            report.append(f"<h2> Audience Profile: {profile['audience_profile_no']}</h2>")
+                            report.append(f"<p>{profile['name']} - {profile['description']}</p>")
+                            
+                            report.append(f"<h2> Angle: {angle['angle_no']}</h2>")
+                            report.append(f"<p>{angle['name']} - {angle['description']}</p>")
+                            
+                            report.append(f"<h2> Hook: {hook['hook_no']} </h2>")
+                            report.append(f"<p>{hook['name']} - {hook['description']}</p>")
+                                                     
+                            # js = json.loads(self.clean_md(ad.output))
+                            # js.pop('angle')
+                            # js.pop('hook')
+                            # js.pop('ads_copy')
+                            # js.pop('landing_page')
+                            # res = self.json_to_markdown(js, level=2, max_level=3, prefix=a)
+                            report.append(ad.output_html)
+                            report.append("\n")  
+                            ads_count += 1
+
+                            # ------------------------------------------------------------------------
+                            # Ads images
+                            # ------------------------------------------------------------------------  
+                            images = ad.image_generator_ids
+                            if not images:
+                                report.append("--no images --")
+                                continue
+
+                            for imgx, img in enumerate(images, start=1):
+                                # js = json.loads(self.clean_md(img.output))
+                                # js.pop('angle_library')
+                                # js.pop('hook_library')
+                                # js.pop('instruction')
+                                report.append(f"<h2> {img['name']}</h2>")
+                                # res = self.json_to_markdown(js, level=3, max_level=4).replace('\n\n','\n')
+                                report.append(img.output_html)
+                                report.append("\n")  
+
+                                variants=img.image_variant_ids
+                                if not variants:
+                                    report.append("--no image variants--")  
+                                    continue
+                                for imgvx, variant in enumerate(variants, start=1):
+                                    report.append(f"<h3> Image Variant: {variant['name']}</h3>")
+                                    src = f"/web/image/vit.image_variant/{variant.id}/image_1024?unique={int(time.time())}"
+                                    res = f"![{ad['name'] or 'image'}]({src})"
+                                    report.append(res)
+                                    report.append("\n")    
+
+            # ------------------------------------------------------------------------
+            # Landing pages per ads copy...
+            # ------------------------------------------------------------------------   
+            report.append("\n")                         
+            report.append("--- SECTION 5 LANDING PAGES ---")        
+            lps_count = 1
+            profiles = market.audience_profiler_ids
+            for p, profile in enumerate(profiles):
+                angles = profile.angle_hook_ids
+                for a, angle in enumerate(angles, start=1):
+                    hooks = angle.hook_ids
+                    for h, hook in enumerate(hooks, start=1):
+                        ads = hook.ads_copy_ids
+                        if not ads:
+                            report.append("--no LP--")
+                            continue
+
+                        for adx, ad in enumerate(ads, start=1):
+
+                            if not ad.output:
+                                report.append("--no ads data--")
+                                continue
+                            # ------------------------------------------------------------------------
+                            # Landing pages
+                            # ------------------------------------------------------------------------  
+                            lps = ad.landing_page_builder_ids
+                            if not lps:
+                                report.append("--no LP--")
+                                continue
+                            
+                            for lp in lps:
+                                report.append(f"<h1> LP {lps_count}: {ad['hook']}</h1>")
+                                # report.append("---")                                
+                                # js = json.loads(self.clean_md(lp.output))
+                                # res = self.json_to_markdown(js, level=2, max_level=3)
+                                report.append(lp.output_html)
+                                report.append("\n")  
+                                lps_count+=1
+
+        # _logger.info(report)
+        report = ["" if isinstance(item, bool) else item for item in report]
         self.final_report = "\n".join(report)
 
 
@@ -1138,12 +1403,12 @@ Response in {self.lang_id.name} language.
     def action_download_docx(self, ):
 
         self.action_generate_report()
-        cover = self.report_template
+        module_path = get_module_path("vit_ads_suhu_inherit")
+        cover_path = os.path.join(module_path, "static", "Template 1.docx") if module_path else None
         doc = None
-        if cover:
-            decoded_bytes = base64.b64decode(cover)
-            cover_file = io.BytesIO(decoded_bytes)
-            doc = Document(cover_file)
+        if cover_path and os.path.exists(cover_path):
+            with open(cover_path, "rb") as cover_file:
+                doc = Document(cover_file)
         else:
             doc = Document()
 
@@ -1163,8 +1428,9 @@ Response in {self.lang_id.name} language.
         # self.add_html_to_docx(doc, self.summary)
 
         # Loop content
-        html_content = self.md_to_html(self.final_report)
-        html_content = html_content.replace('</code></p>', '</code>').replace('<p><code>', '<code>')
+        html_content =  self.final_report
+        # html_content = self.md_to_html(self.final_report)
+        # html_content = html_content.replace('</code></p>', '</code>').replace('<p><code>', '<code>')
         html_content = re.sub(r'<li>\s*<p>(.*?)</p>\s*</li>', r'<li>\1</li>', html_content, flags=re.DOTALL)
 
         self.add_html_to_docx(doc, html_content)

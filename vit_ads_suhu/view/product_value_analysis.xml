@@ -10,7 +10,7 @@
                 <list string="Product Value Analysis">
                     <field name="name" /> <!-- 1-->
                     <field name="partner_id" optional="hide"/> <!-- 100-->
-                    <field name="target_market" optional="hide"/> <!-- 106-->
+                    <field name="target_market" optional="hide"/> <!-- 107-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -69,9 +69,10 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="product_url"  />
+                                <field name="final_report" insisible="1" />
                                 <field name="report_template_filename" invisible="True" />
-                                <field name="report_docx_filename" invisible="True" />
                                 <field name="active"  />
+                                <field name="report_docx_filename" invisible="True" />
                                 <field name="target_market" optional="hide" />
                                 <field name="tags"  />
                                 <field name="description"  />
@@ -88,11 +89,10 @@
                         </group>
                         <notebook>
                             <page name="features" string="Features">
-                                    <field name="features" />
+                                    <field name="features" widget="html" />
                             </page>
                             <page name="final_reports" string="Final Reports">
                                 <group>
-                                    <field name="final_report" widget="md_viewer" />
                                     <field name="report_template" filename="report_template_filename" />
                                     <field name="report_docx" filename="report_docx_filename" />
                                 </group>

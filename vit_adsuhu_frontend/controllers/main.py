@@ -163,6 +163,14 @@ class ProductValueAnalysisController(http.Controller):
             'langs': langs,
         })
 
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/download_docx', type='http', auth='user', website=True)
+    def download_docx(self, analysis, **kwargs):
+        action = analysis.sudo().action_download_docx()
+        url = action.get("url") if isinstance(action, dict) else None
+        if url:
+            return request.redirect(url)
+        return request.redirect(f'/product_analysis/{analysis.id}')
+
     @http.route('/product_analysis/submit', type='http', auth='user', website=True, methods=['POST'])
     def submit(self, **post):
         product_name = post.get('product_name')

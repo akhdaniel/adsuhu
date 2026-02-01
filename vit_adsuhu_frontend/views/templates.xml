@@ -56,16 +56,19 @@
                             <p class="text-muted">
                                 Created on <span t-field="analysis.create_date" t-options='{"widget": "date"}'></span>
                             </p>
-                            <a href="/product_analysis" class="btn btn-outline-secondary mt-2">
+                            <a href="/product_analysis" class="btn btn-secondary mt-2">
                                 <i class="fa fa-arrow-left"></i> Back
                             </a>
-                            <a t-if="analysis.product_url" t-att-href="analysis.product_url" target="_blank" class="btn btn-outline-primary mt-2">
-                                <i class="fa fa-external-link"></i> Visit Product URL
-                            </a>
-                            <a t-attf-href="/product_analysis/#{analysis.id}/edit" class="btn btn-outline-secondary mt-2 ms-2">
+                            <a t-attf-href="/product_analysis/#{analysis.id}/edit" 
+                                class="btn btn-secondary mt-2 ms-2">
                                 <i class="fa fa-pencil"></i> Edit
                             </a>
-                            <a t-if="analysis.report_docx" t-attf-href="/web/content/vit.product_value_analysis/#{analysis.id}/report_docx/#{analysis.report_docx_filename or 'report.docx'}?download=true" class="btn btn-primary mt-2 ms-2">
+                            <a t-if="analysis.product_url" t-att-href="analysis.product_url" 
+                                target="_blank" class="btn btn-primary mt-2">
+                                <i class="fa fa-external-link"></i> Visit Product URL
+                            </a>
+                            <a t-if="analysis" t-attf-href="/product_analysis/#{analysis.id}/download_docx" 
+                                class="btn btn-primary mt-2 ms-2">
                                 <i class="fa fa-download"></i> Download DOCX
                             </a>
                         </div>

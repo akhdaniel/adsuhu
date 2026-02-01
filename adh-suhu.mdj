@@ -22412,7 +22412,7 @@
 								"$ref": "AAAAAAGbDOD0srqePoM="
 							},
 							"name": "features",
-							"documentation": "{\n\"tree:invisible\":true,\n\"form:pos\":\"tab:Features\"\n}",
+							"documentation": "{\n\"tree:invisible\":true,\n\"form:pos\":\"tab:Features\",\n\"xml:widget\":\"html\"\n}",
 							"type": "Text"
 						},
 						{
@@ -22422,7 +22422,7 @@
 								"$ref": "AAAAAAGbDOD0srqePoM="
 							},
 							"name": "final_report",
-							"documentation": "{\n\"form:pos\":\"tab:Final Reports\",\n\"form:seq\":1000,\n\"tree:invisible\":true,\n\"xml:widget\":\"md_viewer\"\n}",
+							"documentation": "{\n\"xml:insisible\":\"1\",\n\"tree:invisible\":true\n}",
 							"type": "Text"
 						},
 						{

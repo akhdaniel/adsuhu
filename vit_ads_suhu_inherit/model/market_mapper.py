@@ -99,17 +99,6 @@ REQUIRED JSON OUTPUT FORMAT:
 class market_mapper(models.Model):
     _name = "vit.market_mapper"
     _inherit = "vit.market_mapper"
-    status = fields.Selection(
-        [
-            ("idle", "Idle"),
-            ("processing", "Processing"),
-            ("done", "Done"),
-            ("failed", "Failed"),
-        ],
-        string=_("Status"),
-        default="idle",
-        copy=False,
-    )
 
     def action_generate(self, ):
 

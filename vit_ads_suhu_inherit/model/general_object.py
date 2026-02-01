@@ -42,6 +42,17 @@ class general_object(models.Model):
     _name = "vit.general_object"
     _inherit = "vit.general_object"
     
+    status = fields.Selection(
+        [
+            ("idle", "Idle"),
+            ("processing", "Processing"),
+            ("done", "Done"),
+            ("failed", "Failed"),
+        ],
+        string=_("Status"),
+        default="idle",
+        copy=False,
+    )
     general_instruction = fields.Text(default=DEFAULT_GENERAL_INSTRUCTION,  string=_("General Instruction"))
 
     def clean_md(self, text):

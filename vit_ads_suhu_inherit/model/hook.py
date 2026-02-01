@@ -9,17 +9,6 @@ class hook(models.Model):
 
     _name = "vit.hook"
     _inherit = "vit.hook"
-    status = fields.Selection(
-        [
-            ("idle", "Idle"),
-            ("processing", "Processing"),
-            ("done", "Done"),
-            ("failed", "Failed"),
-        ],
-        string=_("Status"),
-        default="idle",
-        copy=False,
-    )
 
 
     def action_generate(self, ):

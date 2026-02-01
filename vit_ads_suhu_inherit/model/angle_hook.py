@@ -113,17 +113,6 @@ REQUIRED JSON OUTPUT FORMAT:
 class angle_hook(models.Model):
     _name = "vit.angle_hook"
     _inherit = "vit.angle_hook"
-    status = fields.Selection(
-        [
-            ("idle", "Idle"),
-            ("processing", "Processing"),
-            ("done", "Done"),
-            ("failed", "Failed"),
-        ],
-        string=_("Status"),
-        default="idle",
-        copy=False,
-    )
 
     def action_generate(self, ):
 
