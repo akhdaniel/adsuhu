@@ -181,6 +181,10 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         if (!clearUrl) {
             return;
         }
+        const confirmed = window.confirm("Clear this section content?");
+        if (!confirmed) {
+            return;
+        }
         try {
             const response = await fetch(clearUrl, {
                 method: "POST",
@@ -208,9 +212,11 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         if (!statusEndpointFactory) {
             return;
         }
+
+        
         const statusUrl = statusEndpointFactory(recordId);
-        const maxAttempts = 120;
-        const intervalMs = 2000;
+        const maxAttempts = 200;
+        const intervalMs = 5000;
 
         for (let attempt = 0; attempt < maxAttempts; attempt++) {
             await new Promise((resolve) => setTimeout(resolve, intervalMs));

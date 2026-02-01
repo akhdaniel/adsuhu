@@ -218,7 +218,7 @@ class ads_copy(models.Model):
                                 additional_command=additional_command)    
 
         response = self.clean_md(response)
-        self.output = response
+        self.output = self.fix_json(response)
 
         self.generate_output_html()
 
@@ -558,4 +558,3 @@ Response in {self.lang_id.name} language.
                 json.loads(self.clean_md(self.output)), level=3, max_level=4
             )
         )
-

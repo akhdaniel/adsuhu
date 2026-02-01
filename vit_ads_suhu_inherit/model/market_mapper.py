@@ -131,7 +131,7 @@ class market_mapper(models.Model):
                                 additional_command=additional_command)    
 
         response = self.clean_md(response)
-        self.output = response
+        self.output = self.fix_json(response)
 
         self.generate_output_html()
     
@@ -187,20 +187,29 @@ Response in {rec.lang_id.name} language.
         output = self.clean_md(self.output)
         js = json.loads(output)
         _logger.info(js)
+        
+        if not 'priority_segments' in js:
+          raise UserError('priority_segments not found')
 
-        self.audience_profiler_ids = [(0,0,{
-            'name':f'/',
-            'audience_profile_no': i,
-            'market_mapper_id': self.id,
-            'description': x['name'],
-            'alasan': x['reason'],
-            'lang_id': self.lang_id.id,
-            'gpt_model_id': self.gpt_model_id.id,
-        }) for i,x in enumerate(js['priority_segments'], start=1)]
+        for i,x in enumerate(js['priority_segments'], start=1):
+          if not self.env['vit.audience_profiler'].search([('name',x['name'])]):
+            self.audience_profiler_ids = (0,0,{
+                'name':f'/',
+                'audience_profile_no': i,
+                'market_mapper_id': self.id,
+                'description': x['name'],
+                'alasan': x['reason'],
+                'lang_id': self.lang_id.id,
+                'gpt_model_id': self.gpt_model_id.id,
+            }) 
+            self.env.cr.commit()
+          else:
+            _logger.info('AP exists %s', x['name'])
 
         for x in self.audience_profiler_ids:
             x._get_input()
             x.action_generate()   
+            self.env.cr.commit()
 
     def generate_output_html(self):
         self.output_html = self.md_to_html(

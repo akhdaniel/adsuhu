@@ -26,11 +26,15 @@ UNICODE_ASCII_MAP = {
     "\u201d": '"',  # right double quote
     "\u2026": "...",  # ellipsis
 }
-DEFAULT_GENERAL_INSTRUCTION="""You MUST respond with ONLY valid JSON. 
-ONLY plain ASCII, No Unicode characters. 
-Do NOT include explanations or extra text. 
-If you cannot comply, return an empty JSON object {}. 
-You a free to add list element in the json list as many as needed. 
+DEFAULT_GENERAL_INSTRUCTION="""You MUST respond with ONLY valid JSON with no errors.
+ONLY plain ASCII, No Unicode characters.
+Do NOT include explanations or extra text.
+If you cannot comply, return an empty JSON object {}.
+You a free to add list element in the json list as many as needed.
+Ensure all strings are properly double-quoted and all keys are quoted.
+Do not use trailing commas or single quotes.
+DO NOT quote text inside any JSON values, use <em></em> tags instead if you return quoted texts, 
+e.g. {"key","the value text <em>the bold text</em>, normal text"}
 """
 class general_object(models.Model):
     """
@@ -70,6 +74,26 @@ class general_object(models.Model):
             replacement = UNICODE_ASCII_MAP.get(ch, "")
             translated.append(replacement)
         return "".join(translated)
+
+    def fix_json(self, text):
+        """
+        Best-effort cleanup for common JSON errors (e.g. stray backslashes).
+        Example: "\\Ini ..." -> "Ini ..."
+        """
+        text = text or ""
+        # Normalize smart quotes to ASCII quotes.
+        text = text.replace("\u201c", '"').replace("\u201d", '"').replace("\u2018", "'").replace("\u2019", "'")
+        # Remove backslashes that are not valid JSON escapes.
+        text = re.sub(r'\\(?!["\\/bfnrtu])', "", text)
+        # If invalid \u sequences exist, strip the backslash so JSON parsing can proceed.
+        text = re.sub(r'\\u(?![0-9a-fA-F]{4})', "u", text)
+        # Remove trailing commas before } or ]
+        text = re.sub(r",\s*([}\]])", r"\1", text)
+        # Quote unquoted object keys: { key: "value" } -> { "key": "value" }
+        text = re.sub(r'([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)(\s*:)', r'\1"\2"\3', text)
+        # Convert single-quoted keys/values to double-quoted (simple cases only).
+        text = re.sub(r"\'([^\']*)\'", r'"\1"', text)
+        return text
     
     def wrap_md(self, text):
         return json.dumps(text, indent=3) 

@@ -406,7 +406,7 @@
                                                 
                                             <div class="adsuhu-content" t-if="audience.output_html" t-raw="audience.output_html"></div>
                                             <div class="d-flex align-items-center justify-content-center">
-                                                <a class="btn btn-primary" t-attf-href="#section-market-#{market.id}">
+                                                <a class="btn btn-secondary" t-attf-href="#section-market-#{market.id}">
                                                     <i class="fa fa-arrow-left me-1"></i> Back to Market Mapper
                                                 </a>                                            
                                                 <button t-if="not audience.angle_hook_ids" class="btn btn-secondary js-regenerate" 
@@ -440,7 +440,7 @@
                                                     <div class="adsuhu-content" t-raw="angle.output_html"></div>
 
                                                     <div class="d-flex align-items-center justify-content-center">
-                                                        <a class="btn btn-primary" t-attf-href="#section-audience-#{audience.id}">
+                                                        <a class="btn btn-secondary" t-attf-href="#section-audience-#{audience.id}">
                                                             <i class="fa fa-arrow-left me-1"></i> Back to AP <t t-out="audience.audience_profile_no"/>
                                                         </a>
                                                         <a class="btn btn-primary" t-attf-href="#section-angle-hook-#{angle.id}">
@@ -467,7 +467,7 @@
                                                         <div class="adsuhu-content" t-if="hook.output_html" t-raw="hook.output_html"></div>
                                                         
                                                         <div class="d-flex align-items-center justify-content-center">
-                                                            <a t-attf-href="#section-angle-#{angle.id}" class="btn btn-primary">
+                                                            <a t-attf-href="#section-angle-#{angle.id}" class="btn btn-secondary">
                                                                 <i class="fa fa-arrow-left me-1"></i> Back to Angle <t t-out="angle.angle_no"/>
                                                             </a>
 
@@ -513,7 +513,7 @@
                                                             <div class="adsuhu-content" t-if="ads.output_html" t-raw="ads.output_html_trimmed"></div>
 
                                                             <div class="d-flex align-items-center justify-content-center">
-                                                                <a class="btn btn-primary" t-attf-href="#section-hook-#{hook.id}"> <i class="fa fa-arrow-left me-1"></i> Back to Hook <t t-out="hook.hook_no"/></a>
+                                                                <a class="btn btn-secondary" t-attf-href="#section-hook-#{hook.id}"> <i class="fa fa-arrow-left me-1"></i> Back to Hook <t t-out="hook.hook_no"/></a>
                                                                 <a class="btn btn-primary" t-attf-href="#ads-copy-images-#{ads.id}">View Images</a>
                                                                 <a class="btn btn-primary" t-attf-href="#ads-copy-lp-#{ads.id}">View Landing Page</a>
                                                                 <a class="btn btn-primary" t-attf-href="#ads-copy-video-#{ads.id}">View Video Script</a>
@@ -554,7 +554,7 @@
                                                                 </div>
 
                                                                 <div class="d-flex align-items-center justify-content-center">
-                                                                    <a class="btn btn-primary" t-attf-href="#section-ads-#{ads.id}">
+                                                                    <a class="btn btn-secondary" t-attf-href="#section-ads-#{ads.id}">
                                                                         <i class="fa fa-arrow-left me-1"></i> Back to Ads Copy <t t-out="ads.name"/>
                                                                     </a>
 

@@ -145,7 +145,7 @@ class angle_hook(models.Model):
                                 additional_command=additional_command)    
 
         response = self.clean_md(response)
-        self.output = response
+        self.output = self.fix_json(response)
 
         self.generate_output_html()
 
