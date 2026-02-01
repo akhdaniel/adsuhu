@@ -60,7 +60,7 @@
                                 <i class="fa fa-arrow-left"></i> Back
                             </a>
                             <a t-attf-href="/product_analysis/#{analysis.id}/edit" 
-                                class="btn btn-secondary mt-2 ms-2">
+                                class="btn btn-secondary mt-2">
                                 <i class="fa fa-pencil"></i> Edit
                             </a>
                             <a t-if="analysis.product_url" t-att-href="analysis.product_url" 
@@ -68,7 +68,7 @@
                                 <i class="fa fa-external-link"></i> Visit Product URL
                             </a>
                             <a t-if="analysis" t-attf-href="/product_analysis/#{analysis.id}/download_docx" 
-                                class="btn btn-primary mt-2 ms-2">
+                                class="btn btn-primary mt-2">
                                 <i class="fa fa-download"></i> Download DOCX
                             </a>
                         </div>
@@ -671,12 +671,12 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">Product Description</label>
-                <t t-if="is_edit">
+                <!-- <t t-if="is_edit">
                     <button type="button" class="btn btn-outline-secondary" id="write_ai_btn" t-att-data-analysis-id="analysis.id">
                         Write Description
                     </button>
                     <div class="small text-muted mt-1" id="write_ai_status"></div>
-                </t>
+                </t> -->
                 <textarea class="form-control" name="description" id="description" rows="5" placeholder="Paste or type product description here..."><t t-esc="analysis.description if is_edit else ''"/></textarea>
             </div>
 
