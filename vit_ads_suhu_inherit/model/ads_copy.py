@@ -41,7 +41,7 @@ REQUIRED JSON OUTPUT FORMAT:
     "cta": "...",
     "visual_suggestion": "...."    
   },{
-    "name":"COPY D - AlgoCopy Ultra",
+    "name":"COPY D - Ultra",
     "primary_text": "...",
     "headline": "...",
     "cta": "...",

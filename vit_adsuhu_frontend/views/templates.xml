@@ -437,7 +437,11 @@
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
                                             <section class="adsuhu-section" t-attf-id="section-angle-#{angle.id}" t-attf-data-clear-url="/angle_hook/#{angle.id}/celar" style="scroll-margin-top: 6rem;">
                                                     <h2 class="adsuhu-section-title">Angle: <t t-out="angle.name"/></h2>
-                                                    <p><b>Audience Profile:</b> <t t-out="audience.audience_profile_no"/>: <t t-out="audience.description"/></p>
+                                                    <h3>Info</h3>
+                                                    <ul>
+                                                        <li><b>Audience Profile:</b> <t t-out="audience.audience_profile_no"/>: <t t-out="audience.description"/></li>
+                                                    </ul>
+
                                                     <div class="adsuhu-content" t-raw="angle.output_html"></div>
 
                                                     <div class="d-flex align-items-center justify-content-center">
@@ -465,8 +469,12 @@
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
                                                     <section class="adsuhu-section" t-attf-id="section-hook-#{hook.id}" t-attf-data-clear-url="/hook/#{hook.id}/celar" style="scroll-margin-top: 6rem;">
                                                         <h2 class="adsuhu-section-title">Hook: <t t-out="hook.name"/></h2>
-                                                        <p><b>Audience Profile:</b> <t t-out="audience.audience_profile_no"/>: <t t-out="audience.description"/></p>
-                                                        <p><b>Angle:</b> <t t-out="angle.angle_no"/>: <t t-out="angle.description"/></p>
+                                                        <h3>Info</h3>
+                                                        <ul>
+                                                            <li><b>Audience Profile:</b> <t t-out="audience.audience_profile_no"/>: <t t-out="audience.description"/></li>
+                                                            <li><b>Angle:</b> <t t-out="angle.angle_no"/>: <t t-out="angle.description"/></li>
+                                                        </ul>
+                                                                                                                
                                                         <div class="adsuhu-content" t-if="hook.output_html" t-raw="hook.output_html"></div>
                                                         
                                                         <div class="d-flex align-items-center justify-content-center">
@@ -513,6 +521,13 @@
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                         <section class="adsuhu-section" t-attf-id="section-ads-#{ads.id}" t-attf-data-clear-url="/ads_copy/#{ads.id}/celar" style="scroll-margin-top: 6rem;">
                                                             <h2 class="adsuhu-section-title">Ads Copy: <t t-out="ads.name"/></h2>
+
+                                                            <ul>
+                                                                <li><b>Audience Profile:</b> <t t-out="audience.audience_profile_no"/>: <t t-out="audience.description"/></li>
+                                                                <li><b>Angle:</b> <t t-out="angle.angle_no"/>: <t t-out="angle.description"/></li>
+                                                                <li><b>Hook:</b> <t t-out="hook.hook_no"/>: <t t-out="hook.description"/></li>
+                                                            </ul>
+                                                                                                                            
                                                             <div class="adsuhu-content" t-if="ads.output_html" t-raw="ads.output_html_trimmed"></div>
 
                                                             <div class="d-flex align-items-center justify-content-center">
