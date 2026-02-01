@@ -34,7 +34,7 @@ You a free to add list element in the json list as many as needed.
 Ensure all strings are properly double-quoted and all keys are quoted.
 Do not use trailing commas or single quotes.
 DO NOT quote text inside any JSON values, use <em></em> tags instead if you return quoted texts, 
-e.g. {"key","the value text <em>the bold text</em>, normal text"}
+e.g. {"key","the value text <em>the emphazise text</em>, normal text"}
 """
 class general_object(models.Model):
     """

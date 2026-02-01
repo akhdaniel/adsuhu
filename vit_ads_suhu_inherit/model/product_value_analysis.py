@@ -135,7 +135,7 @@ class product_value_analysis(models.Model):
             output = []
             for feature in features:
                 for title, items in feature.items():
-                    output.append(f"## {title}")
+                    output.append(f"### {title}")
                     for item in items:
                         output.append(f"- {item}")
                     output.append("")  # blank line between features
