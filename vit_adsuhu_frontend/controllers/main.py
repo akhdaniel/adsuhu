@@ -73,12 +73,12 @@ class ProductValueAnalysisController(http.Controller):
             return [{
                 "name": ap.name,
                 "output_html": ap.output_html or "",
-            } for ap in record.audience_profiler_ids.sorted(key=lambda rec: rec.name or "")]
+            } for ap in record.audience_profiler_ids.sorted(key=lambda rec: rec.audience_profile_no or "")]
         if regenerate_type == "angle_hook":
             return [{
                 "name": f"AP {record.audience_profile_no} - ANGLE {an.angle_no}",
                 "output_html": an.output_html or "",
-            } for an in record.angle_hook_ids.sorted(key=lambda rec: rec.audience_profile_no or "")]
+            } for an in record.angle_hook_ids.sorted(key=lambda rec: rec.angle_no or "")]
         if regenerate_type == "ads_copy":
             return [{
                 "name": f"Ads Copy: {ads.name}",
