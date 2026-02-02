@@ -520,10 +520,10 @@
                                                 <div t-attf-id="hook-ads-copies-#{hook.id}" style="scroll-margin-top: 6rem;">
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                         <section class="adsuhu-section" t-attf-id="section-ads-#{ads.id}" t-attf-data-clear-url="/ads_copy/#{ads.id}/celar" style="scroll-margin-top: 6rem;">
+                                                            <h2 class="adsuhu-section-title">Ads Copy: <t t-out="ads.name"/></h2>
 
                                                             <div class="adsuhu-content" >
-                                                                <h2 class="adsuhu-section-title">Ads Copy: <t t-out="ads.name"/></h2>
-
+                                                                <h3>Info</h3>
                                                                 <ul>
                                                                     <li><b>Audience Profile:</b> <t t-out="audience.audience_profile_no"/>: <t t-out="audience.description"/></li>
                                                                     <li><b>Angle:</b> <t t-out="angle.angle_no"/>: <t t-out="angle.description"/></li>
