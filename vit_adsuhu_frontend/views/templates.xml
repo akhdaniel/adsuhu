@@ -199,9 +199,9 @@
                                                 <t t-foreach="audience.angle_hook_ids" t-as="angle">
                                                     <t t-foreach="angle.hook_ids" t-as="hook">
                                                         <li class="list-group-item p-0 adsuhu-toc-node">
-                                                            <details>
+                                                            <!-- <details> -->
                                                                 <!-- <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/> - Hook <t t-out="hook.hook_no"/></summary> -->
-                                                                <ul class="list-group">
+                                                                <!-- <ul class="list-group"> -->
                                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                                         <li class="list-group-item p-0">
                                                                             <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-ads-#{ads.id}">
@@ -209,8 +209,8 @@
                                                                             </a>
                                                                         </li>
                                                                     </t>
-                                                                </ul>
-                                                            </details>
+                                                                <!-- </ul> -->
+                                                            <!-- </details> -->
                                                         </li>
                                                     </t>
                                                 </t>
