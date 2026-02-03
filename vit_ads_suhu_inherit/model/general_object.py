@@ -101,8 +101,16 @@ class general_object(models.Model):
         result = []
         in_string = False
         escape = False
+        string_is_key = False
         i = 0
         length = len(text)
+
+        def last_sig_char(out):
+            for ch in reversed(out):
+                if not ch.isspace():
+                    return ch
+            return ""
+
         while i < length:
             ch = text[i]
             if escape:
@@ -118,6 +126,8 @@ class general_object(models.Model):
             if ch == '"':
                 if not in_string:
                     in_string = True
+                    prev_sig = last_sig_char(result)
+                    string_is_key = prev_sig in ["{", ","]
                     result.append(ch)
                     i += 1
                     continue
@@ -125,7 +135,11 @@ class general_object(models.Model):
                 j = i + 1
                 while j < length and text[j].isspace():
                     j += 1
-                if j >= length or text[j] in [",", "}", "]", ":"]:
+                if string_is_key:
+                    should_close = j >= length or text[j] in [",", "}", "]", ":"]
+                else:
+                    should_close = j >= length or text[j] in [",", "}", "]"]
+                if should_close:
                     in_string = False
                     result.append(ch)
                 else:

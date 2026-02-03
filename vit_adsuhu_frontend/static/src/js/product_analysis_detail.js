@@ -240,13 +240,16 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 throw new Error(result?.error || "Regenerate failed.");
             }
             if (status === "done") {
+                window.location.reload();
+                return;
+                /*
                 const outputs = result?.result || [];
+                const nextRegenerate = this.nextChain[regenerateType];
+                console.log('nextRegenerate',nextRegenerate)
                 if (section) {
                     const titleEl = section.querySelector(".adsuhu-section-title");
                     const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
                     const modelKey = regenerateType || "result";
-                    const nextRegenerate = this.nextChain[regenerateType];
-                    console.log('nextRegenerate',nextRegenerate)
                     this._insertOutputSection({
                         section,
                         modelTitle,
@@ -257,11 +260,25 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                         withSection
                     });
                 }
+
+                //hide generaet button
                 if (button) {
                     button.style.display = "none";
                 }
+                // show view button
+                const viewTargetId = outputs?.[0]?.record_id;
+                if (button && viewTargetId && nextRegenerate) {
+                    const viewTargetButton = document.createElement("a");
+                    const viewTargetTitle = regenerateType;
+                    viewTargetButton.className = "btn btn-secondary ms-2";
+                    viewTargetButton.href = `#section-${regenerateType}-${viewTargetId}`;
+                    viewTargetButton.innerHTML = `<i class="fa fa-send me-1"></i> View ${viewTargetTitle}`;
+                    button.insertAdjacentElement("afterend", viewTargetButton);
+                }
+
                 this._setButtonState(button, false);
                 return;
+                */
             }
         }
         throw new Error("Regenerate timed out. Please try again.");
@@ -348,8 +365,8 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                         .join(" ");
 
                     // generate back button
-                    const backButton = document.createElement("button");
-                    const backId= output.back_id
+                    const backButton = document.createElement("a");
+                    const backId= output.record_id
                     const backTitle= output.back_title
                     backButton.className = "btn btn-secondary";
                     backButton.href = `#section-${effectiveModelKey}-${backId}`;

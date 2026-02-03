@@ -102,7 +102,7 @@ class ProductValueAnalysisController(http.Controller):
                 "name": ap.name,
                 "output_html": ap.output_html or "",
                 "clear_url": f"/audience_profiler/{ap.id}/clear",
-                "back_id": record.id,
+                "record_id": record.id,
                 "back_title": f"Market Map {record.name}",                
             } for ap in record.audience_profiler_ids]
             # } for ap in record.audience_profiler_ids.sorted(key=lambda rec: rec.audience_profile_no or "")]
@@ -112,7 +112,7 @@ class ProductValueAnalysisController(http.Controller):
                 "name": f"AP {record.audience_profile_no} - Angle {an.angle_no}",
                 "output_html": an.output_html or "",
                 "clear_url": f"/angle_hook/{an.id}/clear",
-                "back_id": record.id,
+                "record_id": record.id,
                 "back_title": f"AP {record.audience_profile_no}",
                 "hooks":[{
                     "id": hook.id,
