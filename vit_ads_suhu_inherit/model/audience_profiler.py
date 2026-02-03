@@ -164,11 +164,15 @@ Response in {self.lang_id.name} language.
 
 
     def generate_output_html(self):
-        self.output_html = self.md_to_html(
-            self.json_to_markdown(
-                json.loads(self.clean_md(self.output)), level=3, max_level=4
+        try:
+            self.output_html = self.md_to_html(
+                self.json_to_markdown(
+                    json.loads(self.clean_md(self.output)), level=3, max_level=4
+                )
             )
-        )
+        except Exception as e:
+            _logger.error(self.output)
+            raise UserError('Failed to generate Output HTML')
 
     def action_generate_angles(self):
         an = self.env['vit.angle_hook'].create({

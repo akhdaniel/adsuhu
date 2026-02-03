@@ -26,6 +26,10 @@
                             <p class="m-0" t-field="doc.product_url" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Initial Description</strong>
+                            <p class="m-0" t-field="doc.initial_description" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Features</strong>
                             <p class="m-0" t-field="doc.features" />
                         </div>

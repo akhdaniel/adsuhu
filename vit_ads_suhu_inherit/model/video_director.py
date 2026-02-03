@@ -8,6 +8,10 @@ import requests
 import base64
 import json 
 
+import logging
+_logger = logging.getLogger(__name__)
+
+
 class video_director(models.Model):
 
     _name = "vit.video_director"
@@ -86,9 +90,12 @@ class video_director(models.Model):
             
 
     def generate_output_html(self):
-        self.output_html = self.md_to_html(
-            self.json_to_markdown(
-                json.loads(self.clean_md(self.output)), level=3, max_level=4
+        try:
+            self.output_html = self.md_to_html(
+                self.json_to_markdown(
+                    json.loads(self.clean_md(self.output)), level=3, max_level=4
+                )
             )
-        )
-  
+        except Exception as e:
+            _logger.error(self.output)
+            raise UserError('Failed to generate Output HTML')

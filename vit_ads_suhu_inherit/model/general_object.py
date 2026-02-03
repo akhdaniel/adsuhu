@@ -73,7 +73,7 @@ class general_object(models.Model):
                 continue
             replacement = UNICODE_ASCII_MAP.get(ch, "")
             translated.append(replacement)
-        return "".join(translated)
+        return self.fix_json("".join(translated))
 
     def fix_json(self, text):
         """
@@ -83,6 +83,8 @@ class general_object(models.Model):
         text = text or ""
         # Normalize smart quotes to ASCII quotes.
         text = text.replace("\u201c", '"').replace("\u201d", '"').replace("\u2018", "'").replace("\u2019", "'")
+        # Escape inner quotes inside string values when they don't close the string.
+        text = self._escape_inner_quotes(text)
         # Remove backslashes that are not valid JSON escapes.
         text = re.sub(r'\\(?!["\\/bfnrtu])', "", text)
         # If invalid \u sequences exist, strip the backslash so JSON parsing can proceed.
@@ -94,6 +96,45 @@ class general_object(models.Model):
         # Convert single-quoted keys/values to double-quoted (simple cases only).
         text = re.sub(r"\'([^\']*)\'", r'"\1"', text)
         return text
+
+    def _escape_inner_quotes(self, text):
+        result = []
+        in_string = False
+        escape = False
+        i = 0
+        length = len(text)
+        while i < length:
+            ch = text[i]
+            if escape:
+                result.append(ch)
+                escape = False
+                i += 1
+                continue
+            if ch == "\\":
+                result.append(ch)
+                escape = True
+                i += 1
+                continue
+            if ch == '"':
+                if not in_string:
+                    in_string = True
+                    result.append(ch)
+                    i += 1
+                    continue
+                # We're inside a string; decide if this should close or be escaped.
+                j = i + 1
+                while j < length and text[j].isspace():
+                    j += 1
+                if j >= length or text[j] in [",", "}", "]", ":"]:
+                    in_string = False
+                    result.append(ch)
+                else:
+                    result.append('\\"')
+                i += 1
+                continue
+            result.append(ch)
+            i += 1
+        return "".join(result)
     
     def wrap_md(self, text):
         return json.dumps(text, indent=3) 

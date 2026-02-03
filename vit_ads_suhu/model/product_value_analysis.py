@@ -54,6 +54,7 @@ class product_value_analysis(models.Model):
 
     _inherit = "vit.general_object"
     product_url = fields.Text( string=_("Product Url"))
+    initial_description = fields.Text(required=True,  string=_("Initial Description"))
     features = fields.Text( string=_("Features"))
     final_report = fields.Text( string=_("Final Report"))
     report_template = fields.Binary( string=_("Report Template"))

@@ -12,14 +12,26 @@ import psycopg2
 _logger = logging.getLogger(__name__)
 
 class ProductValueAnalysisController(http.Controller):
-    def _clear_record_output(self, record):
+    def _clear_record_output(self, record, fieldname=None):
         vals = {}
+
+        _logger.info(record._name) 
+        
+        if record._name == 'vit.audience_profiler':
+            record.unlink()        
+        elif record._name == 'vit.angle_hook':
+            record.unlink()
+        elif record._name == 'vit.product_value_analysis':
+            if fieldname == "features":
+                vals["features"] = False
+            elif fieldname == "description":
+                vals["description"] = False
+
         if "output" in record._fields:
             vals["output"] = False
         if "output_html" in record._fields:
             vals["output_html"] = False
-        if "features" in record._fields:
-            vals["features"] = False
+                           
         if vals:
             record.sudo().write(vals)
 
@@ -75,28 +87,39 @@ class ProductValueAnalysisController(http.Controller):
                 "id": record.id,
                 "name": "Product Value Analysis",
                 "output_html": record.sudo().output_html or "",
-                "clear_url": f"/product_analysis/{record.id}/celar",
+                "clear_url": f"/product_analysis/{record.id}/clear",
             }]
         if regenerate_type == "market_map_analysis":
             return [{
                 "id": mm.id,
                 "name": mm.name,
                 "output_html": mm.output_html or "",
-                "clear_url": f"/market_mapper/{mm.id}/celar",
+                "clear_url": f"/market_mapper/{mm.id}/clear",
             } for mm in record.market_mapper_ids]
         if regenerate_type == "audience_profile_analysis":
             return [{
                 "id": ap.id,
                 "name": ap.name,
                 "output_html": ap.output_html or "",
-                "clear_url": f"/audience_profiler/{ap.id}/celar",
-            } for ap in record.audience_profiler_ids.sorted(key=lambda rec: rec.audience_profile_no or "")]
+                "clear_url": f"/audience_profiler/{ap.id}/clear",
+                "back_id": record.id,
+                "back_title": f"Market Map {record.name}",                
+            } for ap in record.audience_profiler_ids]
+            # } for ap in record.audience_profiler_ids.sorted(key=lambda rec: rec.audience_profile_no or "")]
         if regenerate_type == "angle_hook":
             return [{
                 "id": an.id,
-                "name": f"AP {record.audience_profile_no} - ANGLE {an.angle_no}",
+                "name": f"AP {record.audience_profile_no} - Angle {an.angle_no}",
                 "output_html": an.output_html or "",
-                "clear_url": f"/angle_hook/{an.id}/celar",
+                "clear_url": f"/angle_hook/{an.id}/clear",
+                "back_id": record.id,
+                "back_title": f"AP {record.audience_profile_no}",
+                "hooks":[{
+                    "id": hook.id,
+                    "name": f"AP {record.audience_profile_no} - Angle {an.angle_no} - Hook {hook.id}",
+                    "output_html": hook.output_html,
+                    "clear_url": f"/hook/{hook.id}/clear",
+                } for hook in an.hook_ids]
             } for an in record.angle_hook_ids.sorted(key=lambda rec: rec.angle_no or "")]
         if regenerate_type == "ads_copy":
             return [{
@@ -107,7 +130,7 @@ class ProductValueAnalysisController(http.Controller):
                         "id": im.id,
                         "name": im.name,
                         "output_html": im.output_html,
-                        "clear_url": f"/image_generator/{im.id}/celar",
+                        "clear_url": f"/image_generator/{im.id}/clear",
                     } for im in ads.image_generator_ids
                 ],
                 "lps":[
@@ -115,7 +138,7 @@ class ProductValueAnalysisController(http.Controller):
                         "id": lp.id,
                         "name": lp.name,
                         "output_html": lp.output_html,
-                        "clear_url": f"/landing_page/{lp.id}/celar",
+                        "clear_url": f"/landing_page/{lp.id}/clear",
                     } for lp in ads.landing_page_builder_ids
                 ],
                 "videos":[
@@ -123,7 +146,7 @@ class ProductValueAnalysisController(http.Controller):
                         "id": vid.id,
                         "name": vid.name,
                         "output_html": vid.output_html,
-                        "clear_url": f"/video_director/{vid.id}/celar",
+                        "clear_url": f"/video_director/{vid.id}/clear",
                     } for vid in ads.video_director_ids
                 ],
                 "output_html": f"""{ads.output_html_trimmed}
@@ -134,7 +157,7 @@ class ProductValueAnalysisController(http.Controller):
     <a class="btn btn-primary" href="#ads-copy-video-{ads.id}">View Video Script</a>
 </div>
 """,
-                "clear_url": f"/ads_copy/{ads.id}/celar",
+                "clear_url": f"/ads_copy/{ads.id}/clear",
             } for ads in record.ads_copy_ids.sorted(key=lambda rec: rec.name or "")]
         if regenerate_type == "image_variants":
             return [{
@@ -144,76 +167,56 @@ class ProductValueAnalysisController(http.Controller):
     <img src='{iv.image_url_512}' class='img-fluid'/>
 </a>
 """,
-                "clear_url": f"/image_generator/{record.id}/celar",
+                "clear_url": f"/image_generator/{record.id}/clear",
             } for iv in record.image_variant_ids[-1]]
         return []
 
-    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/celar', type='json', auth='user', website=True, methods=['POST'])
-    def clear_product_analysis(self, analysis, **kwargs):
-        self._clear_record_output(analysis)
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/clear/<fieldname>', type='json', auth='user', website=True, methods=['POST'])
+    def clear_product_analysis(self, analysis, fieldname, **kwargs):
+        self._clear_record_output(analysis, fieldname)
         return {"status": "ok"}
 
-    @http.route('/market_mapper/<model("vit.market_mapper"):market_mapper>/celar', type='json', auth='user', website=True, methods=['POST'])
+    @http.route('/market_mapper/<model("vit.market_mapper"):market_mapper>/clear', type='json', auth='user', website=True, methods=['POST'])
     def clear_market_mapper(self, market_mapper, **kwargs):
         self._clear_record_output(market_mapper)
         return {"status": "ok"}
 
-    @http.route('/audience_profiler/<model("vit.audience_profiler"):audience_profiler>/celar', type='json', auth='user', website=True, methods=['POST'])
+    @http.route('/audience_profiler/<model("vit.audience_profiler"):audience_profiler>/clear', type='json', auth='user', website=True, methods=['POST'])
     def clear_audience_profiler(self, audience_profiler, **kwargs):
         self._clear_record_output(audience_profiler)
         return {"status": "ok"}
 
-    @http.route('/angle_hook/<model("vit.angle_hook"):angle_hook>/celar', type='json', auth='user', website=True, methods=['POST'])
+    @http.route('/angle_hook/<model("vit.angle_hook"):angle_hook>/clear', type='json', auth='user', website=True, methods=['POST'])
     def clear_angle_hook(self, angle_hook, **kwargs):
         self._clear_record_output(angle_hook)
         return {"status": "ok"}
 
-    @http.route('/hook/<model("vit.hook"):hook>/celar', type='json', auth='user', website=True, methods=['POST'])
+    @http.route('/hook/<model("vit.hook"):hook>/clear', type='json', auth='user', website=True, methods=['POST'])
     def clear_hook(self, hook, **kwargs):
         self._clear_record_output(hook)
         return {"status": "ok"}
 
-    @http.route('/ads_copy/<model("vit.ads_copy"):ads_copy>/celar', type='json', auth='user', website=True, methods=['POST'])
+    @http.route('/ads_copy/<model("vit.ads_copy"):ads_copy>/clear', type='json', auth='user', website=True, methods=['POST'])
     def clear_ads_copy(self, ads_copy, **kwargs):
         self._clear_record_output(ads_copy)
         return {"status": "ok"}
 
-    @http.route('/image_generator/<model("vit.image_generator"):image_generator>/celar', type='json', auth='user', website=True, methods=['POST'])
+    @http.route('/image_generator/<model("vit.image_generator"):image_generator>/clear', type='json', auth='user', website=True, methods=['POST'])
     def clear_image_generator(self, image_generator, **kwargs):
         self._clear_record_output(image_generator)
         return {"status": "ok"}
 
-    @http.route('/video_director/<model("vit.video_director"):video_director>/celar', type='json', auth='user', website=True, methods=['POST'])
+    @http.route('/video_director/<model("vit.video_director"):video_director>/clear', type='json', auth='user', website=True, methods=['POST'])
     def clear_video_director(self, video_director, **kwargs):
         self._clear_record_output(video_director)
         return {"status": "ok"}
 
-    @http.route('/landing_page/<model("vit.landing_page_builder"):landing_page>/celar', type='json', auth='user', website=True, methods=['POST'])
+    @http.route('/landing_page/<model("vit.landing_page_builder"):landing_page>/clear', type='json', auth='user', website=True, methods=['POST'])
     def clear_landing_page(self, landing_page, **kwargs):
         self._clear_record_output(landing_page)
         return {"status": "ok"}
 
-    @http.route('/regenerate_status/<string:regenerate_type>/<int:record_id>', type='json', auth='user', website=True, methods=['POST'])
-    def regenerate_status(self, regenerate_type, record_id, **kwargs):
-        model_map = {
-            "product_value_analysis": "vit.product_value_analysis",
-            "market_map_analysis": "vit.product_value_analysis",
-            "audience_profile_analysis": "vit.market_mapper",
-            "angle_hook": "vit.audience_profiler",
-            "ads_copy": "vit.hook",
-            "image_variants": "vit.image_generator",
-        }
-        model_name = model_map.get(regenerate_type)
-        if not model_name:
-            return {"status": "failed", "error": "Unknown regenerate type."}
-
-        record = request.env[model_name].sudo().browse(record_id)
-        status = record.status or "idle"
-        result = []
-        if status == "done":
-            result = self._build_result(regenerate_type, record)
-        return {"status": status, "result": result}
-
+    # CRUD 
     @http.route(['/product_analysis', '/product_analysis/page/<int:page>'], type='http', auth='user', website=True)
     def list(self, page=1, **kwargs):
         product_analysis_obj = request.env['vit.product_value_analysis']
@@ -267,6 +270,7 @@ class ProductValueAnalysisController(http.Controller):
         product_url = post.get('product_url')
         target_market = post.get('target_market')
         description = post.get('description')
+        initial_description = post.get('initial_description')
         features = post.get('features')
         tags = post.get('tags')
         deafult_lang = request.env['res.lang'].search([('active', '=', True)], limit=1)
@@ -280,6 +284,7 @@ class ProductValueAnalysisController(http.Controller):
             'product_url': product_url,
             'target_market': target_market,
             'description': description,
+            'initial_description': initial_description,
             'features': features,
             'tags': tags,
             'lang_id': lang_id,
@@ -293,6 +298,7 @@ class ProductValueAnalysisController(http.Controller):
         product_url = post.get('product_url')
         target_market = post.get('target_market')
         description = post.get('description')
+        initial_description = post.get('initial_description')
         features = post.get('features')
         deafult_lang = request.env['res.lang'].search([('active', '=', True)], limit=1)
         lang_id = int(post.get('lang_id')) if post.get('lang_id') else deafult_lang.id
@@ -300,33 +306,44 @@ class ProductValueAnalysisController(http.Controller):
         if not product_url:
             return request.redirect(f'/product_analysis/{analysis.id}/edit')
 
-        analysis.sudo().write({
+        analysis.write({
             'name': product_name if product_name else analysis.name,
             'product_url': product_url,
             'target_market': target_market if target_market else analysis.target_market,
             'description': description,
+            'initial_description': initial_description,
             'features': features,
             'lang_id': lang_id,
         })
 
         return request.redirect(f'/product_analysis/{analysis.id}')
 
+
+    # Write features & desriptopn
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/write_with_ai', type='json', auth='user', website=True, methods=['POST'])
     def write_with_ai(self, analysis, **kwargs):
         analysis.action_write_with_ai()
-        result = analysis.read(['description', 'features', 'lang_id'])[0]
+        result = analysis.read(['initial_description', 'description', 'features', 'lang_id'])[0]
 
         return [{
+            'id': result.get('id'),
+            'name':'Description',
+            'output_html': result.get('description', ''),
+            'with_next_button': False,
+            'section':'description'
+
+        },{
+            'id': result.get('id'),
             'name':'Features',
             'output_html': result.get('features', ''),
-            # 'description': result.get('description', ''),
-            # 'features': result.get('features', ''),
-            # 'lang_id': result.get('lang_id', False),
+            'section':'features'
         }]
 
+
+    # Regenerate secion
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_product_analysis(self, analysis, **kwargs):
-        analysis.sudo().write({"status": "processing"})
+        analysis.write({"status": "processing"})
         request.env.cr.commit()
         self._run_background("vit.product_value_analysis", analysis.id, lambda rec: rec.action_generate())
         return {"status": "processing"}
@@ -351,13 +368,6 @@ class ProductValueAnalysisController(http.Controller):
         request.env.cr.commit()
         self._run_background("vit.audience_profiler", audience_profiler.id, lambda rec: rec.action_generate_angles())
         return {"status": "processing"}
-
-    # @http.route('/product_analysis/hook/<model("vit.hook"):hook>/regenerate', type='json', auth='user', website=True, methods=['POST'])
-    # def regenerate_hook(self, hook, **kwargs):
-    #     hook.action_create_ads_copy()
-    #     return [{
-    #         'output_html': ads.output_html or '',
-    #     } for ads in hook.ads_copy_ids]
 
     @http.route('/hook/<model("vit.hook"):hook>/ads_copy/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_ads_copy(self, hook, **kwargs):
@@ -470,6 +480,32 @@ class ProductValueAnalysisController(http.Controller):
         
         return Markup(html_content), Markup(md.toc)
 
+
+
+    # fetch status
+    @http.route('/regenerate_status/<string:regenerate_type>/<int:record_id>', type='json', auth='user', website=True, methods=['POST'])
+    def regenerate_status(self, regenerate_type, record_id, **kwargs):
+        model_map = {
+            "product_value_analysis": "vit.product_value_analysis",
+            "market_map_analysis": "vit.product_value_analysis",
+            "audience_profile_analysis": "vit.market_mapper",
+            "angle_hook": "vit.audience_profiler",
+            "ads_copy": "vit.hook",
+            "image_variants": "vit.image_generator",
+        }
+        model_name = model_map.get(regenerate_type)
+        if not model_name:
+            return {"status": "failed", "error": "Unknown regenerate type."}
+
+        record = request.env[model_name].sudo().browse(record_id)
+        status = record.status or "idle"
+        result = []
+        if status == "done":
+            result = self._build_result(regenerate_type, record)
+        return {"status": status, "result": result}
+
+
+    # view details
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>', type='http', auth='user', website=True)
     def detail(self, analysis, **kwargs):
         final_report_html, final_report_toc = self._process_markdown(analysis.final_report)
@@ -482,3 +518,4 @@ class ProductValueAnalysisController(http.Controller):
             'final_report_toc': final_report_toc,
         }
         return request.render('vit_adsuhu_frontend.product_analysis_detail_template', values)
+
