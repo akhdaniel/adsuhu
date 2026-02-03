@@ -27,6 +27,15 @@
                 <!-- <field name="gpt_prompt_id" position="replace"/> -->
                 <field name="gpt_url" position="replace"/>
                 <field name="visual_concept_id" position="replace"/>
+                <xpath expr="//form/header" position="inside">
+                    <button
+                        name="action_generate_video"
+                        type="object"
+                        string="Generate Video 🎬"
+                        class="btn-secondary"
+                        icon="fa-film"
+                    />
+                </xpath>
 
                 <xpath expr="//notebook/page[@name='report']/field" position="before">
                     <button type="object" name="generate_output_html" icon="fa-file-text-o">Generate Report</button>

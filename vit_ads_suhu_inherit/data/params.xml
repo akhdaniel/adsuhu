@@ -78,6 +78,10 @@
         <field name="key">telegram_chat_id</field>
         <field name="value">your-chat-id</field>
     </record>
+    <record id="fal_video_model" model="ir.config_parameter">
+        <field name="key">fal_video_model</field>
+        <field name="value">fal-ai/luma-dream-machine</field>
+    </record>
 
     <!--
     You can grab it from Telegram itself:
