@@ -246,6 +246,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                     const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
                     const modelKey = regenerateType || "result";
                     const nextRegenerate = this.nextChain[regenerateType];
+                    console.log('nextRegenerate',nextRegenerate)
                     this._insertOutputSection({
                         section,
                         modelTitle,
@@ -258,10 +259,6 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 }
                 if (button) {
                     button.style.display = "none";
-                    const viewEl = document.getElementById(`view-${regenerateType}-${recordId}`);
-                    if (viewEl) {
-                        viewEl.style.display = "block";
-                    }
                 }
                 this._setButtonState(button, false);
                 return;
@@ -312,13 +309,23 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             this._injectClearButtons();
         };
 
-        outputs.forEach((output) => {
+        const tocMap = {
+            market_map_analysis: "market_mapper",
+            audience_profile_analysis: "audience_profiler",
+            angle_hook: "angle_hook",
+            ads_copy: "ads_copy",
+        };
+
+        [...outputs].reverse().forEach((output) => {
             let newSection
 
             if (withSection){ // normail sections
                 newSection = document.createElement("section");
                 newSection.className = "adsuhu-section";
-                newSection.id = `section-${modelKey}`;
+
+                const effectiveModelKey = output?.section || modelKey;
+                const outputId = output?.id ?? "";
+                newSection.id = outputId ? `section-${effectiveModelKey}-${outputId}` : `section-${effectiveModelKey}`;
                 newSection.style.scrollMarginTop = "6rem";
 
                 const titleEl = document.createElement("h2");
@@ -332,36 +339,62 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 newSection.appendChild(contentEl);
 
 
-                if (nextRegenerate) {
+                const withNextButton = output.with_next_button === false? false: true
+                
+                if (withNextButton && nextRegenerate ) {
                     const nextTitle = nextRegenerate
                         .split("_")
                         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                         .join(" ");
 
+                    // generate back button
+                    const backButton = document.createElement("button");
+                    const backId= output.back_id
+                    const backTitle= output.back_title
+                    backButton.className = "btn btn-secondary";
+                    backButton.href = `#section-${effectiveModelKey}-${backId}`;
+                    backButton.innerHTML = `<i class="fa fa-send me-1"></i> Back to ${backTitle}`;
+
+                    // generate next button
                     const nextButton = document.createElement("button");
                     nextButton.className = "btn btn-secondary js-regenerate";
                     nextButton.id = `regenerate_${nextRegenerate}`;
-                    nextButton.dataset.id = sourceButton?.dataset?.id || "";
+                    nextButton.dataset.id = output.id;
                     nextButton.dataset.regenerate = nextRegenerate;
+                    nextButton.dataset.targetSection = `section-${nextRegenerate}`;
                     nextButton.innerHTML = `<i class="fa fa-send me-1"></i> Generate ${nextTitle}`;
                     
                     const buttonWrap = document.createElement("div");
                     buttonWrap.className = "d-flex align-items-center justify-content-center";
                     buttonWrap.appendChild(nextButton);
+                    buttonWrap.appendChild(backButton);
+
+                    //append button
                     newSection.appendChild(buttonWrap);
+                    
                 }
+
+
+                //append section
+                section.appendChild(newSection);
 
                 if (output.clear_url) {
                     newSection.dataset.clearUrl = output.clear_url;
                 }
-                this._appendTocItem(this.tocLists[modelKey], titleEl.textContent, newSection.id);            
-                section.insertAdjacentElement("afterend", newSection);
+
+                //add toc
+                const tocKey = tocMap[effectiveModelKey] || effectiveModelKey;
+                this._appendTocItem(this.tocLists[tocKey], titleEl.textContent, newSection.id);            
+
                 this._injectClearButtons();
 
-                if (modelKey === "ads_copy") {
+                if (effectiveModelKey === "ads_copy") {
                     appendGeneratedSections("section-images", output.images, "img");
                     appendGeneratedSections("section-landing-page", output.lps, "lp");
                     appendGeneratedSections("section-video-script", output.videos, "vid");
+                }
+                if (effectiveModelKey === "angle_hook") {
+                    appendGeneratedSections("section-hooks", output.hooks, "hook");
                 }
             } 
             else
@@ -374,9 +407,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 section.appendChild(newSection)
                 this._injectClearButtons();
             }
-
         });
-
     },
     async _onRegenerateClick(event) {
         event.preventDefault();
@@ -434,7 +465,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 const modelKey = regenerateType || "result";
                 // const nextRegenerate = button.dataset.nextRegenerate || "";
                 const nextRegenerate = this.nextChain[regenerateType]
-                console.log('nextRegenerate',nextRegenerate)
+                // console.log('nextRegenerate',nextRegenerate)
                 this._insertOutputSection({
                     section,
                     modelTitle,
@@ -450,6 +481,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 if (viewEl) {
                     viewEl.style.display = "block";
                 }
+                
             }
         } catch (err) {
             console.error(err);

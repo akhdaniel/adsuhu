@@ -192,8 +192,7 @@ Response in {rec.lang_id.name} language.
           raise UserError('priority_segments not found')
 
         for i,x in enumerate(js['priority_segments'], start=1):
-          if not self.env['vit.audience_profiler'].search([('name',x['name'])]):
-            self.audience_profiler_ids = (0,0,{
+            ap = self.env['vit.audience_profiler'].create({
                 'name':f'/',
                 'audience_profile_no': i,
                 'market_mapper_id': self.id,
@@ -201,20 +200,21 @@ Response in {rec.lang_id.name} language.
                 'alasan': x['reason'],
                 'lang_id': self.lang_id.id,
                 'gpt_model_id': self.gpt_model_id.id,
-            }) 
-            self.env.cr.commit()
-          else:
-            _logger.info('AP exists %s', x['name'])
-
-        for x in self.audience_profiler_ids:
-            x._get_input()
-            x.action_generate()   
-            self.env.cr.commit()
+                'market_mapper_id': self.id
+            })
+         
+            ap._get_input()
+            if not ap.input:
+              raise UserError(f'AP {i} Input empty')
+            ap.action_generate()   
 
     def generate_output_html(self):
-        self.output_html = self.md_to_html(
-            self.json_to_markdown(
-                json.loads(self.clean_md(self.output)), level=3, max_level=4
+        try:
+            self.output_html = self.md_to_html(
+                self.json_to_markdown(
+                    json.loads(self.clean_md(self.output)), level=3, max_level=4
+                )
             )
-        )
-  
+        except Exception as e:
+            _logger.error(self.output)
+            raise UserError('Failed to generate Output HTML')

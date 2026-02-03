@@ -78,7 +78,7 @@
                 <div class="container adsuhu-container" id="main">
                     <input type="hidden" id="adsuhu-csrf-token" t-att-value="request.csrf_token()"/>
                     <div class="row">
-                        <!-- TOC -->
+                        <!-- ============================== TOC =========================== -->
                         <div class="col-lg-3 mb-4" id="toc">
                             <div class="adsuhu-toc" style="position: sticky; top: 6rem; max-height: calc(100vh - 6rem); overflow: auto;">
                                 <details class="adsuhu-toc-section" open="open">
@@ -315,37 +315,43 @@
                             </div>
                         </div>
 
-                        <!-- content -->
+                        <!-- ============================== content ============================== -->
                         <div class="col-lg-9" id="content">
+                            <!-- start process -->
+                            <div t-if="(not analysis.description or not analysis.features)" class="mt-2 mb-2"  >
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <button class="btn btn-secondary js-regenerate" 
+                                        id="generate_features" 
+                                        t-att-data-id="analysis.id" 
+                                        data-regenerate="write_with_ai"
+                                        data-target-section="section-description"
+                                    >
+                                        <i class="fa fa-send me-1"></i> Rewrite Description &amp; Features
+                                    </button>
+                                </div>                            
+                            </div>
+
+                        
                             <h1>Product</h1>
+                            
                             <!-- description -->
                             <div id="section-description" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" t-attf-data-clear-url="/product_analysis/#{analysis.id}/celar">
+                                <section class="adsuhu-section" t-if="analysis.description"  t-attf-data-clear-url="/product_analysis/#{analysis.id}/clear/description">
                                     <h2 class="adsuhu-section-title">Description</h2>
                                     <t t-if="analysis.description">
                                         <div class="adsuhu-content" t-out="description_html"></div>
-                                        <div t-if="not analysis.features" class="d-flex align-items-center justify-content-center">
-                                            <button class="btn btn-secondary js-regenerate" 
-                                                id="generate_features" 
-                                                t-att-data-id="analysis.id" 
-                                                data-regenerate="write_with_ai"
-                                                data-target-section="section-features"
-                                            >
-                                                <i class="fa fa-send me-1"></i> Rewrite Features
-                                            </button>
-                                        </div>
                                     </t>
                                 </section>
                             </div>
 
                             <!-- features -->
                             <div id="section-features" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" t-if="analysis.features" t-attf-data-clear-url="/product_analysis/#{analysis.id}/celar">
+                                <section class="adsuhu-section" t-if="( analysis.description and analysis.features) and not analysis.output" t-attf-data-clear-url="/product_analysis/#{analysis.id}/clear/features">
                                     <h2 class="adsuhu-section-title">Features</h2>
                                     <div class="adsuhu-content" t-out="features_html"></div>
 
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <button t-if="not analysis.output" class="btn btn-secondary js-regenerate" 
+                                        <button class="btn btn-secondary js-regenerate" 
                                             id="generate_product_value_analysis" 
                                             t-att-data-id="analysis.id" 
                                             data-regenerate="product_value_analysis"
@@ -359,14 +365,15 @@
 
                             <!-- product analysis -->
                             <div id="section-product-analysis" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" t-if="analysis.output" t-attf-data-clear-url="/product_analysis/#{analysis.id}/celar">
+                                <section class="adsuhu-section" t-if="analysis.output" t-attf-data-clear-url="/product_analysis/#{analysis.id}/clear/output">
                                     <h2 class="adsuhu-section-title">Product Value Analysis</h2>
                                     <div class="adsuhu-content" t-raw="analysis.output_html"></div>
-                                    <div t-if="not analysis.market_mapper_ids" class="d-flex align-items-center justify-content-center">
+                                    <div t-if="not analysis.market_mapper_ids or not analysis.market_mapper_ids[0].output" class="d-flex align-items-center justify-content-center">
                                         <button class="btn btn-secondary js-regenerate" 
                                             id="regenerate_market_mapper" 
                                             t-att-data-id="analysis.id" 
                                             data-regenerate="market_map_analysis"
+                                            data-target-section="section-market-mapper"
                                         >
                                             <i class="fa fa-send me-1"></i> Generate Market Map Analysis
                                         </button>
@@ -374,20 +381,21 @@
                                 </section>
                             </div>
 
-                            <h1>Market Mapper</h1>
+                            
                             <!-- market mappers-->
                             <div id="section-market-mapper" >
+                                <h1>Market Mapper</h1>
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
-                                    <section class="adsuhu-section" t-if="market.output_html" t-attf-id="section-market-#{market.id}" t-attf-data-clear-url="/market_mapper/#{market.id}/celar" style="scroll-margin-top: 6rem;">
+                                    <section class="adsuhu-section" t-if="market.output_html" t-attf-id="section-market-#{market.id}" t-attf-data-clear-url="/market_mapper/#{market.id}/clear" style="scroll-margin-top: 6rem;">
                                         <h2 class="adsuhu-section-title" t-field="market.name"></h2>
                                         <div class="adsuhu-content"  t-raw="market.output_html"></div>
                                         <div class="d-flex align-items-center justify-content-center">
-                                            <button t-if="not market.audience_profiler_ids"  
+                                            <button t-if="market.output and not market.audience_profiler_ids"  
                                                 class="btn btn-secondary js-regenerate" 
                                                 id="audience_profile_analysis" 
                                                 t-att-data-id="market.id" 
                                                 data-regenerate="audience_profile_analysis"
-                                                data-target-section="section-audience-profiler"
+                                                data-target-section="section-audience_profile_analysis"
                                             >
                                                 <i class="fa fa-send me-1"></i> Generate Auidence Profile Analysis
                                             </button>
@@ -398,10 +406,10 @@
 
                             <h1>Audience Profile</h1>
                             <!-- audience profile-->
-                            <div id="section-audience-profiler" >
+                            <div id="section-audience_profile_analysis" >
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                        <section class="adsuhu-section" t-attf-id="section-audience-#{audience.id}" t-attf-data-clear-url="/audience_profiler/#{audience.id}/celar" style="scroll-margin-top: 6rem;">
+                                        <section class="adsuhu-section" t-attf-id="section-audience-#{audience.id}" t-attf-data-clear-url="/audience_profiler/#{audience.id}/clear" style="scroll-margin-top: 6rem;">
                                             <h2 class="adsuhu-section-title">AP <t t-out="audience.name"/></h2>
                                                 
                                             <div class="adsuhu-content" t-if="audience.output_html" t-raw="audience.output_html"></div>
@@ -413,11 +421,11 @@
                                                     id="regenerate_angles" 
                                                     t-att-data-id="audience.id" 
                                                     data-regenerate="angle_hook" 
-                                                    data-target-section="section-angle-hook">
+                                                    data-target-section="section-angle_hook">
                                                     <i class="fa fa-send me-1"></i> Generate Angles &amp; Hooks
                                                 </button>
 
-                                                <a t-attf-href="#audience-profile-angles-#{audience.id}" 
+                                                <a t-if="audience.angle_hook_ids" t-attf-href="#audience-profile-angles-#{audience.id}" 
                                                     t-attf-id="view-angle_hook-#{audience.id}"
                                                     class="btn btn-primary" 
                                                     >View Angles &amp; Hooks
@@ -430,12 +438,12 @@
 
                             <h1>Angles</h1>
                             <!-- angles -->
-                            <div id="section-angle-hook" style="scroll-margin-top: 6rem;">
+                            <div id="section-angle_hook" style="scroll-margin-top: 6rem;">
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <div t-attf-id="audience-profile-angles-#{audience.id}" style="scroll-margin-top: 6rem;">
                                             <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                            <section class="adsuhu-section" t-attf-id="section-angle-#{angle.id}" t-attf-data-clear-url="/angle_hook/#{angle.id}/celar" style="scroll-margin-top: 6rem;">
+                                            <section class="adsuhu-section" t-attf-id="section-angle-#{angle.id}" t-attf-data-clear-url="/angle_hook/#{angle.id}/clear" style="scroll-margin-top: 6rem;">
                                                     <h2 class="adsuhu-section-title">Angle: <t t-out="angle.name"/></h2>
                                                     
                                                     <div class="adsuhu-content" >
@@ -470,7 +478,7 @@
                                         <t t-foreach="audience.angle_hook_ids" t-as="angle">
                                             <div t-attf-id="section-angle-hook-#{angle.id}" style="scroll-margin-top: 6rem;">
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
-                                                    <section class="adsuhu-section" t-attf-id="section-hook-#{hook.id}" t-attf-data-clear-url="/hook/#{hook.id}/celar" style="scroll-margin-top: 6rem;">
+                                                    <section class="adsuhu-section" t-attf-id="section-hook-#{hook.id}" t-attf-data-clear-url="/hook/#{hook.id}/clear" style="scroll-margin-top: 6rem;">
                                                         <h2 class="adsuhu-section-title">Hook: <t t-out="hook.name"/></h2>
 
                                                         <div class="adsuhu-content" >
@@ -525,7 +533,7 @@
                                             <t t-foreach="angle.hook_ids" t-as="hook">
                                                 <div t-attf-id="hook-ads-copies-#{hook.id}" style="scroll-margin-top: 6rem;">
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
-                                                        <section class="adsuhu-section" t-attf-id="section-ads-#{ads.id}" t-attf-data-clear-url="/ads_copy/#{ads.id}/celar" style="scroll-margin-top: 6rem;">
+                                                        <section class="adsuhu-section" t-attf-id="section-ads-#{ads.id}" t-attf-data-clear-url="/ads_copy/#{ads.id}/clear" style="scroll-margin-top: 6rem;">
                                                             <h2 class="adsuhu-section-title">Ads Copy: <t t-out="ads.name"/></h2>
 
                                                             <div class="adsuhu-content" >
@@ -564,7 +572,7 @@
                                                 <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                     <div t-attf-id="ads-copy-images-#{ads.id}">
                                                         <t t-foreach="ads.image_generator_ids" t-as="img">
-                                                            <section class="adsuhu-section" t-attf-id="section-img-#{img.id}" t-attf-data-clear-url="/image_generator/#{img.id}/celar" style="scroll-margin-top: 6rem;">
+                                                            <section class="adsuhu-section" t-attf-id="section-img-#{img.id}" t-attf-data-clear-url="/image_generator/#{img.id}/clear" style="scroll-margin-top: 6rem;">
                                                                 <h2 class="adsuhu-section-title">Image: <t t-out="img.name"/></h2>
                                                                 <div class="adsuhu-content" t-if="img.output_html" t-raw="img.output_html"></div>
 
@@ -614,7 +622,7 @@
                                                 <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                     <div t-attf-id="ads-copy-lp-#{ads.id}">
                                                         <t t-foreach="ads.landing_page_builder_ids" t-as="lp">
-                                                            <section class="adsuhu-section" t-attf-id="section-lp-#{lp.id}" t-attf-data-clear-url="/landing_page/#{lp.id}/celar" style="scroll-margin-top: 6rem;">
+                                                            <section class="adsuhu-section" t-attf-id="section-lp-#{lp.id}" t-attf-data-clear-url="/landing_page/#{lp.id}/clear" style="scroll-margin-top: 6rem;">
                                                                 <h2 class="adsuhu-section-title">LP: <t t-out="lp.name"/></h2>
                                                                 <div class="adsuhu-content" t-if="lp.output_html" t-raw="lp.output_html"></div>
                                                                 
@@ -643,7 +651,7 @@
                                                 <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                     <div t-attf-id="ads-copy-video-#{ads.id}">
                                                         <t t-foreach="ads.video_director_ids" t-as="vid">
-                                                            <section class="adsuhu-section" t-attf-id="section-vid-#{vid.id}" t-attf-data-clear-url="/video_director/#{vid.id}/celar" style="scroll-margin-top: 6rem;">
+                                                            <section class="adsuhu-section" t-attf-id="section-vid-#{vid.id}" t-attf-data-clear-url="/video_director/#{vid.id}/clear" style="scroll-margin-top: 6rem;">
                                                                 <h2 class="adsuhu-section-title">Video: <t t-out="vid.name"/></h2>
                                                                 <div class="adsuhu-content" t-if="vid.output_html" t-raw="vid.output_html"></div>
                                                                 <div class="d-flex align-items-center justify-content-center">
@@ -697,19 +705,24 @@
             </div>
 
             <div class="mb-3">
-                <label for="description" class="form-label">Product Description</label>
+                <label for="initial_description" class="form-label">Initial Description</label>
                 <!-- <t t-if="is_edit">
                     <button type="button" class="btn btn-outline-secondary" id="write_ai_btn" t-att-data-analysis-id="analysis.id">
                         Write Description
                     </button>
                     <div class="small text-muted mt-1" id="write_ai_status"></div>
                 </t> -->
-                <textarea class="form-control" name="description" id="description" rows="5" placeholder="Paste or type product description here..."><t t-esc="analysis.description if is_edit else ''"/></textarea>
+                <textarea class="form-control" name="initial_description" id="initial_description" rows="10" placeholder="Paste or type initial product description here..."><t t-esc="analysis.initial_description if is_edit else ''"/></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Product Description</label>
+                <textarea class="form-control" name="description" id="description" rows="5" placeholder="AI generated product description here..."><t t-esc="analysis.description if is_edit else ''"/></textarea>
             </div>
 
             <div class="mb-3">
                 <label for="features" class="form-label">Key Features</label>
-                <textarea class="form-control" name="features" id="features" rows="4" placeholder="List product features (leave blank for auto AI generated)..."><t t-esc="analysis.features if is_edit else ''"/></textarea>
+                <textarea class="form-control" name="features" id="features" rows="20" placeholder="AI Generated list product features (leave blank for auto AI generated)..."><t t-esc="analysis.features if is_edit else ''"/></textarea>
             </div>
 
             <div class="mb-3">

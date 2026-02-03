@@ -10,7 +10,8 @@
                 <list string="Product Value Analysis">
                     <field name="name" /> <!-- 1-->
                     <field name="partner_id" optional="hide"/> <!-- 100-->
-                    <field name="target_market" optional="hide"/> <!-- 107-->
+                    <field name="initial_description" /> <!-- 101-->
+                    <field name="target_market" optional="hide"/> <!-- 108-->
                     <field name="description" /> <!-- 1500-->
                 </list>
             </field>
@@ -69,6 +70,7 @@
                         <group>
                             <group> <!-- left -->
                                 <field name="product_url"  />
+                                <field name="initial_description"  />
                                 <field name="final_report" insisible="1" />
                                 <field name="report_template_filename" invisible="True" />
                                 <field name="active"  />
@@ -132,6 +134,7 @@
                 <search string="Product Value Analysis">
 
                     <filter string="Product Url" name="filter_by_product_url" domain="[('product_url','=','')]" />
+                    <filter string="Initial Description" name="filter_by_initial_description" domain="[('initial_description','=','')]" />
                     <filter string="Features" name="filter_by_features" domain="[('features','=','')]" />
                     <filter string="Final Report" name="filter_by_final_report" domain="[('final_report','=','')]" />
                     <filter string="Report Template" name="filter_by_report_template" domain="[('report_template','=','')]" />
@@ -151,6 +154,7 @@
                     <filter string="Active" name="filter_by_active" domain="[('active','=','')]" />
                     <filter string="GPT Session URL" name="filter_by_gpt_session" domain="[('gpt_session','=','')]" />
                     <field name="product_url" string="Product Url" select="True"/>
+                    <field name="initial_description" string="Initial Description" select="True"/>
                     <field name="features" string="Features" select="True"/>
                     <field name="final_report" string="Final Report" select="True"/>
                     <field name="report_template" string="Report Template" select="True"/>

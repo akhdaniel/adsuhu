@@ -15,6 +15,10 @@ from bs4 import BeautifulSoup
 _logger = logging.getLogger(__name__)
 
 
+import logging
+_logger = logging.getLogger(__name__)
+
+
 class video_director(models.Model):
 
     _name = "vit.video_director"
@@ -133,130 +137,12 @@ class video_director(models.Model):
     # =====================================================
 
     def generate_output_html(self):
-        self.output_html = self.md_to_html(
-            self.json_to_markdown(
-                json.loads(self.clean_md(self.output)),
-                level=3,
-                max_level=4
+        try:
+            self.output_html = self.md_to_html(
+                self.json_to_markdown(
+                    json.loads(self.clean_md(self.output)), level=3, max_level=4
+                )
             )
-        )
-
-    # =====================================================
-    # VIDEO PROMPT BUILDER (FROM output_html)
-    # =====================================================
-
-    def _build_video_prompt_from_output_html(self):
-        """
-        Convert output_html (scene table) → structured video prompt
-        """
-        self.ensure_one()
-
-        if not self.output_html:
-            raise UserError("Output HTML kosong. Generate dulu.")
-
-        soup = BeautifulSoup(self.output_html, "html.parser")
-        rows = soup.find_all("tr")
-
-        scenes = []
-
-        for row in rows[1:]:  # skip header
-            cols = row.find_all("td")
-            if len(cols) < 5:
-                continue
-
-            name = cols[0].get_text(strip=True)
-            duration = cols[1].get_text(strip=True)
-            visuals = cols[2].get_text(strip=True)
-            text_overlay = cols[3].get_text(strip=True)
-            voice_over = cols[4].get_text(strip=True)
-
-            scenes.append(f"""
-Scene: {name}
-Duration: {duration}
-Visuals: {visuals}
-On-screen text: {text_overlay}
-Voice over: {voice_over}
-""")
-
-        final_prompt = f"""
-Create a vertical cinematic advertisement video (9:16).
-
-Style:
-- realistic
-- cinematic lighting
-- smooth camera motion
-- professional commercial look
-- emotional storytelling
-
-Total Duration: 30–45 seconds
-
-Scenes:
-{chr(10).join(scenes)}
-
-Rules:
-- follow scene order strictly
-- match visuals with narration
-- smooth transitions
-- readable text overlays
-"""
-
-        return final_prompt.strip()
-
-    # =====================================================
-    # VIDEO GENERATION
-    # =====================================================
-
-    def action_generate_video(self):
-        for rec in self:
-            api_key = self.env["ir.config_parameter"].sudo().get_param("fal_api_key")
-            model_video_name = self.env["ir.config_parameter"].sudo().get_param("fal_video_model")
-            if not api_key:
-                raise UserError("FAL API Key belum diset di System Parameters")
-
-            video_prompt = rec._build_video_prompt_from_output_html()
-
-            _logger.info("VIDEO PROMPT:\n%s", video_prompt)
-
-            fal = Fal(api_key=api_key)
-
-            video_url = fal.generate_video(
-                video_prompt=video_prompt,
-                # model_name='bytedance/seedance-v1-pro-fast/text-to-video',
-                model_name= model_video_name,
-                additional_payload={
-                    "duration": 45,
-                    "fps": 24,
-                    "aspect_ratio": "9:16",
-                    "motion_strength": 0.8,
-                }
-            )
-            _logger.info("Video URL:\n%s", video_url)
-
-            if not video_url:
-                raise UserError("Gagal generate video")
-
-            rec.video_url = video_url
-            rec._download_video_from_url()
-
-        return True
-
-    # =====================================================
-    # DOWNLOAD VIDEO
-    # =====================================================
-
-    def _download_video_from_url(self):
-        for rec in self:
-            if not rec.video_url:
-                continue
-
-            try:
-                response = requests.get(rec.video_url, timeout=60)
-                if response.status_code == 200:
-                    rec.video_file = base64.b64encode(response.content)
-                    rec.video_filename = "generated_video.mp4"
-                else:
-                    raise UserError(
-                        f"Gagal download video ({response.status_code})"
-                    )
-            except Exception as e:
-                raise UserError(f"Error download video: {e}")
+        except Exception as e:
+            _logger.error(self.output)
+            raise UserError('Failed to generate Output HTML')

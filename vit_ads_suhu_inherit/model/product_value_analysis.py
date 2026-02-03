@@ -146,7 +146,7 @@ class product_value_analysis(models.Model):
         if not self.gpt_model_id:
             raise UserError('Write GPT model empty')
         
-        context = self.description
+        context = self.initial_description
         additional_command=f"Reponse in {self.lang_id.name}"
         system_prompt = self.write_gpt_prompt_id.system_prompt 
         question = ""
@@ -173,7 +173,7 @@ class product_value_analysis(models.Model):
             raise UserError(f'Error from GPT: {response}')
         self.description = response.get('description','')
 
-        _logger.info(response.get('features'))
+        # _logger.info(response.get('features'))
         # self.features = json_to_markdown(response['features'])
         self.features = self.md_to_html( 
             json_to_markdown(response.get('features'))            
@@ -222,7 +222,10 @@ Response in {self.lang_id.name} language.
 
 
     def action_generate(self, ):
+        
 
+        self._get_input()
+        
         if not self.gpt_prompt_id:
             raise UserError('Analyze GPT prompt empty')
         if not self.gpt_model_id:
@@ -1453,11 +1456,15 @@ Response in {self.lang_id.name} language.
         }
 
     def generate_output_html(self):
-        self.output_html = self.md_to_html(
-            self.json_to_markdown(
-                json.loads(self.clean_md(self.output)), level=2, max_level=3
+        try:
+            self.output_html = self.md_to_html(
+                self.json_to_markdown(
+                    json.loads(self.clean_md(self.output)), level=3, max_level=4
+                )
             )
-        )
+        except Exception as e:
+            _logger.error(self.output)
+            raise UserError('Failed to generate Output HTML')
 
     def action_generate_market_mapping(self):
         self.market_mapper_ids.active=False
@@ -1471,3 +1478,4 @@ Response in {self.lang_id.name} language.
         })
         mm._get_input()
         mm.action_generate()
+
