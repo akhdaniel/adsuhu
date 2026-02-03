@@ -146,3 +146,7 @@ class video_director(models.Model):
         except Exception as e:
             _logger.error(self.output)
             raise UserError('Failed to generate Output HTML')
+
+
+    def action_generate_video(self):
+        pass
