@@ -114,7 +114,7 @@
                                         <!-- market mappers -->
                                         <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                             <li class="list-group-item p-0">
-                                                <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-market-#{market.id}">
+                                                <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-market_map_analysis-#{market.id}">
                                                     <t t-out="market.name"/>
                                                 </a>
                                             </li>
@@ -330,12 +330,13 @@
                                     </button>
                                 </div>                            
                             </div>
-
                         
                             <h1>Product</h1>
-                            
                             <!-- description -->
                             <div id="section-description" style="scroll-margin-top: 6rem;">
+                                <div id="loading-skeleton-description" style="display: none">
+                                    <t t-call="vit_adsuhu_frontend.loading_skeleton"/>
+                                </div>    
                                 <section class="adsuhu-section" t-if="analysis.description"  t-attf-data-clear-url="/product_analysis/#{analysis.id}/clear/description">
                                     <h2 class="adsuhu-section-title">Description</h2>
                                     <t t-if="analysis.description">
@@ -343,15 +344,18 @@
                                     </t>
                                 </section>
                             </div>
-
                             <!-- features -->
                             <div id="section-features" style="scroll-margin-top: 6rem;">
-                                <section class="adsuhu-section" t-if="( analysis.description and analysis.features) and not analysis.output" t-attf-data-clear-url="/product_analysis/#{analysis.id}/clear/features">
+                            <div id="loading-skeleton-features" style="display: none">
+                                    <t t-call="vit_adsuhu_frontend.loading_skeleton"/>
+                                </div>    
+                                <section class="adsuhu-section"  t-attf-data-clear-url="/product_analysis/#{analysis.id}/clear/features">
                                     <h2 class="adsuhu-section-title">Features</h2>
                                     <div class="adsuhu-content" t-out="features_html"></div>
 
                                     <div class="d-flex align-items-center justify-content-center">
                                         <button class="btn btn-secondary js-regenerate" 
+                                            t-if="( analysis.description and analysis.features) and not analysis.output"
                                             id="generate_product_value_analysis" 
                                             t-att-data-id="analysis.id" 
                                             data-regenerate="product_value_analysis"
@@ -362,9 +366,11 @@
 
                                 </section>
                             </div>
-
                             <!-- product analysis -->
-                            <div id="section-product-analysis" style="scroll-margin-top: 6rem;">
+                            <div t-attf-id="section-product_value_analysis-#{analysis.id}" style="scroll-margin-top: 6rem;">
+                                <div id="loading-skeleton-product_value_analysis" style="display: none">
+                                    <t t-call="vit_adsuhu_frontend.loading_skeleton"/>
+                                </div>    
                                 <section class="adsuhu-section" t-if="analysis.output" t-attf-data-clear-url="/product_analysis/#{analysis.id}/clear/output">
                                     <h2 class="adsuhu-section-title">Product Value Analysis</h2>
                                     <div class="adsuhu-content" t-raw="analysis.output_html"></div>
@@ -380,16 +386,21 @@
                                     </div>
                                 </section>
                             </div>
-
                             
                             <!-- market mappers-->
-                            <div id="section-market-mapper" >
-                                <h1>Market Mapper</h1>
+                            <h1>Market Mapper</h1>
+                            <div id="section-market_map_analysis" >
+                                <div id="loading-skeleton-market_map_analysis" style="display: none">
+                                    <t t-call="vit_adsuhu_frontend.loading_skeleton"/>
+                                </div>                              
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
-                                    <section class="adsuhu-section" t-if="market.output_html" t-attf-id="section-market-#{market.id}" t-attf-data-clear-url="/market_mapper/#{market.id}/clear" style="scroll-margin-top: 6rem;">
+                                    <section class="adsuhu-section" t-if="market.output_html" t-attf-id="section-market_map_analysis-#{market.id}" t-attf-data-clear-url="/market_mapper/#{market.id}/clear" style="scroll-margin-top: 6rem;">
                                         <h2 class="adsuhu-section-title" t-field="market.name"></h2>
                                         <div class="adsuhu-content"  t-raw="market.output_html"></div>
                                         <div class="d-flex align-items-center justify-content-center">
+                                            <a class="btn btn-secondary" t-attf-href="#section-product_value_analysis-#{analysis.id}">
+                                                <i class="fa fa-arrow-left me-1"></i> Back to Product Analysis
+                                            </a>
                                             <button t-if="market.output and not market.audience_profiler_ids"  
                                                 class="btn btn-secondary js-regenerate" 
                                                 id="audience_profile_analysis" 
@@ -407,38 +418,46 @@
                             <h1>Audience Profile</h1>
                             <!-- audience profile-->
                             <div id="section-audience_profile_analysis" >
+                                <div id="loading-skeleton-audience_profile_analysis" style="display: none">
+                                    <t t-call="vit_adsuhu_frontend.loading_skeleton"/>
+                                </div>                            
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
-                                    <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                        <section class="adsuhu-section" t-attf-id="section-audience-#{audience.id}" t-attf-data-clear-url="/audience_profiler/#{audience.id}/clear" style="scroll-margin-top: 6rem;">
-                                            <h2 class="adsuhu-section-title">AP <t t-out="audience.name"/></h2>
-                                                
-                                            <div class="adsuhu-content" t-if="audience.output_html" t-raw="audience.output_html"></div>
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <a class="btn btn-secondary" t-attf-href="#section-market-#{market.id}">
-                                                    <i class="fa fa-arrow-left me-1"></i> Back to Market Mapper
-                                                </a>                                            
-                                                <button t-if="not audience.angle_hook_ids" class="btn btn-secondary js-regenerate" 
-                                                    id="regenerate_angles" 
-                                                    t-att-data-id="audience.id" 
-                                                    data-regenerate="angle_hook" 
-                                                    data-target-section="section-angle_hook">
-                                                    <i class="fa fa-send me-1"></i> Generate Angles &amp; Hooks
-                                                </button>
+                                    <div t-attf-id="market-audience_profilers-#{market.id}" style="scroll-margin-top: 6rem;">
+                                        <t t-foreach="market.audience_profiler_ids" t-as="audience">
+                                            <section class="adsuhu-section" t-attf-id="section-audience-#{audience.id}" t-attf-data-clear-url="/audience_profiler/#{audience.id}/clear" style="scroll-margin-top: 6rem;">
+                                                <h2 class="adsuhu-section-title">AP <t t-out="audience.name"/></h2>
+                                                    
+                                                <div class="adsuhu-content" t-if="audience.output_html" t-raw="audience.output_html"></div>
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <a class="btn btn-secondary" t-attf-href="#section-market_map_analysis-#{market.id}">
+                                                        <i class="fa fa-arrow-left me-1"></i> Back to Market Mapper
+                                                    </a>                                            
+                                                    <button t-if="not audience.angle_hook_ids" class="btn btn-secondary js-regenerate" 
+                                                        id="regenerate_angles" 
+                                                        t-att-data-id="audience.id" 
+                                                        data-regenerate="angle_hook" 
+                                                        data-target-section="section-angle_hook">
+                                                        <i class="fa fa-send me-1"></i> Generate Angles &amp; Hooks
+                                                    </button>
 
-                                                <a t-if="audience.angle_hook_ids" t-attf-href="#audience-profile-angles-#{audience.id}" 
-                                                    t-attf-id="view-angle_hook-#{audience.id}"
-                                                    class="btn btn-primary" 
-                                                    >View Angles &amp; Hooks
-                                                </a>
-                                            </div>
-                                        </section>
-                                    </t>
+                                                    <a t-if="audience.angle_hook_ids" t-attf-href="#audience-profile-angles-#{audience.id}" 
+                                                        t-attf-id="view-angle_hook-#{audience.id}"
+                                                        class="btn btn-primary" 
+                                                        >View Angles &amp; Hooks
+                                                    </a>
+                                                </div>
+                                            </section>
+                                        </t>
+                                    </div>
                                 </t>
                             </div>
 
                             <h1>Angles</h1>
                             <!-- angles -->
                             <div id="section-angle_hook" style="scroll-margin-top: 6rem;">
+                                <div id="loading-skeleton-angle_hook" style="display: none">
+                                    <t t-call="vit_adsuhu_frontend.loading_skeleton"/>
+                                </div>
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <div t-attf-id="audience-profile-angles-#{audience.id}" style="scroll-margin-top: 6rem;">
@@ -459,7 +478,7 @@
                                                         <a class="btn btn-secondary" t-attf-href="#section-audience-#{audience.id}">
                                                             <i class="fa fa-arrow-left me-1"></i> Back to AP <t t-out="audience.audience_profile_no"/>
                                                         </a>
-                                                        <a class="btn btn-primary" t-attf-href="#section-angle-hook-#{angle.id}">
+                                                        <a class="btn btn-primary" t-attf-href="#angle-hooks-#{angle.id}">
                                                             <i class="fa fa-send me-1"></i> View Hooks
                                                         </a>
                                                     </div>
@@ -476,7 +495,7 @@
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                            <div t-attf-id="section-angle-hook-#{angle.id}" style="scroll-margin-top: 6rem;">
+                                            <div t-attf-id="angle-hooks-#{angle.id}" style="scroll-margin-top: 6rem;">
                                                 <t t-foreach="angle.hook_ids" t-as="hook">
                                                     <section class="adsuhu-section" t-attf-id="section-hook-#{hook.id}" t-attf-data-clear-url="/hook/#{hook.id}/clear" style="scroll-margin-top: 6rem;">
                                                         <h2 class="adsuhu-section-title">Hook: <t t-out="hook.name"/></h2>
@@ -526,7 +545,7 @@
 
                             <h1>Ads Copy</h1>
                             <!-- ads copy -->
-                            <div id="section-ads-copy" >
+                            <div id="section-ads_copy" >
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <t t-foreach="audience.angle_hook_ids" t-as="angle">
@@ -614,7 +633,7 @@
 
                             <h1>Landing Pages</h1>
                             <!-- landing pages -->
-                            <div id="section-landing-page" >
+                            <div id="section-landing_pages" >
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <t t-foreach="audience.angle_hook_ids" t-as="angle">
@@ -643,7 +662,7 @@
 
                             <h1>Video Scripts</h1>
                             <!-- video scripts -->
-                            <div id="section-video-script" >
+                            <div id="section-video_scripts" >
                                 <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <t t-foreach="audience.angle_hook_ids" t-as="angle">
@@ -883,5 +902,32 @@
                 </section>
             </div>
         </t>
+    </template>
+
+
+    <template id="loading_skeleton">
+        <div class="ssc ssc-card mt-2 mb-2" >
+            <div class="ssc-wrapper">
+                <div class="ssc-square mb"></div>
+                <div class="flex align-center justify-between">
+                    <div class="w-40">
+                        <div class="ssc-line w-70 mbs"></div>
+                        <div class="ssc-line w-100 mbs"></div>
+                    </div>
+                    <div class="ssc-head-line w-50"></div>
+                </div>
+            </div>
+            <div class="ssc-hr"></div>
+            <div class="ssc-wrapper">
+                <div class="ssc-line w-90 mbs"></div>
+                <div class="ssc-line w-30 mbs"></div>
+                <div class="ssc-line w-70 mbs"></div>
+                <div class="ssc-line w-50 mbs"></div>
+            </div>
+            <div class="ssc-hr"></div>
+            <div class="ssc-wrapper">
+                <div class="ssc-head-line"></div>
+            </div>
+        </div>
     </template>
 </odoo>

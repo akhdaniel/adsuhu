@@ -16,6 +16,7 @@
         'web.assets_frontend': [
             'vit_adsuhu_frontend/static/src/css/style.css',
             'vit_adsuhu_frontend/static/src/js/product_analysis_detail.js',
+            'vit_adsuhu_frontend/static/src/css/skeleton/index.css',
         ],
     },
     'installable': True,

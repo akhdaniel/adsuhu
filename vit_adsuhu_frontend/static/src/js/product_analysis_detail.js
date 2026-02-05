@@ -17,7 +17,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             audience_profile_analysis: (id) => `/market_mapper/${id}/audience_profiler/regenerate`,
             angle_hook: (id) => `/audience_profiler/${id}/angle_hook/regenerate`,
             // hook: (id) => `/angle_hook/${id}/hook/regenerate`,
-            ads_copy: (id) => `/hook/${id}/ads_copy/regenerate`,
+            hook: (id) => `/hook/${id}/ads_copy/regenerate`,
             image_variants: (id) => `/image_generator/${id}/image_variant/regenerate`,
         };
         this.statusEndpoints = {
@@ -117,6 +117,10 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         if (!button) {
             return;
         }
+
+        const nextStep = button.dataset.regenerate
+
+        console.log('nextStep', nextStep)
         if (button.dataset.regenerate === "image_variants") {
             const generatingImage = document.getElementById("generating_image");
             if (generatingImage) {
@@ -128,11 +132,24 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             button.innerText = "Regenerating...";
             button.disabled = true;
             button.classList.add("adsuhu-btn-loading");
+
+            $("#loading-skeleton-"+nextStep).show()
         } else {
             button.innerText = button.dataset.originalText || "Regenerate";
             button.disabled = false;
             button.classList.remove("adsuhu-btn-loading");
+            $("#loading-skeleton-"+nextStep).hide()
         }
+    },
+    _titleizeKey(value) {
+        if (!value) {
+            return "";
+        }
+        return value
+            .toString()
+            .split("_")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
     },
     _appendTocItem(listId, title, sectionId) {
         if (!listId || !sectionId) {
@@ -207,7 +224,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             alert(err.message || "Clear output failed.");
         }
     },
-    async _pollRegenerateStatus({ regenerateType, recordId, section, withSection, button }) {
+    async _pollRegenerateStatus({ regenerateType, recordId, /*section, withSection,*/ button }) {
         const statusEndpointFactory = this.statusEndpoints[regenerateType];
         if (!statusEndpointFactory) {
             return;
@@ -240,55 +257,33 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 throw new Error(result?.error || "Regenerate failed.");
             }
             if (status === "done") {
-                window.location.reload();
-                return;
-                /*
+                // window.location.reload();
+                // return;
+                
                 const outputs = result?.result || [];
-                const nextRegenerate = this.nextChain[regenerateType];
-                console.log('nextRegenerate',nextRegenerate)
-                if (section) {
-                    const titleEl = section.querySelector(".adsuhu-section-title");
-                    const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
-                    const modelKey = regenerateType || "result";
-                    this._insertOutputSection({
-                        section,
-                        modelTitle,
-                        modelKey,
-                        outputs,
-                        nextRegenerate,
-                        sourceButton: button,
-                        withSection
-                    });
-                }
+
+                
+                this._insertOutputSection({
+                    recordId,
+                    outputs,
+                    sourceButton: button,
+                });
 
                 //hide generaet button
                 if (button) {
                     button.style.display = "none";
                 }
-                // show view button
-                const viewTargetId = outputs?.[0]?.record_id;
-                if (button && viewTargetId && nextRegenerate) {
-                    const viewTargetButton = document.createElement("a");
-                    const viewTargetTitle = regenerateType;
-                    viewTargetButton.className = "btn btn-secondary ms-2";
-                    viewTargetButton.href = `#section-${regenerateType}-${viewTargetId}`;
-                    viewTargetButton.innerHTML = `<i class="fa fa-send me-1"></i> View ${viewTargetTitle}`;
-                    button.insertAdjacentElement("afterend", viewTargetButton);
-                }
 
+                
+                
                 this._setButtonState(button, false);
                 return;
-                */
+                
             }
         }
         throw new Error("Regenerate timed out. Please try again.");
     },
-    _insertOutputSection({ section, modelTitle, modelKey, outputs, nextRegenerate, sourceButton, withSection }) {
-        if (!section) {
-            return;
-        }
-        // const outputs = Array.isArray(outputHtml) ? outputHtml : [outputHtml];
-        // console.log('outputs',outputs)
+    _insertOutputSection({ recordId,  outputs,  sourceButton  }) {
 
         const appendGeneratedSections = (containerId, items, prefix) => {
             if (!items || !Array.isArray(items)) {
@@ -332,22 +327,32 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             angle_hook: "angle_hook",
             ads_copy: "ads_copy",
         };
+        
+        let newSection
+        const currentStepSection = $('#section-'+outputs[0].current_step)
+        const parentSection = document.createElement("div");
+        parentSection.id = `${outputs[0].prev_step}-${outputs[0].current_step}-${recordId}`;
+        console.log('parentSection', parentSection);
+        currentStepSection.append(parentSection);
 
         [...outputs].reverse().forEach((output) => {
-            let newSection
+            
+            const prevStep = output.prev_step
+            const currentStep = output.current_step
+            const nextStep = output.next_step
+            const withSection = output.with_section===false ? false: true
 
             if (withSection){ // normail sections
                 newSection = document.createElement("section");
                 newSection.className = "adsuhu-section";
 
-                const effectiveModelKey = output?.section || modelKey;
                 const outputId = output?.id ?? "";
-                newSection.id = outputId ? `section-${effectiveModelKey}-${outputId}` : `section-${effectiveModelKey}`;
+                newSection.id = `section-${currentStep}-${outputId}`;
                 newSection.style.scrollMarginTop = "6rem";
 
                 const titleEl = document.createElement("h2");
                 titleEl.className = "adsuhu-section-title";
-                titleEl.textContent = output.name || "Result";
+                titleEl.textContent = output.name;
                 newSection.appendChild(titleEl);
 
                 const contentEl = document.createElement("div");
@@ -355,62 +360,70 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 contentEl.innerHTML = output.output_html || "";
                 newSection.appendChild(contentEl);
 
-
                 const withNextButton = output.with_next_button === false? false: true
+                const buttonWrap = document.createElement("div");
                 
-                if (withNextButton && nextRegenerate ) {
-                    const nextTitle = nextRegenerate
-                        .split("_")
-                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                        .join(" ");
-
-                    // generate back button
+                // generate back button
+                const backTitle = output.back_title
+                if (backTitle){
                     const backButton = document.createElement("a");
-                    const backId= output.record_id
-                    const backTitle= output.back_title
                     backButton.className = "btn btn-secondary";
-                    backButton.href = `#section-${effectiveModelKey}-${backId}`;
-                    backButton.innerHTML = `<i class="fa fa-send me-1"></i> Back to ${backTitle}`;
+                    backButton.href = `#section-${output.prev_step}-${recordId}`;
+                    backButton.innerHTML = `<i class="fa fa-arrow-left me-1"></i> Back to ${backTitle}`;
+                    buttonWrap.appendChild(backButton);
+                }
+                
+                
+                if (withNextButton && nextStep ) {
+                    const nextTitle = this._titleizeKey(nextStep);
+
+                    buttonWrap.className = "d-flex align-items-center justify-content-center";
 
                     // generate next button
                     const nextButton = document.createElement("button");
                     nextButton.className = "btn btn-secondary js-regenerate";
-                    nextButton.id = `regenerate_${nextRegenerate}`;
+                    nextButton.id = `regenerate_${nextStep}`;
                     nextButton.dataset.id = output.id;
-                    nextButton.dataset.regenerate = nextRegenerate;
-                    nextButton.dataset.targetSection = `section-${nextRegenerate}`;
+                    nextButton.dataset.regenerate = nextStep;
                     nextButton.innerHTML = `<i class="fa fa-send me-1"></i> Generate ${nextTitle}`;
-                    
-                    const buttonWrap = document.createElement("div");
-                    buttonWrap.className = "d-flex align-items-center justify-content-center";
                     buttonWrap.appendChild(nextButton);
-                    buttonWrap.appendChild(backButton);
-
+                    
+                    // show view button
+                    const viewTargetId = outputs?.[0]?.record_id;
+                    // const showViewButton = output.show_view_button === true? true: false;
+                    // if (showViewButton && viewTargetId && nextStep) {
+                        const viewTargetButton = document.createElement("a");
+                        const viewTargetTitle = nextStep;
+                        viewTargetButton.id = `view-target-${currentStep}-${output.id}`;
+                        viewTargetButton.className = "btn btn-primary ms-2";
+                        viewTargetButton.href = `#${currentStep}-${nextStep}-${output.id}`;
+                        viewTargetButton.style.display='none'
+                        viewTargetButton.innerHTML = `<i class="fa fa-send me-1"></i> View ${viewTargetTitle}`;
+                        buttonWrap.appendChild(viewTargetButton);
+                    // }       
                     //append button
                     newSection.appendChild(buttonWrap);
                     
                 }
-
-
                 //append section
-                section.appendChild(newSection);
+                $(parentSection).append(newSection);
 
                 if (output.clear_url) {
                     newSection.dataset.clearUrl = output.clear_url;
                 }
 
                 //add toc
-                const tocKey = tocMap[effectiveModelKey] || effectiveModelKey;
+                const tocKey = tocMap[currentStep] || currentStep;
                 this._appendTocItem(this.tocLists[tocKey], titleEl.textContent, newSection.id);            
 
                 this._injectClearButtons();
 
-                if (effectiveModelKey === "ads_copy") {
+                if (currentStep === "ads_copy") {
                     appendGeneratedSections("section-images", output.images, "img");
                     appendGeneratedSections("section-landing-page", output.lps, "lp");
                     appendGeneratedSections("section-video-script", output.videos, "vid");
                 }
-                if (effectiveModelKey === "angle_hook") {
+                if (currentStep === "angle_hook") {
                     appendGeneratedSections("section-hooks", output.hooks, "hook");
                 }
             } 
@@ -419,9 +432,9 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 newSection = document.createElement("div");
                 newSection.className="col-md-6 gap-2 mb-2"
                 newSection.innerHTML = output.output_html || "";
-                newSection.id = `section-${modelKey}`;
+                newSection.id = `section-${currentStep}`;
 
-                section.appendChild(newSection)
+                $(parentSection).append(newSection);
                 this._injectClearButtons();
             }
         });
@@ -453,53 +466,18 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 const errorText = await response.text();
                 throw new Error(errorText || "Failed to regenerate.");
             }
-            const json = await response.json();
-            const result = json?.result;
-            const targetSectionId = button.dataset.targetSection || "";
-            const withSection = button.dataset.regenerate === "image_variants"? false : true;
-            // console.log('withSection',withSection)
-            const section = targetSectionId
-                ? document.getElementById(targetSectionId)
-                : button.closest(".adsuhu-section");
-
-            console.log('section',section)
+            
             const statusEndpointFactory = this.statusEndpoints[regenerateType];
             if (statusEndpointFactory) {
                 usesPolling = true;
                 await this._pollRegenerateStatus({
                     regenerateType,
                     recordId,
-                    section,
-                    withSection,
                     button,
                 });
                 return;
             }
-            const outputs = Array.isArray(result) ? result : [];
-            if (section) {
-                const titleEl = section.querySelector(".adsuhu-section-title");
-                const modelTitle = titleEl ? titleEl.textContent.trim() : regenerateType || "Result";
-                const modelKey = regenerateType || "result";
-                // const nextRegenerate = button.dataset.nextRegenerate || "";
-                const nextRegenerate = this.nextChain[regenerateType]
-                // console.log('nextRegenerate',nextRegenerate)
-                this._insertOutputSection({
-                    section,
-                    modelTitle,
-                    modelKey,
-                    outputs,
-                    nextRegenerate,
-                    sourceButton: button,
-                    withSection
-                });
-                button.style.display = "none";
-                const viewEl = document.getElementById(`view-${regenerateType}-${recordId}`);
-                // console.log('viewEl', viewEl)
-                if (viewEl) {
-                    viewEl.style.display = "block";
-                }
-                
-            }
+            
         } catch (err) {
             console.error(err);
             alert(err.message || "Regenerate failed.");

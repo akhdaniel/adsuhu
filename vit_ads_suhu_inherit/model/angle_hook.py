@@ -7,7 +7,233 @@ import logging
 _logger = logging.getLogger(__name__)
 import json
 from .libs.openai_lib import generate_content
-
+SIMULATE=True
+SIMULATE_OUTPUT="""{
+  "big_ideas": [
+    {
+      "title": "Satu Sandal, Semua Cerita: Akhiri Ribetnya Ganti Sandal untuk Setiap Aktivitas Keluarga",
+      "emotionsal_conflict": "Keinginan untuk memberikan pengalaman liburan yang sempurna vs frustasi dengan persiapan yang ribet dan peralatan yang tidak mendukung.",
+      "insight": "Keluarga muda urban menghabiskan waktu berharga mereka untuk mempersiapkan dan membersihkan berbagai sandal untuk aktivitas berbeda, padahal yang mereka inginkan hanyalah fokus pada kebahagiaan bersama."
+    },
+    {
+      "title": "Jaminan Aman, dari Kaki Hingga Dompet: Belanja Online Tanpa Ragu untuk Kebutuhan Keluarga",
+      "emotionsal_conflict": "Kebutuhan akan solusi praktis vs ketakutan akan risiko salah beli online dan proses return yang menyulitkan.",
+      "insight": "Rasa aman dalam berbelanja online sama pentingnya dengan keamanan produk itu sendiri. Keluarga butuh kepastian bahwa investasi mereka terlindungi, dari ukuran yang tepat hingga kebijakan pengembalian yang jelas."
+    },
+    {
+      "title": "Kepintaran Orang Tua yang Terlihat: Solusi Praktis yang Bikin Keluarga Kompak dan Nyaman",
+      "emotionsal_conflict": "Keinginan untuk diakui sebagai orang tua yang cerdas dan perhatian vs kekhawatiran terlihat boros atau salah pilih barang.",
+      "insight": "Keputusan membeli produk yang tepat adalah bentuk kebanggaan dan pengakuan sosial bagi orang tua. Sandal yang serbaguna, awet, dan matching untuk keluarga adalah bukti nyata kepintaran mereka dalam mengatur kebutuhan rumah tangga."
+    }
+  ],
+  "strategic_notes": {
+    "ab_test": [
+      "Fear vs Relief: Tampilkan visual anak hampir terpeleset di waterpark (fear) vs visual keluarga tertawa ceria dengan sandal aman (relief).",
+      "Proof vs Promise: Video demo sandal digosok di permukaan licin dan basah (proof) vs narasi tentang <em>jaminan anti slip</em> (promise).",
+      "Authority vs Empathy: Testimoni dari ahli podiatri atau review dari influencer keluarga besar (authority) vs cerita sehari-hari ibu yang frustasi cuci sandal (empathy).",
+      "Hemat Individu vs Hemat Keluarga: Harga per pasang untuk diri sendiri vs harga paket keluarga 4 dengan diskon dan gratis ongkir."
+    ],
+    "platform_adaptation": {
+      "meta": "Gunakan visual scroll-stopping: close-up sandal kotor vs bersih hanya dengan dilap. Headline singkat, manfaat jelas: <em>Gak Perlu Ganti Sandal, dari Mall ke Waterpark Aman!</em> Sertakan trust badges: <em>COD</em>, <em>Garansi Tukar Ukuran</em>.",
+      "tiktok": "Buat skenario pendek: <em>Sound ON</em> suara anak mengeluh sandal basah dan bau. Cut ke orang tua dengan santai melap sandal GUIRENNIAO hingga bersih. Pakai trending audio tentang <em>life hack</em> atau solusi praktis ibu-ibu.",
+      "youtube": "Video format <em>Unboxing & Real Test</em> oleh keluarga. Tunjukkan proses dari buka kotak, cek ukuran, dipakai ke taman (kering), lalu langsung ke area basah waterpark. Highlight momen <em>anti-slip test</em> dan kemudahan membersihkannya setelahnya."
+    },
+    "category_entry_points": [
+      "Saat merencanakan itinerary liburan akhir pekan yang mencakup mall dan waterpark.",
+      "Setelah pulang liburan dan melihat tumpukan sandal kotor dan bau yang harus dibersihkan.",
+      "Melihat anak atau pasangan hampir terpeleset di lantai kamar mandi umum atau kolam renang.",
+      "Saat merapikan gudang/rak sepatu dan menyadari terlalu banyak sandal sekali pakai yang sudah rusak.",
+      "Ketika mendapat ajakan spontan jalan-jalan dan tidak punya sandal yang cocok untuk semua kemungkinan destinasi.",
+      "Membuka marketplace dan melihat notifikasi diskon akhir bulan atau gajian, sambil ingat kebutuhan sandal baru."
+    ]
+  },
+  "angles": [
+    {
+      "angle": "Solusi Orang Tua Pintar untuk Menghemat Waktu dan Tenaga",
+      "pov": "Kami memahami betapa berharganya waktu luang Anda. Sandal ini dirancang untuk memangkas ritual ribet persiapan dan bersih-bersih setelah liburan, sehingga Anda bisa fokus pada momen kebersamaan.",
+      "hooks": [
+        {
+          "text": "Lelah habiskan weekend cuma untuk cuci dan jemur sandal kotor?",
+          "emotions": [
+            "Kelelahan (Frustration)",
+            "Kebosanan"
+          ],
+          "technique": "pertanyaan reflektif"
+        },
+        {
+          "text": "Beli ini, simpan tenaga buat hal yang lebih seru sama anak.",
+          "emotions": [
+            "Kepuasan (Satisfaction/Relief)",
+            "Harapan"
+          ],
+          "technique": "real-talk"
+        },
+        {
+          "text": "Orang tua praktis pilih sandal yang tinggal lap, langsung kering.",
+          "emotions": [
+            "Kebanggaan (Pride)",
+            "Kepuasan (Satisfaction/Relief)"
+          ],
+          "technique": "social proof"
+        },
+        {
+          "text": "Stop jadi <em>tukang cuci sandal</em> setiap pulang liburan.",
+          "emotions": [
+            "Kelelahan (Frustration)",
+            "Kebebasan"
+          ],
+          "technique": "contrast"
+        },
+        {
+          "text": "Waktu Anda terbatas. Sandal Anda harus serba bisa.",
+          "emotions": [
+            "Tekanan",
+            "Kepraktisan"
+          ],
+          "technique": "authority-based"
+        }
+      ]
+    },
+    {
+      "angle": "Jaminan Keamanan yang Memberi Anda Ketengan Pikiran",
+      "pov": "Keselamatan keluarga adalah prioritas utama. Kami menghilangkan kekhawatiran terselip di sela-sela kegembiraan, dengan teknologi grip yang teruji dan material yang aman, sehingga Anda bisa bernapas lega saat anak-anak berlarian.",
+      "hooks": [
+        {
+          "text": "Jantung langsung deg-degan lihat anak lari di lantai basah waterpark?",
+          "emotions": [
+            "Kekhawatiran (Fear)",
+            "Kecemasan"
+          ],
+          "technique": "fear-based"
+        },
+        {
+          "text": "Biarkan mereka main bebas. Anda yang tenang.",
+          "emotions": [
+            "Ketenangan",
+            "Kepuasan (Satisfaction/Relief)"
+          ],
+          "technique": "relief-based"
+        },
+        {
+          "text": "Grip khusus ini kami desain agar Anda tidak perlu teriak <em>awas licin!</em> setiap saat.",
+          "emotions": [
+            "Kepercayaan",
+            "Kepuasan (Satisfaction/Relief)"
+          ],
+          "technique": "proof-based"
+        },
+        {
+          "text": "Bukan cuma tahan air. Tapi aman di atas air.",
+          "emotions": [
+            "Keamanan",
+            "Kepercayaan Diri"
+          ],
+          "technique": "contrast"
+        },
+        {
+          "text": "Investasi kecil untuk rasa aman yang besar selama liburan.",
+          "emotions": [
+            "Kepastian",
+            "Kebijaksanaan"
+          ],
+          "technique": "real-talk"
+        }
+      ]
+    },
+    {
+      "angle": "Kepastian Belanja Online Tanpa Drama Salah Ukuran",
+      "pov": "Kami menghapus ketidakpastian dari belanja online. Dengan panduan ukuran centimeter-akurat dan jaminan tukar yang mudah, Anda bisa klik \"beli\" dengan percaya diri, bukan dengan doa.",
+      "hooks": [
+        {
+          "text": "Kapok beli sandal online karena ukuran selalu meleset?",
+          "emotions": [
+            "Kekecewaan",
+            "Kecurigaan"
+          ],
+          "technique": "pertanyaan reflektif"
+        },
+        {
+          "text": "Ukur pakai penggaris, dapat pas di kaki. Garansi kami jamin.",
+          "emotions": [
+            "Kepastian",
+            "Kepercayaan"
+          ],
+          "technique": "proof-based"
+        },
+        {
+          "text": "Bayar pas barang sampai. Aman pakai COD, salah ukuran bisa tukar.",
+          "emotions": [
+            "Rasa Aman",
+            "Kenyamanan"
+          ],
+          "technique": "real-talk"
+        },
+        {
+          "text": "Ragu ukuran? CS kami bantu sampai yakin. Gak perlu nebak-nebak.",
+          "emotions": [
+            "Kepercayaan",
+            "Kepuasan (Satisfaction/Relief)"
+          ],
+          "technique": "authority-based"
+        },
+        {
+          "text": "Belanja untuk keluarga harusnya bikin senang, bukan bikin pusing.",
+          "emotions": [
+            "Kelelahan (Frustration)",
+            "Harapan"
+          ],
+          "technique": "contrast"
+        }
+      ]
+    },
+    {
+      "angle": "Hemat Cerdas dengan Investasi Produk Multi-Fungsi yang Awet",
+      "pov": "Kami menawarkan logika keuangan yang sederhana: beli satu kali untuk segala kebutuhan, alih-alih berulang kali membeli barang khusus yang cepat rusak. Ini adalah keputusan hemat yang terlihat dari hari pertama hingga bertahun-tahun kemudian.",
+      "hooks": [
+        {
+          "text": "Sudah habis berapa untuk beli sandal waterpark, sandal taman, sandal mall yang semuanya cepat rusak?",
+          "emotions": [
+            "Kekecewaan",
+            "Pemborosan"
+          ],
+          "technique": "pertanyaan reflektif"
+        },
+        {
+          "text": "Gak perlu boros beli 3 sandal berbeda. Cukup 1 yang bisa dipakai untuk semuanya.",
+          "emotions": [
+            "Kepuasan (Satisfaction/Relief)",
+            "Kecerdasan"
+          ],
+          "technique": "contrast"
+        },
+        {
+          "text": "Material EVA awet, gak gampang jebol meski dipakai ke mana-mana.",
+          "emotions": [
+            "Kepercayaan",
+            "Kepastian"
+          ],
+          "technique": "proof-based"
+        },
+        {
+          "text": "Beli sekeluarga, lebih hemat. Liburan kompak, budget juga tetap aman.",
+          "emotions": [
+            "Keharmonisan",
+            "Kebanggaan (Pride)"
+          ],
+          "technique": "social proof"
+        },
+        {
+          "text": "Ini sandal untuk besok, bulan depan, dan liburan tahun depan.",
+          "emotions": [
+            "Kepastian",
+            "Perencanaan"
+          ],
+          "technique": "urgency"
+        }
+      ]
+    }
+  ]
+}"""
 DEFAULT_SPECIFIC_INSTRUCTION = """
 REQUIRED JSON OUTPUT FORMAT:
 ```json
@@ -135,17 +361,20 @@ class angle_hook(models.Model):
         additional_command=""
         question = ""
 
-        response = generate_content(openai_api_key=openai_api_key, 
-                                openai_base_url=openai_base_url, 
-                                model=model, 
-                                system_prompt=system_prompt, 
-                                user_prompt=user_prompt, 
-                                context=context, 
-                                question=question, 
-                                additional_command=additional_command)    
+        if SIMULATE:
+          self.output=SIMULATE_OUTPUT
+        else:
+          response = generate_content(openai_api_key=openai_api_key, 
+                                  openai_base_url=openai_base_url, 
+                                  model=model, 
+                                  system_prompt=system_prompt, 
+                                  user_prompt=user_prompt, 
+                                  context=context, 
+                                  question=question, 
+                                  additional_command=additional_command)    
 
-        response = self.clean_md(response)
-        self.output = self.fix_json(response)
+          response = self.clean_md(response)
+          self.output = self.fix_json(response)
 
         self.generate_output_html()
 

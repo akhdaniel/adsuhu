@@ -91,6 +91,150 @@ DEFAULT_SPECIFIC_INSTRUCTION="""REQUIRED JSON OUTPUT FORMAT:
 
 """
 
+SIMULATE=True
+SIMULATE_OUTPUT="""{
+  "product": "Sandal GUIRENNIAO",
+  "category": "Footwear - Casual & Outdoor Sandals",
+  "level_maslow": "Safety & Esteem",
+  "unique_selling_propositions": [
+    "Sandal unisex yang cocok untuk pasangan dengan desain trendy namun fungsional untuk berbagai aktivitas.",
+    "Kombinasi kenyamanan seharian (insole EVA empuk) dengan performa anti slip untuk medan outdoor.",
+    "Ketahanan tinggi (tahan aus, anti air) dan perawatan mudah untuk penggunaan intensif sehari-hari.",
+    "Pengalaman belanja aman dengan panduan ukuran akurat, layanan konsultasi, dan dukungan pengembalian.",
+    "Fleksibilitas maksimal dari bahan elastis dan struktur ringan untuk kenyamanan bergerak tanpa iritasi."
+  ],
+  "value_map_extended": [
+    {
+      "feature": "Desain Unisex & Gaya Casual Trendy",
+      "pain_point": "Sulit menemukan sandal yang cocok untuk pria dan wanita dengan gaya yang sama-sama disukai.",
+      "gain_point": "Pasangan bisa memiliki sandal matching untuk aktivitas bersama.",
+      "functional_benefits": "Menyederhanakan pilihan belanja untuk pasangan/family, hemat waktu.",
+      "emotional_benefits": "Rasa kebersamaan, gaya yang kompak, dan kebanggaan tampil serasi.",
+      "proof": "Dapat digunakan bersama pasangan, gaya casual yang trendy.",
+      "buying_motif": "Mencari produk yang bisa digunakan bersama untuk efisiensi dan gaya.",
+      "buying_triggers": "Mencari hadiah untuk pasangan, persiapan liburan bersama, ingin tampil matching.",
+      "level_maslow": "Love/Belonging & Esteem",
+      "relevan_usp": "Sandal unisex yang cocok untuk pasangan dengan desain trendy."
+    },
+    {
+      "feature": "Insole EVA Empuk & Bahan Halus Elastis",
+      "pain_point": "Kaki lelah, sakit, atau kapalan setelah pakai sandal seharian atau untuk aktivitas panjang.",
+      "gain_point": "Kaki tetap nyaman dan segar dari pagi hingga malam.",
+      "functional_benefits": "Mengurangi kelelahan kaki, meningkatkan daya tahan beraktivitas, mencegah rasa sakit.",
+      "emotional_benefits": "Rasa lega, nyaman, dan percaya diri untuk menjalani aktivitas tanpa khawatir sakit kaki.",
+      "proof": "Bahan halus dan elastis tidak sakit dipakai seharian, membuat kaki tetap nyaman.",
+      "buying_motif": "Mencari kenyamanan ekstrem untuk penggunaan sehari-hari yang intensif.",
+      "buying_triggers": "Aktivitas kerja/study yang banyak berdiri, rencana jalan-jalan/travel panjang, kaki mudah lelah.",
+      "level_maslow": "Safety (Physical)",
+      "relevan_usp": "Kombinasi kenyamanan seharian dengan performa anti slip."
+    },
+    {
+      "feature": "Sol Anti Slip & Cengkeraman Baik",
+      "pain_point": "Takut terpeleset saat beraktivitas di permukaan basah, licin, atau medan outdoor yang tidak rata.",
+      "gain_point": "Bebas bergerak dengan aman di berbagai kondisi dan medan.",
+      "functional_benefits": "Meningkatkan keamanan dan stabilitas, mengurangi risiko cedera akibat jatuh.",
+      "emotional_benefits": "Rasa aman, percaya diri, dan bebas bereksplorasi tanpa rasa takut.",
+      "proof": "Aman digunakan di berbagai medan, cengkeraman baik untuk aktivitas outdoor.",
+      "buying_motif": "Mencari sandal yang aman untuk aktivitas dalam dan luar ruangan.",
+      "buying_triggers": "Musim hujan, rencana hiking/camping, bekerja di area basah (dapur, kolam), memiliki anak/lansia di rumah.",
+      "level_maslow": "Safety (Security)",
+      "relevan_usp": "Kombinasi kenyamanan seharian dengan performa anti slip."
+    },
+    {
+      "feature": "Bahan Tahan Aus, Anti Air, Mudah Dibersihkan",
+      "pain_point": "Sandal cepat rusak, kotor susah dibersihkan, atau tidak bisa dipakai saat hujan/ke tempat basah.",
+      "gain_point": "Sandal awet dan selalu terlihat bersih dengan perawatan minimal.",
+      "functional_benefits": "Menghemat uang (awet), menghemat waktu dan tenaga membersihkan, bisa digunakan di lebih banyak situasi.",
+      "emotional_benefits": "Rasa puas, lega (tidak perlu sering ganti), dan bangga memiliki produk yang tahan lama.",
+      "proof": "Untuk penggunaan intensif, mudah dibersihkan dengan cepat, struktur anti air.",
+      "buying_motif": "Mencari investasi footwear yang awet dan praktis.",
+      "buying_triggers": "Sandal lama rusak, sering berkegiatan di tempat kotor/basah, malas merawat barang.",
+      "level_maslow": "Safety (Security)",
+      "relevan_usp": "Ketahanan tinggi dan perawatan mudah untuk penggunaan intensif."
+    },
+    {
+      "feature": "Kesesuaian Aktivitas (Santai hingga Hiking)",
+      "pain_point": "Harus memiliki banyak pasang sandal untuk aktivitas yang berbeda-beda (rumah, jalan, outdoor).",
+      "gain_point": "Cukup satu sandal untuk banyak keperluan.",
+      "functional_benefits": "Menghemat uang (tidak perlu beli banyak), menghemat ruang penyimpanan, praktis.",
+      "emotional_benefits": "Rasa efisien, cerdas dalam memilih, dan siap untuk petualangan spontan.",
+      "proof": "Ideal untuk kegiatan santai sehari-hari, cocok untuk hiking dan petualangan alam, versatile.",
+      "buying_motif": "Mencari produk serba bisa (all-in-one) yang hemat dan fungsional.",
+      "buying_triggers": "Gaya hidup aktif yang dinamis, persiapan traveling, ingin menyederhanakan koleksi alas kaki.",
+      "level_maslow": "Safety & Esteem",
+      "relevan_usp": "Sandal unisex yang fungsional untuk berbagai aktivitas."
+    },
+    {
+      "feature": "Panduan Ukuran Akurat & Layanan Konsultasi",
+      "pain_point": "Sering salah ukuran saat belanja online, repot proses tukar/return.",
+      "gain_point": "Mendapatkan ukuran yang pas di percobaan pertama.",
+      "functional_benefits": "Menghemat waktu dan tenaga (hindari proses return), mendapatkan produk yang sesuai.",
+      "emotional_benefits": "Rasa aman dan percaya saat belanja online, tidak ada kecemasan salah ukuran.",
+      "proof": "Tabel konversi, toleransi pengukuran, rekomendasi hubungi CS jika ragu.",
+      "buying_motif": "Ingin pengalaman belanja online yang aman dan pasti.",
+      "buying_triggers": "Pengalaman buruk salah ukuran sebelumnya, belanja online untuk pertama kalinya, ragu dengan ukuran sendiri.",
+      "level_maslow": "Safety (Security)",
+      "relevan_usp": "Pengalaman belanja aman dengan panduan ukuran akurat."
+    },
+    {
+      "feature": "Bahan Elastis, Ringan, & Permukaan Halus",
+      "pain_point": "Sandal kaku membatasi gerak, berat membuat lelah, atau menyebabkan lecet/iritasi kulit.",
+      "gain_point": "Bergerak dengan bebas dan nyaman sepenuhnya.",
+      "functional_benefits": "Meningkatkan mobilitas dan kenyamanan gerak, mencegah lecet dan iritasi kulit.",
+      "emotional_benefits": "Rasa bebas, ringan, dan nyaman seperti tidak memakai apa-apa.",
+      "proof": "Bahan elastis untuk fleksibilitas kaki, struktur ringan, permukaan halus menghindari iritasi.",
+      "buying_motif": "Mencari kenyamanan tertinggi dan kebebasan bergerak.",
+      "buying_triggers": "Kaki sensitif mudah lecet, aktivitas yang membutuhkan fleksibilitas tinggi (misal: mengemudi), ingin feel <em>second skin</em>.",
+      "level_maslow": "Safety (Physical)",
+      "relevan_usp": "Fleksibilitas maksimal untuk kenyamanan bergerak tanpa iritasi."
+    },
+    {
+      "feature": "Kebijakan Pengembalian & Layanan Pelanggan Responsif",
+      "pain_point": "Takut tertipu atau tidak ada solusi jika produk tidak sesuai/cacat.",
+      "gain_point": "Jaminan dan dukungan setelah pembelian.",
+      "functional_benefits": "Meminimalkan risiko kerugian finansial, mendapatkan bantuan jika ada masalah.",
+      "emotional_benefits": "Rasa tenang, aman, dan percaya pada penjual.",
+      "proof": "Mendukung pengembalian dan penukaran, bantuan layanan pelanggan untuk konsultasi.",
+      "buying_motif": "Membutuhkan jaminan keamanan transaksi.",
+      "buying_triggers": "Belanja dengan nilai lumayan, pertama kali beli dari seller/toko online ini, produk sebagai hadiah penting.",
+      "level_maslow": "Safety (Security)",
+      "relevan_usp": "Pengalaman belanja aman dengan dukungan pengembalian."
+    }
+  ],
+  "differentiation_spike": "<em>One Sandal for All</em>: Menyatukan kenyamanan maksimal untuk aktivitas sehari-hari dengan keamanan dan ketahanan untuk petualangan outdoor dalam satu desain unisex yang stylish, didukung pengalaman belanja online yang terjamin.",
+  "buying_triggers": {
+    "rational": [
+      "Sandal lama sudah rusak, aus, atau tidak nyaman lagi.",
+      "Memasuki musim hujan, membutuhkan sandal anti slip yang aman.",
+      "Memiliki rencana aktivitas outdoor (hiking, camping, traveling) yang membutuhkan alas kaki khusus.",
+      "Bosan dengan sandal biasa dan ingin upgrade ke yang lebih nyaman (insole empuk) dan tahan lama.",
+      "Mengalami masalah kaki lelah/pegal setelah beraktivitas dengan sandal saat ini.",
+      "Mencari sandal yang mudah dibersihkan dan tahan air untuk penggunaan praktis sehari-hari.",
+      "Ingin membeli satu sandal yang bisa dipakai untuk banyak keperluan (dalam/luar ruangan, santai/aktif)."
+    ],
+    "emotional": [
+      "Ingin tampil stylish dan kompak dengan pasangan/kekasih (matching couple).",
+      "Merasa tidak aman atau takut terpeleset saat memakai sandal lama di permukaan licin.",
+      "Frustasi karena sering salah ukuran saat belanja sandal online.",
+      "Ingin merasa lebih percaya diri dan siap bereksplorasi dengan alas kaki yang mendukung.",
+      "Mendambakan rasa nyaman dan lega sepanjang hari, bebas dari sakit/pegal kaki.",
+      "Ingin merasa cerdas dan efisien dengan memiliki produk serba guna yang awet.",
+      "Butuh rasa aman dan tenang karena ada jaminan pengembalian jika tidak cocok."
+    ]
+  },
+  "initial_target_market": {
+    "persona": "Pasangan muda (20-35 tahun) yang aktif dan dinamis. Mereka menikmati gaya hidup casual, suka jalan-jalan atau nongkrong di kafe, tapi juga sesekali melakukan petualangan ringan seperti hiking atau piknik di alam. Mereka aktif di media sosial dan memperhatikan penampilan, namun juga sangat praktis dalam memilih produk yang fungsional dan hemat.",
+    "pain": "Memiliki banyak sandal untuk situasi berbeda yang memakan tempat dan biaya, sering mengalami ketidaknyamanan (kaki lelah/lecet) dengan sandal biasa, khawatir dengan keamanan (slip) saat beraktivitas di luar, serta frustasi dengan risiko salah ukuran saat belanja online.",
+    "gain": "Ingin satu solusi sandal yang stylish untuk dipakai bersama pasangan, sangat nyaman untuk seharian, aman untuk berbagai medan, awet, dan memberikan kepastian serta kemudahan dalam proses belanja onlinenya."
+  },
+  "copywriting_angle": {
+    "hook": "Lelah Ganti Sandal Terus? Cukup Satu Pasang Sandal GUIRENNIAO untuk Semua Momen Bersamanya.",
+    "proof": "Dengan insole EVA super empuk yang terbukti nyaman seharian dan sol anti slip yang aman untuk hiking, sandal ini adalah jawaban untuk gaya hidup aktif kalian. Ditambah garansi ukuran pas dan bahan tahan air yang mudah dibersihkan.",
+    "path": "1. Tunjukkan gambar pasangan stylish pakai sandal matching di berbagai setting (kafe, jalan kota, hiking trail). 2. Highlight fitur unggulan: kenyamanan ekstrem & keamanan anti slip. 3. Tekankan kemudahan belanja dengan panduan ukuran dan garansi kepuasan. 4. Ajakan untuk <em>complete your couple style</em> dan bebas bereksplorasi."
+  }
+}
+"""
+
 class product_value_analysis(models.Model):
     _name = "vit.product_value_analysis"
     _inherit = "vit.product_value_analysis"
@@ -244,17 +388,20 @@ Response in {self.lang_id.name} language.
         additional_command=""
         question = ""
 
-        response = generate_content(openai_api_key=openai_api_key, 
-                                openai_base_url=openai_base_url, 
-                                model=model, 
-                                system_prompt=system_prompt, 
-                                user_prompt=user_prompt, 
-                                context=context, 
-                                question=question, 
-                                additional_command=additional_command)    
+        if SIMULATE:
+            self.output = SIMULATE_OUTPUT
+        else:
+            response = generate_content(openai_api_key=openai_api_key, 
+                                    openai_base_url=openai_base_url, 
+                                    model=model, 
+                                    system_prompt=system_prompt, 
+                                    user_prompt=user_prompt, 
+                                    context=context, 
+                                    question=question, 
+                                    additional_command=additional_command)    
 
-        response = self.clean_md(response)
-        self.output = self.fix_json(response)
+            response = self.clean_md(response)
+            self.output = self.fix_json(response)
 
         self.generate_output_html()
         

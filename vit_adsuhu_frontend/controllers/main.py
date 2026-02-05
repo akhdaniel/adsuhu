@@ -8,7 +8,7 @@ import odoo
 import logging
 import time
 import psycopg2
-
+simulation = True
 _logger = logging.getLogger(__name__)
 
 class ProductValueAnalysisController(http.Controller):
@@ -81,20 +81,50 @@ class ProductValueAnalysisController(http.Controller):
 
         threading.Thread(target=_target, daemon=True).start()
 
+    # Write features & desriptopn
+    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/write_with_ai', type='json', auth='user', website=True, methods=['POST'])
+    def write_with_ai(self, analysis, **kwargs):
+        analysis.action_write_with_ai()
+        result = analysis.read(['initial_description', 'description', 'features', 'lang_id'])[0]
+
+        return [{
+            'id': result.get('id'),
+            'name':'Description',
+            'output_html': result.get('description', ''),
+            'with_next_button': False,
+            'target_section':'description'
+
+        },{
+            'id': result.get('id'),
+            'name':'Features',
+            'output_html': result.get('features', ''),
+            'target_section':'features',
+            'next_step':'product_value_analysis'
+        }]
+
     def _build_result(self, regenerate_type, record):
         if regenerate_type == "product_value_analysis":
             return [{
                 "id": record.id,
                 "name": "Product Value Analysis",
-                "output_html": record.sudo().output_html or "",
+                "output_html": record.output_html or "",
+                "current_step":"product_value_analysis",
                 "clear_url": f"/product_analysis/{record.id}/clear",
+                "next_step":"market_map_analysis",
+                "back_title": None,
+                "show_view_button": True
             }]
         if regenerate_type == "market_map_analysis":
             return [{
                 "id": mm.id,
                 "name": mm.name,
                 "output_html": mm.output_html or "",
+                "prev_step":"product_value_analysis",
+                "current_step":"market_map_analysis",
+                "next_step":"audience_profile_analysis",
                 "clear_url": f"/market_mapper/{mm.id}/clear",
+                "back_title": f"Product {record.name}",      
+                "show_view_button": True          
             } for mm in record.market_mapper_ids]
         if regenerate_type == "audience_profile_analysis":
             return [{
@@ -103,7 +133,11 @@ class ProductValueAnalysisController(http.Controller):
                 "output_html": ap.output_html or "",
                 "clear_url": f"/audience_profiler/{ap.id}/clear",
                 "record_id": record.id,
-                "back_title": f"Market Map {record.name}",                
+                "prev_step": "market_map_analysis",
+                "current_step":"audience_profile_analysis",
+                "next_step":"angle_hook",
+                "back_title": f"Market Map {record.name}",       
+                "show_view_button": True         
             } for ap in record.audience_profiler_ids]
             # } for ap in record.audience_profiler_ids.sorted(key=lambda rec: rec.audience_profile_no or "")]
         if regenerate_type == "angle_hook":
@@ -113,24 +147,32 @@ class ProductValueAnalysisController(http.Controller):
                 "output_html": an.output_html or "",
                 "clear_url": f"/angle_hook/{an.id}/clear",
                 "record_id": record.id,
+                "prev_step": "audience_profile_analysis",
+                "current_step":"angle_hook",
                 "back_title": f"AP {record.audience_profile_no}",
+                "next_step": False,
                 "hooks":[{
                     "id": hook.id,
                     "name": f"AP {record.audience_profile_no} - Angle {an.angle_no} - Hook {hook.id}",
                     "output_html": hook.output_html,
                     "clear_url": f"/hook/{hook.id}/clear",
+                    "current_step":"hook",
+                    "next_step":"ads_copy"
                 } for hook in an.hook_ids]
             } for an in record.angle_hook_ids.sorted(key=lambda rec: rec.angle_no or "")]
         if regenerate_type == "ads_copy":
             return [{
                 "id": ads.id,
                 "name": f"Ads Copy: {ads.name}",
+                "prev_step": "angle_hook",
+                "current_step":"ads_copy",
                 "images":[
                     {
                         "id": im.id,
                         "name": im.name,
                         "output_html": im.output_html,
                         "clear_url": f"/image_generator/{im.id}/clear",
+                        "next_step":"generate_variants"
                     } for im in ads.image_generator_ids
                 ],
                 "lps":[
@@ -139,6 +181,7 @@ class ProductValueAnalysisController(http.Controller):
                         "name": lp.name,
                         "output_html": lp.output_html,
                         "clear_url": f"/landing_page/{lp.id}/clear",
+                        "next_step":"generate_landing_pages"
                     } for lp in ads.landing_page_builder_ids
                 ],
                 "videos":[
@@ -147,6 +190,7 @@ class ProductValueAnalysisController(http.Controller):
                         "name": vid.name,
                         "output_html": vid.output_html,
                         "clear_url": f"/video_director/{vid.id}/clear",
+                        "next_step":"generate_videos"
                     } for vid in ads.video_director_ids
                 ],
                 "output_html": f"""{ads.output_html_trimmed}
@@ -159,6 +203,7 @@ class ProductValueAnalysisController(http.Controller):
 """,
                 "clear_url": f"/ads_copy/{ads.id}/clear",
             } for ads in record.ads_copy_ids.sorted(key=lambda rec: rec.name or "")]
+            
         if regenerate_type == "image_variants":
             return [{
                 "id": record.id,
@@ -318,28 +363,6 @@ class ProductValueAnalysisController(http.Controller):
 
         return request.redirect(f'/product_analysis/{analysis.id}')
 
-
-    # Write features & desriptopn
-    @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/write_with_ai', type='json', auth='user', website=True, methods=['POST'])
-    def write_with_ai(self, analysis, **kwargs):
-        analysis.action_write_with_ai()
-        result = analysis.read(['initial_description', 'description', 'features', 'lang_id'])[0]
-
-        return [{
-            'id': result.get('id'),
-            'name':'Description',
-            'output_html': result.get('description', ''),
-            'with_next_button': False,
-            'section':'description'
-
-        },{
-            'id': result.get('id'),
-            'name':'Features',
-            'output_html': result.get('features', ''),
-            'section':'features'
-        }]
-
-
     # Regenerate secion
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_product_analysis(self, analysis, **kwargs):
@@ -359,7 +382,7 @@ class ProductValueAnalysisController(http.Controller):
     def regenerate_audience_profiler(self, market_mapper, **kwargs):
         market_mapper.sudo().write({"status": "processing"})
         request.env.cr.commit()
-        self._run_background("vit.market_mapper", market_mapper.id, lambda rec: rec.action_create_audience_profiles())
+        self._run_background("vit.market_mapper", market_mapper.id, lambda rec: rec.action_generate_audience_profiler())
         return {"status": "processing"}
 
     @http.route('/audience_profiler/<model("vit.audience_profiler"):audience_profiler>/angle_hook/regenerate', type='json', auth='user', website=True, methods=['POST'])
@@ -490,20 +513,20 @@ class ProductValueAnalysisController(http.Controller):
             "market_map_analysis": "vit.product_value_analysis",
             "audience_profile_analysis": "vit.market_mapper",
             "angle_hook": "vit.audience_profiler",
-            "ads_copy": "vit.hook",
+            "hook": "vit.hook",
+            "ads_copy": "vit.ads_copy",
             "image_variants": "vit.image_generator",
         }
         model_name = model_map.get(regenerate_type)
         if not model_name:
             return {"status": "failed", "error": "Unknown regenerate type."}
 
-        record = request.env[model_name].sudo().browse(record_id)
+        record = request.env[model_name].browse(record_id)
         status = record.status or "idle"
         result = []
         if status == "done":
             result = self._build_result(regenerate_type, record)
         return {"status": status, "result": result}
-
 
     # view details
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>', type='http', auth='user', website=True)
