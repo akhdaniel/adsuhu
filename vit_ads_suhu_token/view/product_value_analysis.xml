@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_vit_product_value_analysis_tree_token" model="ir.ui.view">
+            <field name="name">vit_product_value_analysis_tree_token</field>
+            <field name="model">vit.product_value_analysis</field>
+            <field name="inherit_id" ref="vit_ads_suhu.view_vit_product_value_analysis_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="attributes">
+                    <attribute name="js_class">ads_list_with_banner</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
