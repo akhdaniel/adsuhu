@@ -1,0 +1,39 @@
+.ads_token_box {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border: 1px solid #c59d10;
+    border-radius: 999px;
+    background: #ffd34a;
+    color: #3b2a00;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ads_token_box:hover {
+    background: #f2c234;
+}
+
+.ads_token_label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.ads_token_value {
+    background: #f7c948;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.ads_token_box--green {
+    border-color: #0f6b3a;
+    background: #1bbf64;
+    color: #ffffff;
+}
+
+.ads_token_box--green:hover {
+    background: #17a256;
+}
