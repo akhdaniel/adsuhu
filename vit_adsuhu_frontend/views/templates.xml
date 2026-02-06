@@ -166,25 +166,32 @@
                                 <details class="adsuhu-toc-section" open="open">
                                     <summary class="adsuhu-toc-section-title">Hooks</summary>
                                     <ul class="list-group adsuhu-toc-tree" id="list-hook">
-                                        <!--  hook -->
+                                        <!-- hook -->
                                         <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                             <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                                <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                    <li class="list-group-item p-0 adsuhu-toc-node">
-                                                        <details>
-                                                            <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/></summary>
-                                                            <ul class="list-group">
-                                                                <t t-foreach="angle.hook_ids" t-as="hook">
-                                                                    <li class="list-group-item p-0">
-                                                                        <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-hook-#{hook.id}">
-                                                                            HOOK <t t-out="hook.hook_no"/>
-                                                                        </a>
-                                                                    </li>
-                                                                </t>
-                                                            </ul>
-                                                        </details>
-                                                    </li>
-                                                </t>
+                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                    <details>
+                                                        <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/></summary>
+                                                        <ul class="list-group">
+                                                            <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                                    <details>
+                                                                        <summary class="adsuhu-toc-summary">Angle <t t-out="angle.angle_no"/></summary>
+                                                                        <ul class="list-group">
+                                                                            <t t-foreach="angle.hook_ids" t-as="hook">
+                                                                                <li class="list-group-item p-0">
+                                                                                    <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-hook-#{hook.id}">
+                                                                                        HOOK <t t-out="hook.hook_no"/>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </t>
+                                                                        </ul>
+                                                                    </details>
+                                                                </li>
+                                                            </t>
+                                                        </ul>
+                                                    </details>
+                                                </li>
                                             </t>
                                         </t>
                                     </ul>
@@ -196,24 +203,38 @@
                                         <!-- ads copy -->
                                         <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                             <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                                <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                    <t t-foreach="angle.hook_ids" t-as="hook">
-                                                        <li class="list-group-item p-0 adsuhu-toc-node">
-                                                            <details>
-                                                                <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/> - Hook <t t-out="hook.hook_no"/></summary>
-                                                                <ul class="list-group">
-                                                                    <t t-foreach="hook.ads_copy_ids" t-as="ads">
-                                                                        <li class="list-group-item p-0">
-                                                                            <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-ads-#{ads.id}">
-                                                                                <t t-out="ads.name"/>
-                                                                            </a>
-                                                                        </li>
-                                                                    </t>
-                                                                </ul>
-                                                            </details>
-                                                        </li>
-                                                    </t>
-                                                </t>
+                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                    <details>
+                                                        <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/></summary>
+                                                        <ul class="list-group">
+                                                            <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                                    <details>
+                                                                        <summary class="adsuhu-toc-summary">Angle <t t-out="angle.angle_no"/></summary>
+                                                                        <ul class="list-group">
+                                                                            <t t-foreach="angle.hook_ids" t-as="hook">
+                                                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                                                    <details>
+                                                                                        <summary class="adsuhu-toc-summary">Hook <t t-out="hook.hook_no"/></summary>
+                                                                                        <ul class="list-group">
+                                                                                            <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                                                                <li class="list-group-item p-0">
+                                                                                                    <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-ads-#{ads.id}">
+                                                                                                        <t t-out="ads.name"/>
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                            </t>
+                                                                                        </ul>
+                                                                                    </details>
+                                                                                </li>
+                                                                            </t>
+                                                                        </ul>
+                                                                    </details>
+                                                                </li>
+                                                            </t>
+                                                        </ul>
+                                                    </details>
+                                                </li>
                                             </t>
                                         </t>
                                     </ul>
@@ -225,26 +246,40 @@
                                         <!-- landing pages -->
                                         <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                             <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                                <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                    <t t-foreach="angle.hook_ids" t-as="hook">
-                                                        <li class="list-group-item p-0 adsuhu-toc-node">
-                                                            <details>
-                                                                <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/> - Hook <t t-out="hook.hook_no"/></summary>
-                                                                <ul class="list-group">
-                                                                    <t t-foreach="hook.ads_copy_ids" t-as="ads">
-                                                                        <t t-foreach="ads.landing_page_builder_ids" t-as="lp">
-                                                                            <li class="list-group-item p-0">
-                                                                                <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-lp-#{lp.id}">
-                                                                                    <t t-out="ads.name"/>
-                                                                                </a>
-                                                                            </li>
-                                                                        </t>
-                                                                    </t>
-                                                                </ul>
-                                                            </details>
-                                                        </li>
-                                                    </t>
-                                                </t>
+                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                    <details>
+                                                        <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/></summary>
+                                                        <ul class="list-group">
+                                                            <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                                    <details>
+                                                                        <summary class="adsuhu-toc-summary">Angle <t t-out="angle.angle_no"/></summary>
+                                                                        <ul class="list-group">
+                                                                            <t t-foreach="angle.hook_ids" t-as="hook">
+                                                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                                                    <details>
+                                                                                        <summary class="adsuhu-toc-summary">Hook <t t-out="hook.hook_no"/></summary>
+                                                                                        <ul class="list-group">
+                                                                                            <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                                                                <t t-foreach="ads.landing_page_builder_ids" t-as="lp">
+                                                                                                    <li class="list-group-item p-0">
+                                                                                                        <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-lp-#{lp.id}">
+                                                                                                            <t t-out="ads.name"/>
+                                                                                                        </a>
+                                                                                                    </li>
+                                                                                                </t>
+                                                                                            </t>
+                                                                                        </ul>
+                                                                                    </details>
+                                                                                </li>
+                                                                            </t>
+                                                                        </ul>
+                                                                    </details>
+                                                                </li>
+                                                            </t>
+                                                        </ul>
+                                                    </details>
+                                                </li>
                                             </t>
                                         </t>
                                     </ul>
@@ -252,30 +287,44 @@
 
                                 <details class="adsuhu-toc-section" open="open">
                                     <summary class="adsuhu-toc-section-title">Images</summary>
-                                    <ul class="list-group adsuhu-toc-tree" id="list-landing-pages">
+                                    <ul class="list-group adsuhu-toc-tree" id="list-images">
                                         <!-- images -->
                                         <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                             <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                                <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                    <t t-foreach="angle.hook_ids" t-as="hook">
-                                                        <li class="list-group-item p-0 adsuhu-toc-node">
-                                                            <details>
-                                                                <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/> - Hook <t t-out="hook.hook_no"/></summary>
-                                                                <ul class="list-group">
-                                                                    <t t-foreach="hook.ads_copy_ids" t-as="ads">
-                                                                        <t t-foreach="ads.image_generator_ids" t-as="img">
-                                                                            <li class="list-group-item p-0">
-                                                                                <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-img-#{img.id}">
-                                                                                    <t t-out="ads.name"/> - <t t-out="img.ads_copy_no"/>
-                                                                                </a>
-                                                                            </li>
-                                                                        </t>
-                                                                    </t>
-                                                                </ul>
-                                                            </details>
-                                                        </li>
-                                                    </t>
-                                                </t>
+                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                    <details>
+                                                        <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/></summary>
+                                                        <ul class="list-group">
+                                                            <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                                    <details>
+                                                                        <summary class="adsuhu-toc-summary">Angle <t t-out="angle.angle_no"/></summary>
+                                                                        <ul class="list-group">
+                                                                            <t t-foreach="angle.hook_ids" t-as="hook">
+                                                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                                                    <details>
+                                                                                        <summary class="adsuhu-toc-summary">Hook <t t-out="hook.hook_no"/></summary>
+                                                                                        <ul class="list-group">
+                                                                                            <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                                                                <t t-foreach="ads.image_generator_ids" t-as="img">
+                                                                                                    <li class="list-group-item p-0">
+                                                                                                        <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-img-#{img.id}">
+                                                                                                            <t t-out="ads.name"/> - <t t-out="img.ads_copy_no"/>
+                                                                                                        </a>
+                                                                                                    </li>
+                                                                                                </t>
+                                                                                            </t>
+                                                                                        </ul>
+                                                                                    </details>
+                                                                                </li>
+                                                                            </t>
+                                                                        </ul>
+                                                                    </details>
+                                                                </li>
+                                                            </t>
+                                                        </ul>
+                                                    </details>
+                                                </li>
                                             </t>
                                         </t>
                                     </ul>
@@ -283,30 +332,44 @@
 
                                 <details class="adsuhu-toc-section" open="open">
                                     <summary class="adsuhu-toc-section-title">Videos</summary>
-                                    <ul class="list-group adsuhu-toc-tree" id="list-landing-pages">
+                                    <ul class="list-group adsuhu-toc-tree" id="list-videos">
                                         <!-- videos -->
                                         <t t-foreach="analysis.market_mapper_ids" t-as="market">
                                             <t t-foreach="market.audience_profiler_ids" t-as="audience">
-                                                <t t-foreach="audience.angle_hook_ids" t-as="angle">
-                                                    <t t-foreach="angle.hook_ids" t-as="hook">
-                                                        <li class="list-group-item p-0 adsuhu-toc-node">
-                                                            <details>
-                                                                <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/> - Angle <t t-out="angle.angle_no"/> - Hook <t t-out="hook.hook_no"/></summary>
-                                                                <ul class="list-group">
-                                                                    <t t-foreach="hook.ads_copy_ids" t-as="ads">
-                                                                        <t t-foreach="ads.video_director_ids" t-as="vid">
-                                                                            <li class="list-group-item p-0">
-                                                                                <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-vid-#{vid.id}">
-                                                                                    <t t-out="ads.name"/>
-                                                                                </a>
-                                                                            </li>
-                                                                        </t>
-                                                                    </t>
-                                                                </ul>
-                                                            </details>
-                                                        </li>
-                                                    </t>
-                                                </t>
+                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                    <details>
+                                                        <summary class="adsuhu-toc-summary">AP <t t-out="audience.audience_profile_no"/></summary>
+                                                        <ul class="list-group">
+                                                            <t t-foreach="audience.angle_hook_ids" t-as="angle">
+                                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                                    <details>
+                                                                        <summary class="adsuhu-toc-summary">Angle <t t-out="angle.angle_no"/></summary>
+                                                                        <ul class="list-group">
+                                                                            <t t-foreach="angle.hook_ids" t-as="hook">
+                                                                                <li class="list-group-item p-0 adsuhu-toc-node">
+                                                                                    <details>
+                                                                                        <summary class="adsuhu-toc-summary">Hook <t t-out="hook.hook_no"/></summary>
+                                                                                        <ul class="list-group">
+                                                                                            <t t-foreach="hook.ads_copy_ids" t-as="ads">
+                                                                                                <t t-foreach="ads.video_director_ids" t-as="vid">
+                                                                                                    <li class="list-group-item p-0">
+                                                                                                        <a class="list-group-item list-group-item-action border-0" t-attf-href="#section-vid-#{vid.id}">
+                                                                                                            <t t-out="ads.name"/>
+                                                                                                        </a>
+                                                                                                    </li>
+                                                                                                </t>
+                                                                                            </t>
+                                                                                        </ul>
+                                                                                    </details>
+                                                                                </li>
+                                                                            </t>
+                                                                        </ul>
+                                                                    </details>
+                                                                </li>
+                                                            </t>
+                                                        </ul>
+                                                    </details>
+                                                </li>
                                             </t>
                                         </t>
                                     </ul>

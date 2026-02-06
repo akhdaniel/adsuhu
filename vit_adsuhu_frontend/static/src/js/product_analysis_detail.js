@@ -55,7 +55,35 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         }
         this._refreshTocTargets();
         this._bindTocSync();
+        this._bindTocHeaderScroll();
         this._updateActiveToc();
+    },
+    _bindTocHeaderScroll() {
+        if (this._tocHeaderHandler || !this.tocRoot) {
+            return;
+        }
+        this._tocHeaderHandler = (event) => {
+            const summary = event.target.closest("summary");
+            if (!summary || !this.tocRoot.contains(summary)) {
+                return;
+            }
+            const details = summary.closest("details");
+            if (!details) {
+                return;
+            }
+            const firstList = details.querySelector("ul.list-group");
+            const firstLink = firstList?.querySelector('a[href^="#"]');
+            if (!firstLink) {
+                return;
+            }
+            event.preventDefault();
+            const id = firstLink.getAttribute("href")?.slice(1);
+            const target = id ? document.getElementById(id) : null;
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        };
+        this.tocRoot.addEventListener("click", this._tocHeaderHandler);
     },
     _refreshTocTargets() {
         this.tocLinks = Array.from(this.tocRoot.querySelectorAll('a[href^="#"]'));

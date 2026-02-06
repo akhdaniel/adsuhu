@@ -154,7 +154,7 @@ class ProductValueAnalysisController(http.Controller):
                 "next_step": "hook",
                 "hooks":[{
                     "id": hook.id,
-                    "name": f"AP {record.audience_profile_no} - Angle {an.angle_no} - Hook {hook.id}",
+                    "name": f"AP {record.audience_profile_no} - Angle {an.angle_no} - Hook {hook.hook_no}",
                     "output_html": hook.output_html,
                     "clear_url": f"/hook/{hook.id}/clear",
                     "prev_step": "angle_hook",
