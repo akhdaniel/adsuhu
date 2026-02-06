@@ -17,7 +17,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             audience_profile_analysis: (id) => `/market_mapper/${id}/audience_profiler/regenerate`,
             angle_hook: (id) => `/audience_profiler/${id}/angle_hook/regenerate`,
             // hook: (id) => `/angle_hook/${id}/hook/regenerate`,
-            hook: (id) => `/hook/${id}/ads_copy/regenerate`,
+            ads_copy: (id) => `/hook/${id}/ads_copy/regenerate`,
             image_variants: (id) => `/image_generator/${id}/image_variant/regenerate`,
         };
         this.statusEndpoints = {
@@ -283,17 +283,19 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         }
         throw new Error("Regenerate timed out. Please try again.");
     },
-    _insertOutputSection({ recordId,  outputs,  sourceButton  }) {
+    _insertOutputSection({ recordId, outputs, sourceButton, container, nestedKey }) {
+        if (!outputs || !Array.isArray(outputs) || outputs.length === 0) {
+            return;
+        }
 
-        const appendGeneratedSections = (containerId, items, prefix) => {
-            if (!items || !Array.isArray(items)) {
+        const isWorkflow = outputs?.[0]?.current_step !== undefined;
+        if (!isWorkflow) {
+            const target = container;
+            if (!target) {
                 return;
             }
-            const container = document.getElementById(containerId);
-            if (!container) {
-                return;
-            }
-            items.forEach((item, index) => {
+            const prefix = nestedKey || "result";
+            outputs.forEach((item, index) => {
                 if (!item || !item.output_html) {
                     return;
                 }
@@ -316,10 +318,11 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 contentEl.innerHTML = item.output_html || "";
                 generated.appendChild(contentEl);
 
-                container.appendChild(generated);
+                target.appendChild(generated);
             });
             this._injectClearButtons();
-        };
+            return;
+        }
 
         const tocMap = {
             market_map_analysis: "market_mapper",
@@ -373,7 +376,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                     buttonWrap.appendChild(backButton);
                 }
                 
-                
+                // generate next button
                 if (withNextButton && nextStep ) {
                     const nextTitle = this._titleizeKey(nextStep);
 
@@ -385,26 +388,26 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                     nextButton.id = `regenerate_${nextStep}`;
                     nextButton.dataset.id = output.id;
                     nextButton.dataset.regenerate = nextStep;
-                    nextButton.innerHTML = `<i class="fa fa-send me-1"></i> Generate ${nextTitle}`;
+                    nextButton.style.display = (currentStep=='angle_hook'?'none':'block')
+                    nextButton.innerHTML = `<i class="fa fa-send me-1"></i> me=${output.id} Generate ${nextTitle}`;
                     buttonWrap.appendChild(nextButton);
                     
-                    // show view button
-                    const viewTargetId = outputs?.[0]?.record_id;
-                    // const showViewButton = output.show_view_button === true? true: false;
-                    // if (showViewButton && viewTargetId && nextStep) {
-                        const viewTargetButton = document.createElement("a");
-                        const viewTargetTitle = nextStep;
-                        viewTargetButton.id = `view-target-${currentStep}-${output.id}`;
-                        viewTargetButton.className = "btn btn-primary ms-2";
-                        viewTargetButton.href = `#${currentStep}-${nextStep}-${output.id}`;
-                        viewTargetButton.style.display='none'
-                        viewTargetButton.innerHTML = `<i class="fa fa-send me-1"></i> View ${viewTargetTitle}`;
-                        buttonWrap.appendChild(viewTargetButton);
-                    // }       
+                   
                     //append button
                     newSection.appendChild(buttonWrap);
                     
                 }
+
+                // view next button
+                const viewTargetButton = document.createElement("a");
+                const viewTargetTitle = nextStep;
+                viewTargetButton.id = `view-target-${nextStep}-${output.id}`;
+                viewTargetButton.className = "btn btn-primary ms-2";
+                viewTargetButton.href = `#${currentStep}-${nextStep}-${output.id}`;
+                viewTargetButton.style.display = (currentStep=='angle_hook'?'block':'none')
+                viewTargetButton.innerHTML = `<i class="fa fa-send me-1"></i> View ${viewTargetTitle}`;
+                buttonWrap.appendChild(viewTargetButton);
+
                 //append section
                 $(parentSection).append(newSection);
 
@@ -418,14 +421,48 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
 
                 this._injectClearButtons();
 
+
+                console.log('currentStep', currentStep, output)
+
                 if (currentStep === "ads_copy") {
-                    appendGeneratedSections("section-images", output.images, "img");
-                    appendGeneratedSections("section-landing-page", output.lps, "lp");
-                    appendGeneratedSections("section-video-script", output.videos, "vid");
+                    this._insertOutputSection({
+                        recordId: output.id,
+                        outputs: output.images || [],
+                        sourceButton,
+                        container: document.getElementById("section-images"),
+                        nestedKey: "img",
+                    });
+                    this._insertOutputSection({
+                        recordId: output.id,
+                        outputs: output.lps || [],
+                        sourceButton,
+                        container: document.getElementById("section-landing-page"),
+                        nestedKey: "lp",
+                    });
+                    this._insertOutputSection({
+                        recordId: output.id,
+                        outputs: output.videos || [],
+                        sourceButton,
+                        container: document.getElementById("section-video-script"),
+                        nestedKey: "vid",
+                    });
                 }
                 if (currentStep === "angle_hook") {
-                    appendGeneratedSections("section-hooks", output.hooks, "hook");
+                    this._insertOutputSection({
+                        recordId: output.id,
+                        outputs: output.hooks || [],
+                        sourceButton,
+                        container: document.getElementById("section-hook"),
+                        nestedKey: "hook",
+                    });
                 }
+
+
+                // show View button after next process done. 
+                // eg: Maket Map -> AP 12 (generate angle) -> Angles
+                //           show view-target-ap-angles-12 <- done
+                const viewTragetButton = `#view-target-${output.current_step}-${output.record_id}`;
+                $(viewTragetButton).show()
             } 
             else
             { //image 

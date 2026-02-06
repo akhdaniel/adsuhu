@@ -14,6 +14,207 @@ def strip_emoji(text: str) -> str:
     # Remove common emoji ranges (optional)
     return re.sub(r"[\U0001F300-\U0001FAFF\u2600-\u26FF\u2700-\u27BF]", "", text)
 
+SIMULATE=True
+SIMULATE_OUTPUT="""{
+  "angle": "Hemat Cerdas dengan Investasi Produk Multi-Fungsi yang Awet",
+  "hook": "Material EVA awet, gak gampang jebol meski dipakai ke mana-mana.",
+  "ads_copy": [
+    {
+      "name": "COPY A - Relevance Boost",
+      "primary_text": "Kalau kamu dan pasangan suka jalan-jalan dari mall ke taman, lalu ke waterpark, pasti butuh sandal yang tahan banting. Sandal GUIRENNIAO pakai material EVA yang awet, gak gampang rusak meski dipakai untuk semua aktivitas itu. Cocok untuk gaya hidup aktif kalian.",
+      "headline": "1 Sandal untuk Semua Aktivitas Bersama",
+      "cta": "Lihat Panduan Ukuran",
+      "visual_suggestion": "Visual split-screen: kiri, tumpukan sandal kotor dan rusak (waterpark, taman, mall). Kanan, satu pasang sandal GUIRENNIAO bersih di atas peta dengan pin lokasi mall, taman, dan waterpark."
+    },
+    {
+      "name": "COPY B - Intent Boost",
+      "primary_text": "Lelah beli sandal waterpark, sandal taman, sandal mall yang semuanya cepat rusak? Solusinya bukan beli lebih banyak, tapi beli yang lebih awet. Sandal GUIRENNIAO dengan material EVA didesain untuk penggunaan intensif. Satu pasang, ganti semua kebutuhan.",
+      "headline": "Stop Boros Ganti Sandal Terus",
+      "cta": "Cek Varian Warna",
+      "visual_suggestion": "Visual close-up tangan memegang 3 pasang sandal berbeda yang sudah rusak (sol terkelupas, tali putus). Lalu tangan tersebut mengambil 1 pasang sandal GUIRENNIAO yang masih baru dan kokoh."
+    },
+    {
+      "name": "COPY C - Emotional Boost",
+      "primary_text": "Rasanya kesal banget beli sandal mahal, eh cuma bertahan beberapa bulan. Investasi yang sia-sia. Sekarang, rasakan kepastian. Material EVA pada sandal GUIRENNIAO terbukti awet, gak gampang jebol meski dipakai ke mana-mana. Beli sekali, pakai bertahun-tahun.",
+      "headline": "Akhiri Frustasi Sandal Cepat Rusak",
+      "cta": "Dapatkan Jaminan Kepuasan",
+      "visual_suggestion": "Visual testimoni style: Orang memegang sandal GUIRENNIAO yang sudah terlihat dipakai (sedikit kotor), lalu menunjukkan sol dan material yang masih utuh dan tidak rusak. Ekspresi wajah puas dan lega."
+    },
+    {
+      "name": "COPY D - Ultra",
+      "primary_text": "Untuk pasangan yang aktif: butuh sandal untuk date di mall, piknik di taman, dan main air di waterpark. Jangan buang uang untuk 3 sandal berbeda yang cepat rusak. Sandal GUIRENNIAO pakai material EVA awet, didesain tahan untuk semua kegiatan itu. Hemat, praktis, dan pasti awet.",
+      "headline": "Hemat Cerdas: 1 Sandal, Semua Aktivitas",
+      "cta": "Pilih Warna Matching",
+      "visual_suggestion": "Visual carousel 3 adegan singkat: 1. Pasangan jalan di mall pakai sandal GUIRENNIAO. 2. Duduk di taman pakai sandal yang sama. 3. Tertawa di waterpark pakai sandal yang sama. Highlight logo/desain sandal yang konsisten di setiap adegan."
+    }
+  ],
+  "angle_library": [
+    "Hemat Cerdas dengan Investasi Produk Multi-Fungsi yang Awet",
+    "Satu Sandal, Semua Cerita: Akhiri Ribetnya Ganti Sandal untuk Setiap Aktivitas",
+    "Jaminan Aman, dari Kaki Hingga Dompet: Belanja Online Tanpa Ragu untuk Kebutuhan Keluarga",
+    "Kepintaran Orang Tua yang Terlihat: Solusi Praktis yang Bikin Keluarga Kompak",
+    "Nyaman Sepanjang Hari, Aman di Segala Medan: Sandal untuk Gaya Hidup Dinamis",
+    "Investasi Kaki: Kenyamanan dan Keamanan yang Bertahan Lama",
+    "Matching Style, Maximum Function: Sandal Pasangan untuk Petualangan Sehari-hari",
+    "Dari Kafe ke Hiking: Fleksibilitas Tanpa Kompromi dalam Satu Desain",
+    "Belanja Online yang Pasti: Sandal dengan Panduan Ukuran Akurat dan Jaminan",
+    "Minimalisir Risiko, Maksimalkan Pengalaman: Alas Kaki yang Didukung Layanan Lengkap"
+  ],
+  "hook_library": [
+    "Sudah habis berapa untuk beli sandal waterpark, sandal taman, sandal mall yang semuanya cepat rusak?",
+    "Gak perlu boros beli 3 sandal berbeda. Cukup 1 yang bisa dipakai untuk semuanya.",
+    "Material EVA awet, gak gampang jebol meski dipakai ke mana-mana.",
+    "Beli sekeluarga, lebih hemat. Liburan kompak, budget juga tetap aman.",
+    "Ini sandal untuk besok, bulan depan, dan liburan tahun depan.",
+    "Kaki pegal dan takut slip? Itu tanda sandal lama sudah tidak layak pakai.",
+    "Bayangin, dari kafe langsung ke taman basah tanpa ganti sandal. Bisa.",
+    "Gak ada lagi drama salah ukuran dan ribet return. Panduan kami bikin pasti.",
+    "Tampil kompak dengan pasangan, tanpa perlu keluar duit ekstra untuk desain matching.",
+    "Bahan empuk yang bikin jalan seharian terasa seperti berjalan di awan.",
+    "Sol yang mencengkeram, biar kamu jalan di trotoar licin pun percaya diri.",
+    "Cukup dilap, bersih. Sandal ini dibuat untuk yang gak suka ribet.",
+    "Investasi sekali, kebahagiaan berkali-kali. Sandal yang menemani setiap momen.",
+    "Jangan biarkan sandal biasa menghalangi petualangan spontan kamu akhir pekan ini.",
+    "Rasanya lega banget pas audit barang di lemari, sandal ini masih bagus padahal udah setahun.",
+    "Dibanding beli sepatu sneaker mahal, sandal ini lebih versatile untuk aktivitas kota.",
+    "Anak-anak main air kotor? Tenang, sandal ini gampang banget dibersihin.",
+    "Gak perlu mikir <em>sandal apa yang harus aku pakai hari ini?</em> Jawabannya selalu ini.",
+    "Bukan cuma gaya, ini soal keputusan finansial yang pintar untuk jangka panjang.",
+    "Perlindungan lengkap: untuk kaki kamu, dompet kamu, dan ketenangan pikiran kamu."
+  ],
+  "landing_page": {
+    "section_1_hero": {
+      "name": "Hero - Reframing + Output",
+      "headline": "Hemat Itu Bukan Harga Murah, Tapi Nilai yang Bertahan Lama",
+      "subheadline": "Stop lingkaran beli sandal baru tiap musim. Sandal GUIRENNIAO dengan material EVA awet adalah investasi sekali untuk semua aktivitas kamu dan pasangan.",
+      "primary_cta": "Temukan Sandal Pasangan Kamu"
+    },
+    "section_2_proof": {
+      "name": "PROOF OF REALITY - Bikin <em>ini beneran</em>",
+      "title": "Apa yang Sebenarnya Terjadi dengan Sandal Biasa?",
+      "points": [
+        "Sandal waterpark cepat bau dan lapuk karena terus basah.",
+        "Sandal taman solnya cepat aus dan licin setelah beberapa bulan dipakai.",
+        "Sandal mall nyaman di awal, tapi bikin kaki pegal kalau dipakai jalan lama.",
+        "Hasilnya: lemari penuh sandal, dompet terkuras, tapi tetap tidak punya solusi ideal."
+      ]
+    },
+    "section_3_problem": {
+      "name": "PROBLEM CALLOUT - Mirror Moment",
+      "title": "Masalahnya Bukan di Aktivitas Kamu, Tapi di Kualitas Sandalnya",
+      "description": "Kamu dan pasangan punya gaya hidup yang dinamis. Masalah muncul ketika sandal yang ada tidak dirancang untuk mengimbangi ritme itu. Bukan salah kamu sering jalan-jalan, tapi sandalnya yang gampang nyerah."
+    },
+    "section_4_solution": {
+      "name": "SOLUTION - Reframe + Path",
+      "title": "Perkenalkan, Logika Baru: Satu Sandal, Segala Medan",
+      "description": "Sandal GUIRENNIAO. Dibangun dengan material EVA berkualitas yang awet, menggabungkan kenyamanan insole empuk untuk seharian dengan performa sol anti slip untuk keamanan. Satu desain unisex yang stylish, siap menemani dari kafe hingga trail hiking ringan."
+    },
+    "section_5_value_stack": {
+      "name": "VALUE STACK - Bikin <em>worth it</em>",
+      "title": "Apa yang Membuat Sandal Ini Berbeda?",
+      "values": [
+        "Material EVA Awet: Tahan aus, anti air, dan tidak gampang jebol meski untuk penggunaan intensif.",
+        "Kenyamanan Maksimal: Insole empuk dan bahan halus elastis mengurangi kelelahan kaki sepanjang hari.",
+        "Keamanan Terjamin: Sol dengan pola cengkeraman kuat untuk traction yang baik di berbagai permukaan.",
+        "Kepraktisan Total: Mudah dibersihkan, cepat kering, dan desain versatile untuk banyak kesempatan.",
+        "Kepastian Belanja: Panduan ukuran akurat dan kebijakan pengembalian yang jelas untuk rasa aman bertransaksi."
+      ]
+    },
+    "section_6_objection_handling": {
+      "name": "OBJECTION HANDLING - Turunin Risk",
+      "title": "Masih Ragu? Ini Jawaban Kami",
+      "description": "<em>Material EVA tahan lama gak sih?</em> - Ya. EVA dikenal karena ketahanan dan elastisitasnya, digunakan pada alas kaki premium. Kami pilih grade terbaik.<br><em>Kalau ukuran tidak pas?</em> - Kami sediakan tabel konversi detail. Masih ragu? Chat CS kami untuk konsultasi. Dilindungi kebijakan tukar ukuran.<br><em>Harganya lebih mahal dari sandal biasa?</em> - Bayangkan kamu menghemat 2-3 pembelian sandal khusus yang cepat rusak. Ini investasi nilai, bukan hanya harga."
+    },
+    "section_7_super_benefit": {
+      "name": "SUPER BENEFIT - Emotional Payoff",
+      "title": "Manfaat Terbesar: Kebebasan dan Kepastian",
+      "description": "Ini lebih dari sepasang sandal. Ini adalah kartu bebas untuk petualangan spontan bersama pasangan tanpa pusing mikirin alas kaki. Ini adalah kepastian bahwa uang kamu diinvestasikan pada sesuatu yang tahan lama. Ini adalah rasa percaya diri bahwa pilihan kamu adalah pilihan yang cerdas."
+    },
+    "section_8_final_cta": {
+      "name": "FINAL CTA - Calm Conversion",
+      "headline": "Pilih Warna, Konfirmasi Ukuran, dan Mulai Petualangan Tanpa Khawatir",
+      "cta": "Beli Sekarang dengan Jaminan Kepuasan"
+    }
+  },
+  "video_script": {
+    "length": "30-45s",
+    "scripts": [
+      {
+        "name": "hook (stop scroll)",
+        "duration": "0-3s",
+        "visuals": [
+          "Close-up cepat: sepasang sandal GUIRENNIAO diinjak di atas genangan air di trotoar, lalu diangkat. Solnya basah tapi tampak kokoh."
+        ],
+        "text_overlay": "Material EVA yang gak gampang jebol.",
+        "voice_over": "(Sound effect: cipratan air) Gak percaya sandal bisa se-awet ini?"
+      },
+      {
+        "name": "problem mapping",
+        "duration": "4-10s",
+        "visuals": [
+          "Montase cepat: wanita melihat tumpukan sandal kotor di teras (sandal waterpark, sandal taman). Pria mengeluh kaki pegal sambil melepas sandal mall. Ekspresi frustasi."
+        ],
+        "text_overlay": "Sandal waterpark... sandal taman... sandal mall...",
+        "voice_over": "Aktivitas sama pasangan seru, tapi persiapan sandalnya bikin pusing. Beli terpisah, cepat rusak, dan akhirnya numpuk."
+      },
+      {
+        "name": "insight shift",
+        "duration": "11-18s",
+        "visuals": [
+          "Tampak atas: tangan menyapu semua sandal lama ke samping. Lalu, dengan tenang menempatkan sepasang sandal GUIRENNIAO (pria & wanita) di tengah layar."
+        ],
+        "text_overlay": "Solusinya: BUKAN beli lebih banyak.",
+        "voice_over": "Masalahnya bukan butuh lebih banyak sandal. Tapi butuh SANDAL YANG LEBIH BAIK. Yang satu bisa untuk semuanya."
+      },
+      {
+        "name": "solution",
+        "duration": "19-27s",
+        "visuals": [
+          "Visual produk spin 360 derajat. Lalu split screen: kiri, diagram material EVA dengan ikon ketahanan. Kanan, close-up pola sol anti slip."
+        ],
+        "text_overlay": "Sandal GUIRENNIAO. Material EVA Awet. Sol Anti Slip.",
+        "voice_over": "Ini dia Sandal GUIRENNIAO. Intinya: material EVA pilihan yang awet dan tahan banting, ditambah sol yang mencengkeram untuk keamanan kamu."
+      },
+      {
+        "name": "kill effort + proof",
+        "duration": "28-34s",
+        "visuals": [
+          "Adegan singkat berurutan: 1. Sandal dicuci dengan semprotan air, langsung bersih. 2. Sandal ditekan-tekan, kembali ke bentuk semula. 3. Pasangan memakainya, berjalan dari lantai kering (kafe) ke lantai basah (kolam) dengan muka percaya diri."
+        ],
+        "text_overlay": "Praktis. Elastis. Siap untuk apa aja.",
+        "voice_over": "Gampang dibersihkan, bahannya elastis nyaman. Dan yang paling penting: siap untuk diajak dari kafe, ke taman, langsung ke waterpark. Gak perlu ganti."
+      },
+      {
+        "name": "reset failure",
+        "duration": "35-41s",
+        "visuals": [
+          "Close-up wajah pasangan tersenyum lega, saling pandang. Kamera pan ke bawah, memperlihatkan sandal matching mereka yang dipakai."
+        ],
+        "text_overlay": "Hemat uang. Hemat waktu. Tenang pikiran.",
+        "voice_over": "Jadi, lupakan rasa takut sandal cepat rusak. Dengan Sandal GUIRENNIAO, kamu investasi sekali untuk kenyamanan dan keamanan yang bertahan lama."
+      },
+      {
+        "name": "cta (soft, meta-safe)",
+        "duration": "42-45s",
+        "visuals": [
+          "Produk diam di atas background putih bersih. Logo GUIRENNIAO. Tombol CTA <em>Pilih Warna Matching</em> muncul."
+        ],
+        "text_overlay": "Sandal GUIRENNIAO. Untuk gaya hidup tanpa batas.",
+        "voice_over": "Pilih warna favorit kamu dan pasangan. Cek panduan ukuran kami yang akurat di link bawah ini."
+      }
+    ]
+  },
+  "catatan_produksi": [
+    "format: 9:16 (Vertical Video)",
+    "subtitle wajib untuk setiap scene",
+    "hook teks muncul di detik ke-0-2",
+    "Gunakan musik background upbeat dan modern, namun tidak terlalu keras agar voice over jelas.",
+    "Pastikan visual produk (warna, detail) konsisten dan terlihat premium di semua shot.",
+    "Untuk scene proof (durasi 28-34s), gunakan transisi cepat dan dynamic untuk menunjukkan kegunaan multifungsi.",
+    "Aktor harus merepresentasikan pasangan muda urban (20-35 thn) dengan gaya relatable."
+  ]
+}"""
+
 DEFAULT_SPECIFIC_INSTRUCTION ="""
 REQUIRED JSON OUTPUT FORMAT:
 
@@ -207,18 +408,22 @@ class ads_copy(models.Model):
         context = ""
         additional_command=""
         question = ""
+        
+        if SIMULATE:
+          self.output=SIMULATE_OUTPUT
+        else:
 
-        response = generate_content(openai_api_key=openai_api_key, 
-                                openai_base_url=openai_base_url, 
-                                model=model, 
-                                system_prompt=system_prompt, 
-                                user_prompt=user_prompt, 
-                                context=context, 
-                                question=question, 
-                                additional_command=additional_command)    
+          response = generate_content(openai_api_key=openai_api_key, 
+                                  openai_base_url=openai_base_url, 
+                                  model=model, 
+                                  system_prompt=system_prompt, 
+                                  user_prompt=user_prompt, 
+                                  context=context, 
+                                  question=question, 
+                                  additional_command=additional_command)    
 
-        response = self.clean_md(response)
-        self.output = self.fix_json(response)
+          response = self.clean_md(response)
+          self.output = self.fix_json(response)
 
         self.generate_output_html()
 

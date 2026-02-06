@@ -150,14 +150,18 @@ class ProductValueAnalysisController(http.Controller):
                 "prev_step": "audience_profile_analysis",
                 "current_step":"angle_hook",
                 "back_title": f"AP {record.audience_profile_no}",
-                "next_step": False,
+                "next_step": "hook",
                 "hooks":[{
                     "id": hook.id,
                     "name": f"AP {record.audience_profile_no} - Angle {an.angle_no} - Hook {hook.id}",
                     "output_html": hook.output_html,
                     "clear_url": f"/hook/{hook.id}/clear",
+                    "prev_step": "angle_hook",
                     "current_step":"hook",
-                    "next_step":"ads_copy"
+                    "next_step":"ads_copy",
+                    "back_title": f"Angle {an.angle_no}",
+                    "record_id": an.id,
+
                 } for hook in an.hook_ids]
             } for an in record.angle_hook_ids.sorted(key=lambda rec: rec.angle_no or "")]
         if regenerate_type == "ads_copy":
@@ -172,7 +176,9 @@ class ProductValueAnalysisController(http.Controller):
                         "name": im.name,
                         "output_html": im.output_html,
                         "clear_url": f"/image_generator/{im.id}/clear",
-                        "next_step":"generate_variants"
+                        "next_step":"generate_variants",
+                        "back_title": f"Ads Copy {ads.name}",
+                        "record_id": ads.id
                     } for im in ads.image_generator_ids
                 ],
                 "lps":[
@@ -181,7 +187,9 @@ class ProductValueAnalysisController(http.Controller):
                         "name": lp.name,
                         "output_html": lp.output_html,
                         "clear_url": f"/landing_page/{lp.id}/clear",
-                        "next_step":"generate_landing_pages"
+                        "next_step":"generate_landing_pages",
+                        "back_title": f"Ads Copy {ads.name}",
+                        "record_id": ads.id
                     } for lp in ads.landing_page_builder_ids
                 ],
                 "videos":[
@@ -190,7 +198,9 @@ class ProductValueAnalysisController(http.Controller):
                         "name": vid.name,
                         "output_html": vid.output_html,
                         "clear_url": f"/video_director/{vid.id}/clear",
-                        "next_step":"generate_videos"
+                        "next_step":"generate_videos",
+                        "back_title": f"Ads Copy {ads.name}",                        
+                        "record_id": ads.id
                     } for vid in ads.video_director_ids
                 ],
                 "output_html": f"""{ads.output_html_trimmed}
@@ -206,13 +216,14 @@ class ProductValueAnalysisController(http.Controller):
             
         if regenerate_type == "image_variants":
             return [{
-                "id": record.id,
+                "id": iv.id,
                 "name": iv.name,
                 "output_html": f"""<a href="{iv.image_url}" target="_new">
     <img src='{iv.image_url_512}' class='img-fluid'/>
 </a>
 """,
                 "clear_url": f"/image_generator/{record.id}/clear",
+                "record_id": record.id
             } for iv in record.image_variant_ids[-1]]
         return []
 
