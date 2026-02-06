@@ -25,7 +25,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             market_map_analysis: (id) => `/regenerate_status/market_map_analysis/${id}`,
             audience_profile_analysis: (id) => `/regenerate_status/audience_profile_analysis/${id}`,
             angle_hook: (id) => `/regenerate_status/angle_hook/${id}`,
-            ads_copy: (id) => `/regenerate_status/ads_copy/${id}`,
+            ads_copy: (id) => `/regenerate_status/hook/${id}`,
             image_variants: (id) => `/regenerate_status/image_variants/${id}`,
         };
         this.nextChain = {
@@ -334,11 +334,12 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         let newSection
         const currentStepSection = $('#section-'+outputs[0].current_step)
         const parentSection = document.createElement("div");
-        parentSection.id = `${outputs[0].prev_step}-${outputs[0].current_step}-${recordId}`;
+        const prev_step = outputs[0].prev_step=='hook'?'angle_hook':outputs[0].prev_step;
+        parentSection.id = `${prev_step}-${outputs[0].current_step}-${recordId}`;
         console.log('parentSection', parentSection);
         currentStepSection.append(parentSection);
 
-        [...outputs].reverse().forEach((output) => {
+        [...outputs].forEach((output) => {
             
             const prevStep = output.prev_step
             const currentStep = output.current_step
@@ -462,6 +463,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 // eg: Maket Map -> AP 12 (generate angle) -> Angles
                 //           show view-target-ap-angles-12 <- done
                 const viewTragetButton = `#view-target-${output.current_step}-${output.record_id}`;
+                console.log(viewTragetButton);
                 $(viewTragetButton).show()
             } 
             else

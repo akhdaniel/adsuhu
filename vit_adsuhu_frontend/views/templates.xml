@@ -531,11 +531,11 @@
                                                                 data-regenerate="ads_copy" 
                                                                 data-target-section="section-ads-copy"
                                                             >
-                                                                <i class="fa fa-send me-1"></i> Create Ads Copy
+                                                                <i class="fa fa-send me-1"></i> <t t-out="hook.id"/>Create Ads Copy
                                                             </button>
 
                                                             <a t-attf-id="view-target-ads_copy-#{hook.id}" 
-                                                                t-attf-href="#hook-ads-copies-#{hook.id}" 
+                                                                t-attf-href="#angle_hook-ads_copy-#{hook.id}" 
                                                                 class="btn btn-primary"
                                                                 t-attf-style="display: #{'block' if hook.ads_copy_ids else 'none'};"
                                                             >
@@ -558,7 +558,7 @@
                                     <t t-foreach="market.audience_profiler_ids" t-as="audience">
                                         <t t-foreach="audience.angle_hook_ids" t-as="angle">
                                             <t t-foreach="angle.hook_ids" t-as="hook">
-                                                <div t-attf-id="hook-ads-copies-#{hook.id}" style="scroll-margin-top: 6rem;">
+                                                <div t-attf-id="angle_hook-ads_copy-#{hook.id}" style="scroll-margin-top: 6rem;">
                                                     <t t-foreach="hook.ads_copy_ids" t-as="ads">
                                                         <section class="adsuhu-section" t-attf-id="section-ads-#{ads.id}" t-attf-data-clear-url="/ads_copy/#{ads.id}/clear" style="scroll-margin-top: 6rem;">
                                                             <h2 class="adsuhu-section-title">Ads Copy: <t t-out="ads.name"/></h2>

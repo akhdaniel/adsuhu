@@ -103,6 +103,7 @@ class ProductValueAnalysisController(http.Controller):
         }]
 
     def _build_result(self, regenerate_type, record):
+        _logger.info(f"regenerate_type={regenerate_type} record={record}")
         if regenerate_type == "product_value_analysis":
             return [{
                 "id": record.id,
@@ -164,12 +165,14 @@ class ProductValueAnalysisController(http.Controller):
 
                 } for hook in an.hook_ids]
             } for an in record.angle_hook_ids.sorted(key=lambda rec: rec.angle_no or "")]
-        if regenerate_type == "ads_copy":
+        if regenerate_type == "hook":
+            
             return [{
                 "id": ads.id,
                 "name": f"Ads Copy: {ads.name}",
                 "prev_step": "angle_hook",
                 "current_step":"ads_copy",
+                "record_id": record.id,                
                 "images":[
                     {
                         "id": im.id,
@@ -405,7 +408,7 @@ class ProductValueAnalysisController(http.Controller):
 
     @http.route('/hook/<model("vit.hook"):hook>/ads_copy/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_ads_copy(self, hook, **kwargs):
-        hook.sudo().write({"status": "processing"})
+        hook.write({"status": "processing"})
         request.env.cr.commit()
         self._run_background("vit.hook", hook.id, lambda rec: rec.action_create_ads_copy())
         return {"status": "processing"}
@@ -525,7 +528,7 @@ class ProductValueAnalysisController(http.Controller):
             "audience_profile_analysis": "vit.market_mapper",
             "angle_hook": "vit.audience_profiler",
             "hook": "vit.hook",
-            "ads_copy": "vit.ads_copy",
+            "ads_copy": "vit.hook",
             "image_variants": "vit.image_generator",
         }
         model_name = model_map.get(regenerate_type)
