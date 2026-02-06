@@ -404,7 +404,8 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 const viewTargetTitle = nextStep;
                 viewTargetButton.id = `view-target-${nextStep}-${output.id}`;
                 viewTargetButton.className = "btn btn-primary ms-2";
-                viewTargetButton.href = `#${currentStep}-${nextStep}-${output.id}`;
+                const currentStepName = currentStep=='hook'?'angle_hook':currentStep
+                viewTargetButton.href = `#${currentStepName}-${nextStep}-${output.id}`;
                 viewTargetButton.style.display = (currentStep=='angle_hook'?'block':'none')
                 viewTargetButton.innerHTML = `<i class="fa fa-send me-1"></i> View ${viewTargetTitle}`;
                 buttonWrap.appendChild(viewTargetButton);
