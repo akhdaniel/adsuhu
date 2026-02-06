@@ -159,6 +159,32 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         if (!listEl) {
             return;
         }
+        const normalizeText = (value) =>
+            (value || "")
+                .toString()
+                .replace(/\s+/g, " ")
+                .trim()
+                .toLowerCase();
+
+        const parseHierarchy = (value) => {
+            const text = value || "";
+            const apMatch = text.match(/AP\s+(\d+)/i);
+            const angleMatch = text.match(/ANGLE\s+(\d+)/i);
+            const hookMatch = text.match(/HOOK\s+(\d+)/i);
+            return {
+                apNo: apMatch ? apMatch[1] : null,
+                angleNo: angleMatch ? angleMatch[1] : null,
+                hookNo: hookMatch ? hookMatch[1] : null,
+            };
+        };
+
+        const hierarchicalLists = new Set([
+            "list-angle-hook",
+            "list-hook",
+            "list-ads-copy",
+            "list-landing-pages",
+        ]);
+
         const item = document.createElement("li");
         item.className = "list-group-item p-0";
         item.innerHTML = `
@@ -166,7 +192,49 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 ${title}
             </a>
         `;
-        listEl.appendChild(item);
+        let targetList = listEl;
+        if (hierarchicalLists.has(listId)) {
+            const { apNo, angleNo, hookNo } = parseHierarchy(title);
+            let summaryText = "";
+            if (listId === "list-angle-hook" && apNo) {
+                summaryText = `AP ${apNo}`;
+            } else if (listId === "list-hook" && apNo && angleNo) {
+                summaryText = `AP ${apNo} - Angle ${angleNo}`;
+            } else if (listId === "list-ads-copy" && apNo && angleNo && hookNo) {
+                summaryText = `AP ${apNo} - Angle ${angleNo} - Hook ${hookNo}`;
+            } else if (listId === "list-landing-pages" && apNo && angleNo && hookNo) {
+                summaryText = `AP ${apNo} - Angle ${angleNo} - Hook ${hookNo}`;
+            }
+
+            if (summaryText) {
+                const summaries = Array.from(listEl.querySelectorAll("details > summary"));
+                const targetSummary = summaries.find(
+                    (summary) => normalizeText(summary.textContent) === normalizeText(summaryText)
+                );
+                let targetDetails = targetSummary?.closest("details");
+                if (!targetDetails) {
+                    const node = document.createElement("li");
+                    node.className = "list-group-item p-0 adsuhu-toc-node";
+                    const details = document.createElement("details");
+                    const summary = document.createElement("summary");
+                    summary.className = "adsuhu-toc-summary";
+                    summary.textContent = summaryText;
+                    const nestedList = document.createElement("ul");
+                    nestedList.className = "list-group";
+                    details.appendChild(summary);
+                    details.appendChild(nestedList);
+                    node.appendChild(details);
+                    listEl.appendChild(node);
+                    targetDetails = details;
+                }
+                const nestedList = targetDetails.querySelector("ul.list-group");
+                if (nestedList) {
+                    targetList = nestedList;
+                }
+            }
+        }
+
+        targetList.appendChild(item);
         this._refreshTocTargets();
         this._updateActiveToc();
     },
@@ -401,7 +469,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
 
                 // view next button
                 const viewTargetButton = document.createElement("a");
-                const viewTargetTitle = nextStep;
+                const viewTargetTitle = this._titleizeKey(nextStep);
                 viewTargetButton.id = `view-target-${nextStep}-${output.id}`;
                 viewTargetButton.className = "btn btn-primary ms-2";
                 const currentStepName = currentStep=='hook'?'angle_hook':currentStep
