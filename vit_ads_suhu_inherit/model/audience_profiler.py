@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 import json
 
 from .libs.openai_lib import generate_content
-SIMULATE=True
+SIMULATE=False
 SIMULATE_OUTPUT="""{
   "main_target_segment": "Pasangan Muda Perkotaan (Active Urban Couples), usia 20-35 tahun, berpenghasilan menengah ke atas, tinggal di kota besar, dengan gaya hidup aktif dan dinamis.",
   "customer_empathy_profile": {

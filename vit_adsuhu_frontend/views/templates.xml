@@ -101,7 +101,7 @@
 
                                         <!-- product analys-->
                                         <li class="list-group-item p-0">
-                                            <a class="list-group-item list-group-item-action border-0" href="#section-product-analysis">
+                                            <a class="list-group-item list-group-item-action border-0" href="#section-product_value_analysis">
                                                 Product Analysis
                                             </a>
                                         </li>
@@ -430,7 +430,7 @@
                                 </section>
                             </div>
                             <!-- product analysis -->
-                            <div t-attf-id="section-product_value_analysis-#{analysis.id}" style="scroll-margin-top: 6rem;">
+                            <div t-attf-id="section-product_value_analysis" style="scroll-margin-top: 6rem;">
                                 <div id="loading-skeleton-product_value_analysis" style="display: none">
                                     <t t-call="vit_adsuhu_frontend.loading_skeleton"/>
                                 </div>    
@@ -461,7 +461,7 @@
                                         <h2 class="adsuhu-section-title" t-field="market.name"></h2>
                                         <div class="adsuhu-content"  t-raw="market.output_html"></div>
                                         <div class="d-flex align-items-center justify-content-center">
-                                            <a class="btn btn-secondary" t-attf-href="#section-product_value_analysis-#{analysis.id}">
+                                            <a class="btn btn-secondary" t-attf-href="#section-product_value_analysis">
                                                 <i class="fa fa-arrow-left me-1"></i> Back to Product Analysis
                                             </a>
                                             <button t-if="market.output and not market.audience_profiler_ids"  
@@ -594,7 +594,7 @@
                                                                 data-regenerate="ads_copy" 
                                                                 data-target-section="section-ads-copy"
                                                             >
-                                                                <i class="fa fa-send me-1"></i> <t t-out="hook.id"/>Create Ads Copy
+                                                                <i class="fa fa-send me-1"></i> Create Ads Copy
                                                             </button>
 
                                                             <a t-attf-id="view-target-ads_copy-#{hook.id}" 

@@ -91,7 +91,7 @@ DEFAULT_SPECIFIC_INSTRUCTION="""REQUIRED JSON OUTPUT FORMAT:
 
 """
 
-SIMULATE=True
+SIMULATE=False
 SIMULATE_OUTPUT="""{
   "product": "Sandal GUIRENNIAO",
   "category": "Footwear - Casual & Outdoor Sandals",

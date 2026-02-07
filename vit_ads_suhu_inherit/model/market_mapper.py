@@ -7,7 +7,7 @@ import logging
 _logger = logging.getLogger(__name__)
 import json 
 from .libs.openai_lib import generate_content
-SIMULATE=True
+SIMULATE=False
 SIMULATE_OUTPUT="""{
   "product": "GUIRENNIAO",
   "target_market": "Indonesia",

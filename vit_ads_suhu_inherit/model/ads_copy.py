@@ -14,7 +14,7 @@ def strip_emoji(text: str) -> str:
     # Remove common emoji ranges (optional)
     return re.sub(r"[\U0001F300-\U0001FAFF\u2600-\u26FF\u2700-\u27BF]", "", text)
 
-SIMULATE=True
+SIMULATE=False
 SIMULATE_OUTPUT="""{
   "angle": "Hemat Cerdas dengan Investasi Produk Multi-Fungsi yang Awet",
   "hook": "Material EVA awet, gak gampang jebol meski dipakai ke mana-mana.",
