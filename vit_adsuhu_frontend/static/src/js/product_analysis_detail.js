@@ -353,6 +353,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 throw new Error(result?.error || "Regenerate failed.");
             }
             if (status === "done") {
+                //TODO: harusnya load parsial per block
                 window.location.reload();
                 return;
                 
