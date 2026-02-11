@@ -10,6 +10,7 @@
     'website': 'https://www.example.com',
     'depends': ['website', 
                 'vit_ads_suhu',
+                'vit_ads_suhu_credits',
                 'website_sale'],
     'data': [
         'views/templates.xml',
