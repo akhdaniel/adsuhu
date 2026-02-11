@@ -37,6 +37,7 @@ class TopupService(models.AbstractModel):
         
         try:
             self.env['vit.customer_credit'].sudo().create({
+                    'customer_id': partner.id,
                     'name': 'topup',
                     'credit': topup_amount,
                     'is_usage': False,
