@@ -353,9 +353,10 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 throw new Error(result?.error || "Regenerate failed.");
             }
             if (status === "done") {
-                // window.location.reload();
-                // return;
+                window.location.reload();
+                return;
                 
+                /*
                 const outputs = result?.result || [];
 
                 
@@ -374,6 +375,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 
                 this._setButtonState(button, false);
                 return;
+                */
                 
             }
         }
