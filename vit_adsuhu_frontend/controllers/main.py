@@ -347,7 +347,7 @@ class ProductValueAnalysisController(http.Controller):
             'features': features,
             'tags': tags,
             'lang_id': lang_id,
-            'partner_idd': request.env.user.partner_id.id
+            'partner_id': request.env.user.partner_id.id
         })
 
         return request.redirect(f'/product_analysis/{new_analysis.id}')
