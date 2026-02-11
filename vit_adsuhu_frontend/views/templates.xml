@@ -785,7 +785,7 @@
 
             <div class="mb-3">
                 <label for="product_url" class="form-label">Product URL</label>
-                <button type="button" class="btn btn-outline-secondary">Fetch Product</button>
+                <!-- <button type="button" class="btn btn-outline-secondary">Fetch Product</button> -->
                 <input type="text" class="form-control" name="product_url" id="product_url" placeholder="e.g. https://shopee.co.id/..." required="required" t-att-value="analysis.product_url if is_edit else ''"/>
             </div>
 
