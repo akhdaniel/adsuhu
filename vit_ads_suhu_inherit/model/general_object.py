@@ -58,6 +58,7 @@ class general_object(models.Model):
         default="idle",
         copy=False,
     )
+    error_message = fields.Text(string=_("Error Message"), copy=False)
     general_instruction = fields.Text(default=DEFAULT_GENERAL_INSTRUCTION,  string=_("General Instruction"))
 
     def clean_md(self, text):

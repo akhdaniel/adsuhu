@@ -93,3 +93,26 @@ class TopupService(models.AbstractModel):
             _logger.warning(
                 f"Failed to create topup log for partner {partner.name}: {str(e)}"
             )
+
+    def create_usage_credit(self, partner, name=None, credit=1):
+        if not partner:
+            _logger.warning("Usage credit skipped: missing partner.")
+            return
+        usage_name = name or "usage"
+        try:
+            self.env['vit.customer_credit'].sudo().create({
+                'customer_id': partner.id,
+                'name': f'{usage_name}',
+                'credit': credit,
+                'is_usage': True,
+                'date_time': fields.Datetime.now(),
+            })
+            _logger.info(
+                f"Usage credit created for partner {partner.name}: "
+                f"name={usage_name}, credit={credit}"
+            )
+        except Exception as e:
+            _logger.error(
+                f"Failed to create usage credit for partner {partner.name}: {str(e)}"
+            )
+            raise

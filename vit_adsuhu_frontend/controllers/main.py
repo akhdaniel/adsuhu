@@ -59,11 +59,12 @@ class ProductValueAnalysisController(http.Controller):
                                 _logger.info("Background job start: %s(%s) action=%s", model_name, record_id, action)
                                 action(rec)
                                 _logger.info("Background job done: %s(%s)", model_name, record_id)
-                                rec.write({"status": "done"})
+                                rec.write({"status": "done", "error_message": False})
                                 cr.commit()
-                            except Exception:
+                            except Exception as e:
                                 _logger.exception("Background job failed for %s(%s)", model_name, record_id)
-                                rec.write({"status": "failed"})
+                                rec.write({"status": "failed", "error_message": str(e)})
+                                cr.commit()
                         break
                     except psycopg2.errors.SerializationFailure:
                         _logger.warning(
@@ -323,6 +324,35 @@ class ProductValueAnalysisController(http.Controller):
             return request.redirect(url)
         return request.redirect(f'/product_analysis/{analysis.id}')
 
+    @http.route(['/customer_credits', '/customer_credits/page/<int:page>'], type='http', auth='user', website=True)
+    def customer_credits(self, page=1, **kwargs):
+        credit_obj = request.env['vit.customer_credit'].sudo()
+        partner = request.env.user.partner_id
+        domain = [('customer_id', '=', partner.id)]
+
+        per_page = 20
+        total = credit_obj.search_count(domain)
+        pager = request.website.pager(
+            url='/customer_credits',
+            total=total,
+            page=page,
+            step=per_page,
+            scope=7,
+            url_args=kwargs
+        )
+
+        credits = credit_obj.search(
+            domain,
+            offset=pager['offset'],
+            limit=per_page,
+            order="date_time desc"
+        )
+
+        return request.render('vit_adsuhu_frontend.customer_credits_list_template', {
+            'credits': credits,
+            'pager': pager,
+        })
+
     @http.route('/product_analysis/submit', type='http', auth='user', website=True, methods=['POST'])
     def submit(self, **post):
         product_name = post.get('product_name')
@@ -381,42 +411,42 @@ class ProductValueAnalysisController(http.Controller):
     # Regenerate secion
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_product_analysis(self, analysis, **kwargs):
-        analysis.write({"status": "processing"})
+        analysis.write({"status": "processing", "error_message": False})
         request.env.cr.commit()
         self._run_background("vit.product_value_analysis", analysis.id, lambda rec: rec.action_generate())
         return {"status": "processing"}
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/market_mapper/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_market_mapper(self, analysis, **kwargs):
-        analysis.sudo().write({"status": "processing"})
+        analysis.sudo().write({"status": "processing", "error_message": False})
         request.env.cr.commit()
         self._run_background("vit.product_value_analysis", analysis.id, lambda rec: rec.action_generate_market_mapping())
         return {"status": "processing"}
 
     @http.route('/market_mapper/<model("vit.market_mapper"):market_mapper>/audience_profiler/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_audience_profiler(self, market_mapper, **kwargs):
-        market_mapper.sudo().write({"status": "processing"})
+        market_mapper.sudo().write({"status": "processing", "error_message": False})
         request.env.cr.commit()
         self._run_background("vit.market_mapper", market_mapper.id, lambda rec: rec.action_generate_audience_profiler())
         return {"status": "processing"}
 
     @http.route('/audience_profiler/<model("vit.audience_profiler"):audience_profiler>/angle_hook/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_angle_hook(self, audience_profiler, **kwargs):
-        audience_profiler.sudo().write({"status": "processing"})
+        audience_profiler.sudo().write({"status": "processing", "error_message": False})
         request.env.cr.commit()
         self._run_background("vit.audience_profiler", audience_profiler.id, lambda rec: rec.action_generate_angles())
         return {"status": "processing"}
 
     @http.route('/hook/<model("vit.hook"):hook>/ads_copy/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_ads_copy(self, hook, **kwargs):
-        hook.write({"status": "processing"})
+        hook.write({"status": "processing", "error_message": False})
         request.env.cr.commit()
         self._run_background("vit.hook", hook.id, lambda rec: rec.action_create_ads_copy())
         return {"status": "processing"}
 
     @http.route('/image_generator/<model("vit.image_generator"):image_generator>/image_variant/regenerate', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_image_variant(self, image_generator, **kwargs):
-        image_generator.sudo().write({"status": "processing"})
+        image_generator.sudo().write({"status": "processing", "error_message": False})
         request.env.cr.commit()
         self._run_background("vit.image_generator", image_generator.id, lambda rec: rec.action_generate())
         return {"status": "processing"}
@@ -541,7 +571,8 @@ class ProductValueAnalysisController(http.Controller):
         result = []
         if status == "done":
             result = self._build_result(regenerate_type, record)
-        return {"status": status, "result": result}
+        error_message = record.error_message if status == "failed" else False
+        return {"status": status, "result": result, "error": error_message}
 
     # view details
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>', type='http', auth='user', website=True)
@@ -556,4 +587,3 @@ class ProductValueAnalysisController(http.Controller):
             'final_report_toc': final_report_toc,
         }
         return request.render('vit_adsuhu_frontend.product_analysis_detail_template', values)
-

@@ -56,7 +56,7 @@ class partner(models.Model):
     def _get_monthly_usage(self):
         # Count vit.messages for all vit.ai_agent that belong to the given partner
         # ai_agents = self.env['vit.ai_agent'].search([('partner_id', '=', partner.id)])
-        credits = self.env['vit.customer_credit'].search([('customer_id', '=', self.id),('is_usage','=', False)])
+        credits = self.env['vit.customer_credit'].search([('customer_id', '=', self.id)])
         return sum(credits.mapped('credit'))
     
     def reset_monthly_usage(self):
