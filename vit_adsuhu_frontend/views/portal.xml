@@ -20,4 +20,16 @@
         </t>
     </div>
 </template>
+
+<template id="portal_user_dropdown_limit" name="Portal User Limit" inherit_id="portal.user_dropdown" priority="50">
+    <xpath expr="//span[@t-if='_user_name']" position="replace">
+        <span t-attf-class="#{_user_name_class}">
+            <t t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"/>
+        </span>
+        <span class="ms-2 small text-muted d-inline-flex align-items-center gap-1">
+            <i class="fa fa-credit-card" aria-hidden="true"/>
+            <t t-esc="user_id.partner_id.customer_limit or 0"/>
+        </span>
+    </xpath>
+</template>
 </odoo>
