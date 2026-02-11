@@ -16,6 +16,15 @@ class AccountMove(models.Model):
         _logger.info(f"Checking payment state for invoices... {self.name} ")
         for invoice in self:
             if invoice.move_type == 'out_invoice' and invoice.payment_state == 'paid':
-                # Execute your custom logic here
-                # Example: self.env['mail.message'].create({...})
                 _logger.info(f"Invoice {invoice.name} is paid, executing custom logic.")
+                partner = invoice.partner_id
+                expired_count_day = 30  # change this if you want to make dynamic
+                for line in invoice.invoice_line_ids:
+                    product = line.product_id
+                    qty = line.quantity or 1
+                    if not product:
+                        continue
+                    if product.categ_id.category_type == "topup":
+                        self.env['vit.topup.service'].process_topup_product(
+                            partner, product, expired_count_day, qty
+                        )
