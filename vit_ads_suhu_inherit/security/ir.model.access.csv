@@ -24,3 +24,4 @@ access_portal_vit_hook,access_portal_vit_hook,vit_ads_suhu.model_vit_hook,base.g
 access_portal_vit_video_script,access_portal_vit_video_script,vit_ads_suhu.model_vit_video_script,base.group_portal,1,1,1,1
 access_portal_vit_gpt_model,access_portal_vit_gpt_model,vit_ads_suhu.model_vit_gpt_model,base.group_portal,1,1,1,1
 access_portal_vit_auto_post_period,access_portal_vit_auto_post_period,vit_ads_suhu.model_vit_auto_post_period,base.group_portal,1,1,1,1
+access_portal_vit_customer_credit,access_portal_vit_customer_credit,vit_ads_suhu.model_vit_customer_credit,base.group_portal,1,0,0,0
