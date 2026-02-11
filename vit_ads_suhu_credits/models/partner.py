@@ -18,6 +18,16 @@ class partner(models.Model):
     _name = "res.partner"
     _inherit = "res.partner"
 
+    @api.depends("customer_credit_ids")
+    def _get_customer_limit(self, ):
+        """
+        {
+        "@api.depends":["customer_credit_ids"]
+        }
+        """
+        for rec in self:
+            rec.customer_limit = rec._get_monthly_usage()
+    
     # _sql_constraints = [("chat_number_unique", "UNIQUE(chat_number)", _("Chat number must be unique."))]
     # street = fields.Char(required=False, default="Jalan PHH. MUSTAFA Blok C No.16")
     # zip = fields.Char(required=False, default="40192")
@@ -43,7 +53,7 @@ class partner(models.Model):
             monthly_usage = self._get_monthly_usage(partner)
             partner.monthly_usage = monthly_usage
 
-    def _get_monthly_usage(self, partner):
+    def _get_monthly_usage(self):
         # Count vit.messages for all vit.ai_agent that belong to the given partner
         # ai_agents = self.env['vit.ai_agent'].search([('partner_id', '=', partner.id)])
         credit_count = self.env['vit.customer_credit'].search_count([('customer_id', '=', self.id),('is_usage','=', True)])
