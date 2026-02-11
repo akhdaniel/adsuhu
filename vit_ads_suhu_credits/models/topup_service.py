@@ -8,6 +8,10 @@ from datetime import datetime, timedelta
 class TopupService(models.AbstractModel):
     _name = 'vit.topup.service'
     _description = 'Topup Service'
+    
+    def search_topup_product(self, name, partner):
+        credit = self.env['vit.customer_credit'].sudo().search([('name','=',name), ('partner_id','=',partner.id)])
+        return credit
 
     def process_topup_product(self, name, partner, product, expired_date, qty=1):
         """
