@@ -5,8 +5,10 @@ from . import angle_hook
 from . import audience_profiler
 from . import auto_post_period
 from . import campaign_builder
+from . import category
 from . import compliance_checker
 from . import customer
+from . import customer_credit
 from . import gpt_model
 from . import gpt_prompt
 from . import hook
@@ -17,6 +19,7 @@ from . import image_variant
 from . import landing_page_builder
 from . import lang
 from . import market_mapper
+from . import product
 from . import product_value_analysis
 from . import script_writer
 from . import video_director

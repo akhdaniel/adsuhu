@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_category_form_ads_suhu" model="ir.ui.view">
+            <field name="name">category.form.ads.suhu</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <field name="category_type"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

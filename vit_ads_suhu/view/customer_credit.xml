@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- tree view -->
+        <record id="view_vit_customer_credit_tree" model="ir.ui.view">
+            <field name="name">vit_customer_credit_tree</field>
+            <field name="model">vit.customer_credit</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="Customer Credit">
+                    <field name="name" /> <!-- 100-->
+                    <field name="customer_id" /> <!-- 100-->
+                    <field name="date_time" /> <!-- 101-->
+                    <field name="credit" /> <!-- 102-->
+                    <field name="is_usage" /> <!-- 103-->
+                </list>
+            </field>
+        </record>
+        <!-- pivot view -->
+        <record id="view_vit_customer_credit_pivot" model="ir.ui.view">
+            <field name="name">vit_customer_credit_tree</field>
+            <field name="model">vit.customer_credit</field>
+            <field name="type">pivot</field>
+            <field name="arch" type="xml">
+                <pivot string="Customer Credit">
+                    <field name="customer_id" type="row"/>
+                </pivot>
+            </field>
+        </record>
+        <!-- form view -->
+        <record id="view_vit_customer_credit_form" model="ir.ui.view">
+            <field name="name">vit_customer_credit_form</field>
+            <field name="model">vit.customer_credit</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Customer Credit">
+                    <header>
+                        <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
+                                <!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
+                                <!--field name="detail_ids" invisible="1"/-->
+                            <!--/button-->
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Customer Credit Name"/>
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group> <!-- left -->
+                                <field name="date_time"  />
+                                <field name="credit"  />
+                                <field name="is_usage"  />
+                            </group>
+                            <group> <!-- right -->
+                                <field name="customer_id"  />
+                            </group>
+                        </group>
+                        <notebook>
+                        </notebook>
+                        <group name="note_group" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            </group>
+                            <div class="clearfix"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- search -->
+        <record id="view_vit_customer_credit_search" model="ir.ui.view">
+            <field name="name">vit_customer_credit</field>
+            <field name="model">vit.customer_credit</field>
+            <field name="arch" type="xml">
+                <search string="Customer Credit">
+
+                    <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+                    <filter string="Date Time" name="filter_by_date_time" domain="[('date_time','=','')]" />
+                    <filter string="Credit" name="filter_by_credit" domain="[('credit','=','')]" />
+                    <filter string="Is Usage" name="filter_by_is_usage" domain="[('is_usage','=','')]" />
+                    <field name="name" string="Name" select="True"/>
+                    <field name="date_time" string="Date Time" select="True"/>
+                    <field name="credit" string="Credit" select="True"/>
+                    <field name="is_usage" string="Is Usage" select="True"/>
+                    <field name="customer_id" string="Customer" select="True"/>
+                    <group string="Group By..">
+                        <filter string="Customer" domain="[]" name="group_by_customer_id" context="{'group_by':'customer_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
+        <record id="view_vit_customer_credit_kanban" model="ir.ui.view" >
+            <field name="name">vit_customer_credit</field>
+            <field name="model">vit.customer_credit</field>
+            <field name="arch" type="xml">
+                <kanban version="7.0">
+                    <field name="id" />
+                    <templates>
+                        <t t-name="card" class="flex-row">
+                            <main class="p-2">
+                                <h4>
+                                    <a type="open"><field name="name"/></a>
+                                </h4>
+                                <span class="text-muted">Date Time</span> <field name="date_time"></field>
+                            </main>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- calendar if a date field exists -->
+        <record id="view_vit_customer_credit_cal" model="ir.ui.view">
+            <field name="name">vit_customer_credit_cal</field>
+            <field name="model">vit.customer_credit</field>
+            <field name="arch" type="xml">
+                <calendar string="Customer Credit" date_start="date_time">
+                    <field name="name" />
+                </calendar>
+            </field>
+        </record>
+        <!-- graph -->
+        <record id="view_vit_customer_credit_graph" model="ir.ui.view">
+            <field name="name">vit_customer_credit</field>
+            <field name="model">vit.customer_credit</field>
+            <field name="arch" type="xml">
+                <graph string="Customer Credit" type="bar">
+                    <field name="customer_id"/>
+                </graph>
+            </field>
+        </record>
+        <!-- action window -->
+        <record id="action_customer_credit" model="ir.actions.act_window">
+            <field name="name">Customer Credit</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.customer_credit</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to add a new Customer Credit
+                </p><p>
+
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_customer_credit" name="Customer Credit" parent="vit_ads_suhu_config_menu" action="action_customer_credit" sequence="270"/>
+    </data>
+</odoo>

@@ -4,7 +4,8 @@
 	"name": "Ads Suhu",
 	"version": "1.0",
 	"depends": [
-		"base"
+		"base",
+		"product"
 	],
 	"author": "Akhmad Daniel Sembiring",
 	"category": "Utility",
@@ -68,7 +69,11 @@
 		"view/gpt_model.xml",
 		"report/gpt_model.xml",
 		"view/auto_post_period.xml",
-		"report/auto_post_period.xml"
+		"report/auto_post_period.xml",
+		"view/customer_credit.xml",
+		"report/customer_credit.xml",
+		"view/product.xml",
+		"view/category.xml"
 	],
 	"installable": True,
 	"auto_install": False,

@@ -49,7 +49,9 @@
 		"view/landing_page_builder.xml",
 		"view/campaign_builder.xml",
 		"view/image_generator.xml",
-		"view/video_director.xml"
+		"view/video_director.xml",
+		"view/category.xml",
+  
 	],
 	"installable": True,
 	"auto_install": False,

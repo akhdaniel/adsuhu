@@ -9,3 +9,4 @@ from . import test_video_variant
 from . import test_video_script
 from . import test_gpt_model
 from . import test_auto_post_period
+from . import test_customer_credit

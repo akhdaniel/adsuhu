@@ -8,7 +8,9 @@
     'category': 'Website',
     'author': 'Your Name',
     'website': 'https://www.example.com',
-    'depends': ['website', 'vit_ads_suhu'],
+    'depends': ['website', 
+                'vit_ads_suhu',
+                'website_sale'],
     'data': [
         'views/templates.xml',
         'views/portal.xml',
