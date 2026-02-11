@@ -486,7 +486,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                     nextButton.dataset.id = output.id;
                     nextButton.dataset.regenerate = nextStep;
                     nextButton.style.display = (currentStep=='angle_hook'?'none':'block')
-                    nextButton.innerHTML = `<i class="fa fa-send me-1"></i> me=${output.id} Generate ${nextTitle}`;
+                    nextButton.innerHTML = `<i class="fa fa-send me-1"></i> Generate ${nextTitle}`;
                     buttonWrap.appendChild(nextButton);
                     
                    

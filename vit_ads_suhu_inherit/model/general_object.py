@@ -33,8 +33,9 @@ If you cannot comply, return an empty JSON object {}.
 You a free to add list element in the json list as many as needed.
 Ensure all strings are properly double-quoted and all keys are quoted.
 Do not use trailing commas or single quotes.
-DO NOT quote text inside any JSON values, use <em></em> tags instead if you return quoted texts, 
-e.g. {"key","the value text <em>the emphazise text</em>, normal text"}
+DO NOT put double quote symbols inside any JSON keys and values, use <em></em> tags instead if you want to response with double quoted texts, 
+e.g. {"key","the value text "the emphazise text", normal text"}
+should be: {"key","the value text <em>the emphazise text</em>, normal text"}
 """
 class general_object(models.Model):
     """
