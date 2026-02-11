@@ -11,6 +11,7 @@
     'depends': ['website', 'vit_ads_suhu'],
     'data': [
         'views/templates.xml',
+        'views/portal.xml',
     ],
     'assets': {
         'web.assets_frontend': [
