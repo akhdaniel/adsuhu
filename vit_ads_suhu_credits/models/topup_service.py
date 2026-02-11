@@ -36,7 +36,7 @@ class TopupService(models.AbstractModel):
         )
         
         try:
-            self.env['vit.customer_limit'].create({
+            self.env['vit.customer_credit'].sudo().create({
                     'name': 'topup',
                     'credit': topup_amount,
                     'is_usage': False,
