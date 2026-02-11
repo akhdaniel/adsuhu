@@ -4,7 +4,8 @@ import base64
 def generate_content(openai_api_key="", 
                      openai_base_url="", model="", 
                      system_prompt="", user_prompt="", 
-                     context="", question="", additional_command=""):
+                     context="", question="", additional_command="",
+                     max_tokens=8192):
     ai_client = OpenAI(api_key=openai_api_key, base_url=openai_base_url)
     # Replace known placeholders without interpreting other braces.
     prompt = (
@@ -19,7 +20,8 @@ def generate_content(openai_api_key="",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
-        ]
+        ],
+        max_tokens=max_tokens,
     )
     answer = response.choices[0].message.content
     return answer
