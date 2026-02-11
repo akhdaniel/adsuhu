@@ -9,7 +9,7 @@ class TopupService(models.AbstractModel):
     _name = 'vit.topup.service'
     _description = 'Topup Service'
 
-    def process_topup_product(self, partner, product, expired_date, qty=1):
+    def process_topup_product(self, name, partner, product, expired_date, qty=1):
         """
         Process Adsuhu Topup products by inserting customer_credit, is_usage = False
         
@@ -38,7 +38,7 @@ class TopupService(models.AbstractModel):
         try:
             self.env['vit.customer_credit'].sudo().create({
                     'customer_id': partner.id,
-                    'name': 'topup',
+                    'name': f'topup {name}',
                     'credit': topup_amount,
                     'is_usage': False,
                     'date_time': fields.Datetime.now(),

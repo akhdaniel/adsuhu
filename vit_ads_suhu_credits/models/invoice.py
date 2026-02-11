@@ -25,6 +25,6 @@ class AccountMove(models.Model):
                     if not product:
                         continue
                     if product.categ_id.category_type == "topup":
-                        self.env['vit.topup.service'].process_topup_product(
+                        self.env['vit.topup.service'].process_topup_product(self.name,
                             partner, product, expired_count_day, qty
                         )

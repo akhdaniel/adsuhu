@@ -60,7 +60,7 @@ class AccountPayment(models.Model):
             elif product.categ_id.category_type == "topup":
                 # Handle topup products - update partner's monthly_limit
                 expired_count_day = 30 #change if this if you want to make dynamic
-                self.env['vit.topup.service'].process_topup_product(
+                self.env['vit.topup.service'].process_topup_product( self.name,
                     partner, product, expired_count_day, qty
                 )
             else:
