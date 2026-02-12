@@ -15,7 +15,7 @@ class customer_credit(models.Model):
 
     name = fields.Char( required=True, copy=False, string=_("Name"))
     date_time = fields.Datetime( string=_("Date Time"))
-    credit = fields.Integer( string=_("Credit"))
+    credit = fields.Float( string=_("Credit"))
     is_usage = fields.Boolean( string=_("Is Usage"), default=True)
 
 

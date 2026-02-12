@@ -25,7 +25,7 @@ class customer(models.Model):
 
 
     _inherit = "res.partner"
-    customer_limit = fields.Integer(compute="_get_customer_limit", store=True,  string=_("Customer Limit"))
+    customer_limit = fields.Float(compute="_get_customer_limit", store=True,  string=_("Customer Limit"))
 
 
     customer_credit_ids = fields.One2many(comodel_name="vit.customer_credit",  inverse_name="customer_id",  string=_("Customer Credit"))

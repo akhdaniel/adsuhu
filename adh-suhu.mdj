@@ -18065,7 +18065,7 @@
 											"top": 84,
 											"width": 141.0166015625,
 											"height": 13,
-											"text": "+customer_limit: Integer",
+											"text": "+customer_limit: Float",
 											"horizontalAlignment": 0
 										}
 									],
@@ -22539,7 +22539,7 @@
 											"top": 332,
 											"width": 152.09326171875,
 											"height": 13,
-											"text": "+credit: Integer",
+											"text": "+credit: Float",
 											"horizontalAlignment": 0
 										},
 										{
@@ -26869,7 +26869,7 @@
 							},
 							"name": "customer_limit",
 							"documentation": "{\n\"compute\":\"_get_customer_limit\",\n\"store\":\"True\"\n}",
-							"type": "Integer"
+							"type": "Float"
 						}
 					],
 					"operations": [
@@ -27136,7 +27136,7 @@
 								"$ref": "AAAAAAGcS5yOfc5FtXU="
 							},
 							"name": "credit",
-							"type": "Integer"
+							"type": "Float"
 						},
 						{
 							"_type": "UMLAttribute",

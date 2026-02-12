@@ -85,7 +85,21 @@ class ProductValueAnalysisController(http.Controller):
     # Write features & desriptopn
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/write_with_ai', type='json', auth='user', website=True, methods=['POST'])
     def write_with_ai(self, analysis, **kwargs):
-        analysis.action_write_with_ai()
+        
+        analysis.write({"status": "processing", "error_message": False})
+        request.env.cr.commit()
+        self._run_background("vit.product_value_analysis", analysis.id, lambda rec: rec.action_write_with_ai())
+        return {"status": "processing"}
+
+        
+        analysis.write({"status": "processing", "error_message": False})
+        try:
+            analysis.action_write_with_ai()
+            analysis.write({"status": "done", "error_message": False})
+        except Exception as e:
+            analysis.write({"status": "failed", "error_message": str(e)})
+            raise
+
         result = analysis.read(['initial_description', 'description', 'features', 'lang_id'])[0]
 
         return [{
@@ -105,6 +119,17 @@ class ProductValueAnalysisController(http.Controller):
 
     def _build_result(self, regenerate_type, record):
         _logger.info(f"regenerate_type={regenerate_type} record={record}")
+        if regenerate_type == "write_with_ai":
+            return [{
+                "id": record.id,
+                "name": "Product Value Analysis",
+                "description": record.description or "",
+                "features":record.features or "",
+                "clear_url": f"/product_analysis/{record.id}/clear",
+                "next_step":"product_value_analysis",
+                "back_title": None,
+                "show_view_button": True
+            }]
         if regenerate_type == "product_value_analysis":
             return [{
                 "id": record.id,
@@ -554,6 +579,7 @@ class ProductValueAnalysisController(http.Controller):
     @http.route('/regenerate_status/<string:regenerate_type>/<int:record_id>', type='json', auth='user', website=True, methods=['POST'])
     def regenerate_status(self, regenerate_type, record_id, **kwargs):
         model_map = {
+            "write_with_ai": "vit.product_value_analysis",
             "product_value_analysis": "vit.product_value_analysis",
             "market_map_analysis": "vit.product_value_analysis",
             "audience_profile_analysis": "vit.market_mapper",

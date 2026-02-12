@@ -21,6 +21,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             image_variants: (id) => `/image_generator/${id}/image_variant/regenerate`,
         };
         this.statusEndpoints = {
+            write_with_ai: (id) => `/regenerate_status/write_with_ai/${id}`,
             product_value_analysis: (id) => `/regenerate_status/product_value_analysis/${id}`,
             market_map_analysis: (id) => `/regenerate_status/market_map_analysis/${id}`,
             audience_profile_analysis: (id) => `/regenerate_status/audience_profile_analysis/${id}`,
@@ -347,11 +348,11 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 throw new Error(errorText || "Failed to fetch regenerate status.");
             }
             const json = await response.json();
-            const result = json?.result || {};
-            const status = result?.status || "idle";
+            const status = json?.result?.status || "idle";
             if (status === "failed") {
-                throw new Error(result?.error || "Regenerate failed.");
+                throw new Error(json?.error || "Regenerate failed.");
             }
+            console.log('status', status )
             if (status === "done") {
                 //TODO: harusnya load parsial per block
                 window.location.reload();
@@ -607,6 +608,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             }
             
             const statusEndpointFactory = this.statusEndpoints[regenerateType];
+            console.log('statusEndpointFactory', statusEndpointFactory)
             if (statusEndpointFactory) {
                 usesPolling = true;
                 await this._pollRegenerateStatus({
@@ -616,6 +618,11 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
                 });
                 return;
             }
+
+            // if(regenerateType=='write_with_ai'){
+            //     window.location.reload();
+            //     return;                                
+            // }
             
         } catch (err) {
             console.error(err);
