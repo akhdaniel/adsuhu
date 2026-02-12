@@ -6,6 +6,7 @@ import time
 import requests
 
 _logger = logging.getLogger(__name__)
+_webhook_url = '/payment/xendit/webhook'
 
 
 class XenditController(http.Controller):
@@ -121,7 +122,7 @@ class XenditController(http.Controller):
             try:
                 _logger.info('forward to bootcamp...')
                 resp = requests.post(
-                    "https://bootcamp.vitraining.com/payment/xendit/webhook",
+                    f"https://bootcamp.vitraining.com/{_webhook_url}",
                     json=payload,
                     timeout=10,
                 )
