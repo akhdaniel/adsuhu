@@ -117,11 +117,11 @@ class XenditController(http.Controller):
 
         forward_url = payload.get("success_redirect_url") or ""
         _logger.info(f'forward_url={forward_url}')
-        if forward_url.startswith("http://bootcamp.vitraining.com"):
+        if forward_url.startswith("https://bootcamp.vitraining.com"):
             try:
                 _logger.info('forward to bootcamp...')
                 resp = requests.post(
-                    "http://bootcamp.vitraining.com/payment/xendit/webhook",
+                    "https://bootcamp.vitraining.com/payment/xendit/webhook",
                     json=payload,
                     timeout=10,
                 )
