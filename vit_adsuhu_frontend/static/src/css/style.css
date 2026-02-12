@@ -338,3 +338,40 @@
     font-weight: 600;
     color: #0f172a;
 }
+
+.adsuhu-topup-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.adsuhu-topup-option {
+    border: 1px solid #e2e8f0;
+    background: #1f2937;
+    color: #f8fafc;
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+.adsuhu-topup-option:hover {
+    background: #111827;
+    border-color: #cbd5f5;
+}
+
+.adsuhu-topup-option.active {
+    background: #ffffff;
+    color: #111827;
+    border-color: #ffffff;
+}
+
+.adsuhu-topup-meta {
+    font-size: 0.8rem;
+    color: inherit;
+    opacity: 0.75;
+}

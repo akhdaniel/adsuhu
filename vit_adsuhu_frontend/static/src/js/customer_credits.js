@@ -7,6 +7,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
     events: {
         "click .js-topup-direct": "_onTopupDirectClick",
         "click .js-topup-direct-confirm": "_onTopupDirectConfirmClick",
+        "click .adsuhu-topup-option": "_onTopupOptionClick",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
@@ -22,7 +23,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const modalEl = document.getElementById("topup-direct-modal");
         const modalErrorEl = document.getElementById("topup-direct-modal-error");
         const iframeEl = document.getElementById("topup-direct-iframe");
-        const packageEl = document.getElementById("topup-direct-package");
+        const packageEl = document.querySelector(".adsuhu-topup-option.active");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
@@ -70,7 +71,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const errorEl = document.getElementById("topup-direct-error");
         const modalErrorEl = document.getElementById("topup-direct-modal-error");
         const iframeEl = document.getElementById("topup-direct-iframe");
-        const packageEl = document.getElementById("topup-direct-package");
+        const packageEl = document.querySelector(".adsuhu-topup-option.active");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
@@ -90,7 +91,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
                     "X-CSRFToken": this.csrfToken,
                 },
                 body: JSON.stringify({
-                    package: packageEl?.value || "100000",
+                    package: packageEl?.dataset?.package || "100000",
                 }),
                 credentials: "same-origin",
             });
@@ -125,5 +126,19 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
             button.disabled = false;
             button.innerText = originalText;
         }
+    },
+    _onTopupOptionClick(event) {
+        const button = event.currentTarget;
+        if (!button) {
+            return;
+        }
+        const container = button.closest(".adsuhu-topup-options");
+        if (!container) {
+            return;
+        }
+        container.querySelectorAll(".adsuhu-topup-option").forEach((el) => {
+            el.classList.remove("active");
+        });
+        button.classList.add("active");
     },
 });

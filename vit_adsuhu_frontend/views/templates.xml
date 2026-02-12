@@ -784,14 +784,23 @@
                                         </div>
                                         <div class="modal-body">
                                             <div id="topup-direct-modal-error" class="alert alert-danger d-none" role="alert"></div>
-                                            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-                                                <label for="topup-direct-package" class="form-label m-0">Top Up Package</label>
-                                                <select id="topup-direct-package" class="form-select" style="max-width: 260px;">
-                                                    <option value="100000">Rp 100,000 => 1M tokens</option>
-                                                    <option value="200000">Rp 200,000 => 2M tokens</option>
-                                                    <option value="500000">Rp 500,000 => 7.5M tokens</option>
-                                                </select>
-                                                <button type="button" class="btn btn-primary js-topup-direct-confirm">
+                                            <div class="mb-3">
+                                                <div class="mb-2 fw-semibold">Top Up Amount</div>
+                                                <div class="adsuhu-topup-options" role="group" aria-label="Top up packages">
+                                                    <button type="button" class="adsuhu-topup-option active" data-package="100000">
+                                                        Rp 100,000
+                                                        <span class="adsuhu-topup-meta">1M tokens</span>
+                                                    </button>
+                                                    <button type="button" class="adsuhu-topup-option" data-package="200000">
+                                                        Rp 200,000
+                                                        <span class="adsuhu-topup-meta">2M tokens</span>
+                                                    </button>
+                                                    <button type="button" class="adsuhu-topup-option" data-package="500000">
+                                                        Rp 500,000
+                                                        <span class="adsuhu-topup-meta">7.5M tokens</span>
+                                                    </button>
+                                                </div>
+                                                <button type="button" class="btn btn-primary mt-3 js-topup-direct-confirm">
                                                     <i class="fa fa-bolt me-1"></i> Proceed to Pay
                                                 </button>
                                             </div>
@@ -809,11 +818,11 @@
                                         <t t-esc="'%.2f' % (request.env.user.partner_id.customer_limit or 0)"/>
                                     </strong>
                                 </div>
-                                <a href="/shop" class="btn btn-primary">
+                                <a href="/shop" class="btn btn-primary d-none">
                                     <i class="fa fa-credit-card me-1"></i> Top Up
                                 </a>
-                                <button type="button" class="btn btn-outline-primary js-topup-direct">
-                                    <i class="fa fa-bolt me-1"></i> Top Up Direct
+                                <button type="button" class="btn btn-primary js-topup-direct">
+                                    <i class="fa fa-bolt me-1"></i> Top Up
                                 </button>
                             </div>
                         </div>
