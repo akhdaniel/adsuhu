@@ -40,9 +40,20 @@ class XenditController(http.Controller):
             "500000": {"amount": 500000.0, "credit": 7_500_000.0},
         }
         package_key = (kwargs or {}).get("package") or "100000"
-        if package_key not in packages:
-            return {"error": "Invalid top up package."}
-        package = packages[package_key]
+        custom_amount = (kwargs or {}).get("custom_amount")
+        if package_key == "custom":
+            try:
+                amount = float(custom_amount)
+            except (TypeError, ValueError):
+                return {"error": "Invalid custom amount."}
+            if amount < 100000:
+                return {"error": "Minimum top up is Rp 100,000."}
+            credit = (amount / 100000.0) * 1_000_000.0
+            package = {"amount": amount, "credit": credit}
+        else:
+            if package_key not in packages:
+                return {"error": "Invalid top up package."}
+            package = packages[package_key]
 
         external_id = f"adsuhu_topup:{partner.id}:{package['credit']}:{int(time.time())}"
 

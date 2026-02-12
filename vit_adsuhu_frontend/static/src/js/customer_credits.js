@@ -8,6 +8,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         "click .js-topup-direct": "_onTopupDirectClick",
         "click .js-topup-direct-confirm": "_onTopupDirectConfirmClick",
         "click .adsuhu-topup-option": "_onTopupOptionClick",
+        "input #topup-direct-custom-amount": "_onCustomAmountInput",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
@@ -24,6 +25,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const modalErrorEl = document.getElementById("topup-direct-modal-error");
         const iframeEl = document.getElementById("topup-direct-iframe");
         const packageEl = document.querySelector(".adsuhu-topup-option.active");
+        const customWrap = document.querySelector(".adsuhu-topup-custom");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
@@ -34,6 +36,10 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         }
         if (iframeEl) {
             iframeEl.src = "";
+        }
+        if (customWrap) {
+            const isCustom = packageEl?.dataset?.package === "custom";
+            customWrap.classList.toggle("d-none", !isCustom);
         }
         button.disabled = true;
         const originalText = button.innerText;
@@ -72,6 +78,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const modalErrorEl = document.getElementById("topup-direct-modal-error");
         const iframeEl = document.getElementById("topup-direct-iframe");
         const packageEl = document.querySelector(".adsuhu-topup-option.active");
+        const customAmountEl = document.getElementById("topup-direct-custom-amount");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
@@ -92,6 +99,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
                 },
                 body: JSON.stringify({
                     package: packageEl?.dataset?.package || "100000",
+                    custom_amount: customAmountEl?.value || null,
                 }),
                 credentials: "same-origin",
             });
@@ -140,5 +148,20 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
             el.classList.remove("active");
         });
         button.classList.add("active");
+        const customWrap = document.querySelector(".adsuhu-topup-custom");
+        if (customWrap) {
+            const isCustom = button.dataset?.package === "custom";
+            customWrap.classList.toggle("d-none", !isCustom);
+        }
+    },
+    _onCustomAmountInput(event) {
+        const input = event.currentTarget;
+        const tokensEl = document.getElementById("topup-direct-custom-tokens");
+        if (!tokensEl || !input) {
+            return;
+        }
+        const amount = parseFloat(input.value || "0");
+        const tokens = Math.floor((amount / 100000) * 1000000);
+        tokensEl.textContent = tokens.toLocaleString("en-US");
     },
 });

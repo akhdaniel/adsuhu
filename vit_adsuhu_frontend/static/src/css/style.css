@@ -367,11 +367,16 @@
 .adsuhu-topup-option.active {
     background: #ffffff;
     color: #111827;
-    border-color: #ffffff;
+    border-color: #111827;
+    box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.2);
 }
 
 .adsuhu-topup-meta {
     font-size: 0.8rem;
     color: inherit;
     opacity: 0.75;
+}
+
+.adsuhu-topup-custom {
+    max-width: 320px;
 }
