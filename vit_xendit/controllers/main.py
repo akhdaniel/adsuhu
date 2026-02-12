@@ -39,7 +39,7 @@ class XenditController(http.Controller):
             "200000": {"amount": 200000.0, "credit": 2_000_000.0},
             "500000": {"amount": 500000.0, "credit": 7_500_000.0},
         }
-        package_key = (request.jsonrequest or {}).get("package") or "100000"
+        package_key = (kwargs or {}).get("package") or "100000"
         if package_key not in packages:
             return {"error": "Invalid top up package."}
         package = packages[package_key]
@@ -75,7 +75,7 @@ class XenditController(http.Controller):
 
     @http.route('/xendit/webhook', type='json', auth='public', csrf=False, methods=['POST'])
     def webhook(self, **kwargs):
-        payload = request.jsonrequest or {}
+        payload = (kwargs or {}) or request.httprequest.get_json(silent=True) or {}
         token = request.httprequest.headers.get('x-callback-token')
         cfg = self._get_xendit_config()
         expected_token = cfg["webhook_token"]

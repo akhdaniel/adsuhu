@@ -6,6 +6,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
     selector: ".adsuhu-container",
     events: {
         "click .js-topup-direct": "_onTopupDirectClick",
+        "click .js-topup-direct-confirm": "_onTopupDirectConfirmClick",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
@@ -19,11 +20,64 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         }
         const errorEl = document.getElementById("topup-direct-error");
         const modalEl = document.getElementById("topup-direct-modal");
+        const modalErrorEl = document.getElementById("topup-direct-modal-error");
         const iframeEl = document.getElementById("topup-direct-iframe");
         const packageEl = document.getElementById("topup-direct-package");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
+        }
+        if (modalErrorEl) {
+            modalErrorEl.classList.add("d-none");
+            modalErrorEl.textContent = "";
+        }
+        if (iframeEl) {
+            iframeEl.src = "";
+        }
+        button.disabled = true;
+        const originalText = button.innerText;
+        button.innerText = "Opening...";
+        try {
+            if (modalEl && window.bootstrap?.Modal) {
+                const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.show();
+            } else if (modalEl) {
+                modalEl.classList.add("show");
+                modalEl.style.display = "block";
+            } else {
+                window.location.href = url;
+            }
+        } catch (err) {
+            console.error(err);
+            const message = err.message || "Failed to create payment.";
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.classList.remove("d-none");
+            } else {
+                alert(message);
+            }
+        } finally {
+            button.disabled = false;
+            button.innerText = originalText;
+        }
+    },
+    async _onTopupDirectConfirmClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        if (!button) {
+            return;
+        }
+        const errorEl = document.getElementById("topup-direct-error");
+        const modalErrorEl = document.getElementById("topup-direct-modal-error");
+        const iframeEl = document.getElementById("topup-direct-iframe");
+        const packageEl = document.getElementById("topup-direct-package");
+        if (errorEl) {
+            errorEl.classList.add("d-none");
+            errorEl.textContent = "";
+        }
+        if (modalErrorEl) {
+            modalErrorEl.classList.add("d-none");
+            modalErrorEl.textContent = "";
         }
         button.disabled = true;
         const originalText = button.innerText;
@@ -55,19 +109,13 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
             if (iframeEl) {
                 iframeEl.src = url;
             }
-            if (modalEl && window.bootstrap?.Modal) {
-                const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
-                modal.show();
-            } else if (modalEl) {
-                modalEl.classList.add("show");
-                modalEl.style.display = "block";
-            } else {
-                window.location.href = url;
-            }
         } catch (err) {
             console.error(err);
             const message = err.message || "Failed to create payment.";
-            if (errorEl) {
+            if (modalErrorEl) {
+                modalErrorEl.textContent = message;
+                modalErrorEl.classList.remove("d-none");
+            } else if (errorEl) {
                 errorEl.textContent = message;
                 errorEl.classList.remove("d-none");
             } else {
