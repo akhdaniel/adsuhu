@@ -18,6 +18,8 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
             return;
         }
         const errorEl = document.getElementById("topup-direct-error");
+        const modalEl = document.getElementById("topup-direct-modal");
+        const iframeEl = document.getElementById("topup-direct-iframe");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
@@ -43,13 +45,21 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
             if (json?.error) {
                 throw new Error(json.error);
             }
-            const url = json?.result?.url;
+            const url = json?.result?.url || json?.url;
             if (!url) {
                 throw new Error("Payment URL not available.");
             }
-            const popup = window.open(url, "_blank", "noopener,noreferrer");
-            if (!popup) {
-                alert(`Please allow popups and open this URL: ${url}`);
+            if (iframeEl) {
+                iframeEl.src = url;
+            }
+            if (modalEl && window.bootstrap?.Modal) {
+                const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.show();
+            } else if (modalEl) {
+                modalEl.classList.add("show");
+                modalEl.style.display = "block";
+            } else {
+                window.location.href = url;
             }
         } catch (err) {
             console.error(err);
