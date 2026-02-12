@@ -37,6 +37,8 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const iframeEl = document.getElementById("topup-direct-iframe");
         const packageEl = document.querySelector(".adsuhu-topup-option.active");
         const customWrap = document.querySelector(".adsuhu-topup-custom");
+        const customAmountEl = document.getElementById("topup-direct-custom-amount");
+        const customCreditsEl = document.getElementById("topup-direct-custom-credits");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
@@ -47,6 +49,12 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         }
         if (iframeEl) {
             iframeEl.src = "";
+        }
+        if (customAmountEl) {
+            customAmountEl.value = "";
+        }
+        if (customCreditsEl) {
+            customCreditsEl.textContent = "0";
         }
         if (customWrap) {
             const isCustom = packageEl?.dataset?.package === "custom";

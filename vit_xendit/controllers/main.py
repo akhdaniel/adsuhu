@@ -52,8 +52,8 @@ class XenditController(http.Controller):
                 amount = float(custom_amount or raw_amount)
             except (TypeError, ValueError):
                 return {"error": "Invalid custom amount."}
-            if amount < 100000:
-                return {"error": "Minimum top up is Rp 100,000."}
+            if amount < 10000:
+                return {"error": "Minimum top up is Rp 10,000."}
             credit = (amount / 100000.0) * 1_000.0
             package = {"amount": amount, "credit": credit}
         else:

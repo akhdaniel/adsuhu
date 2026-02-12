@@ -383,5 +383,20 @@
 }
 
 .adsuhu-topup-custom {
-    max-width: 320px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+}
+
+.adsuhu-topup-custom .form-control {
+    flex: 1;
+    min-width: 0;
+}
+
+.adsuhu-topup-custom-label {
+    white-space: nowrap;
+    font-weight: 600;
+    color: #0f172a;
 }
