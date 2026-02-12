@@ -115,6 +115,28 @@ class XenditController(http.Controller):
             _logger.warning("Xendit webhook token mismatch.")
             return {"status": "forbidden"}
 
+        forward_url = payload.get("success_redirect_url") or ""
+        if forward_url.startswith("http://bootcamp.vitraining.com"):
+            try:
+                _logger.info('format to bootcamp.')
+                resp = requests.post(
+                    "http://bootcamp.vitraining.com/payment/xendit/webhook",
+                    json=payload,
+                    timeout=10,
+                )
+                
+                _logger.info(f"bootcamp response {resp.text}")
+                return {
+                    "status": "ok",
+                    "forward": {
+                        "status_code": resp.status_code,
+                        "text": resp.text,
+                    },
+                }
+            except Exception as e:
+                _logger.warning("Forward webhook failed: %s", e)
+                return {"status": "forward_failed", "error": str(e)}
+
         status = payload.get("status") or payload.get("invoice_status")
         if status not in ["PAID", "SETTLED"]:
             return {"status": "ignored"}
