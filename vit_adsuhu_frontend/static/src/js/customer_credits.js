@@ -91,6 +91,10 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const originalText = button.innerText;
         button.innerText = "Creating payment...";
         try {
+            const packageKey = packageEl?.dataset?.package || "100000";
+            const amountValue = packageKey === "custom"
+                ? customAmountEl?.value
+                : packageKey;
             const response = await fetch("/xendit/create_payment", {
                 method: "POST",
                 headers: {
@@ -98,7 +102,8 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
                     "X-CSRFToken": this.csrfToken,
                 },
                 body: JSON.stringify({
-                    package: packageEl?.dataset?.package || "100000",
+                    package: packageKey,
+                    amount: amountValue || null,
                     custom_amount: customAmountEl?.value || null,
                 }),
                 credentials: "same-origin",

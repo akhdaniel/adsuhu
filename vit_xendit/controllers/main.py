@@ -39,11 +39,13 @@ class XenditController(http.Controller):
             "200000": {"amount": 200000.0, "credit": 2_000.0},
             "500000": {"amount": 500000.0, "credit": 7_500.0},
         }
-        package_key = (kwargs or {}).get("package") or "100000"
-        custom_amount = (kwargs or {}).get("custom_amount")
+        payload_data = kwargs or {}
+        package_key = payload_data.get("package") or "100000"
+        custom_amount = payload_data.get("custom_amount")
+        raw_amount = payload_data.get("amount")
         if package_key == "custom":
             try:
-                amount = float(custom_amount)
+                amount = float(custom_amount or raw_amount)
             except (TypeError, ValueError):
                 return {"error": "Invalid custom amount."}
             if amount < 100000:
@@ -51,9 +53,19 @@ class XenditController(http.Controller):
             credit = (amount / 100000.0) * 1_000.0
             package = {"amount": amount, "credit": credit}
         else:
-            if package_key not in packages:
-                return {"error": "Invalid top up package."}
-            package = packages[package_key]
+            if raw_amount:
+                try:
+                    amount = float(raw_amount)
+                except (TypeError, ValueError):
+                    return {"error": "Invalid top up amount."}
+                if amount < 100000:
+                    return {"error": "Minimum top up is Rp 100,000."}
+                credit = (amount / 100000.0) * 1_000.0
+                package = {"amount": amount, "credit": credit}
+            else:
+                if package_key not in packages:
+                    return {"error": "Invalid top up package."}
+                package = packages[package_key]
 
         external_id = f"adsuhu_topup:{partner.id}:{package['credit']}:{int(time.time())}"
 
