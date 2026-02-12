@@ -774,6 +774,17 @@
                         <div class="adsuhu-header">
                             <h1>Credit Transactions</h1>
                             <p class="lead">Your credit usage and topups.</p>
+                            <div class="d-flex flex-wrap align-items-center gap-3 mt-3">
+                                <div class="text-muted">
+                                    Balance:
+                                    <strong>
+                                        <t t-esc="'%.2f' % (request.env.user.partner_id.customer_limit or 0)"/>
+                                    </strong>
+                                </div>
+                                <a href="/shop" class="btn btn-primary">
+                                    <i class="fa fa-credit-card me-1"></i> Top Up
+                                </a>
+                            </div>
                         </div>
 
                         <div class="table-responsive">
