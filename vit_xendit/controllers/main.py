@@ -120,10 +120,12 @@ class XenditController(http.Controller):
         _logger.info(f'forward_url={forward_url}')
         if forward_url.startswith("https://bootcamp.vitraining.com"):
             try:
-                _logger.info('forward to bootcamp...')
+                target_url=f"https://bootcamp.vitraining.com/{_webhook_url}"
+                _logger.info(f'forward to bootcamp...{target_url}')
                 resp = requests.post(
-                    f"https://bootcamp.vitraining.com/{_webhook_url}",
+                    target_url,
                     json=payload,
+                    headers={"x-callback-token": token} if token else None,
                     timeout=10,
                 )
                 
