@@ -156,12 +156,12 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
     },
     _onCustomAmountInput(event) {
         const input = event.currentTarget;
-        const tokensEl = document.getElementById("topup-direct-custom-tokens");
-        if (!tokensEl || !input) {
+        const creditsEl = document.getElementById("topup-direct-custom-credits");
+        if (!creditsEl || !input) {
             return;
         }
         const amount = parseFloat(input.value || "0");
-        const tokens = Math.floor((amount / 100000) * 1000000);
-        tokensEl.textContent = tokens.toLocaleString("en-US");
+        const credits = Math.floor((amount / 100000) * 1000);
+        creditsEl.textContent = credits.toLocaleString("en-US");
     },
 });

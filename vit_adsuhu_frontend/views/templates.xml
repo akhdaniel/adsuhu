@@ -789,26 +789,26 @@
                                                 <div class="adsuhu-topup-options" role="group" aria-label="Top up packages">
                                                     <button type="button" class="adsuhu-topup-option active" data-package="100000">
                                                         Rp 100,000
-                                                        <span class="adsuhu-topup-meta">1M tokens</span>
+                                                        <span class="adsuhu-topup-meta">1K credits</span>
                                                     </button>
                                                     <button type="button" class="adsuhu-topup-option" data-package="200000">
                                                         Rp 200,000
-                                                        <span class="adsuhu-topup-meta">2M tokens</span>
+                                                        <span class="adsuhu-topup-meta">2K credits</span>
                                                     </button>
                                                     <button type="button" class="adsuhu-topup-option" data-package="500000">
                                                         Rp 500,000
-                                                        <span class="adsuhu-topup-meta">7.5M tokens</span>
+                                                        <span class="adsuhu-topup-meta">7.5K credits</span>
                                                     </button>
                                                     <button type="button" class="adsuhu-topup-option" data-package="custom">
                                                         Custom
-                                                        <span class="adsuhu-topup-meta">Rp 100,000 = 1M tokens</span>
+                                                        <span class="adsuhu-topup-meta">Rp 100,000 = 1K credits</span>
                                                     </button>
                                                 </div>
                                                 <div class="adsuhu-topup-custom mt-3 d-none">
                                                     <label for="topup-direct-custom-amount" class="form-label">Custom Amount (Rp)</label>
                                                     <input id="topup-direct-custom-amount" type="number" min="100000" step="10000" class="form-control" placeholder="e.g. 150000"/>
                                                     <div class="form-text">
-                                                        Tokens: <span id="topup-direct-custom-tokens">0</span>
+                                                        Credits: <span id="topup-direct-custom-credits">0</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="btn btn-primary mt-3 js-topup-direct-confirm">

@@ -35,9 +35,9 @@ class XenditController(http.Controller):
             return {"error": "Xendit secret key not configured."}
 
         packages = {
-            "100000": {"amount": 100000.0, "credit": 1_000_000.0},
-            "200000": {"amount": 200000.0, "credit": 2_000_000.0},
-            "500000": {"amount": 500000.0, "credit": 7_500_000.0},
+            "100000": {"amount": 100000.0, "credit": 1_000.0},
+            "200000": {"amount": 200000.0, "credit": 2_000.0},
+            "500000": {"amount": 500000.0, "credit": 7_500.0},
         }
         package_key = (kwargs or {}).get("package") or "100000"
         custom_amount = (kwargs or {}).get("custom_amount")
@@ -48,7 +48,7 @@ class XenditController(http.Controller):
                 return {"error": "Invalid custom amount."}
             if amount < 100000:
                 return {"error": "Minimum top up is Rp 100,000."}
-            credit = (amount / 100000.0) * 1_000_000.0
+            credit = (amount / 100000.0) * 1_000.0
             package = {"amount": amount, "credit": credit}
         else:
             if package_key not in packages:
