@@ -20,6 +20,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const errorEl = document.getElementById("topup-direct-error");
         const modalEl = document.getElementById("topup-direct-modal");
         const iframeEl = document.getElementById("topup-direct-iframe");
+        const packageEl = document.getElementById("topup-direct-package");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
@@ -34,7 +35,9 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
                     "Content-Type": "application/json",
                     "X-CSRFToken": this.csrfToken,
                 },
-                body: JSON.stringify({}),
+                body: JSON.stringify({
+                    package: packageEl?.value || "100000",
+                }),
                 credentials: "same-origin",
             });
             if (!response.ok) {

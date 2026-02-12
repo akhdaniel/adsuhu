@@ -800,6 +800,11 @@
                                 <a href="/shop" class="btn btn-primary">
                                     <i class="fa fa-credit-card me-1"></i> Top Up
                                 </a>
+                                <select id="topup-direct-package" class="form-select" style="max-width: 260px;">
+                                    <option value="100000">Rp 100,000 => 1M tokens</option>
+                                    <option value="200000">Rp 200,000 => 2M tokens</option>
+                                    <option value="500000">Rp 500,000 => 7.5M tokens</option>
+                                </select>
                                 <button type="button" class="btn btn-outline-primary js-topup-direct">
                                     <i class="fa fa-bolt me-1"></i> Top Up Direct
                                 </button>

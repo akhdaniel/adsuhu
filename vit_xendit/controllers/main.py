@@ -34,11 +34,21 @@ class XenditController(http.Controller):
         if not cfg["secret_key"]:
             return {"error": "Xendit secret key not configured."}
 
-        external_id = f"adsuhu_topup:{partner.id}:{cfg['topup_credit']}:{int(time.time())}"
+        packages = {
+            "100000": {"amount": 100000.0, "credit": 1_000_000.0},
+            "200000": {"amount": 200000.0, "credit": 2_000_000.0},
+            "500000": {"amount": 500000.0, "credit": 7_500_000.0},
+        }
+        package_key = (request.jsonrequest or {}).get("package") or "100000"
+        if package_key not in packages:
+            return {"error": "Invalid top up package."}
+        package = packages[package_key]
+
+        external_id = f"adsuhu_topup:{partner.id}:{package['credit']}:{int(time.time())}"
 
         payload = {
             "external_id": external_id,
-            "amount": cfg["topup_amount"],
+            "amount": package["amount"],
             "payer_email": partner.email or "",
             "description": f"Top up credit for {partner.name or 'customer'}",
             "success_redirect_url": f"{request.env['ir.config_parameter'].sudo().get_param('web.base.url')}/customer_credits",
@@ -50,7 +60,7 @@ class XenditController(http.Controller):
         credit_model.create({
             'customer_id': partner.id,
             'name': external_id,
-            'credit': cfg["topup_credit"],
+            'credit': package["credit"],
             'is_usage': False,
             'state': 'draft',
             'date_time': fields.Datetime.now(),
