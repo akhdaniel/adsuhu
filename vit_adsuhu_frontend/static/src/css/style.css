@@ -364,6 +364,11 @@
     border-color: #cbd5f5;
 }
 
+.adsuhu-topup-option.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 .adsuhu-topup-option.active {
     background: #ffffff;
     color: #111827;

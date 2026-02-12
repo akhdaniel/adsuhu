@@ -29,6 +29,9 @@ class XenditController(http.Controller):
 
     @http.route('/xendit/create_payment', type='json', auth='user', website=True, methods=['POST'])
     def create_payment(self, **kwargs):
+        payload_data = request.get_json_data()
+
+        _logger.info(f'payload = {payload_data}')
         partner = request.env.user.partner_id
         cfg = self._get_xendit_config()
         if not cfg["secret_key"]:
@@ -39,8 +42,8 @@ class XenditController(http.Controller):
             "200000": {"amount": 200000.0, "credit": 2_000.0},
             "500000": {"amount": 500000.0, "credit": 7_500.0},
         }
-        payload_data = kwargs or {}
-        _logger.info(payload_data)
+        # payload_data = kwargs or {}
+        # _logger.info(payload_data)
         package_key = payload_data.get("package") or "100000"
         custom_amount = payload_data.get("custom_amount")
         raw_amount = payload_data.get("amount")
@@ -100,10 +103,11 @@ class XenditController(http.Controller):
             return {"error": "Failed to create payment URL."}
         return {"url": url}
 
-    @http.route('/xendit/webhook', type='http', auth='public', csrf=False, methods=['POST'])
+    @http.route('/xendit/webhook', type='json', auth='public', csrf=False, methods=['POST'])
     def webhook(self, **kwargs):
-        payload = request.get_json_data()
-        # payload = (kwargs or {}) or request.httprequest.get_json(silent=True) or {}
+        # payload = request.get_json_data()
+        payload = (kwargs or {}) or request.httprequest.get_json(silent=True) or {}
+        _logger.info(f"payload={payload}")
         token = request.httprequest.headers.get('x-callback-token')
         cfg = self._get_xendit_config()
         expected_token = cfg["webhook_token"]

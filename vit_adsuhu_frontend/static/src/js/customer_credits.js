@@ -9,9 +9,20 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         "click .js-topup-direct-confirm": "_onTopupDirectConfirmClick",
         "click .adsuhu-topup-option": "_onTopupOptionClick",
         "input #topup-direct-custom-amount": "_onCustomAmountInput",
+        "click .js-topup-direct-close": "_onTopupDirectCloseClick",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
+        const modalEl = document.getElementById("topup-direct-modal");
+        if (modalEl) {
+            modalEl.addEventListener("hidden.bs.modal", () => {
+                const iframeEl = document.getElementById("topup-direct-iframe");
+                if (iframeEl) {
+                    iframeEl.src = "";
+                }
+                this._setTopupOptionsDisabled(false);
+            });
+        }
         return this._super(...arguments);
     },
     async _onTopupDirectClick(event) {
@@ -79,6 +90,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const iframeEl = document.getElementById("topup-direct-iframe");
         const packageEl = document.querySelector(".adsuhu-topup-option.active");
         const customAmountEl = document.getElementById("topup-direct-custom-amount");
+        const optionButtons = document.querySelectorAll(".adsuhu-topup-option");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
@@ -90,6 +102,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         button.disabled = true;
         const originalText = button.innerText;
         button.innerText = "Creating payment...";
+        this._setTopupOptionsDisabled(true);
         try {
             const packageKey = packageEl?.dataset?.package || "100000";
             console.log('packageEl',packageEl.dataset, packageKey)
@@ -169,5 +182,38 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const amount = parseFloat(input.value || "0");
         const credits = Math.floor((amount / 100000) * 1000);
         creditsEl.textContent = credits.toLocaleString("en-US");
+    },
+    _onTopupDirectCloseClick() {
+        const modalEl = document.getElementById("topup-direct-modal");
+        if (!modalEl) {
+            return;
+        }
+        const iframeEl = document.getElementById("topup-direct-iframe");
+        if (iframeEl) {
+            iframeEl.src = "";
+        }
+        if (window.bootstrap?.Modal) {
+            const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.hide();
+        } else {
+            modalEl.classList.remove("show");
+            modalEl.style.display = "none";
+            modalEl.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("modal-open");
+            const backdrops = document.querySelectorAll(".modal-backdrop");
+            backdrops.forEach((el) => el.remove());
+        }
+        this._setTopupOptionsDisabled(false);
+    },
+    _setTopupOptionsDisabled(disabled) {
+        const optionButtons = document.querySelectorAll(".adsuhu-topup-option");
+        optionButtons.forEach((el) => {
+            el.disabled = disabled;
+            el.classList.toggle("disabled", disabled);
+        });
+        const customAmountEl = document.getElementById("topup-direct-custom-amount");
+        if (customAmountEl) {
+            customAmountEl.disabled = disabled;
+        }
     },
 });
