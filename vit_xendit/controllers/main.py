@@ -1,4 +1,4 @@
-from odoo import http
+from odoo import http, fields
 from odoo.http import request
 
 import logging
@@ -53,7 +53,7 @@ class XenditController(http.Controller):
             'credit': cfg["topup_credit"],
             'is_usage': False,
             'state': 'draft',
-            'date_time': request.env['ir.fields']._now(),
+            'date_time': fields.Datetime.now(),
         })
 
         result = self._xendit_make_request("v2/invoices", payload=payload, secret_key=cfg["secret_key"])
