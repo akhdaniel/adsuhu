@@ -108,7 +108,6 @@ class XenditController(http.Controller):
     def webhook(self, **kwargs):
         # payload = request.get_json_data()
         payload = (kwargs or {}) or request.httprequest.get_json(silent=True) or {}
-        _logger.info(f"payload={payload}")
         token = request.httprequest.headers.get('x-callback-token')
         cfg = self._get_xendit_config()
         expected_token = cfg["webhook_token"]
@@ -125,6 +124,7 @@ class XenditController(http.Controller):
                 forward_token = token or cfg.get("webhook_token")
                 headers = {"x-callback-token": forward_token} if forward_token else {}
                 _logger.info(f"forward_token={forward_token}")
+                _logger.info(f"payload={payload}")
                 resp = requests.post(
                     target_url,
                     data=payload,
