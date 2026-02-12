@@ -46,6 +46,16 @@ class XenditController(http.Controller):
             "currency": cfg["topup_currency"],
         }
 
+        credit_model = request.env['vit.customer_credit'].sudo()
+        credit_model.create({
+            'customer_id': partner.id,
+            'name': external_id,
+            'credit': cfg["topup_credit"],
+            'is_usage': False,
+            'state': 'draft',
+            'date_time': request.env['ir.fields']._now(),
+        })
+
         result = self._xendit_make_request("v2/invoices", payload=payload, secret_key=cfg["secret_key"])
         url = result.get("invoice_url")
         if not url:
@@ -84,6 +94,7 @@ class XenditController(http.Controller):
             [('name', '=', external_id), ('customer_id', '=', partner_id)], limit=1
         )
         if existing:
+            existing.write({'state': 'done'})
             return {"status": "ok"}
 
         credit_model.create({
@@ -91,6 +102,7 @@ class XenditController(http.Controller):
             'name': external_id,
             'credit': credit,
             'is_usage': False,
+            'state': 'done',
             'date_time': request.env['ir.fields']._now(),
         })
         return {"status": "ok"}

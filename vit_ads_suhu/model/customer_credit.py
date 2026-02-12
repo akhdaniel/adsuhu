@@ -17,6 +17,15 @@ class customer_credit(models.Model):
     date_time = fields.Datetime( string=_("Date Time"))
     credit = fields.Float( string=_("Credit"))
     is_usage = fields.Boolean( string=_("Is Usage"), default=True)
+    state = fields.Selection(
+        [
+            ("draft", "Draft"),
+            ("done", "Done"),
+        ],
+        string=_("Status"),
+        default="draft",
+        copy=False,
+    )
 
 
     def copy(self, default=None):
