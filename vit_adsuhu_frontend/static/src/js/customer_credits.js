@@ -92,6 +92,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         button.innerText = "Creating payment...";
         try {
             const packageKey = packageEl?.dataset?.package || "100000";
+            console.log('packageEl',packageEl.dataset, packageKey)
             const amountValue = packageKey === "custom"
                 ? customAmountEl?.value
                 : packageKey;

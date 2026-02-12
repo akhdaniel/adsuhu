@@ -40,6 +40,7 @@ class XenditController(http.Controller):
             "500000": {"amount": 500000.0, "credit": 7_500.0},
         }
         payload_data = kwargs or {}
+        _logger.info(payload_data)
         package_key = payload_data.get("package") or "100000"
         custom_amount = payload_data.get("custom_amount")
         raw_amount = payload_data.get("amount")
@@ -78,6 +79,9 @@ class XenditController(http.Controller):
             "failure_redirect_url": f"{request.env['ir.config_parameter'].sudo().get_param('web.base.url')}/customer_credits",
             "currency": cfg["topup_currency"],
         }
+        
+        
+        _logger.info(payload)
 
         credit_model = request.env['vit.customer_credit'].sudo()
         credit_model.create({
@@ -96,9 +100,10 @@ class XenditController(http.Controller):
             return {"error": "Failed to create payment URL."}
         return {"url": url}
 
-    @http.route('/xendit/webhook', type='json', auth='public', csrf=False, methods=['POST'])
+    @http.route('/xendit/webhook', type='http', auth='public', csrf=False, methods=['POST'])
     def webhook(self, **kwargs):
-        payload = (kwargs or {}) or request.httprequest.get_json(silent=True) or {}
+        payload = request.get_json_data()
+        # payload = (kwargs or {}) or request.httprequest.get_json(silent=True) or {}
         token = request.httprequest.headers.get('x-callback-token')
         cfg = self._get_xendit_config()
         expected_token = cfg["webhook_token"]
