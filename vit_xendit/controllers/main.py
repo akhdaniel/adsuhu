@@ -124,9 +124,10 @@ class XenditController(http.Controller):
                 _logger.info(f'forward to bootcamp...{target_url}')
                 forward_token = token or cfg.get("webhook_token")
                 headers = {"x-callback-token": forward_token} if forward_token else {}
+                _logger.info(f"forward_token={forward_token}")
                 resp = requests.post(
                     target_url,
-                    json=payload,
+                    data=payload,
                     headers=headers,
                     timeout=10,
                 )
