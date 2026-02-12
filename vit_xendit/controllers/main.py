@@ -129,7 +129,7 @@ class XenditController(http.Controller):
                     timeout=10,
                 )
                 
-                _logger.info(f"bootcamp response {resp.text}")
+                _logger.info(f"bootcamp response: {resp.status_code} {resp.text}")
                 return {
                     "status": "ok",
                     "forward": {
