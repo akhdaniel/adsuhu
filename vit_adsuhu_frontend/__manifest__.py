@@ -15,7 +15,7 @@
     'data': [
         'views/templates.xml',
         'views/portal.xml',
-        'views/web_brand_override.xml',
+        # 'views/web_brand_override.xml', sementara edit langsung di DB template
     ],
     'assets': {
         'web.assets_frontend': [

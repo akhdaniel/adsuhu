@@ -420,7 +420,7 @@ class angle_hook(models.Model):
 
 {rec.specific_instruction or ''}
 
-Response in {self.lang_id.name} language.
+Response in {self.lang_id.name} language for all values in the JSON output.
 
 """
 
