@@ -116,6 +116,10 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         button.disabled = true;
         const originalText = button.innerText;
         button.innerText = "Creating payment...";
+        if (manualEl) {
+            manualEl.classList.add("d-none");
+            manualEl.innerHTML = "";
+        }
         this._setTopupOptionsDisabled(true);
         try {
             const packageKey = packageEl?.dataset?.package || "100000";
@@ -227,9 +231,13 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         }
         const manualEl = document.getElementById("topup-manual-instruction");
         const modalErrorEl = document.getElementById("topup-direct-modal-error");
+        const iframeEl = document.getElementById("topup-direct-iframe");
         if (modalErrorEl) {
             modalErrorEl.classList.add("d-none");
             modalErrorEl.textContent = "";
+        }
+        if (iframeEl) {
+            iframeEl.src = "";
         }
         button.disabled = true;
         const originalText = button.innerText;
