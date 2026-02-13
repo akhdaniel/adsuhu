@@ -106,9 +106,10 @@ class TopupService(models.AbstractModel):
                 'credit': credit,
                 'is_usage': True,
                 'date_time': fields.Datetime.now(),
+                'state':'done'
             })
             
-            partner._get_customer_limit()
+            # partner._get_customer_limit()
             
             _logger.info(
                 f"Usage credit created for partner {partner.name}: "
