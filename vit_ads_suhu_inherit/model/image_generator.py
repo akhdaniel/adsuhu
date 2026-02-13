@@ -70,18 +70,18 @@ class image_generator(models.Model):
                     "1536x1024": 0.199,
                 },
             }
-            return pricing.get(quality, pricing["medium"]).get(size, 0.034)
+            return pricing.get(quality, pricing["high"]).get(size, 0.034)
 
         params = self.env["ir.config_parameter"].sudo()
         usd_to_idr = float(params.get_param("image_usd_to_idr", "17000"))
-        image_quality = (params.get_param("image_quality", "medium") or "medium").lower()
+        image_quality = (params.get_param("image_quality", "high") or "high").lower()
         image_size = params.get_param("image_size", "1024x1024") or "1024x1024"
 
         input_tokens = _count_input_tokens(image_prompt)
         input_cost_usd = (input_tokens / 1000.0) * 0.005
         image_cost_usd = _get_image_cost_usd(image_quality, image_size)
         total_cost_idr = (input_cost_usd + image_cost_usd) * usd_to_idr
-        resale_cost_idr = total_cost_idr * 2  # 100% margin
+        resale_cost_idr = total_cost_idr * 3  # 200% margin
         credits_used = resale_cost_idr # Rp // int(math.ceil(resale_cost_idr / 100.0))
         if self.partner_id and (self.partner_id.customer_limit or 0) < credits_used:
             raise UserError('Not enough credit')
