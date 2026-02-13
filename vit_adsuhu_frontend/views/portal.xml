@@ -19,7 +19,7 @@
             <t t-set="config_card" t-value="True"/>
         </t>
         <t t-call="portal.portal_docs_entry">
-            <t t-set="icon" t-value="'/vit_adsuhu_frontend/static/src/img/calculator.vsg'"/>
+            <t t-set="icon" t-value="'/vit_adsuhu_frontend/static/src/img/calculator.svg'"/>
             <t t-set="title">Top Up</t>
             <t t-set="text">Top up your credits</t>
             <t t-set="url" t-value="'/customer_credits?topup=1'"/>
