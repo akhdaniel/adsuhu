@@ -104,6 +104,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const iframeEl = document.getElementById("topup-direct-iframe");
         const packageEl = document.querySelector(".adsuhu-topup-option.active");
         const customAmountEl = document.getElementById("topup-direct-custom-amount");
+        const manualEl = document.getElementById("topup-manual-instruction");
         const optionButtons = document.querySelectorAll(".adsuhu-topup-option");
         if (errorEl) {
             errorEl.classList.add("d-none");
