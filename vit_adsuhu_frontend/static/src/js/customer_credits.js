@@ -24,6 +24,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
                 this._setTopupOptionsDisabled(false);
             });
         }
+        this._autoOpenTopup();
         return this._super(...arguments);
     },
     async _onTopupDirectClick(event) {
@@ -288,6 +289,16 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const customAmountEl = document.getElementById("topup-direct-custom-amount");
         if (customAmountEl) {
             customAmountEl.disabled = disabled;
+        }
+    },
+    _autoOpenTopup() {
+        const params = new URLSearchParams(window.location.search);
+        if (!params.has("topup")) {
+            return;
+        }
+        const trigger = document.querySelector(".js-topup-direct");
+        if (trigger) {
+            trigger.click();
         }
     },
 });
