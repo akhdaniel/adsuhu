@@ -21,7 +21,7 @@ class compliance_checker(models.Model):
         return self.env["vit.gpt_prompt"].search(
             [("name", "=", "compliance_checker")], limit=1
         ).id
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("GPT Prompt"), default=_get_default_prompt)
     
     @api.onchange("ads_copy_id","visual_concept_id")
     def _get_input(self, ):

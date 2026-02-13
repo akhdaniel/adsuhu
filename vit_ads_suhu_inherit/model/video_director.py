@@ -44,7 +44,7 @@ class video_director(models.Model):
 
     gpt_prompt_id = fields.Many2one(
         comodel_name="vit.gpt_prompt",
-        string=_("GPT Prompt"),
+        string=("GPT Prompt"),
         default=lambda self: self._get_default_prompt()
     )
 

@@ -379,7 +379,7 @@ class angle_hook(models.Model):
         self.generate_output_html()
 
 
-    specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
+    specific_instruction = fields.Text( string=("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
     def _get_default_prompt(self):
         prompt = self.env.ref("vit_ads_suhu_inherit.gpt_angle_hook", raise_if_not_found=False)
@@ -392,7 +392,7 @@ class angle_hook(models.Model):
     lang_id = fields.Many2one(comodel_name="res.lang", related="product_value_analysis_id.lang_id")
     partner_id = fields.Many2one(comodel_name="res.partner", related="product_value_analysis_id.partner_id")    
 
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("GPT Prompt"), default=_get_default_prompt)
 
     @api.onchange("audience_profiler_id","product_value_analysis_id","lang_id")
     def _get_input(self, ):

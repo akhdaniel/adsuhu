@@ -238,8 +238,8 @@ SIMULATE_OUTPUT="""{
 class product_value_analysis(models.Model):
     _name = "vit.product_value_analysis"
     _inherit = "vit.product_value_analysis"
-    specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
-    report_template = fields.Binary( string=_("Report Template"))
+    specific_instruction = fields.Text( string=("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
+    report_template = fields.Binary( string=("Report Template"))
 
     def _get_default_lang(self):
         return self.env["res.lang"].search(
@@ -270,8 +270,8 @@ class product_value_analysis(models.Model):
             [("name", "=", "write_description_prompt")], limit=1
         ).id
 
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Analyzer Prompt"), default=_get_default_prompt)
-    write_gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Description Writer Prompt"), default=_get_default_write_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("Analyzer Prompt"), default=_get_default_prompt)
+    write_gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("Description Writer Prompt"), default=_get_default_write_prompt)
 
     # write description and features
     def action_write_with_ai(self, ):

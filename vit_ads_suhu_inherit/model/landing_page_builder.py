@@ -25,7 +25,7 @@ class landing_page_builder(models.Model):
             [("name", "=", "landing_page_builder")], limit=1
         ).id
     
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("GPT Prompt"), default=_get_default_prompt)
 
     @api.onchange("ads_copy_id","compliance_checker_id","product_value_analysis_id","audience_profiler_id")
     def _get_input(self, ):

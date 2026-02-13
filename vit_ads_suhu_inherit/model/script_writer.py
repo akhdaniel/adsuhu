@@ -23,7 +23,7 @@ class script_writer(models.Model):
         ).id
     
 
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("Gpt Prompt"), default=_get_default_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("Gpt Prompt"), default=_get_default_prompt)
 
     @api.onchange("ads_copy_id","angle_hook_id")
     def _get_input(self, ):

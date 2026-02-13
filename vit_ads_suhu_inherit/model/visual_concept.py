@@ -22,7 +22,7 @@ class visual_concept(models.Model):
             [("name", "=", "visual_concept")], limit=1
         ).id
     
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("GPT Prompt"), default=_get_default_prompt)
 
 
 

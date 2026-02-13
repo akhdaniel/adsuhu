@@ -29,7 +29,7 @@ class hook(models.Model):
     #         [("name", "=", "ads_copy")], limit=1
     #     ).id
     
-    # gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    # gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("GPT Prompt"), default=_get_default_prompt)
     
     @api.onchange("angle_hook_id")
     def _get_input(self, ):

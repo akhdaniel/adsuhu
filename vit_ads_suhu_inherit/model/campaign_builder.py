@@ -23,7 +23,7 @@ class campaign_builder(models.Model):
             [("name", "=", "campaign_builder")], limit=1
         ).id
     
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("GPT Prompt"), default=_get_default_prompt)
 
     @api.onchange("ads_copy_id","script_writer_id","visual_concept_id","compliance_checker_id","landing_page_builder_id")
     def _get_input(self, ):

@@ -54,12 +54,12 @@ class general_object(models.Model):
             ("done", "Done"),
             ("failed", "Failed"),
         ],
-        string=_("Status"),
+        string=("Status"),
         default="idle",
         copy=False,
     )
-    error_message = fields.Text(string=_("Error Message"), copy=False)
-    general_instruction = fields.Text(default=DEFAULT_GENERAL_INSTRUCTION,  string=_("General Instruction"))
+    error_message = fields.Text(string=("Error Message"), copy=False)
+    general_instruction = fields.Text(default=DEFAULT_GENERAL_INSTRUCTION,  string=("General Instruction"))
 
     def clean_md(self, text):
         text = text or ""

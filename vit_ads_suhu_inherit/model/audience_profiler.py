@@ -231,7 +231,7 @@ class audience_profiler(models.Model):
 
         self.generate_output_html()
     
-    specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
+    specific_instruction = fields.Text( string=("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
     lang_id = fields.Many2one(comodel_name="res.lang", related="market_mapper_id.product_value_analysis_id.lang_id")
     partner_id = fields.Many2one(comodel_name="res.partner", related="market_mapper_id.product_value_analysis_id.partner_id")
@@ -243,7 +243,7 @@ class audience_profiler(models.Model):
         return self.env["vit.gpt_prompt"].search(
             [("name", "=", "audience_profiler")], limit=1
         ).id
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("GPT Prompt"), default=_get_default_prompt)
     
 
     @api.onchange("market_mapper_id","specific_instruction","lang_id")

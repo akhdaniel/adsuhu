@@ -17,7 +17,7 @@ DEFAULT_SPECIFIC_INSTRUCTION = "Langsung Create PNG image, ratio 1:1. Jangan ter
 class image_generator(models.Model):
     _name = "vit.image_generator"
     _inherit = "vit.image_generator"
-    specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
+    specific_instruction = fields.Text( string=("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
     def action_generate(self, ):
 
@@ -85,7 +85,7 @@ class image_generator(models.Model):
             [("name", "=", "image_generator")], limit=1
         ).id
     
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("GPT Prompt"), default=_get_default_prompt)
 
     @api.onchange("ads_copy_id","specific_instruction")
     def _get_input(self, ):

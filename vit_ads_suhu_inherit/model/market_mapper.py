@@ -253,7 +253,7 @@ class market_mapper(models.Model):
 
         self.generate_output_html()
     
-    specific_instruction = fields.Text( string=_("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
+    specific_instruction = fields.Text( string=("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
 
     lang_id = fields.Many2one(comodel_name="res.lang", related="product_value_analysis_id.lang_id")
     partner_id = fields.Many2one(comodel_name="res.partner", related="product_value_analysis_id.partner_id")
@@ -265,7 +265,7 @@ class market_mapper(models.Model):
         return self.env["vit.gpt_prompt"].search(
             [("name", "=", "market_mapper")], limit=1
         ).id
-    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=_("GPT Prompt"), default=_get_default_prompt)
+    gpt_prompt_id = fields.Many2one(comodel_name="vit.gpt_prompt",  string=("GPT Prompt"), default=_get_default_prompt)
     
     @api.onchange("product_value_analysis_id","lang_id","specific_instruction")
     def _get_input(self, ):
