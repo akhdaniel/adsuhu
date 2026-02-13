@@ -94,6 +94,7 @@ class XenditController(http.Controller):
             'credit': package["credit"],
             'is_usage': False,
             'state': 'draft',
+            'credit': raw_amount,
             'date_time': fields.Datetime.now(),
         })
 
@@ -160,7 +161,8 @@ class XenditController(http.Controller):
         try:
             _, partner_id, credit_str, _ = external_id.split(":", 3)
             partner_id = int(partner_id)
-            credit = float(credit_str)
+            # credit = float(credit_str)
+            credit = payload.get('amount')
         except Exception:
             _logger.exception("Invalid external_id: %s", external_id)
             return {"status": "invalid_external_id"}

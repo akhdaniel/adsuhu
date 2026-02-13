@@ -2,7 +2,7 @@ from odoo import models
 from odoo.exceptions import UserError, ValidationError
 
 TOKENS_PER_CREDIT=1000 # 1 credit = 1000 tokens
-MIN_CREDIT=10
+MIN_CREDIT=1000 # Rp
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -71,7 +71,7 @@ class ProductValueAnalysis(models.Model):
                                          self.description or "" + self.features or "" , 
                                          cache_hit=False)
         # _logger.info(result)
-        credit = - result.get('total_credit_used')
+        credit = - result.get('total_cost_usd')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
@@ -86,7 +86,7 @@ class ProductValueAnalysis(models.Model):
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_credit_used')
+        credit = - result.get('total_cost_usd')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
@@ -104,7 +104,7 @@ class MarketMapper(models.Model):
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_credit_used')
+        credit = - result.get('total_cost_usd')
         
         for rec in self:
             partner = rec.partner_id
@@ -123,7 +123,7 @@ class AudienceProfiler(models.Model):
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_credit_used')
+        credit = - result.get('total_cost_usd')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
@@ -141,7 +141,7 @@ class AngleHook(models.Model):
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_credit_used')
+        credit = - result.get('total_cost_usd')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
@@ -159,7 +159,7 @@ class Hook(models.Model):
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_credit_used')
+        credit = - result.get('total_cost_usd')
         
         for rec in self:
             partner = rec.partner_id
@@ -178,26 +178,7 @@ class AdsCopy(models.Model):
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_credit_used')
-        
-        for rec in self:
-            partner = rec.partner_id
-            self.env['vit.topup.service'].create_usage_credit(
-                partner, name=rec.display_name, credit=credit
-            )
-        return res
-
-
-class ImageGenerator(models.Model):
-    _inherit = "vit.image_generator"
-
-    def action_generate(self):
-        if self.partner_id and self.partner_id.customer_limit <=MIN_CREDIT:
-            raise UserError('Not enough credit')
-        res = super().action_generate()
-
-        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_credit_used')
+        credit = - result.get('total_cost_usd')
         
         for rec in self:
             partner = rec.partner_id
@@ -216,7 +197,7 @@ class VideoDirector(models.Model):
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_credit_used')
+        credit = - result.get('total_cost_usd')
         
         for rec in self:
             partner = rec.partner_id

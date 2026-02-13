@@ -11,6 +11,7 @@ from .libs.fal import Fal
 import requests
 import base64
 import json 
+import math
 
 DEFAULT_SPECIFIC_INSTRUCTION = "Langsung Create PNG image, ratio 1:1. Jangan terlalu banyak text, pilih yang paling kuat dari primary text, hook library, dan angle library."
 
@@ -52,6 +53,39 @@ class image_generator(models.Model):
                        .replace('{brand_personality}', brand_personality)
                        )
 
+        def _count_input_tokens(text):
+            words = len((text or "").split())
+            return words * 4
+
+        def _get_image_cost_usd(quality, size):
+            pricing = {
+                "medium": {
+                    "1024x1024": 0.034,
+                    "1024x1536": 0.051,
+                    "1536x1024": 0.050,
+                },
+                "high": {
+                    "1024x1024": 0.133,
+                    "1024x1536": 0.200,
+                    "1536x1024": 0.199,
+                },
+            }
+            return pricing.get(quality, pricing["medium"]).get(size, 0.034)
+
+        params = self.env["ir.config_parameter"].sudo()
+        usd_to_idr = float(params.get_param("image_usd_to_idr", "15000"))
+        image_quality = (params.get_param("image_quality", "medium") or "medium").lower()
+        image_size = params.get_param("image_size", "1024x1024") or "1024x1024"
+
+        input_tokens = _count_input_tokens(image_prompt)
+        input_cost_usd = (input_tokens / 1000.0) * 0.005
+        image_cost_usd = _get_image_cost_usd(image_quality, image_size)
+        total_cost_idr = (input_cost_usd + image_cost_usd) * usd_to_idr
+        resale_cost_idr = total_cost_idr * 2  # 100% margin
+        credits_used = resale_cost_idr # Rp // int(math.ceil(resale_cost_idr / 100.0))
+        if self.partner_id and (self.partner_id.customer_limit or 0) < credits_used:
+            raise UserError('Not enough credit')
+
         fal_api_key = self.env["ir.config_parameter"].sudo().get_param("fal_api_key")
         fal = Fal(api_key=fal_api_key)
 
@@ -73,6 +107,12 @@ class image_generator(models.Model):
         })
         v._get_default_name()
         self.generate_output_html()
+
+        self.env['vit.topup.service'].create_usage_credit(
+            self.partner_id,
+            name=f"image_generation:{self.id}",
+            credit=-credits_used,
+        )
 
     lang_id = fields.Many2one(comodel_name="res.lang", related="ads_copy_id.product_value_analysis_id.lang_id")
     partner_id = fields.Many2one(comodel_name="res.partner", related="ads_copy_id.product_value_analysis_id.partner_id")
