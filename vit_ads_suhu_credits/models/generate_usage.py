@@ -49,7 +49,7 @@ def calculate_deepseek_cost(
     output_cost = (output_tokens / 1_000_000) * OUTPUT_PRICE
     total_cost = input_cost + output_cost
     total_tokens = input_tokens + output_tokens
-    total_cost_idr = 0.0
+    # total_cost_idr = 0.0
 
     # if env:
     #     usd_currency = env["res.currency"].sudo().search([("name", "=", "USD")], limit=1)
@@ -92,10 +92,11 @@ class ProductValueAnalysis(models.Model):
         )
         # _logger.info(result)
         credit = - result.get('total_cost_idr')
+        cost = - result.get('total_cost_usd')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
-                partner, name=f"{rec.display_name} - Write with Ai", credit=credit
+                partner, name=f"{rec.display_name} - Write with Ai", credit=credit, cost=cost
             )
         return res
     
@@ -107,10 +108,11 @@ class ProductValueAnalysis(models.Model):
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
         credit = - result.get('total_cost_idr')
+        cost = - result.get('total_cost_usd')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
-                partner, name=f"{rec.display_name} - Product analysis", credit=credit
+                partner, name=f"{rec.display_name} - Product analysis", credit=credit, cost=cost
             )
         return res
 
@@ -125,11 +127,12 @@ class MarketMapper(models.Model):
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
         credit = - result.get('total_cost_idr')
+        cost = - result.get('total_cost_usd')
         
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
-                partner, name=f"{rec.display_name}", credit=credit
+                partner, name=f"{rec.display_name}", credit=credit, cost=cost
             )
         return res
 
@@ -144,10 +147,11 @@ class AudienceProfiler(models.Model):
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
         credit = - result.get('total_cost_idr')
+        cost = - result.get('total_cost_usd')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
-                partner, name=rec.display_name, credit=credit
+                partner, name=rec.display_name, credit=credit, cost=cost
             )
         return res
 
@@ -162,10 +166,11 @@ class AngleHook(models.Model):
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
         credit = - result.get('total_cost_idr')
+        cost = - result.get('total_cost_usd')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
-                partner, name=rec.display_name, credit=credit
+                partner, name=rec.display_name, credit=credit, cost=cost
             )
         return res
 
@@ -180,11 +185,12 @@ class Hook(models.Model):
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
         credit = - result.get('total_cost_idr')
+        cost = - result.get('total_cost_usd')
         
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
-                partner, name=rec.display_name, credit=credit
+                partner, name=rec.display_name, credit=credit, cost=cost
             )
         return res
 
@@ -199,11 +205,12 @@ class AdsCopy(models.Model):
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
         credit = - result.get('total_cost_idr')
+        cost = - result.get('total_cost_usd')
         
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
-                partner, name=rec.display_name, credit=credit
+                partner, name=rec.display_name, credit=credit, cost=cost
             )
         return res
 
@@ -218,10 +225,11 @@ class VideoDirector(models.Model):
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
         credit = - result.get('total_cost_idr')
+        cost = - result.get('total_cost_usd')
         
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
-                partner, name=rec.display_name, credit=credit
+                partner, name=rec.display_name, credit=credit, cost=cost
             )
         return res

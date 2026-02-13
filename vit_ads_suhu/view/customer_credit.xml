@@ -12,9 +12,10 @@
                     <field name="customer_id" /> <!-- 100-->
                     <field name="date_time" /> <!-- 101-->
                     <field name="credit" /> <!-- 102-->
-                    <field name="is_usage" /> <!-- 103-->
-                    <field name="state" /> <!-- 104-->
-                    <field name="ref" /> <!-- 105-->
+                    <field name="cost" /> <!-- 103-->
+                    <field name="is_usage" /> <!-- 104-->
+                    <field name="state" /> <!-- 105-->
+                    <field name="ref" /> <!-- 106-->
                 </list>
             </field>
         </record>
@@ -58,6 +59,7 @@
                             <group> <!-- left -->
                                 <field name="date_time"  readonly="state!='draft'"/>
                                 <field name="credit"  readonly="state!='draft'"/>
+                                <field name="cost"  readonly="state!='draft'"/>
                                 <field name="is_usage"  readonly="state!='draft'"/>
                                 <field name="ref"  readonly="state!='draft'"/>
                             </group>
@@ -88,12 +90,14 @@
                     <filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
                     <filter string="Date Time" name="filter_by_date_time" domain="[('date_time','=','')]" />
                     <filter string="Credit" name="filter_by_credit" domain="[('credit','=','')]" />
+                    <filter string="Cost" name="filter_by_cost" domain="[('cost','=','')]" />
                     <filter string="Is Usage" name="filter_by_is_usage" domain="[('is_usage','=','')]" />
                     <filter string="State" name="filter_by_state" domain="[('state','=','')]" />
                     <filter string="Ref" name="filter_by_ref" domain="[('ref','=','')]" />
                     <field name="name" string="Name" select="True"/>
                     <field name="date_time" string="Date Time" select="True"/>
                     <field name="credit" string="Credit" select="True"/>
+                    <field name="cost" string="Cost" select="True"/>
                     <field name="is_usage" string="Is Usage" select="True"/>
                     <field name="state" string="State" select="True"/>
                     <field name="ref" string="Ref" select="True"/>

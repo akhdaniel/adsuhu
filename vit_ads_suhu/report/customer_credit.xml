@@ -30,6 +30,10 @@
                             <p class="m-0" t-field="doc.credit" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>Cost</strong>
+                            <p class="m-0" t-field="doc.cost" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Is Usage</strong>
                             <p class="m-0" t-field="doc.is_usage" />
                         </div>

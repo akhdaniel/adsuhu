@@ -24,6 +24,7 @@
                                         <field name="name"/>
                                         <field name="date_time"/>
                                         <field name="credit"/>
+                                        <field name="cost"/>
                                         <field name="is_usage"/>
                                         <field name="state"/>
                                         <field name="ref"/>
