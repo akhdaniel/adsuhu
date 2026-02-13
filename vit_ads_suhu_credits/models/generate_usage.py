@@ -1,4 +1,4 @@
-from odoo import models
+from odoo import fields, models
 from odoo.exceptions import UserError, ValidationError
 
 TOKENS_PER_CREDIT=1000 # 1 credit = 1000 tokens
@@ -26,7 +26,8 @@ def estimate_tokens(text: str) -> int:
 def calculate_deepseek_cost(
     input_text: str,
     output_text: str,
-    cache_hit: bool = False
+    cache_hit: bool = False,
+    env=None,
 ) -> dict:
     """
     Estimate DeepSeek-Chat API cost.
@@ -48,6 +49,19 @@ def calculate_deepseek_cost(
     output_cost = (output_tokens / 1_000_000) * OUTPUT_PRICE
     total_cost = input_cost + output_cost
     total_tokens = input_tokens + output_tokens
+    total_cost_idr = 0.0
+
+    if env:
+        usd_currency = env["res.currency"].sudo().search([("name", "=", "USD")], limit=1)
+        idr_currency = env["res.currency"].sudo().search([("name", "=", "IDR")], limit=1)
+        if usd_currency and idr_currency:
+            usd_to_idr = usd_currency._convert(
+                1.0,
+                idr_currency,
+                env.company,
+                fields.Date.today(),
+            )
+            total_cost_idr = total_cost * usd_to_idr
 
     return {
         "input_tokens": input_tokens,
@@ -55,6 +69,7 @@ def calculate_deepseek_cost(
         "input_cost_usd": round(input_cost, 6),
         "output_cost_usd": round(output_cost, 6),
         "total_cost_usd": round(total_cost, 6),
+        "total_cost_idr": round(total_cost_idr, 2),
         "total_credit_used": total_tokens/TOKENS_PER_CREDIT
     }
 
@@ -67,11 +82,14 @@ class ProductValueAnalysis(models.Model):
             raise UserError('Not enough credit')
         res = super().action_write_with_ai()
 
-        result = calculate_deepseek_cost(self.initial_description, 
-                                         self.description or "" + self.features or "" , 
-                                         cache_hit=False)
+        result = calculate_deepseek_cost(
+            self.initial_description,
+            self.description or "" + self.features or "",
+            cache_hit=False,
+            env=self.env,
+        )
         # _logger.info(result)
-        credit = - result.get('total_cost_usd')
+        credit = - result.get('total_cost_idr')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
@@ -85,8 +103,8 @@ class ProductValueAnalysis(models.Model):
             raise UserError('Not enough credit')
         res = super().action_generate()
 
-        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_cost_usd')
+        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
+        credit = - result.get('total_cost_idr')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
@@ -103,8 +121,8 @@ class MarketMapper(models.Model):
             raise UserError('Not enough credit')
         res = super().action_generate()
 
-        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_cost_usd')
+        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
+        credit = - result.get('total_cost_idr')
         
         for rec in self:
             partner = rec.partner_id
@@ -122,8 +140,8 @@ class AudienceProfiler(models.Model):
             raise UserError('Not enough credit')
         res = super().action_generate()
 
-        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_cost_usd')
+        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
+        credit = - result.get('total_cost_idr')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
@@ -140,8 +158,8 @@ class AngleHook(models.Model):
             raise UserError('Not enough credit')
         res = super().action_generate()
 
-        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_cost_usd')
+        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
+        credit = - result.get('total_cost_idr')
         for rec in self:
             partner = rec.partner_id
             self.env['vit.topup.service'].create_usage_credit(
@@ -158,8 +176,8 @@ class Hook(models.Model):
             raise UserError('Not enough credit')
         res = super().action_generate()
 
-        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_cost_usd')
+        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
+        credit = - result.get('total_cost_idr')
         
         for rec in self:
             partner = rec.partner_id
@@ -177,8 +195,8 @@ class AdsCopy(models.Model):
             raise UserError('Not enough credit')
         res = super().action_generate()
 
-        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_cost_usd')
+        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
+        credit = - result.get('total_cost_idr')
         
         for rec in self:
             partner = rec.partner_id
@@ -196,8 +214,8 @@ class VideoDirector(models.Model):
             raise UserError('Not enough credit')
         res = super().action_generate()
 
-        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False)
-        credit = - result.get('total_cost_usd')
+        result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
+        credit = - result.get('total_cost_idr')
         
         for rec in self:
             partner = rec.partner_id
