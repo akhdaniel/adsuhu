@@ -9,10 +9,10 @@
             <t t-set="title">Products Analysis</t>
             <t t-set="text">Manage your Product Analysis and Marketing Campaigns</t>
             <t t-set="url" t-value="'/product_analysis'"/>
-            <t t-set="config_card" t-value="False"/>
+            <t t-set="config_card" t-value="True"/>
         </t>
         <t t-call="portal.portal_docs_entry">
-            <t t-set="icon" t-value="'/base/static/img/onboarding_chart-of-accounts.png'"/>
+            <t t-set="icon" t-value="'/web/static/img/folder.svg'"/>
             <t t-set="title">Usage Analysis</t>
             <t t-set="text">View your credit usage history</t>
             <t t-set="url" t-value="'/customer_credits'"/>
