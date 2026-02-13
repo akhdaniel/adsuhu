@@ -34,6 +34,14 @@
                             <p class="m-0" t-field="doc.is_usage" />
                         </div>
                         <div class="col-auto mw-100 mb-2">
+                            <strong>State</strong>
+                            <p class="m-0" t-field="doc.state" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
+                            <strong>Ref</strong>
+                            <p class="m-0" t-field="doc.ref" />
+                        </div>
+                        <div class="col-auto mw-100 mb-2">
                             <strong>Customer</strong>
                             <p class="m-0" t-field="doc.customer_id"/>
                         </div>

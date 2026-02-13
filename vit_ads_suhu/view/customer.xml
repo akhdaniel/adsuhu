@@ -25,6 +25,8 @@
                                         <field name="date_time"/>
                                         <field name="credit"/>
                                         <field name="is_usage"/>
+                                        <field name="state"/>
+                                        <field name="ref"/>
                                     </list>
                                 </field>
                             </page>

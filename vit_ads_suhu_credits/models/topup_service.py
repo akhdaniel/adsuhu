@@ -10,7 +10,7 @@ class TopupService(models.AbstractModel):
     _description = 'Topup Service'
     
     def search_topup_product(self, name, partner):
-        credit = self.env['vit.customer_credit'].sudo().search([('name','=',name), ('customer_id','=',partner.id)])
+        credit = self.env['vit.customer_credit'].sudo().search([('ref','=',name), ('customer_id','=',partner.id)])
         return credit
 
     def process_topup_product(self, name, partner, product, expired_date, qty=1):
@@ -42,7 +42,7 @@ class TopupService(models.AbstractModel):
         try:
             self.env['vit.customer_credit'].sudo().create({
                     'customer_id': partner.id,
-                    'name': f'{name}',
+                    'ref': f'{name}',
                     'credit': topup_amount,
                     'is_usage': False,
                     'date_time': fields.Datetime.now(),
@@ -102,7 +102,7 @@ class TopupService(models.AbstractModel):
         try:
             self.env['vit.customer_credit'].sudo().create({
                 'customer_id': partner.id,
-                'name': f'{usage_name}',
+                'ref': f'{usage_name}',
                 'credit': credit,
                 'is_usage': True,
                 'date_time': fields.Datetime.now(),

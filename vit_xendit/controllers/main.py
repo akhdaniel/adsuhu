@@ -90,7 +90,7 @@ class XenditController(http.Controller):
         credit_model = request.env['vit.customer_credit'].sudo()
         credit_model.create({
             'customer_id': partner.id,
-            'name': external_id,
+            'ref': external_id,
             'credit': package["credit"],
             'is_usage': False,
             'state': 'draft',
@@ -169,7 +169,7 @@ class XenditController(http.Controller):
 
         credit_model = request.env['vit.customer_credit'].sudo()
         existing = credit_model.search(
-            [('name', '=', external_id), ('customer_id', '=', partner_id)], limit=1
+            [('ref', '=', external_id), ('customer_id', '=', partner_id)], limit=1
         )
         if existing:
             existing.write({'state': 'done'})
@@ -177,7 +177,7 @@ class XenditController(http.Controller):
 
         credit_model.create({
             'customer_id': partner_id,
-            'name': external_id,
+            'ref': external_id,
             'credit': credit,
             'is_usage': False,
             'state': 'done',

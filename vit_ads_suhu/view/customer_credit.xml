@@ -13,6 +13,8 @@
                     <field name="date_time" /> <!-- 101-->
                     <field name="credit" /> <!-- 102-->
                     <field name="is_usage" /> <!-- 103-->
+                    <field name="state" /> <!-- 104-->
+                    <field name="ref" /> <!-- 105-->
                 </list>
             </field>
         </record>
@@ -36,6 +38,9 @@
             <field name="arch" type="xml">
                 <form string="Customer Credit">
                     <header>
+                        <button string="Confirm" type="object" name="action_confirm" class="oe_highlight" icon="fa-check-circle" />
+                        <button string="Reset to Draft" type="object" name="action_cancel"  icon="fa-times-circle" />
+                        <field name="state" widget="statusbar" />
                         <button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
                     </header>
                     <sheet>
@@ -51,12 +56,13 @@
                         </div>
                         <group>
                             <group> <!-- left -->
-                                <field name="date_time"  />
-                                <field name="credit"  />
-                                <field name="is_usage"  />
+                                <field name="date_time"  readonly="state!='draft'"/>
+                                <field name="credit"  readonly="state!='draft'"/>
+                                <field name="is_usage"  readonly="state!='draft'"/>
+                                <field name="ref"  readonly="state!='draft'"/>
                             </group>
                             <group> <!-- right -->
-                                <field name="customer_id"  />
+                                <field name="customer_id"  readonly="state!='draft'"/>
                             </group>
                         </group>
                         <notebook>
@@ -83,13 +89,18 @@
                     <filter string="Date Time" name="filter_by_date_time" domain="[('date_time','=','')]" />
                     <filter string="Credit" name="filter_by_credit" domain="[('credit','=','')]" />
                     <filter string="Is Usage" name="filter_by_is_usage" domain="[('is_usage','=','')]" />
+                    <filter string="State" name="filter_by_state" domain="[('state','=','')]" />
+                    <filter string="Ref" name="filter_by_ref" domain="[('ref','=','')]" />
                     <field name="name" string="Name" select="True"/>
                     <field name="date_time" string="Date Time" select="True"/>
                     <field name="credit" string="Credit" select="True"/>
                     <field name="is_usage" string="Is Usage" select="True"/>
+                    <field name="state" string="State" select="True"/>
+                    <field name="ref" string="Ref" select="True"/>
                     <field name="customer_id" string="Customer" select="True"/>
                     <group string="Group By..">
                         <filter string="Customer" domain="[]" name="group_by_customer_id" context="{'group_by':'customer_id'}"/>
+                        <filter string="State" domain="[]" name="group_by_state" context="{'group_by':'state'}"/>
                     </group>
                 </search>
             </field>
@@ -149,6 +160,6 @@
             </field>
         </record>
 
-        <menuitem id="menu_customer_credit" name="Customer Credit" parent="vit_ads_suhu_config_menu" action="action_customer_credit" sequence="270"/>
+        <menuitem id="menu_customer_credit" name="Customer Credit" parent="vit_ads_suhu_sub_menu" action="action_customer_credit" sequence="270"/>
     </data>
 </odoo>

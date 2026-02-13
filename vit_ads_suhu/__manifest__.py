@@ -72,6 +72,7 @@
 		"report/auto_post_period.xml",
 		"view/customer_credit.xml",
 		"report/customer_credit.xml",
+		"data/sequence_customer_credit.xml",
 		"view/product.xml",
 		"view/category.xml"
 	],
