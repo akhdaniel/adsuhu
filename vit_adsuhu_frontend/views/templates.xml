@@ -805,9 +805,9 @@
                                                 <div class="adsuhu-topup-custom d-none mt-2"> 
                                                     <span class="adsuhu-topup-custom-label">Custom Amount (Rp)</span>
                                                     <input id="topup-direct-custom-amount" type="number" min="100000" step="10000" class="form-control" placeholder="e.g. 150,000, min. 10,000"/>
-                                                    <span class="adsuhu-topup-custom-label">
+                                                    <!-- <span class="adsuhu-topup-custom-label">
                                                         Amount: <span id="topup-direct-custom-rp">Rp 0</span>
-                                                    </span>
+                                                    </span> -->
                                                 </div>
 
                                                 <button type="button" class="btn btn-primary mt-3 js-topup-direct-confirm">

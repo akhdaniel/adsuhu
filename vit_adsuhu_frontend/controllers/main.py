@@ -353,7 +353,7 @@ class ProductValueAnalysisController(http.Controller):
     def customer_credits(self, page=1, **kwargs):
         credit_obj = request.env['vit.customer_credit'].sudo()
         partner = request.env.user.partner_id
-        domain = [('customer_id', '=', partner.id)]
+        domain = [('customer_id', '=', partner.id), ('state', '=', 'done')]
 
         per_page = 20
         total = credit_obj.search_count(domain)
