@@ -12,14 +12,14 @@
             <t t-set="config_card" t-value="True"/>
         </t>
         <t t-call="portal.portal_docs_entry">
-            <t t-set="icon" t-value="'/payment/static/img/payment-methods.svg'"/>
+            <t t-set="icon" t-value="'/base/static/img/onboarding_chart-of-accounts.png'"/>
             <t t-set="title">Usage Analysis</t>
             <t t-set="text">View your credit usage history</t>
             <t t-set="url" t-value="'/customer_credits'"/>
             <t t-set="config_card" t-value="True"/>
         </t>
         <t t-call="portal.portal_docs_entry">
-            <t t-set="icon" t-value="'/payment/static/img/bank.png'"/>
+            <t t-set="icon" t-value="'/base/static/img/onboarding_quotation-layout.png'"/>
             <t t-set="title">Top Up</t>
             <t t-set="text">Top up your credits</t>
             <t t-set="url" t-value="'/customer_credits?topup=1'"/>
