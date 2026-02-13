@@ -15,6 +15,7 @@
     'data': [
         'views/templates.xml',
         'views/portal.xml',
+        'views/web_brand_override.xml',
     ],
     'assets': {
         'web.assets_frontend': [
