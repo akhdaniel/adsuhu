@@ -18,7 +18,7 @@ class partner(models.Model):
     _name = "res.partner"
     _inherit = "res.partner"
 
-    @api.depends("customer_credit_ids")
+    @api.depends("customer_credit_ids","customer_credit_ids.state")
     def _get_customer_limit(self, ):
         """
         {
