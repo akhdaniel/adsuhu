@@ -124,8 +124,7 @@ class XenditController(http.Controller):
                     base_url = "https://bootcamp.vitraining.com"
                 target_url=f"{base_url}{_webhook_url}"
                 _logger.info(f'forward to bootcamp...{target_url}')
-                # forward_token = token or cfg.get("webhook_token")
-                forward_token = 'IZudGHKSJwdEMe2X423uapF3BRVFfjQNiZJJHjWXHdeZChnr'
+                forward_token = token or cfg.get("webhook_token")
                 headers = {"x-callback-token": forward_token} if forward_token else {}
                 headers.update({"Content-Type": "application/json"})
                 _logger.info(f"headers={headers}")
