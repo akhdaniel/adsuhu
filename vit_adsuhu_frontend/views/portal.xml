@@ -5,21 +5,24 @@
     </xpath>
     <div id="portal_client_category" position="inside">
         <t t-call="portal.portal_docs_entry">
-            <t t-set="icon" t-value="'/payment/static/img/payment-methods.svg'"/>
+            <t t-set="icon" t-value="'/web/static/img/placeholder.png'"/>
+            <t t-set="icon_class" t-value="'fa fa-chart-line'"/>
             <t t-set="title">Products Analysis</t>
             <t t-set="text">Manage your Product Analysis and Marketing Campaigns</t>
             <t t-set="url" t-value="'/product_analysis'"/>
             <t t-set="config_card" t-value="True"/>
         </t>
         <t t-call="portal.portal_docs_entry">
-            <t t-set="icon" t-value="'/payment/static/img/payment-methods.svg'"/>
+            <t t-set="icon" t-value="'/web/static/img/placeholder.png'"/>
+            <t t-set="icon_class" t-value="'fa fa-history'"/>
             <t t-set="title">Usage Analysis</t>
             <t t-set="text">View your credit usage history</t>
             <t t-set="url" t-value="'/customer_credits'"/>
             <t t-set="config_card" t-value="True"/>
         </t>
         <t t-call="portal.portal_docs_entry">
-            <t t-set="icon" t-value="'/payment/static/img/payment-methods.svg'"/>
+            <t t-set="icon" t-value="'/web/static/img/placeholder.png'"/>
+            <t t-set="icon_class" t-value="'fa fa-wallet'"/>
             <t t-set="title">Top Up</t>
             <t t-set="text">Top up your credits</t>
             <t t-set="url" t-value="'/customer_credits?topup=1'"/>
