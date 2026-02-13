@@ -40,7 +40,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const packageEl = document.querySelector(".adsuhu-topup-option.active");
         const customWrap = document.querySelector(".adsuhu-topup-custom");
         const customAmountEl = document.getElementById("topup-direct-custom-amount");
-        const customCreditsEl = document.getElementById("topup-direct-custom-credits");
+        const customAmountPreviewEl = document.getElementById("topup-direct-custom-rp");
         const manualEl = document.getElementById("topup-manual-instruction");
         if (errorEl) {
             errorEl.classList.add("d-none");
@@ -60,8 +60,8 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         if (customAmountEl) {
             customAmountEl.value = "";
         }
-        if (customCreditsEl) {
-            customCreditsEl.textContent = "0";
+        if (customAmountPreviewEl) {
+            customAmountPreviewEl.textContent = "Rp 0";
         }
         if (customWrap) {
             const isCustom = packageEl?.dataset?.package === "custom";
@@ -195,13 +195,15 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
     },
     _onCustomAmountInput(event) {
         const input = event.currentTarget;
-        const creditsEl = document.getElementById("topup-direct-custom-credits");
-        if (!creditsEl || !input) {
+        const amountPreviewEl = document.getElementById("topup-direct-custom-rp");
+        if (!amountPreviewEl || !input) {
             return;
         }
         const amount = parseFloat(input.value || "0");
-        const credits = Math.floor((amount / 100000) * 1000);
-        creditsEl.textContent = credits.toLocaleString("en-US");
+        const formattedAmount = Number.isFinite(amount)
+            ? `Rp ${Math.max(0, amount).toLocaleString("en-US")}`
+            : "Rp 0";
+        amountPreviewEl.textContent = formattedAmount;
     },
     _onTopupDirectCloseClick() {
         const modalEl = document.getElementById("topup-direct-modal");
