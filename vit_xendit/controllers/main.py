@@ -117,9 +117,12 @@ class XenditController(http.Controller):
 
         forward_url = payload.get("success_redirect_url") or ""
         _logger.info(f'forward_url={forward_url}')
-        if forward_url.startswith("https://bootcamp.vitraining.com"):
+        if forward_url.startswith("http://bootcamp.vitraining.com") or forward_url.startswith("https://bootcamp.vitraining.com"):
             try:
-                target_url=f"https://bootcamp.vitraining.com{_webhook_url}"
+                base_url = "http://bootcamp.vitraining.com"
+                if forward_url.startswith("https://"):
+                    base_url = "https://bootcamp.vitraining.com"
+                target_url=f"{base_url}{_webhook_url}"
                 _logger.info(f'forward to bootcamp...{target_url}')
                 forward_token = token or cfg.get("webhook_token")
                 headers = {"x-callback-token": forward_token} if forward_token else {}
