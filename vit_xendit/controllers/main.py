@@ -132,7 +132,7 @@ class XenditController(http.Controller):
                 _logger.info(f"payload={payload}")
                 resp = requests.post(
                     target_url,
-                    json=json.dumps(payload),
+                    json=payload,
                     headers=headers,
                     timeout=10,
                 )
