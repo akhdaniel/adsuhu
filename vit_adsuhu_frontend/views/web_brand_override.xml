@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="brand_promotion_message_blank" inherit_id="web.brand_promotion_message">
+    <template name="brand_promotion_message_blank" id="brand_promotion_message_blank" inherit_id="web.brand_promotion_message">
         <xpath expr="." position="replace"/>
     </template>
-    <template id="website_brand_promotion_blank" inherit_id="website.brand_promotion">
+    <template name="website_brand_promotion_blank" id="website_brand_promotion_blank" inherit_id="website.brand_promotion">
         <xpath expr="." position="replace"/>
     </template>
 </odoo>
