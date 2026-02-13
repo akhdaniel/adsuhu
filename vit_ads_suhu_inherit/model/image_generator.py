@@ -73,7 +73,7 @@ class image_generator(models.Model):
             return pricing.get(quality, pricing["medium"]).get(size, 0.034)
 
         params = self.env["ir.config_parameter"].sudo()
-        usd_to_idr = float(params.get_param("image_usd_to_idr", "15000"))
+        usd_to_idr = float(params.get_param("image_usd_to_idr", "17000"))
         image_quality = (params.get_param("image_quality", "medium") or "medium").lower()
         image_size = params.get_param("image_size", "1024x1024") or "1024x1024"
 
