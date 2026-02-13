@@ -380,7 +380,9 @@ class ProductValueAnalysisController(http.Controller):
 
     @http.route('/payment/manual_info', type='json', auth='user', website=True, methods=['POST'])
     def manual_payment_info(self, **kwargs):
-        provider = request.env['payment.provider'].sudo().search([('code', '=', 'custom')], limit=1)
+        provider = request.env['payment.provider'].sudo().search(
+            [('code', '=', 'custom'), ('is_published', '=', True), ('state', '=', 'enabled')], limit=1
+        )
         if not provider or not provider.pending_msg:
             return {"error": "Manual payment instruction not configured."}
         return {"message": provider.pending_msg}
