@@ -253,7 +253,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
                 throw new Error(json.error);
             }
             if (manualEl) {
-                manualEl.innerHTML = json?.message || "No manual payment instructions found.";
+                manualEl.innerHTML = json?.result?.message || "No manual payment instructions found.";
                 manualEl.classList.remove("d-none");
             }
         } catch (err) {
