@@ -51,18 +51,20 @@ def calculate_deepseek_cost(
     total_tokens = input_tokens + output_tokens
     total_cost_idr = 0.0
 
-    if env:
-        usd_currency = env["res.currency"].sudo().search([("name", "=", "USD")], limit=1)
-        idr_currency = env["res.currency"].sudo().search([("name", "=", "IDR")], limit=1)
-        if usd_currency and idr_currency:
-            usd_to_idr = usd_currency._convert(
-                1.0,
-                idr_currency,
-                env.company,
-                fields.Date.today(),
-            )
-            total_cost_idr = total_cost * usd_to_idr
-
+    # if env:
+    #     usd_currency = env["res.currency"].sudo().search([("name", "=", "USD")], limit=1)
+    #     idr_currency = env["res.currency"].sudo().search([("name", "=", "IDR")], limit=1)
+    #     if usd_currency and idr_currency:
+    #         usd_to_idr = usd_currency._convert(
+    #             1.0,
+    #             idr_currency,
+    #             env.company,
+    #             fields.Date.today(),
+    #         )
+    #         total_cost_idr = total_cost * usd_to_idr
+    
+    total_cost_idr = total_cost * 17000
+    
     return {
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
