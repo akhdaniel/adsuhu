@@ -815,8 +815,12 @@
                                                 </div>
 
                                                 <button type="button" class="btn btn-primary mt-3 js-topup-direct-confirm">
-                                                    <i class="fa fa-bolt me-1"></i> Proceed to Pay
+                                                    <i class="fa fa-bolt me-1"></i> Automatic Payment
                                                 </button>
+                                                <button type="button" class="btn btn-outline-secondary mt-3 ms-2 js-topup-manual">
+                                                    <i class="fa fa-info-circle me-1"></i> Manual Payment
+                                                </button>
+                                                <div id="topup-manual-instruction" class="alert alert-info mt-3 d-none" role="alert"></div>
                                             </div>
                                             <div class="ratio ratio-16x9">
                                                 <iframe id="topup-direct-iframe" src="" title="Xendit Payment" frameborder="0"></iframe>

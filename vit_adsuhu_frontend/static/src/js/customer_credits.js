@@ -10,6 +10,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         "click .adsuhu-topup-option": "_onTopupOptionClick",
         "input #topup-direct-custom-amount": "_onCustomAmountInput",
         "click .js-topup-direct-close": "_onTopupDirectCloseClick",
+        "click .js-topup-manual": "_onTopupManualClick",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
@@ -39,6 +40,7 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         const customWrap = document.querySelector(".adsuhu-topup-custom");
         const customAmountEl = document.getElementById("topup-direct-custom-amount");
         const customCreditsEl = document.getElementById("topup-direct-custom-credits");
+        const manualEl = document.getElementById("topup-manual-instruction");
         if (errorEl) {
             errorEl.classList.add("d-none");
             errorEl.textContent = "";
@@ -49,6 +51,10 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
         }
         if (iframeEl) {
             iframeEl.src = "";
+        }
+        if (manualEl) {
+            manualEl.classList.add("d-none");
+            manualEl.innerHTML = "";
         }
         if (customAmountEl) {
             customAmountEl.value = "";
@@ -212,6 +218,57 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
             backdrops.forEach((el) => el.remove());
         }
         this._setTopupOptionsDisabled(false);
+    },
+    async _onTopupManualClick(event) {
+        event.preventDefault();
+        const button = event.currentTarget;
+        if (!button) {
+            return;
+        }
+        const manualEl = document.getElementById("topup-manual-instruction");
+        const modalErrorEl = document.getElementById("topup-direct-modal-error");
+        if (modalErrorEl) {
+            modalErrorEl.classList.add("d-none");
+            modalErrorEl.textContent = "";
+        }
+        button.disabled = true;
+        const originalText = button.innerText;
+        button.innerText = "Loading...";
+        try {
+            const response = await fetch("/payment/manual_info", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": this.csrfToken,
+                },
+                body: JSON.stringify({}),
+                credentials: "same-origin",
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "Failed to load manual payment info.");
+            }
+            const json = await response.json();
+            if (json?.error) {
+                throw new Error(json.error);
+            }
+            if (manualEl) {
+                manualEl.innerHTML = json?.message || "No manual payment instructions found.";
+                manualEl.classList.remove("d-none");
+            }
+        } catch (err) {
+            console.error(err);
+            const message = err.message || "Failed to load manual payment info.";
+            if (modalErrorEl) {
+                modalErrorEl.textContent = message;
+                modalErrorEl.classList.remove("d-none");
+            } else {
+                alert(message);
+            }
+        } finally {
+            button.disabled = false;
+            button.innerText = originalText;
+        }
     },
     _setTopupOptionsDisabled(disabled) {
         const optionButtons = document.querySelectorAll(".adsuhu-topup-option");
