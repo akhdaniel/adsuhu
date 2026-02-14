@@ -1,12 +1,12 @@
 from odoo import fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.addons.vit_ads_suhu_inherit.model.constants import NOT_ENOUGH_CREDIT
 
 TOKENS_PER_CREDIT=1000 # 1 credit = 1000 tokens
 MIN_CREDIT=1000 # Rp
 
 import logging
 _logger = logging.getLogger(__name__)
-
 
 
 def estimate_tokens(text: str) -> int:
@@ -84,7 +84,7 @@ class ProductValueAnalysis(models.Model):
 
     def action_write_with_ai(self):
         if self.partner_id and self.partner_id.customer_limit <= MIN_CREDIT:
-            raise UserError('Not enough credit')
+            raise UserError(NOT_ENOUGH_CREDIT)
         res = super().action_write_with_ai()
 
         result = calculate_deepseek_cost(
@@ -106,7 +106,7 @@ class ProductValueAnalysis(models.Model):
     
     def action_generate(self):
         if self.partner_id and self.partner_id.customer_limit <=MIN_CREDIT:
-            raise UserError('Not enough credit')
+            raise UserError(NOT_ENOUGH_CREDIT)
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
@@ -125,7 +125,7 @@ class MarketMapper(models.Model):
 
     def action_generate(self):
         if self.partner_id and self.partner_id.customer_limit <=MIN_CREDIT:
-            raise UserError('Not enough credit')
+            raise UserError(NOT_ENOUGH_CREDIT)
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
@@ -145,7 +145,7 @@ class AudienceProfiler(models.Model):
 
     def action_generate(self):
         if self.partner_id and self.partner_id.customer_limit <=MIN_CREDIT:
-            raise UserError('Not enough credit')
+            raise UserError(NOT_ENOUGH_CREDIT)
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
@@ -164,7 +164,7 @@ class AngleHook(models.Model):
 
     def action_generate(self):
         if self.partner_id and self.partner_id.customer_limit <=MIN_CREDIT:
-            raise UserError('Not enough credit')
+            raise UserError(NOT_ENOUGH_CREDIT)
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
@@ -183,7 +183,7 @@ class Hook(models.Model):
 
     def action_generate(self):
         if self.partner_id and self.partner_id.customer_limit <=MIN_CREDIT:
-            raise UserError('Not enough credit')
+            raise UserError(NOT_ENOUGH_CREDIT)
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
@@ -203,7 +203,7 @@ class AdsCopy(models.Model):
 
     def action_generate(self):
         if self.partner_id and self.partner_id.customer_limit <=MIN_CREDIT:
-            raise UserError('Not enough credit')
+            raise UserError(NOT_ENOUGH_CREDIT)
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)
@@ -223,7 +223,7 @@ class VideoDirector(models.Model):
 
     def action_generate(self):
         if self.partner_id and self.partner_id.customer_limit <=MIN_CREDIT:
-            raise UserError('Not enough credit')
+            raise UserError(NOT_ENOUGH_CREDIT)
         res = super().action_generate()
 
         result = calculate_deepseek_cost(self.input, self.output, cache_hit=False, env=self.env)

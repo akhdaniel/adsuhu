@@ -61,7 +61,7 @@
                                     Credit Balance:
                                     <strong><t t-esc="'%.2f' % (request.env.user.partner_id.customer_limit or 0.0)"/></strong>
                                 </span>
-                                <a href="/customer_credits?topup=1" class="btn btn-secondary btn-sm">
+                                <a href="/customer_credits?topup=1" class="btn btn-success btn-sm">
                                     <i class="fa fa-bolt me-1"></i> Top Up
                                 </a>
                             </div>

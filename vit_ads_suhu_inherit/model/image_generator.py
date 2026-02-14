@@ -3,6 +3,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+from odoo.addons.vit_ads_suhu_inherit.model.constants import NOT_ENOUGH_CREDIT
 import time
 import logging
 _logger = logging.getLogger(__name__)
@@ -11,7 +12,6 @@ from .libs.fal import Fal
 import requests
 import base64
 import json 
-import math
 
 DEFAULT_SPECIFIC_INSTRUCTION = "Langsung Create PNG image, ratio 1:1. Jangan terlalu banyak text, pilih yang paling kuat dari primary text, hook library, dan angle library."
 
@@ -85,7 +85,7 @@ class image_generator(models.Model):
         resale_cost_idr = total_cost_idr * generate_image_margin  # 200% margin
         credits_used = resale_cost_idr # Rp // int(math.ceil(resale_cost_idr / 100.0))
         if self.partner_id and (self.partner_id.customer_limit or 0) < credits_used:
-            raise UserError('Not enough credit')
+            raise UserError(NOT_ENOUGH_CREDIT)
 
         fal_api_key = self.env["ir.config_parameter"].sudo().get_param("fal_api_key")
         fal = Fal(api_key=fal_api_key)
