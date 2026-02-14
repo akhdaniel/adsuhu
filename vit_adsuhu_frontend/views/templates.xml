@@ -848,6 +848,7 @@
                                     <tr>
                                         <th>Date</th>
                                         <th>Description</th>
+                                        <th>Ref</th>
                                         <th class="text-end">Credit</th>
                                         <th>Status</th>
                                     </tr>
@@ -859,7 +860,8 @@
                                                 <span t-field="credit.date_time" t-options='{"widget": "datetime"}'></span>
                                             </td>
                                             <td><t t-esc="credit.name"/></td>
-                                            <td class="text-end"><t t-esc="credit.credit"/></td>
+                                            <td><t t-esc="credit.ref or '-'"/></td>
+                                            <td class="text-end"><t t-esc="'%.2f' % (credit.credit or 0.0)"/></td>
                                             <td>
                                                 <t t-if="credit.is_usage">Usage</t>
                                                 <t t-else="">Topup</t>
@@ -868,7 +870,7 @@
                                     </t>
                                     <t t-if="not credits">
                                         <tr>
-                                            <td colspan="4" class="text-center text-muted py-4">
+                                            <td colspan="5" class="text-center text-muted py-4">
                                                 No credit transactions yet.
                                             </td>
                                         </tr>
