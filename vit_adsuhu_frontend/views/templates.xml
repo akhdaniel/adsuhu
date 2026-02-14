@@ -56,6 +56,15 @@
                             <p class="text-muted">
                                 Created on <span t-field="analysis.create_date" t-options='{"widget": "date"}'></span>
                             </p>
+                            <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mb-2">
+                                <span class="text-muted">
+                                    Credit Balance:
+                                    <strong><t t-esc="'%.2f' % (request.env.user.partner_id.customer_limit or 0.0)"/></strong>
+                                </span>
+                                <a href="/customer_credits?topup=1" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-bolt me-1"></i> Top Up
+                                </a>
+                            </div>
                             <a href="/product_analysis" class="btn btn-secondary mt-2">
                                 <i class="fa fa-arrow-left"></i> Back
                             </a>
