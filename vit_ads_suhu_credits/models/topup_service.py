@@ -94,7 +94,7 @@ class TopupService(models.AbstractModel):
                 f"Failed to create topup log for partner {partner.name}: {str(e)}"
             )
 
-    def create_usage_credit(self, partner, name=None, credit=1):
+    def create_usage_credit(self, partner, name=None, credit=1, cost=0):
         if not partner:
             _logger.warning("Usage credit skipped: missing partner.")
             return
@@ -104,6 +104,7 @@ class TopupService(models.AbstractModel):
                 'customer_id': partner.id,
                 'ref': f'{usage_name}',
                 'credit': credit,
+                'cost': cost,
                 'is_usage': True,
                 'date_time': fields.Datetime.now(),
                 'state':'done'
