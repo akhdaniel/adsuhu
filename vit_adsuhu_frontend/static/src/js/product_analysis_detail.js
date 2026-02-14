@@ -350,7 +350,7 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             const json = await response.json();
             const status = json?.result?.status || "idle";
             if (status === "failed") {
-                throw new Error(json?.error || "Regenerate failed.");
+                throw new Error(json?.result?.error || "Regenerate failed.");
             }
             console.log('status', status )
             if (status === "done") {

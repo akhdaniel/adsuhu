@@ -91,7 +91,7 @@ class ProductValueAnalysisController(http.Controller):
         self._run_background("vit.product_value_analysis", analysis.id, lambda rec: rec.action_write_with_ai())
         return {"status": "processing"}
 
-        
+        '''
         analysis.write({"status": "processing", "error_message": False})
         try:
             analysis.action_write_with_ai()
@@ -116,6 +116,7 @@ class ProductValueAnalysisController(http.Controller):
             'target_section':'features',
             'next_step':'product_value_analysis'
         }]
+        '''
 
     def _build_result(self, regenerate_type, record):
         _logger.info(f"regenerate_type={regenerate_type} record={record}")
