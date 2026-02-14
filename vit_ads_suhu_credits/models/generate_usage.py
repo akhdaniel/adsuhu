@@ -63,8 +63,8 @@ def calculate_deepseek_cost(
     #         )
     #         total_cost_idr = total_cost * usd_to_idr
     
-    generate_text_margin = 5 #syste params
-    total_cost_idr = total_cost * 17000
+    generate_text_margin = 10 #syste params
+    total_cost_idr = total_cost * 17000 #syste params
     total_sale_idr = generate_text_margin * total_cost * 17000
     
     return {
