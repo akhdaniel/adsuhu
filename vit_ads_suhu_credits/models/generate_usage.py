@@ -63,7 +63,7 @@ def calculate_deepseek_cost(
     #         )
     #         total_cost_idr = total_cost * usd_to_idr
     
-    total_cost_idr = 3 * total_cost * 17000
+    total_cost_idr = 4 * total_cost * 17000
     
     return {
         "input_tokens": input_tokens,
