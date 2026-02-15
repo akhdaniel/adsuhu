@@ -51,6 +51,7 @@
 		"view/image_generator.xml",
 		"view/video_director.xml",
 		"view/category.xml",
+		"view/customer_credit.xml",
   
 	],
 	"installable": True,

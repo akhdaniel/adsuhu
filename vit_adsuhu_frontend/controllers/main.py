@@ -1,4 +1,4 @@
-from odoo import http, api
+from odoo import http, api, fields
 from odoo.http import request
 from markupsafe import Markup
 import markdown
@@ -7,6 +7,8 @@ import threading
 import odoo
 import logging
 import time
+import json
+import base64
 import psycopg2
 simulation = True
 _logger = logging.getLogger(__name__)
@@ -354,7 +356,7 @@ class ProductValueAnalysisController(http.Controller):
     def customer_credits(self, page=1, **kwargs):
         credit_obj = request.env['vit.customer_credit'].sudo()
         partner = request.env.user.partner_id
-        domain = [('customer_id', '=', partner.id), ('state', '=', 'done')]
+        domain = [('customer_id', '=', partner.id)]
 
         per_page = 20
         total = credit_obj.search_count(domain)
@@ -387,6 +389,72 @@ class ProductValueAnalysisController(http.Controller):
         if not provider or not provider.pending_msg:
             return {"error": "Manual payment instruction not configured."}
         return {"message": provider.pending_msg}
+
+    @http.route('/payment/manual_submit', type='http', auth='user', website=True, methods=['POST'])
+    def manual_payment_submit(self, **post):
+        package = (post.get('package') or '').strip()
+        amount_raw = (post.get('amount') or post.get('custom_amount') or '').strip()
+        partner = request.env.user.partner_id
+        proof_file = request.httprequest.files.get('transfer_proof')
+
+        if not partner:
+            return request.make_response(
+                json.dumps({"error": "Partner not found."}),
+                headers=[('Content-Type', 'application/json')],
+                status=400,
+            )
+
+        if not proof_file:
+            return request.make_response(
+                json.dumps({"error": "Transfer proof file is required."}),
+                headers=[('Content-Type', 'application/json')],
+                status=400,
+            )
+
+        predefined_packages = {
+            "100000": {"amount": 100000.0},
+            "200000": {"amount": 200000.0},
+            "500000": {"amount": 500000.0},
+        }
+
+        try:
+            if package in predefined_packages:
+                amount = predefined_packages[package]["amount"]
+            else:
+                amount = float(amount_raw or 0)
+            if amount <= 0:
+                raise ValueError("amount must be positive")
+        except Exception:
+            return request.make_response(
+                json.dumps({"error": "Invalid top up amount."}),
+                headers=[('Content-Type', 'application/json')],
+                status=400,
+            )
+
+        proof_content = proof_file.read()
+        if not proof_content:
+            return request.make_response(
+                json.dumps({"error": "Transfer proof file is empty."}),
+                headers=[('Content-Type', 'application/json')],
+                status=400,
+            )
+
+        credit = request.env['vit.customer_credit'].sudo().create({
+            'customer_id': partner.id,
+            'ref': 'Manual transfer - pending verification',
+            'credit': amount,
+            'is_usage': False,
+            'date_time': fields.Datetime.now(),
+            'state': 'draft',
+            'transfer_proof': base64.b64encode(proof_content).decode(),
+            'transfer_proof_filename': proof_file.filename or 'transfer_proof',
+        })
+
+        return request.make_response(
+            json.dumps({"success": True, "id": credit.id}),
+            headers=[('Content-Type', 'application/json')],
+            status=200,
+        )
 
     @http.route('/product_analysis/submit', type='http', auth='user', website=True, methods=['POST'])
     def submit(self, **post):

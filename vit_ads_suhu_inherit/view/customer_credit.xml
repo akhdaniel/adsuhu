@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_vit_customer_credit_tree_inherit_ads_suhu" model="ir.ui.view">
+            <field name="name">vit.customer.credit.tree.inherit.ads.suhu</field>
+            <field name="model">vit.customer_credit</field>
+            <field name="inherit_id" ref="vit_ads_suhu.view_vit_customer_credit_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//list/field[@name='ref']" position="after">
+                    <field name="transfer_proof_filename"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_vit_customer_credit_form_inherit_ads_suhu" model="ir.ui.view">
+            <field name="name">vit.customer.credit.form.inherit.ads.suhu</field>
+            <field name="model">vit.customer_credit</field>
+            <field name="inherit_id" ref="vit_ads_suhu.view_vit_customer_credit_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/field[@name='ref']" position="after">
+                    <field name="transfer_proof" filename="transfer_proof_filename"/>
+                    <field name="transfer_proof_filename" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

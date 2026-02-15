@@ -826,6 +826,13 @@
                                                     <i class="fa fa-info-circle me-1"></i> Manual Payment
                                                 </button>
                                                 <div id="topup-manual-instruction" class="alert alert-info mt-3 d-none" role="alert"></div>
+                                                <div id="topup-manual-upload" class="mt-3 d-none">
+                                                    <label for="topup-transfer-proof" class="form-label fw-semibold">Upload Bukti Transfer</label>
+                                                    <input id="topup-transfer-proof" type="file" class="form-control" accept="image/*,.pdf"/>
+                                                    <button type="button" class="btn btn-success mt-3 js-topup-manual-submit">
+                                                        <i class="fa fa-check me-1"></i> Payment Transferred
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div class="ratio ratio-16x9">
                                                 <iframe id="topup-direct-iframe" src="" title="Xendit Payment" frameborder="0"></iframe>
@@ -859,7 +866,8 @@
                                         <th>Description</th>
                                         <th>Ref</th>
                                         <th class="text-end">Credit</th>
-                                        <th>Status</th>
+                                        <th>Type</th>
+                                        <th>Payment Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -875,11 +883,15 @@
                                                 <t t-if="credit.is_usage">Usage</t>
                                                 <t t-else="">Topup</t>
                                             </td>
+                                            <td>
+                                                <t t-if="credit.state == 'draft'">Pending Verification</t>
+                                                <t t-else="">Confirmed</t>
+                                            </td>
                                         </tr>
                                     </t>
                                     <t t-if="not credits">
                                         <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">
+                                            <td colspan="6" class="text-center text-muted py-4">
                                                 No credit transactions yet.
                                             </td>
                                         </tr>
