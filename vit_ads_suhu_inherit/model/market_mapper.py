@@ -171,7 +171,8 @@ REQUIRED JSON OUTPUT FORMAT:
         "name": "...",
         "reason": "...",
         "prioritas_value": ""
-      }
+      },
+      {... more priority segments as needed ...}
     ],
 
     "channel_and_touchpoint": {
