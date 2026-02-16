@@ -347,7 +347,9 @@ publicWidget.registry.AdsuhuTopupDirect = publicWidget.Widget.extend({
             if (!response.ok || json?.error) {
                 throw new Error(json?.error || "Failed to submit manual payment.");
             }
-            window.location.reload();
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.delete("topup");
+            window.location.replace(nextUrl.toString());
         } catch (err) {
             console.error(err);
             const message = err.message || "Failed to submit manual payment.";
