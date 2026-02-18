@@ -150,6 +150,18 @@ class ProductValueAnalysisController(http.Controller):
             "missing": missing,
         }
 
+    def _facebook_me_payload(self, user_token):
+        response, data = self._facebook_graph_get(
+            "/me",
+            {
+                "access_token": user_token,
+                "fields": "id,name",
+            },
+        )
+        if response.status_code >= 400 or data.get("error"):
+            return {}
+        return {"id": data.get("id"), "name": data.get("name")}
+
     def _get_facebook_page_token(self, user_token, page_id):
         response, data = self._facebook_graph_get(
             "/me/accounts",
@@ -561,15 +573,24 @@ window.close();
             pages = self._facebook_pages_payload(user_token)
             if not pages:
                 permission_info = self._facebook_permissions_payload(user_token)
+                me_info = self._facebook_me_payload(user_token)
                 missing = permission_info.get("missing") or []
                 message = "Tidak ada Facebook Page yang bisa diakses akun ini."
                 if missing:
                     message = f"{message} Missing permissions: {', '.join(missing)}"
+                elif permission_info.get("granted"):
+                    message = (
+                        f"{message} Granted permissions: {', '.join(permission_info.get('granted') or [])}. "
+                        "Cek apakah akun ini punya akses task/admin ke Page di Business Suite."
+                    )
+                if me_info.get("id"):
+                    message = f"{message} (Logged as: {me_info.get('name') or '-'} / {me_info.get('id')})"
                 return {
                     "auth_required": False,
                     "pages": [],
                     "error": message,
                     "permission_info": permission_info,
+                    "me": me_info,
                 }
             return {"auth_required": False, "pages": pages}
         except Exception as exc:
