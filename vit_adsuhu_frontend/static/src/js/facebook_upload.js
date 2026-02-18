@@ -51,6 +51,12 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
 
         if (this.modalEl && window.bootstrap?.Modal) {
             window.bootstrap.Modal.getOrCreateInstance(this.modalEl).show();
+        } else if (this.modalEl) {
+            this.modalEl.classList.add("show");
+            this.modalEl.style.display = "block";
+            this.modalEl.setAttribute("aria-modal", "true");
+            this.modalEl.removeAttribute("aria-hidden");
+            document.body.classList.add("modal-open");
         }
 
         await this._loadFacebookPages();
@@ -75,16 +81,29 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
             }
             const json = await response.json();
             if (json?.auth_required) {
+                if (json?.auth_url) {
+                    const popupAuthUrl = this._withPopupParam(json.auth_url);
+                    const ok = await this._openFacebookAuthPopup(popupAuthUrl);
+                    if (ok) {
+                        await this._loadFacebookPages();
+                    }
+                    return;
+                }
                 this._showAuthPrompt(json.auth_url);
-                this._showAlert("Login Facebook dulu untuk lanjut upload.", "warning");
+                this._showAlert(
+                    json?.reason === "no_pages"
+                        ? "Belum ada Page terdeteksi. Login ulang Facebook lalu pilih akun yang punya Page."
+                        : "Login Facebook dulu untuk lanjut upload.",
+                    "warning"
+                );
                 this._setSubmitDisabled(true);
                 return;
             }
             const pages = json?.pages || [];
             this._populatePageSelect(pages);
             if (!pages.length) {
-                this._showAlert("Akun ini belum punya Facebook Page yang bisa di-manage.", "warning");
-                this._setSubmitDisabled(true);
+                const reloginUrl = `/facebook/oauth/start?force_login=1&next=${encodeURIComponent(this._getReturnUrl())}`;
+                window.location.href = reloginUrl;
                 return;
             }
             this._hideAuthPrompt();
@@ -130,7 +149,11 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
             }
             const json = await response.json();
             if (json?.auth_required && json?.auth_url) {
-                window.location.href = json.auth_url;
+                const popupAuthUrl = this._withPopupParam(json.auth_url);
+                const ok = await this._openFacebookAuthPopup(popupAuthUrl);
+                if (ok) {
+                    await this._loadFacebookPages();
+                }
                 return;
             }
             if (json?.error) {
@@ -151,6 +174,73 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     },
     _getReturnUrl() {
         return `${window.location.pathname}${window.location.search}`;
+    },
+    _withPopupParam(url) {
+        const parsed = new URL(url, window.location.origin);
+        parsed.searchParams.set("popup", "1");
+        return parsed.pathname + parsed.search;
+    },
+    async _openFacebookAuthPopup(authUrl) {
+        const popup = window.open(
+            authUrl,
+            "facebook_oauth_popup",
+            "width=600,height=760,menubar=no,toolbar=no,status=no"
+        );
+        if (!popup) {
+            window.location.href = authUrl;
+            return false;
+        }
+
+        this._showAlert("Silakan login Facebook di popup.", "info");
+        return new Promise((resolve) => {
+            let resolved = false;
+            const cleanup = () => {
+                window.removeEventListener("message", onMessage);
+                clearInterval(closedPoll);
+            };
+            const finish = (value) => {
+                if (resolved) {
+                    return;
+                }
+                resolved = true;
+                cleanup();
+                resolve(value);
+            };
+            const onMessage = (event) => {
+                if (event.origin !== window.location.origin) {
+                    return;
+                }
+                const data = event.data || {};
+                if (data.type !== "facebook_oauth_result") {
+                    return;
+                }
+                if (data.success) {
+                    this._showAlert("Facebook connected. Memuat daftar Page...", "success");
+                    finish(true);
+                } else {
+                    this._showAlert(data.error || "Facebook login gagal.", "danger");
+                    finish(false);
+                }
+            };
+            window.addEventListener("message", onMessage);
+
+            const closedPoll = setInterval(() => {
+                let isClosed = false;
+                try {
+                    isClosed = !!popup.closed;
+                } catch (error) {
+                    // Cross-origin popup can throw while on facebook.com; ignore and keep waiting.
+                    return;
+                }
+                if (isClosed) {
+                    clearInterval(closedPoll);
+                    if (!resolved) {
+                        this._showAlert("Popup login Facebook ditutup.", "warning");
+                        finish(false);
+                    }
+                }
+            }, 400);
+        });
     },
     _setSubmitDisabled(disabled, text) {
         if (!this.submitBtn) {
