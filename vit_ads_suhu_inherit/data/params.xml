@@ -22,9 +22,25 @@
         <field name="key">deepseek_base_url</field>
         <field name="value">https://api.deepseek.com/v1</field>
     </record>
+    <record id="openai_base_url" model="ir.config_parameter">
+        <field name="key">openai_base_url</field>
+        <field name="value">https://api.openai.com/v1</field>
+    </record>
     <record id="fal_api_key" model="ir.config_parameter">
         <field name="key">fal_api_key</field>
         <field name="value">...</field>
+    </record>
+    <record id="image_usd_to_idr" model="ir.config_parameter">
+        <field name="key">image_usd_to_idr</field>
+        <field name="value">17000</field>
+    </record>
+    <record id="image_quality" model="ir.config_parameter">
+        <field name="key">image_quality</field>
+        <field name="value">high</field>
+    </record>
+    <record id="image_size" model="ir.config_parameter">
+        <field name="key">image_size</field>
+        <field name="value">1024x1024</field>
     </record>
     <record id="linkedin_access_token" model="ir.config_parameter">
         <field name="key">linkedin_access_token</field>
@@ -41,6 +57,10 @@
     <record id="linkedin_redirect_uri" model="ir.config_parameter">
         <field name="key">linkedin_redirect_uri</field>
         <field name="value">https://yourapp.example.com/linkedin/callback</field>
+    </record>
+    <record id="linkedin_oauth_state" model="ir.config_parameter">
+        <field name="key">linkedin_oauth_state</field>
+        <field name="value">change-me-random-state</field>
     </record>
     <record id="linkedin_refresh_token" model="ir.config_parameter">
         <field name="key">linkedin_refresh_token</field>
@@ -61,6 +81,22 @@
     <record id="facebook_page_id" model="ir.config_parameter">
         <field name="key">facebook_page_id</field>
         <field name="value">1234567890</field>
+    </record>
+    <record id="facebook_client_id" model="ir.config_parameter">
+        <field name="key">facebook_client_id</field>
+        <field name="value">...</field>
+    </record>
+    <record id="facebook_client_secret" model="ir.config_parameter">
+        <field name="key">facebook_client_secret</field>
+        <field name="value">...</field>
+    </record>
+    <record id="facebook_redirect_uri" model="ir.config_parameter">
+        <field name="key">facebook_redirect_uri</field>
+        <field name="value">https://yourapp.example.com/facebook/oauth/callback</field>
+    </record>
+    <record id="facebook_graph_version" model="ir.config_parameter">
+        <field name="key">facebook_graph_version</field>
+        <field name="value">v19.0</field>
     </record>
     <record id="instagram_access_token" model="ir.config_parameter">
         <field name="key">instagram_access_token</field>

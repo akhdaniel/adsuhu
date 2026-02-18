@@ -679,7 +679,10 @@
                                                                     <div class="col-md-6 gap-2 mb-2" t-foreach="img.image_variant_ids" t-as="iv">
                                                                         <a t-att-href="iv.image_url" target="_new">
                                                                             <img t-att-src="iv.image_url_512" class="img-fluid"/>
-                                                                        </a>                                                                        
+                                                                        </a>
+                                                                        <button class="btn btn-primary btn-sm mt-2 js-upload-facebook" t-att-data-image-url="iv.image_url">
+                                                                            <i class="fa fa-facebook me-1"></i> Upload to Facebook Page
+                                                                        </button>
                                                                     </div>
 
                                                                     <div class="col-md-6 gap-2 mb-2" id="generating_image" style="background-color: #eee; display:none">
@@ -768,6 +771,43 @@
                                 </t>
                             </div>
 
+                        </div>
+                    </div>
+                </div>
+
+                <div id="facebook-upload-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Upload to Facebook Page</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="facebook-upload-alert" class="alert d-none" role="alert"></div>
+                                <div class="mb-3">
+                                    <img id="facebook-upload-preview" src="" class="img-fluid rounded" alt="Image preview" style="max-height: 280px;"/>
+                                </div>
+                                <div id="facebook-upload-auth-wrap" class="alert alert-warning d-none" role="alert">
+                                    Facebook belum terkoneksi.
+                                    <a id="facebook-upload-auth-link" href="#" class="btn btn-sm btn-primary ms-2">Login with Facebook</a>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="facebook-upload-page-select" class="form-label">Facebook Page</label>
+                                    <select id="facebook-upload-page-select" class="form-select">
+                                        <option value="">Select Facebook Page</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="facebook-upload-caption" class="form-label">Caption</label>
+                                    <textarea id="facebook-upload-caption" class="form-control" rows="4" placeholder="Tulis caption untuk post Facebook..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary js-facebook-upload-submit">
+                                    <i class="fa fa-send me-1"></i> Post to Facebook
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

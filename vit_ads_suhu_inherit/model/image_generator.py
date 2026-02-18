@@ -113,6 +113,7 @@ class image_generator(models.Model):
             self.partner_id,
             name=f"image_generation:{self.id}",
             credit=-credits_used,
+            cost=-total_cost_idr,
         )
 
     lang_id = fields.Many2one(comodel_name="res.lang", related="ads_copy_id.product_value_analysis_id.lang_id")

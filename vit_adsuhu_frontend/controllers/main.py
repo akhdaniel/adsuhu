@@ -10,10 +10,152 @@ import time
 import json
 import base64
 import psycopg2
+import requests
+import secrets
+from urllib.parse import urlencode, urlparse, urlunparse, parse_qsl
 simulation = True
 _logger = logging.getLogger(__name__)
 
 class ProductValueAnalysisController(http.Controller):
+    FACEBOOK_TIMEOUT = 20
+    FACEBOOK_GRAPH_VERSION = "v19.0"
+
+    def _append_query_params(self, url, params):
+        parsed = urlparse(url or "")
+        existing = dict(parse_qsl(parsed.query, keep_blank_values=True))
+        existing.update({k: v for k, v in (params or {}).items() if v is not None})
+        new_query = urlencode(existing)
+        return urlunparse((parsed.scheme, parsed.netloc, parsed.path, parsed.params, new_query, parsed.fragment))
+
+    def _safe_local_url(self, value, fallback="/product_analysis"):
+        if not value:
+            return fallback
+        parsed = urlparse(value)
+        if parsed.scheme or parsed.netloc:
+            return fallback
+        path = parsed.path or fallback
+        if not path.startswith("/"):
+            path = f"/{path}"
+        return urlunparse(("", "", path, "", parsed.query, parsed.fragment))
+
+    def _facebook_config(self):
+        params = request.env["ir.config_parameter"].sudo()
+        base_url = (params.get_param("web.base.url") or "").rstrip("/")
+        redirect_uri = params.get_param("facebook_redirect_uri")
+        if not redirect_uri and base_url:
+            redirect_uri = f"{base_url}/facebook/oauth/callback"
+        return {
+            "client_id": params.get_param("facebook_client_id"),
+            "client_secret": params.get_param("facebook_client_secret"),
+            "redirect_uri": redirect_uri,
+            "graph_version": params.get_param("facebook_graph_version") or self.FACEBOOK_GRAPH_VERSION,
+        }
+
+    def _facebook_user_token_key(self, uid):
+        return f"facebook_user_access_token_{uid}"
+
+    def _facebook_user_token_expiry_key(self, uid):
+        return f"facebook_user_access_token_expiry_{uid}"
+
+    def _clear_user_facebook_token(self, uid):
+        params = request.env["ir.config_parameter"].sudo()
+        params.set_param(self._facebook_user_token_key(uid), "")
+        params.set_param(self._facebook_user_token_expiry_key(uid), "")
+
+    def _get_user_facebook_token(self, uid):
+        params = request.env["ir.config_parameter"].sudo()
+        token = params.get_param(self._facebook_user_token_key(uid))
+        if not token:
+            return None
+        expiry_raw = params.get_param(self._facebook_user_token_expiry_key(uid))
+        if expiry_raw:
+            try:
+                if int(expiry_raw) <= int(time.time()):
+                    self._clear_user_facebook_token(uid)
+                    return None
+            except Exception:
+                pass
+        return token
+
+    def _facebook_graph_get(self, path, query=None):
+        cfg = self._facebook_config()
+        graph_version = cfg["graph_version"]
+        url = f"https://graph.facebook.com/{graph_version}/{path.lstrip('/')}"
+        response = requests.get(url, params=query or {}, timeout=self.FACEBOOK_TIMEOUT)
+        try:
+            data = response.json()
+        except Exception:
+            data = {"error": {"message": response.text or "Unknown Facebook error"}}
+        return response, data
+
+    def _facebook_graph_post(self, path, payload=None):
+        cfg = self._facebook_config()
+        graph_version = cfg["graph_version"]
+        url = f"https://graph.facebook.com/{graph_version}/{path.lstrip('/')}"
+        response = requests.post(url, data=payload or {}, timeout=self.FACEBOOK_TIMEOUT)
+        try:
+            data = response.json()
+        except Exception:
+            data = {"error": {"message": response.text or "Unknown Facebook error"}}
+        return response, data
+
+    def _facebook_error_message(self, data, fallback="Facebook request failed."):
+        if isinstance(data, dict):
+            err = data.get("error")
+            if isinstance(err, dict):
+                return err.get("message") or fallback
+        return fallback
+
+    def _is_facebook_token_invalid(self, data):
+        if not isinstance(data, dict):
+            return False
+        err = data.get("error")
+        if not isinstance(err, dict):
+            return False
+        code = err.get("code")
+        subcode = err.get("error_subcode")
+        return code in (190, 102) or subcode in (463, 467)
+
+    def _facebook_pages_payload(self, user_token):
+        response, data = self._facebook_graph_get(
+            "/me/accounts",
+            {
+                "access_token": user_token,
+                "fields": "id,name,category",
+            },
+        )
+        if response.status_code >= 400 or data.get("error"):
+            raise ValueError(self._facebook_error_message(data, "Failed to fetch Facebook pages."))
+        pages = data.get("data") or []
+        return [{"id": p.get("id"), "name": p.get("name"), "category": p.get("category")} for p in pages if p.get("id")]
+
+    def _get_facebook_page_token(self, user_token, page_id):
+        response, data = self._facebook_graph_get(
+            "/me/accounts",
+            {
+                "access_token": user_token,
+                "fields": "id,access_token",
+            },
+        )
+        if response.status_code >= 400 or data.get("error"):
+            raise ValueError(self._facebook_error_message(data, "Failed to get Facebook page token."))
+        token = None
+        for page in data.get("data") or []:
+            if str(page.get("id")) == str(page_id):
+                token = page.get("access_token")
+                break
+        if not token:
+            raise ValueError("Facebook page token not found.")
+        return token
+
+    def _facebook_auth_required_payload(self, return_url):
+        safe_return = self._safe_local_url(return_url, "/product_analysis")
+        auth_url = self._append_query_params("/facebook/oauth/start", {"next": safe_return})
+        return {
+            "auth_required": True,
+            "auth_url": auth_url,
+        }
+
     def _clear_record_output(self, record, fieldname=None):
         vals = {}
 
@@ -253,11 +395,138 @@ class ProductValueAnalysisController(http.Controller):
                 "output_html": f"""<a href="{iv.image_url}" target="_new">
     <img src='{iv.image_url_512}' class='img-fluid'/>
 </a>
+<button class="btn btn-primary btn-sm mt-2 js-upload-facebook" data-image-url="{iv.image_url}">
+    <i class="fa fa-facebook me-1"></i> Upload to Facebook Page
+</button>
 """,
                 "clear_url": f"/image_generator/{record.id}/clear",
                 "record_id": record.id
             } for iv in record.image_variant_ids[-1]]
         return []
+
+    @http.route('/facebook/oauth/start', type='http', auth='user', website=True)
+    def facebook_oauth_start(self, **kwargs):
+        cfg = self._facebook_config()
+        if not cfg["client_id"] or not cfg["client_secret"] or not cfg["redirect_uri"]:
+            return request.make_response("Facebook OAuth is not configured.", status=500)
+
+        next_url = self._safe_local_url(kwargs.get("next"), "/product_analysis")
+        state = secrets.token_urlsafe(24)
+        request.session["facebook_oauth_state"] = state
+        request.session["facebook_oauth_next"] = next_url
+
+        auth_params = {
+            "client_id": cfg["client_id"],
+            "redirect_uri": cfg["redirect_uri"],
+            "state": state,
+            "scope": "pages_show_list,pages_manage_posts,pages_read_engagement",
+            "response_type": "code",
+        }
+        auth_url = f"https://www.facebook.com/{cfg['graph_version']}/dialog/oauth?{urlencode(auth_params)}"
+        return request.redirect(auth_url)
+
+    @http.route('/facebook/oauth/callback', type='http', auth='user', website=True, csrf=False)
+    def facebook_oauth_callback(self, **kwargs):
+        cfg = self._facebook_config()
+        redirect_target = self._safe_local_url(request.session.pop("facebook_oauth_next", "/product_analysis"))
+        received_state = kwargs.get("state")
+        expected_state = request.session.pop("facebook_oauth_state", None)
+        if not expected_state or expected_state != received_state:
+            return request.redirect(self._append_query_params(redirect_target, {"fb_error": "invalid_state"}))
+
+        if kwargs.get("error"):
+            return request.redirect(
+                self._append_query_params(
+                    redirect_target,
+                    {"fb_error": kwargs.get("error_description") or kwargs.get("error")},
+                )
+            )
+
+        code = kwargs.get("code")
+        if not code:
+            return request.redirect(self._append_query_params(redirect_target, {"fb_error": "missing_code"}))
+
+        try:
+            response = requests.get(
+                f"https://graph.facebook.com/{cfg['graph_version']}/oauth/access_token",
+                params={
+                    "client_id": cfg["client_id"],
+                    "client_secret": cfg["client_secret"],
+                    "redirect_uri": cfg["redirect_uri"],
+                    "code": code,
+                },
+                timeout=self.FACEBOOK_TIMEOUT,
+            )
+            data = response.json()
+        except Exception as exc:
+            _logger.exception("Facebook token exchange failed")
+            return request.redirect(self._append_query_params(redirect_target, {"fb_error": str(exc)}))
+
+        if response.status_code >= 400 or data.get("error"):
+            message = self._facebook_error_message(data, "Facebook token exchange failed.")
+            return request.redirect(self._append_query_params(redirect_target, {"fb_error": message}))
+
+        access_token = data.get("access_token")
+        if not access_token:
+            return request.redirect(self._append_query_params(redirect_target, {"fb_error": "missing_access_token"}))
+
+        params = request.env["ir.config_parameter"].sudo()
+        uid = request.env.uid
+        params.set_param(self._facebook_user_token_key(uid), access_token)
+        expires_in = int(data.get("expires_in") or 0)
+        if expires_in > 0:
+            params.set_param(self._facebook_user_token_expiry_key(uid), str(int(time.time()) + expires_in))
+        else:
+            params.set_param(self._facebook_user_token_expiry_key(uid), "")
+
+        return request.redirect(self._append_query_params(redirect_target, {"fb_connected": "1"}))
+
+    @http.route('/facebook/pages', type='json', auth='user', website=True, methods=['POST'])
+    def facebook_pages(self, return_url=None, **kwargs):
+        user_token = self._get_user_facebook_token(request.env.uid)
+        if not user_token:
+            return self._facebook_auth_required_payload(return_url)
+        try:
+            pages = self._facebook_pages_payload(user_token)
+            return {"auth_required": False, "pages": pages}
+        except Exception as exc:
+            _logger.warning("Failed to fetch Facebook pages: %s", exc)
+            self._clear_user_facebook_token(request.env.uid)
+            return self._facebook_auth_required_payload(return_url)
+
+    @http.route('/facebook/post_image', type='json', auth='user', website=True, methods=['POST'])
+    def facebook_post_image(self, image_url=None, page_id=None, message=None, return_url=None, **kwargs):
+        image_url = (image_url or "").strip()
+        page_id = (page_id or "").strip()
+        message = (message or "").strip()
+        if not image_url:
+            return {"error": "Image URL is required."}
+        if not page_id:
+            return {"error": "Facebook Page is required."}
+
+        user_token = self._get_user_facebook_token(request.env.uid)
+        if not user_token:
+            return self._facebook_auth_required_payload(return_url)
+
+        try:
+            page_token = self._get_facebook_page_token(user_token, page_id)
+            response, data = self._facebook_graph_post(
+                f"/{page_id}/photos",
+                {
+                    "access_token": page_token,
+                    "url": image_url,
+                    "caption": message,
+                },
+            )
+            if response.status_code >= 400 or data.get("error"):
+                if self._is_facebook_token_invalid(data):
+                    self._clear_user_facebook_token(request.env.uid)
+                    return self._facebook_auth_required_payload(return_url)
+                return {"error": self._facebook_error_message(data, "Failed to post image to Facebook.")}
+            return {"success": True, "post_id": data.get("post_id") or data.get("id")}
+        except Exception as exc:
+            _logger.exception("Facebook page post failed")
+            return {"error": str(exc) or "Failed to post image to Facebook."}
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/clear/<fieldname>', type='json', auth='user', website=True, methods=['POST'])
     def clear_product_analysis(self, analysis, fieldname, **kwargs):
