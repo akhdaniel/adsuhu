@@ -636,6 +636,57 @@ window.close();
             _logger.exception("Facebook page post failed")
             return {"error": str(exc) or "Failed to post image to Facebook."}
 
+    @http.route('/facebook/debug_accounts', type='json', auth='user', website=True, methods=['POST'])
+    def facebook_debug_accounts(self, **kwargs):
+        user_token = self._get_user_facebook_token(request.env.uid)
+        if not user_token:
+            return {"error": "Facebook token not found for this user.", "auth_required": True}
+
+        me_resp, me_data = self._facebook_graph_get(
+            "/me",
+            {
+                "access_token": user_token,
+                "fields": "id,name",
+            },
+        )
+        perm_resp, perm_data = self._facebook_graph_get(
+            "/me/permissions",
+            {
+                "access_token": user_token,
+            },
+        )
+        accounts_resp, accounts_data = self._facebook_graph_get(
+            "/me/accounts",
+            {
+                "access_token": user_token,
+                "fields": "id,name,category,tasks,access_token",
+            },
+        )
+
+        # Never expose full page/user tokens in debug output.
+        def _mask_token(token_value):
+            if not token_value:
+                return ""
+            token_value = str(token_value)
+            if len(token_value) <= 8:
+                return "****"
+            return f"{token_value[:4]}...{token_value[-4:]}"
+
+        for page in (accounts_data.get("data") or []):
+            if page.get("access_token"):
+                page["access_token"] = _mask_token(page["access_token"])
+
+        return {
+            "token_present": True,
+            "token_preview": _mask_token(user_token),
+            "me_status": me_resp.status_code,
+            "me": me_data,
+            "permissions_status": perm_resp.status_code,
+            "permissions": perm_data,
+            "accounts_status": accounts_resp.status_code,
+            "accounts": accounts_data,
+        }
+
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/clear/<fieldname>', type='json', auth='user', website=True, methods=['POST'])
     def clear_product_analysis(self, analysis, fieldname, **kwargs):
         self._clear_record_output(analysis, fieldname)

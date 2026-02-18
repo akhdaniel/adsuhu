@@ -81,7 +81,8 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
                 const text = await response.text();
                 throw new Error(text || "Failed to load Facebook pages.");
             }
-            const json = await response.json();
+            const rpcJson = await response.json();
+            const json = this._unwrapRpcPayload(rpcJson);
             if (json?.auth_required) {
                 if (json?.auth_url) {
                     const popupAuthUrl = this._withPopupParam(json.auth_url);
@@ -165,7 +166,8 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
                 const text = await response.text();
                 throw new Error(text || "Failed to post to Facebook.");
             }
-            const json = await response.json();
+            const rpcJson = await response.json();
+            const json = this._unwrapRpcPayload(rpcJson);
             if (json?.auth_required && json?.auth_url) {
                 const popupAuthUrl = this._withPopupParam(json.auth_url);
                 const ok = await this._openFacebookAuthPopup(popupAuthUrl);
@@ -192,6 +194,12 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     },
     _getReturnUrl() {
         return `${window.location.pathname}${window.location.search}`;
+    },
+    _unwrapRpcPayload(payload) {
+        if (payload && typeof payload === "object" && Object.prototype.hasOwnProperty.call(payload, "result")) {
+            return payload.result || {};
+        }
+        return payload || {};
     },
     _withPopupParam(url) {
         const parsed = new URL(url, window.location.origin);
