@@ -129,6 +129,27 @@ class ProductValueAnalysisController(http.Controller):
         pages = data.get("data") or []
         return [{"id": p.get("id"), "name": p.get("name"), "category": p.get("category")} for p in pages if p.get("id")]
 
+    def _facebook_permissions_payload(self, user_token):
+        response, data = self._facebook_graph_get(
+            "/me/permissions",
+            {
+                "access_token": user_token,
+            },
+        )
+        if response.status_code >= 400 or data.get("error"):
+            return {}
+        granted = {
+            item.get("permission")
+            for item in (data.get("data") or [])
+            if item.get("status") == "granted" and item.get("permission")
+        }
+        required = {"pages_show_list", "pages_manage_posts", "pages_read_engagement", "pages_manage_metadata"}
+        missing = sorted(required - granted)
+        return {
+            "granted": sorted(granted),
+            "missing": missing,
+        }
+
     def _get_facebook_page_token(self, user_token, page_id):
         response, data = self._facebook_graph_get(
             "/me/accounts",
@@ -538,6 +559,18 @@ window.close();
             return self._facebook_auth_required_payload(return_url, reason="missing_token")
         try:
             pages = self._facebook_pages_payload(user_token)
+            if not pages:
+                permission_info = self._facebook_permissions_payload(user_token)
+                missing = permission_info.get("missing") or []
+                message = "Tidak ada Facebook Page yang bisa diakses akun ini."
+                if missing:
+                    message = f"{message} Missing permissions: {', '.join(missing)}"
+                return {
+                    "auth_required": False,
+                    "pages": [],
+                    "error": message,
+                    "permission_info": permission_info,
+                }
             return {"auth_required": False, "pages": pages}
         except Exception as exc:
             _logger.warning("Failed to fetch Facebook pages: %s", exc)

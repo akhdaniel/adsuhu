@@ -102,6 +102,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
                 return;
             }
             if (json?.error) {
+                this._hideAuthPrompt();
                 this._showAlert(json.error, "danger");
                 this._setSubmitDisabled(true);
                 return;
@@ -118,7 +119,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
                         return;
                     }
                 }
-                this._showAuthPrompt(this._buildForceLoginUrl());
+                this._hideAuthPrompt();
                 this._showAlert("Tidak ada Facebook Page yang bisa diakses akun ini.", "warning");
                 this._setSubmitDisabled(true);
                 return;
