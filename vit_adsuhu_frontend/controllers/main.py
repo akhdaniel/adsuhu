@@ -538,17 +538,15 @@ window.close();
             return self._facebook_auth_required_payload(return_url, reason="missing_token")
         try:
             pages = self._facebook_pages_payload(user_token)
-            if not pages:
-                return self._facebook_auth_required_payload(
-                    return_url,
-                    force_login=True,
-                    reason="no_pages",
-                )
             return {"auth_required": False, "pages": pages}
         except Exception as exc:
             _logger.warning("Failed to fetch Facebook pages: %s", exc)
-            self._clear_user_facebook_token(request.env.uid)
-            return self._facebook_auth_required_payload(return_url, force_login=True, reason="token_invalid")
+            message = str(exc) or "Failed to fetch Facebook pages."
+            lowered = message.lower()
+            if "error validating access token" in lowered or "session has expired" in lowered:
+                self._clear_user_facebook_token(request.env.uid)
+                return self._facebook_auth_required_payload(return_url, force_login=True, reason="token_invalid")
+            return {"auth_required": False, "pages": [], "error": message}
 
     @http.route('/facebook/post_image', type='json', auth='user', website=True, methods=['POST'])
     def facebook_post_image(self, image_url=None, page_id=None, message=None, return_url=None, **kwargs):

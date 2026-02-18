@@ -99,11 +99,16 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
                 this._setSubmitDisabled(true);
                 return;
             }
+            if (json?.error) {
+                this._showAlert(json.error, "danger");
+                this._setSubmitDisabled(true);
+                return;
+            }
             const pages = json?.pages || [];
             this._populatePageSelect(pages);
             if (!pages.length) {
-                const reloginUrl = `/facebook/oauth/start?force_login=1&next=${encodeURIComponent(this._getReturnUrl())}`;
-                window.location.href = reloginUrl;
+                this._showAlert("Tidak ada Facebook Page yang bisa diakses akun ini.", "warning");
+                this._setSubmitDisabled(true);
                 return;
             }
             this._hideAuthPrompt();
