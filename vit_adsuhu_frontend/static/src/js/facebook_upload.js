@@ -19,6 +19,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         this.captionEl = document.getElementById("facebook-upload-caption");
         this.previewEl = document.getElementById("facebook-upload-preview");
         this.submitBtn = document.querySelector(".js-facebook-upload-submit");
+        this._hasRetriedForceLogin = false;
         this._showOAuthFeedbackFromQuery();
         return this._super(...arguments);
     },
@@ -45,6 +46,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         if (this.captionEl) {
             this.captionEl.value = "";
         }
+        this._hasRetriedForceLogin = false;
         this._resetPageSelect();
         this._hideAuthPrompt();
         this._showAlert("Loading your Facebook Pages...", "info");
@@ -107,6 +109,16 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
             const pages = json?.pages || [];
             this._populatePageSelect(pages);
             if (!pages.length) {
+                if (!this._hasRetriedForceLogin) {
+                    this._hasRetriedForceLogin = true;
+                    const forceLoginUrl = this._withPopupParam(this._buildForceLoginUrl());
+                    const ok = await this._openFacebookAuthPopup(forceLoginUrl);
+                    if (ok) {
+                        await this._loadFacebookPages();
+                        return;
+                    }
+                }
+                this._showAuthPrompt(this._buildForceLoginUrl());
                 this._showAlert("Tidak ada Facebook Page yang bisa diakses akun ini.", "warning");
                 this._setSubmitDisabled(true);
                 return;
@@ -184,6 +196,9 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         const parsed = new URL(url, window.location.origin);
         parsed.searchParams.set("popup", "1");
         return parsed.pathname + parsed.search;
+    },
+    _buildForceLoginUrl() {
+        return `/facebook/oauth/start?force_login=1&next=${encodeURIComponent(this._getReturnUrl())}`;
     },
     async _openFacebookAuthPopup(authUrl) {
         const popup = window.open(
