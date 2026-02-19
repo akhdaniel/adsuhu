@@ -217,6 +217,8 @@ class TikTokController(SocialControllerBase):
             "mimetype": "image/jpeg",
             "public": True,
         })
+        # Ensure the converted attachment is visible to HTTP fetchers immediately.
+        request.env.cr.commit()
         base_url = (request.env["ir.config_parameter"].sudo().get_param("web.base.url") or "").rstrip("/")
         if not base_url:
             return media_url, False
@@ -445,7 +447,7 @@ window.close();
 
         try:
             media_url = image_url
-            media_url, _converted = self._convert_png_url_to_jpg(media_url)
+            media_url, converted = self._convert_png_url_to_jpg(media_url)
             _logger.error(f"converted media_url {media_url}")
 
             creator_info = self._tiktok_creator_info(access_token)
@@ -457,9 +459,12 @@ window.close();
                         "(privacy options tidak tersedia)."
                     )
                 }
-            is_allowed_media, media_error = self._tiktok_validate_media_url(media_url, expected_media_kind="image")
-            if not is_allowed_media:
-                return {"error": media_error}
+            if converted:
+                is_allowed_media, media_error = True, ""
+            else:
+                is_allowed_media, media_error = self._tiktok_validate_media_url(media_url, expected_media_kind="image")
+                if not is_allowed_media:
+                    return {"error": media_error}
             selected_privacy = privacy_level or ("SELF_ONLY" if "SELF_ONLY" in privacy_options else privacy_options[0])
             if selected_privacy not in privacy_options:
                 return {
