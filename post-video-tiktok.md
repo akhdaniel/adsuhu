@@ -36,3 +36,38 @@ curl --location 'https://open.tiktokapis.com/v2/post/publish/video/init/' \
       "video_url": "https://app.adsuhu.com/vit_ads_suhu_inherit/static/BigBuckBunny2.mp4"
   }
 }'
+
+
+
+curl --location 'https://open.tiktokapis.com/v2/post/publish/content/init/' \
+--header 'Authorization: Bearer act.BeHIY1zcMetD6e3VPuhnE2d59e6QGGdLY1x36oibNhvsyaLco31XwU8LJLez!5163.va' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "post_info": {
+        "title": "funny cat",
+        "description": "this will be a #funny photo on your @tiktok #fyp",
+        "disable_comment": true,
+        "privacy_level": "SELF_ONLY",
+        "auto_add_music": true
+    },
+    "source_info": {
+        "source": "PULL_FROM_URL",
+        "photo_cover_index": 0,
+        "photo_images": [
+            "https://app.adsuhu.com/web/image/vit.image_variant/4/image_512?unique=1771494450"
+        ]
+    },
+    "post_mode": "DIRECT_POST",
+    "media_type": "PHOTO"
+}'
+
+
+# check
+
+curl --location 'https://open.tiktokapis.com/v2/post/publish/status/fetch/' \
+--header 'Authorization: Bearer act.BeHIY1zcMetD6e3VPuhnE2d59e6QGGdLY1x36oibNhvsyaLco31XwU8LJLez!5163.va' \
+--header 'Content-Type: application/json; charset=UTF-8' \
+--data-raw '{
+  "publish_id": "p_pub_url~v2.7608512069213800469"
+}'
+

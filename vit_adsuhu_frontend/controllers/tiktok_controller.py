@@ -391,14 +391,16 @@ window.close();
                     image_url = (variant.image_url or "").strip()
             except Exception:
                 image_url = ""
+        if not image_url:
+            return {"error": "Image URL is required."}
 
         access_token = self._get_user_tiktok_token(request.env.uid)
         if not access_token:
             return self._tiktok_auth_required_payload(return_url, reason="missing_token")
 
         try:
-            base_url = (request.env["ir.config_parameter"].sudo().get_param("web.base.url") or "").rstrip("/")
-            media_url = f"{base_url}/vit_ads_suhu_inherit/static/BigBuckBunny2.mp4"
+            image_url = 'https://app.adsuhu.com/vit_ads_suhu_inherit/static/sample.png'
+            media_url = image_url
 
             creator_info = self._tiktok_creator_info(access_token)
             privacy_options = creator_info.get("privacy_level_options") or []
@@ -409,7 +411,7 @@ window.close();
                         "(privacy options tidak tersedia)."
                     )
                 }
-            is_allowed_media, media_error = self._tiktok_validate_media_url(media_url, expected_media_kind="video")
+            is_allowed_media, media_error = self._tiktok_validate_media_url(media_url, expected_media_kind="image")
             if not is_allowed_media:
                 return {"error": media_error}
             selected_privacy = privacy_level or ("SELF_ONLY" if "SELF_ONLY" in privacy_options else privacy_options[0])
@@ -421,24 +423,24 @@ window.close();
                     )
                 }
             caption_clean = re.sub(r"\s+", " ", (caption or "")).strip()
-            title = self._truncate_utf16_units(caption_clean or "this will be a funny #cat video on your @tiktok #fyp", 90)
+            title = self._truncate_utf16_units(caption_clean, 90)
             post_info = {
-                "title": title,
                 "privacy_level": selected_privacy,
-                "disable_duet": False,
-                "disable_comment": True,
-                "disable_stitch": False,
-                "video_cover_timestamp_ms": 1000,
             }
+            if title:
+                post_info["title"] = title
 
             payload = {
                 "post_info": post_info,
                 "source_info": {
                     "source": "PULL_FROM_URL",
-                    "video_url": media_url,
+                    "photo_images": [media_url],
+                    "photo_cover_index": 0,
                 },
+                "post_mode": "DIRECT_POST",
+                "media_type": "PHOTO",
             }
-            _, data, ok, error = self._tiktok_api_post("/v2/post/publish/video/init/", access_token, payload)
+            _, data, ok, error = self._tiktok_api_post("/v2/post/publish/content/init/", access_token, payload)
             if (not ok) and isinstance(data, dict):
                 err = data.get("error") if isinstance(data.get("error"), dict) else {}
                 err_code = str(err.get("code") or "").lower()
@@ -446,19 +448,17 @@ window.close();
                 if err_code == "invalid_params" and ("post info" in err_msg or "post_info" in err_msg):
                     fallback_payload = {
                         "post_info": {
-                            "title": title,
                             "privacy_level": selected_privacy,
-                            "disable_duet": False,
-                            "disable_comment": True,
-                            "disable_stitch": False,
-                            "video_cover_timestamp_ms": 1000,
                         },
                         "source_info": {
                             "source": "PULL_FROM_URL",
-                            "video_url": media_url,
+                            "photo_images": [media_url],
+                            "photo_cover_index": 0,
                         },
+                        "post_mode": "DIRECT_POST",
+                        "media_type": "PHOTO",
                     }
-                    _, data, ok, error = self._tiktok_api_post("/v2/post/publish/video/init/", access_token, fallback_payload)
+                    _, data, ok, error = self._tiktok_api_post("/v2/post/publish/content/init/", access_token, fallback_payload)
             if not ok:
                 lowered = (error or "").lower()
                 if "access token" in lowered or "unauthorized" in lowered:
