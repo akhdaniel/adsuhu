@@ -18,8 +18,10 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         this.privacySelectEl = document.getElementById("tiktok-upload-privacy-select");
         this.previewEl = document.getElementById("tiktok-upload-preview");
         this.submitBtn = document.querySelector(".js-tiktok-upload-submit");
+        this.disconnectBtn = document.querySelector(".js-tiktok-disconnect");
         this._bindModalCloseEvents();
         this._bindSubmitEvent();
+        this._bindDisconnectEvent();
         this._showOAuthFeedbackFromQuery();
         return this._super(...arguments);
     },
@@ -29,6 +31,13 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         }
         this._submitBound = true;
         this.submitBtn.addEventListener("click", (event) => this._onSubmitTiktokUpload(event));
+    },
+    _bindDisconnectEvent() {
+        if (!this.disconnectBtn || this._disconnectBound) {
+            return;
+        }
+        this._disconnectBound = true;
+        this.disconnectBtn.addEventListener("click", (event) => this._onDisconnectTiktok(event));
     },
     _bindModalCloseEvents() {
         if (!this.modalEl || this._modalCloseBound) {
@@ -89,6 +98,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
 
         this._hideAuthPrompt();
         this._resetPrivacyOptions();
+        this._setDisconnectDisabled(true);
         this._showAlert("Checking TikTok login...", "info");
         this._showModal();
         await this._loadTiktokStatus();
@@ -115,6 +125,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
 
             if (json?.auth_required) {
                 this._setSubmitDisabled(true);
+                this._setDisconnectDisabled(true);
                 if (json?.auth_url) {
                     const popupAuthUrl = this._withPopupParam(json.auth_url);
                     const ok = await this._openTiktokAuthPopup(popupAuthUrl);
@@ -133,6 +144,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
 
             this._hideAuthPrompt();
             this._setSubmitDisabled(false);
+            this._setDisconnectDisabled(false);
             this._populatePrivacyOptions(
                 json?.privacy_level_options || [],
                 json?.default_privacy_level || ""
@@ -149,7 +161,42 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
             this._showAlert(`TikTok connected${creator}. Klik Post to TikTok.`, "success");
         } catch (error) {
             this._setSubmitDisabled(true);
+            this._setDisconnectDisabled(true);
             this._showAlert(error.message || "Failed to check TikTok status.", "danger");
+        }
+    },
+    async _onDisconnectTiktok(event) {
+        event.preventDefault();
+        this._setDisconnectDisabled(true, "Disconnecting...");
+        this._setSubmitDisabled(true);
+        try {
+            const response = await fetch("/tiktok/disconnect", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": this.csrfToken,
+                },
+                body: JSON.stringify({
+                    return_url: this._getReturnUrl(),
+                }),
+                credentials: "same-origin",
+            });
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text || "Failed to disconnect TikTok.");
+            }
+            const rpcJson = await response.json();
+            const json = this._unwrapRpcPayload(rpcJson);
+            if (json?.error || json?.success === false) {
+                throw new Error(json.error || "Failed to disconnect TikTok.");
+            }
+            this._resetPrivacyOptions();
+            this._showAuthPrompt(this._buildAuthStartUrl(true));
+            this._showAlert("TikTok account disconnected.", "warning");
+        } catch (error) {
+            this._showAlert(error.message || "Failed to disconnect TikTok.", "danger");
+        } finally {
+            this._setDisconnectDisabled(false);
         }
     },
     async _onSubmitTiktokUpload(event) {
@@ -346,6 +393,24 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         this.submitBtn.innerHTML = text
             ? `<i class="fa fa-send me-1"></i> ${text}`
             : '<i class="fa fa-send me-1"></i> Post to TikTok';
+    },
+    _setDisconnectDisabled(disabled, text) {
+        if (!this.disconnectBtn) {
+            return;
+        }
+        this.disconnectBtn.disabled = disabled;
+        this.disconnectBtn.innerHTML = text
+            ? `<i class="fa fa-unlink me-1"></i> ${text}`
+            : '<i class="fa fa-unlink me-1"></i> Disconnect';
+    },
+    _buildAuthStartUrl(forceLogin = false) {
+        const params = new URLSearchParams({
+            next: this._getReturnUrl(),
+        });
+        if (forceLogin) {
+            params.set("force_login", "1");
+        }
+        return `/tiktok/oauth/start?${params.toString()}`;
     },
     _resetPrivacyOptions() {
         if (!this.privacySelectEl) {

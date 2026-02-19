@@ -388,6 +388,14 @@ window.close();
                 return self._tiktok_auth_required_payload(return_url, force_login=True, reason="token_invalid")
             return {"auth_required": False, "connected": False, "error": str(exc) or "Failed to get TikTok status."}
 
+    @http.route('/tiktok/disconnect', type='json', auth='user', website=True, methods=['POST'])
+    def tiktok_disconnect(self, **kwargs):
+        try:
+            self._clear_user_tiktok_token(request.env.uid)
+            return {"success": True, "connected": False}
+        except Exception as exc:
+            return {"success": False, "error": str(exc) or "Failed to disconnect TikTok account."}
+
     @http.route('/tiktok/post_image', type='json', auth='user', website=True, methods=['POST'])
     def tiktok_post_image(self, image_url=None, caption=None, image_variant_id=None, privacy_level=None, return_url=None, **kwargs):
         json_payload = request.httprequest.get_json(silent=True) or {}
