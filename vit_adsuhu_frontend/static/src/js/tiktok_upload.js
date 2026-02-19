@@ -6,7 +6,6 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
     selector: ".adsuhu-container",
     events: {
         "click .js-upload-tiktok": "_onOpenTiktokUpload",
-        "click .js-tiktok-upload-submit": "_onSubmitTiktokUpload",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
@@ -19,8 +18,16 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         this.previewEl = document.getElementById("tiktok-upload-preview");
         this.submitBtn = document.querySelector(".js-tiktok-upload-submit");
         this._bindModalCloseEvents();
+        this._bindSubmitEvent();
         this._showOAuthFeedbackFromQuery();
         return this._super(...arguments);
+    },
+    _bindSubmitEvent() {
+        if (!this.submitBtn || this._submitBound) {
+            return;
+        }
+        this._submitBound = true;
+        this.submitBtn.addEventListener("click", (event) => this._onSubmitTiktokUpload(event));
     },
     _bindModalCloseEvents() {
         if (!this.modalEl || this._modalCloseBound) {
