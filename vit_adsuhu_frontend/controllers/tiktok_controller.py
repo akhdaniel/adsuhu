@@ -477,6 +477,7 @@ window.close();
             title = self._truncate_utf16_units(caption_clean, 90)
             post_info = {
                 "privacy_level": selected_privacy,
+                "auto_add_music": True,
             }
             if title:
                 post_info["title"] = title
@@ -500,6 +501,7 @@ window.close();
                     fallback_payload = {
                         "post_info": {
                             "privacy_level": selected_privacy,
+                            "auto_add_music": True,
                         },
                         "source_info": {
                             "source": "PULL_FROM_URL",
