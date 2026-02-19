@@ -288,6 +288,7 @@ class ProductValueAnalysisController(http.Controller):
         if not ok:
             raise ValueError(error or "Failed to fetch TikTok creator info.")
         info = data.get("data") or {}
+        _logger.error(f'info={info}')
         return {
             "creator_username": info.get("creator_username"),
             "privacy_level_options": info.get("privacy_level_options") or [],
