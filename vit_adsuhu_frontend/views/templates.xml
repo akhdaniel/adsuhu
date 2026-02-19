@@ -683,6 +683,9 @@
                                                                         <button class="btn btn-primary btn-sm mt-2 js-upload-facebook" t-att-data-image-url="iv.image_url">
                                                                             <i class="fa fa-facebook me-1"></i> Facebook Page
                                                                         </button>
+                                                                        <button class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok" t-att-data-image-url="iv.image_url">
+                                                                            <i class="fa fa-music me-1"></i> TikTok
+                                                                        </button>
                                                                     </div>
 
                                                                     <div class="col-md-6 gap-2 mb-2" id="generating_image" style="background-color: #eee; display:none">
@@ -806,6 +809,37 @@
                                 <button type="button" class="btn btn-secondary js-facebook-modal-close" data-bs-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-primary js-facebook-upload-submit">
                                     <i class="fa fa-send me-1"></i> Post to Facebook
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tiktok-upload-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Post to TikTok</h5>
+                                <button type="button" class="btn-close js-tiktok-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="tiktok-upload-alert" class="alert d-none" role="alert"></div>
+                                <div class="mb-3">
+                                    <img id="tiktok-upload-preview" src="" class="img-fluid rounded" alt="Image preview" style="max-height: 280px;"/>
+                                </div>
+                                <div id="tiktok-upload-auth-wrap" class="alert alert-warning d-none" role="alert">
+                                    TikTok belum terkoneksi.
+                                    <a id="tiktok-upload-auth-link" href="#" class="btn btn-sm btn-dark ms-2">Login with TikTok</a>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tiktok-upload-caption" class="form-label">Caption</label>
+                                    <textarea id="tiktok-upload-caption" class="form-control" rows="4" placeholder="Tulis caption untuk post TikTok..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary js-tiktok-modal-close" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-dark js-tiktok-upload-submit">
+                                    <i class="fa fa-send me-1"></i> Post to TikTok
                                 </button>
                             </div>
                         </div>

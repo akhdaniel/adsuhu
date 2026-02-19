@@ -19,6 +19,7 @@ _logger = logging.getLogger(__name__)
 class ProductValueAnalysisController(http.Controller):
     FACEBOOK_TIMEOUT = 20
     FACEBOOK_GRAPH_VERSION = "v19.0"
+    TIKTOK_TIMEOUT = 20
 
     def _append_query_params(self, url, params):
         parsed = urlparse(url or "")
@@ -185,6 +186,102 @@ class ProductValueAnalysisController(http.Controller):
         safe_return = self._safe_local_url(return_url, "/product_analysis")
         auth_url = self._append_query_params(
             "/facebook/oauth/start",
+            {
+                "next": safe_return,
+                "force_login": "1" if force_login else None,
+            },
+        )
+        payload = {
+            "auth_required": True,
+            "auth_url": auth_url,
+        }
+        if reason:
+            payload["reason"] = reason
+        return payload
+
+    def _tiktok_config(self):
+        params = request.env["ir.config_parameter"].sudo()
+        base_url = (params.get_param("web.base.url") or "").rstrip("/")
+        redirect_uri = params.get_param("tiktok_redirect_uri")
+        if not redirect_uri and base_url:
+            redirect_uri = f"{base_url}/tiktok/oauth/callback"
+        return {
+            "client_key": params.get_param("tiktok_client_key"),
+            "client_secret": params.get_param("tiktok_client_secret"),
+            "redirect_uri": redirect_uri,
+            "scope": params.get_param("tiktok_scope") or "user.info.basic,video.publish",
+            "api_base": (params.get_param("tiktok_api_base") or "https://open.tiktokapis.com").rstrip("/"),
+        }
+
+    def _tiktok_user_token_key(self, uid):
+        return f"tiktok_user_access_token_{uid}"
+
+    def _tiktok_user_token_expiry_key(self, uid):
+        return f"tiktok_user_access_token_expiry_{uid}"
+
+    def _clear_user_tiktok_token(self, uid):
+        params = request.env["ir.config_parameter"].sudo()
+        params.set_param(self._tiktok_user_token_key(uid), "")
+        params.set_param(self._tiktok_user_token_expiry_key(uid), "")
+
+    def _get_user_tiktok_token(self, uid):
+        params = request.env["ir.config_parameter"].sudo()
+        token = params.get_param(self._tiktok_user_token_key(uid))
+        if not token:
+            return None
+        expiry_raw = params.get_param(self._tiktok_user_token_expiry_key(uid))
+        if expiry_raw:
+            try:
+                if int(expiry_raw) <= int(time.time()):
+                    self._clear_user_tiktok_token(uid)
+                    return None
+            except Exception:
+                pass
+        return token
+
+    def _tiktok_parse_response(self, response, default_error="TikTok request failed."):
+        try:
+            data = response.json()
+        except Exception:
+            data = {}
+        if not isinstance(data, dict):
+            data = {}
+        if response.status_code >= 400:
+            message = data.get("error_description") or data.get("message") or response.text or default_error
+            return data, False, message
+        error_payload = data.get("error")
+        if isinstance(error_payload, dict):
+            message = error_payload.get("message") or error_payload.get("code") or default_error
+            return data, False, str(message)
+        if data.get("error_code"):
+            message = data.get("error_message") or data.get("description") or default_error
+            return data, False, str(message)
+        return data, True, ""
+
+    def _tiktok_api_post(self, path, access_token=None, payload=None):
+        cfg = self._tiktok_config()
+        url = f"{cfg['api_base']}/{path.lstrip('/')}"
+        headers = {"Content-Type": "application/json"}
+        if access_token:
+            headers["Authorization"] = f"Bearer {access_token}"
+        response = requests.post(url, json=payload or {}, headers=headers, timeout=self.TIKTOK_TIMEOUT)
+        data, ok, error = self._tiktok_parse_response(response)
+        return response, data, ok, error
+
+    def _tiktok_creator_info(self, access_token):
+        _, data, ok, error = self._tiktok_api_post("/v2/post/publish/creator_info/query/", access_token, {})
+        if not ok:
+            raise ValueError(error or "Failed to fetch TikTok creator info.")
+        info = data.get("data") or {}
+        return {
+            "creator_username": info.get("creator_username"),
+            "privacy_level_options": info.get("privacy_level_options") or [],
+        }
+
+    def _tiktok_auth_required_payload(self, return_url, force_login=False, reason=None):
+        safe_return = self._safe_local_url(return_url, "/product_analysis")
+        auth_url = self._append_query_params(
+            "/tiktok/oauth/start",
             {
                 "next": safe_return,
                 "force_login": "1" if force_login else None,
@@ -440,6 +537,9 @@ class ProductValueAnalysisController(http.Controller):
 <button class="btn btn-primary btn-sm mt-2 js-upload-facebook" data-image-url="{iv.image_url}">
     <i class="fa fa-facebook me-1"></i> Upload to Facebook Page
 </button>
+<button class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok" data-image-url="{iv.image_url}">
+    <i class="fa fa-music me-1"></i> Post to TikTok
+</button>
 """,
                 "clear_url": f"/image_generator/{record.id}/clear",
                 "record_id": record.id
@@ -686,6 +786,184 @@ window.close();
             "accounts_status": accounts_resp.status_code,
             "accounts": accounts_data,
         }
+
+    @http.route('/tiktok/oauth/start', type='http', auth='user', website=True)
+    def tiktok_oauth_start(self, **kwargs):
+        cfg = self._tiktok_config()
+        if not cfg["client_key"] or not cfg["client_secret"] or not cfg["redirect_uri"]:
+            return request.make_response("TikTok OAuth is not configured.", status=500)
+
+        next_url = self._safe_local_url(kwargs.get("next"), "/product_analysis")
+        force_login = str(kwargs.get("force_login") or "").lower() in ("1", "true", "yes")
+        popup_mode = str(kwargs.get("popup") or "").lower() in ("1", "true", "yes")
+        if force_login:
+            self._clear_user_tiktok_token(request.env.uid)
+
+        state = secrets.token_urlsafe(24)
+        request.session["tiktok_oauth_state"] = state
+        request.session["tiktok_oauth_next"] = next_url
+        request.session["tiktok_oauth_popup"] = popup_mode
+
+        auth_params = {
+            "client_key": cfg["client_key"],
+            "redirect_uri": cfg["redirect_uri"],
+            "state": state,
+            "scope": cfg["scope"],
+            "response_type": "code",
+        }
+        if force_login:
+            auth_params["disable_auto_auth"] = "1"
+        auth_url = f"https://www.tiktok.com/v2/auth/authorize/?{urlencode(auth_params)}"
+        return request.redirect(auth_url, local=False)
+
+    @http.route('/tiktok/oauth/callback', type='http', auth='user', website=True, csrf=False)
+    def tiktok_oauth_callback(self, **kwargs):
+        cfg = self._tiktok_config()
+        redirect_target = self._safe_local_url(request.session.pop("tiktok_oauth_next", "/product_analysis"))
+        popup_mode = bool(request.session.pop("tiktok_oauth_popup", False))
+        received_state = kwargs.get("state")
+        expected_state = request.session.pop("tiktok_oauth_state", None)
+
+        def _popup_response(success, error_message=""):
+            payload = {"type": "tiktok_oauth_result", "success": bool(success), "error": error_message or ""}
+            html = f"""
+<!doctype html>
+<html><body>
+<script>
+try {{
+    if (window.opener && !window.opener.closed) {{
+        window.opener.postMessage({json.dumps(payload)}, window.location.origin);
+    }}
+}} catch (e) {{}}
+window.close();
+</script>
+</body></html>
+"""
+            return request.make_response(html, headers=[('Content-Type', 'text/html; charset=utf-8')])
+
+        if not expected_state or expected_state != received_state:
+            if popup_mode:
+                return _popup_response(False, "invalid_state")
+            return request.redirect(self._append_query_params(redirect_target, {"tt_error": "invalid_state"}))
+
+        if kwargs.get("error"):
+            error_message = kwargs.get("error_description") or kwargs.get("error")
+            if popup_mode:
+                return _popup_response(False, error_message)
+            return request.redirect(self._append_query_params(redirect_target, {"tt_error": error_message}))
+
+        code = kwargs.get("code")
+        if not code:
+            if popup_mode:
+                return _popup_response(False, "missing_code")
+            return request.redirect(self._append_query_params(redirect_target, {"tt_error": "missing_code"}))
+
+        try:
+            response = requests.post(
+                f"{cfg['api_base']}/v2/oauth/token/",
+                data={
+                    "client_key": cfg["client_key"],
+                    "client_secret": cfg["client_secret"],
+                    "code": code,
+                    "grant_type": "authorization_code",
+                    "redirect_uri": cfg["redirect_uri"],
+                },
+                timeout=self.TIKTOK_TIMEOUT,
+            )
+            data, ok, error = self._tiktok_parse_response(response, "TikTok token exchange failed.")
+        except Exception as exc:
+            _logger.exception("TikTok token exchange failed")
+            if popup_mode:
+                return _popup_response(False, str(exc))
+            return request.redirect(self._append_query_params(redirect_target, {"tt_error": str(exc)}))
+
+        if not ok:
+            if popup_mode:
+                return _popup_response(False, error)
+            return request.redirect(self._append_query_params(redirect_target, {"tt_error": error}))
+
+        access_token = data.get("access_token") or (data.get("data") or {}).get("access_token")
+        if not access_token:
+            if popup_mode:
+                return _popup_response(False, "missing_access_token")
+            return request.redirect(self._append_query_params(redirect_target, {"tt_error": "missing_access_token"}))
+
+        expires_in = data.get("expires_in") or (data.get("data") or {}).get("expires_in") or 0
+        params = request.env["ir.config_parameter"].sudo()
+        uid = request.env.uid
+        params.set_param(self._tiktok_user_token_key(uid), access_token)
+        if int(expires_in or 0) > 0:
+            params.set_param(self._tiktok_user_token_expiry_key(uid), str(int(time.time()) + int(expires_in)))
+        else:
+            params.set_param(self._tiktok_user_token_expiry_key(uid), "")
+
+        if popup_mode:
+            return _popup_response(True, "")
+        return request.redirect(self._append_query_params(redirect_target, {"tt_connected": "1"}))
+
+    @http.route('/tiktok/status', type='json', auth='user', website=True, methods=['POST'])
+    def tiktok_status(self, return_url=None, **kwargs):
+        access_token = self._get_user_tiktok_token(request.env.uid)
+        if not access_token:
+            return self._tiktok_auth_required_payload(return_url, reason="missing_token")
+
+        try:
+            creator_info = self._tiktok_creator_info(access_token)
+            return {
+                "auth_required": False,
+                "connected": True,
+                "creator": creator_info.get("creator_username"),
+                "privacy_level_options": creator_info.get("privacy_level_options") or [],
+            }
+        except Exception as exc:
+            lowered = (str(exc) or "").lower()
+            if "access token" in lowered or "unauthorized" in lowered:
+                self._clear_user_tiktok_token(request.env.uid)
+                return self._tiktok_auth_required_payload(return_url, force_login=True, reason="token_invalid")
+            return {"auth_required": False, "connected": False, "error": str(exc) or "Failed to get TikTok status."}
+
+    @http.route('/tiktok/post_image', type='json', auth='user', website=True, methods=['POST'])
+    def tiktok_post_image(self, image_url=None, caption=None, return_url=None, **kwargs):
+        image_url = (image_url or "").strip()
+        caption = (caption or "").strip()
+        if not image_url:
+            return {"error": "Image URL is required."}
+
+        access_token = self._get_user_tiktok_token(request.env.uid)
+        if not access_token:
+            return self._tiktok_auth_required_payload(return_url, reason="missing_token")
+
+        try:
+            creator_info = self._tiktok_creator_info(access_token)
+            privacy_options = creator_info.get("privacy_level_options") or []
+            privacy_level = (privacy_options[0] if privacy_options else "SELF_ONLY")
+            payload = {
+                "post_info": {
+                    "title": caption[:2200],
+                    "privacy_level": privacy_level,
+                    "disable_comment": False,
+                    "disable_duet": False,
+                    "disable_stitch": False,
+                },
+                "source_info": {
+                    "source": "PULL_FROM_URL",
+                    "photo_images": [image_url],
+                },
+                "post_mode": "DIRECT_POST",
+                "media_type": "PHOTO",
+            }
+            _, data, ok, error = self._tiktok_api_post("/v2/post/publish/content/init/", access_token, payload)
+            if not ok:
+                lowered = (error or "").lower()
+                if "access token" in lowered or "unauthorized" in lowered:
+                    self._clear_user_tiktok_token(request.env.uid)
+                    return self._tiktok_auth_required_payload(return_url, force_login=True, reason="token_invalid")
+                return {"error": error or "Failed to post image to TikTok."}
+            publish_id = data.get("data", {}).get("publish_id")
+            return {"success": True, "publish_id": publish_id}
+        except Exception as exc:
+            _logger.exception("TikTok post failed")
+            return {"error": str(exc) or "Failed to post image to TikTok."}
 
     @http.route('/product_analysis/<model("vit.product_value_analysis"):analysis>/clear/<fieldname>', type='json', auth='user', website=True, methods=['POST'])
     def clear_product_analysis(self, analysis, fieldname, **kwargs):

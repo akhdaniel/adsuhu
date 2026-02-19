@@ -98,6 +98,26 @@
         <field name="key">facebook_graph_version</field>
         <field name="value">v19.0</field>
     </record>
+    <record id="tiktok_client_key" model="ir.config_parameter">
+        <field name="key">tiktok_client_key</field>
+        <field name="value">...</field>
+    </record>
+    <record id="tiktok_client_secret" model="ir.config_parameter">
+        <field name="key">tiktok_client_secret</field>
+        <field name="value">...</field>
+    </record>
+    <record id="tiktok_redirect_uri" model="ir.config_parameter">
+        <field name="key">tiktok_redirect_uri</field>
+        <field name="value">https://yourapp.example.com/tiktok/oauth/callback</field>
+    </record>
+    <record id="tiktok_scope" model="ir.config_parameter">
+        <field name="key">tiktok_scope</field>
+        <field name="value">user.info.basic,video.publish</field>
+    </record>
+    <record id="tiktok_api_base" model="ir.config_parameter">
+        <field name="key">tiktok_api_base</field>
+        <field name="value">https://open.tiktokapis.com</field>
+    </record>
     <record id="instagram_access_token" model="ir.config_parameter">
         <field name="key">instagram_access_token</field>
         <field name="value">...</field>
