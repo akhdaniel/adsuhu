@@ -326,6 +326,24 @@ class ProductValueAnalysisController(http.Controller):
                 f"Allowed hosts: {', '.join(allowed_hosts)}"
             )
 
+        # TikTok pulls media server-to-server. URL must be publicly reachable
+        # and directly return an image content type (not HTML/login page).
+        try:
+            response = requests.get(media_url, timeout=self.TIKTOK_TIMEOUT, allow_redirects=True, stream=True)
+            status = response.status_code
+            content_type = (response.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+            response.close()
+        except Exception:
+            return False, "TikTok media URL is not publicly reachable from server."
+
+        if status >= 400:
+            return False, f"TikTok media URL returned HTTP {status}. Ensure it is publicly accessible."
+        if not content_type.startswith("image/"):
+            return False, (
+                "TikTok media URL must return image/* content type without authentication "
+                f"(got '{content_type or 'unknown'}')."
+            )
+
         return True, ""
 
     def _tiktok_auth_required_payload(self, return_url, force_login=False, reason=None):
