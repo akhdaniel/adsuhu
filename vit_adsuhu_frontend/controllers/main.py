@@ -305,7 +305,7 @@ class ProductValueAnalysisController(http.Controller):
         host = (urlparse(base_url).hostname or "").strip().lower()
         return [host] if host else []
 
-    def _tiktok_validate_media_url(self, media_url):
+    def _tiktok_validate_media_url(self, media_url, expected_media_kind="image"):
         parsed = urlparse((media_url or "").strip())
         if parsed.scheme != "https":
             return False, "TikTok media URL must use HTTPS."
@@ -338,9 +338,10 @@ class ProductValueAnalysisController(http.Controller):
 
         if status >= 400:
             return False, f"TikTok media URL returned HTTP {status}. Ensure it is publicly accessible."
-        if not content_type.startswith("image/"):
+        prefix = f"{(expected_media_kind or 'image').strip().lower()}/"
+        if not content_type.startswith(prefix):
             return False, (
-                "TikTok media URL must return image/* content type without authentication "
+                f"TikTok media URL must return {prefix}* content type without authentication "
                 f"(got '{content_type or 'unknown'}')."
             )
 
@@ -1075,6 +1076,11 @@ window.close();
             return self._tiktok_auth_required_payload(return_url, reason="missing_token")
 
         try:
+            # TEMP test mode requested by user: post a public sample video URL
+            # to verify if guideline block is media-type related.
+            media_type = "VIDEO"
+            media_url = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+
             creator_info = self._tiktok_creator_info(access_token)
             privacy_options = creator_info.get("privacy_level_options") or []
             if not privacy_options:
@@ -1084,7 +1090,7 @@ window.close();
                         "(privacy options tidak tersedia)."
                     )
                 }
-            is_allowed_media, media_error = self._tiktok_validate_media_url(image_url)
+            is_allowed_media, media_error = self._tiktok_validate_media_url(media_url, expected_media_kind="video")
             if not is_allowed_media:
                 return {"error": media_error}
             selected_privacy = privacy_level or ("SELF_ONLY" if "SELF_ONLY" in privacy_options else privacy_options[0])
@@ -1110,11 +1116,10 @@ window.close();
                 "post_info": post_info,
                 "source_info": {
                     "source": "PULL_FROM_URL",
-                    "photo_images": [image_url],
-                    "photo_cover_index": 0,
+                    "video_url": media_url,
                 },
                 "post_mode": "DIRECT_POST",
-                "media_type": "PHOTO",
+                "media_type": media_type,
             }
             _, data, ok, error = self._tiktok_api_post("/v2/post/publish/content/init/", access_token, payload)
             if (not ok) and isinstance(data, dict):
@@ -1129,11 +1134,10 @@ window.close();
                         },
                         "source_info": {
                             "source": "PULL_FROM_URL",
-                            "photo_images": [image_url],
-                            "photo_cover_index": 0,
+                            "video_url": media_url,
                         },
                         "post_mode": "DIRECT_POST",
-                        "media_type": "PHOTO",
+                        "media_type": media_type,
                     }
                     _, data, ok, error = self._tiktok_api_post("/v2/post/publish/content/init/", access_token, fallback_payload)
             if not ok:
