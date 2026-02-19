@@ -57,6 +57,9 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
     async _onOpenTiktokUpload(event) {
         event.preventDefault();
         const imageUrl = event.currentTarget?.dataset?.imageUrl || "";
+        const imageVariantId = event.currentTarget?.dataset?.imageVariantId || "";
+        const headline = (event.currentTarget?.dataset?.headline || "").trim();
+        const primaryText = (event.currentTarget?.dataset?.primaryText || "").trim();
         if (!imageUrl) {
             this._showAlert("Image URL not found.", "danger");
             return;
@@ -66,12 +69,21 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         if (this.previewEl) {
             this.previewEl.src = imageUrl;
             this.previewEl.dataset.imageUrl = imageUrl;
+            this.previewEl.dataset.imageVariantId = imageVariantId;
+        }
+        if (this.modalEl) {
+            this.modalEl.dataset.imageUrl = imageUrl;
+            this.modalEl.dataset.imageVariantId = imageVariantId;
+            this.modalEl.dataset.headline = headline;
+            this.modalEl.dataset.primaryText = primaryText;
         }
         if (this.submitBtn) {
             this.submitBtn.dataset.imageUrl = imageUrl;
+            this.submitBtn.dataset.imageVariantId = imageVariantId;
         }
         if (this.captionEl) {
-            this.captionEl.value = "";
+            const autoCaption = [headline, primaryText].filter(Boolean).join("\n\n");
+            this.captionEl.value = autoCaption;
         }
 
         this._hideAuthPrompt();
@@ -132,14 +144,23 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
             this.selectedImageUrl ||
             this.submitBtn?.dataset?.imageUrl ||
             this.previewEl?.dataset?.imageUrl ||
+            this.modalEl?.dataset?.imageUrl ||
             this.previewEl?.getAttribute("src") ||
             "";
+        const imageVariantId =
+            this.submitBtn?.dataset?.imageVariantId ||
+            this.previewEl?.dataset?.imageVariantId ||
+            this.modalEl?.dataset?.imageVariantId ||
+            "";
 
-        if (!imageUrl) {
+        if (!imageUrl && !imageVariantId) {
             this._showAlert("Image URL missing.", "danger");
             return;
         }
-        this.selectedImageUrl = imageUrl;
+        if (!imageUrl && imageVariantId) {
+            this._showAlert("Resolving image from server...", "info");
+        }
+        this.selectedImageUrl = imageUrl || "";
         this._setSubmitDisabled(true, "Posting...");
         try {
             const response = await fetch("/tiktok/post_image", {
@@ -149,7 +170,8 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
                     "X-CSRFToken": this.csrfToken,
                 },
                 body: JSON.stringify({
-                    image_url: imageUrl,
+                    image_url: imageUrl || "",
+                    image_variant_id: imageVariantId || "",
                     caption: this.captionEl?.value || "",
                     return_url: this._getReturnUrl(),
                 }),

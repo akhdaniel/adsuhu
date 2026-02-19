@@ -1,6 +1,6 @@
 from odoo import http, api, fields
 from odoo.http import request
-from markupsafe import Markup
+from markupsafe import Markup, escape
 import markdown
 import re
 import threading
@@ -542,7 +542,7 @@ class ProductValueAnalysisController(http.Controller):
 <button class="btn btn-primary btn-sm mt-2 js-upload-facebook" data-image-url="{iv.image_url}">
     <i class="fa fa-facebook me-1"></i> Upload to Facebook Page
 </button>
-<button class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok" data-image-url="{iv.image_url}">
+<button class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok" data-image-url="{iv.image_url}" data-image-variant-id="{iv.id}" data-headline="{escape(iv.headline or '')}" data-primary-text="{escape(iv.primary_text or '')}">
     <i class="fa fa-music me-1"></i> Post to TikTok
 </button>
 """,
@@ -928,9 +928,16 @@ window.close();
             return {"auth_required": False, "connected": False, "error": str(exc) or "Failed to get TikTok status."}
 
     @http.route('/tiktok/post_image', type='json', auth='user', website=True, methods=['POST'])
-    def tiktok_post_image(self, image_url=None, caption=None, return_url=None, **kwargs):
+    def tiktok_post_image(self, image_url=None, caption=None, image_variant_id=None, return_url=None, **kwargs):
         image_url = (image_url or "").strip()
         caption = (caption or "").strip()
+        if not image_url and image_variant_id:
+            try:
+                variant = request.env["vit.image_variant"].sudo().browse(int(image_variant_id))
+                if variant.exists():
+                    image_url = (variant.image_url or "").strip()
+            except Exception:
+                image_url = ""
         if not image_url:
             return {"error": "Image URL is required."}
 
