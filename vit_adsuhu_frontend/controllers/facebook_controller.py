@@ -208,6 +208,7 @@ class FacebookController(SocialControllerBase):
 
     @http.route('/facebook/oauth/callback', type='http', auth='user', website=True, csrf=False)
     def facebook_oauth_callback(self, **kwargs):
+        _logger.error(f"/facebook/oauth/callback >> kwargs={kwargs}")
         cfg = self._facebook_config()
         redirect_target = self._safe_local_url(request.session.pop("facebook_oauth_next", "/product_analysis"))
         popup_mode = bool(request.session.pop("facebook_oauth_popup", False))
