@@ -20,24 +20,38 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         this.previewEl = document.getElementById("facebook-upload-preview");
         this.submitBtn = document.querySelector(".js-facebook-upload-submit");
         this._hasRetriedForceLogin = false;
+        console.log("[FB Modal] widget start", {
+            hasModal: !!this.modalEl,
+            hasSubmit: !!this.submitBtn,
+        });
         this._bindModalCloseEvents();
         this._showOAuthFeedbackFromQuery();
         return this._super(...arguments);
     },
     _bindModalCloseEvents() {
         if (!this.modalEl || this._modalCloseBound) {
+            console.log("[FB Modal] bind skipped", {
+                hasModal: !!this.modalEl,
+                alreadyBound: !!this._modalCloseBound,
+            });
             return;
         }
         this._modalCloseBound = true;
+        console.log("[FB Modal] bind close events");
         this.modalEl.addEventListener("click", (event) => {
             const closeButton = event.target.closest(".js-facebook-modal-close,[data-bs-dismiss='modal']");
             if (closeButton) {
+                console.log("[FB Modal] close button clicked", {
+                    className: closeButton.className,
+                    tagName: closeButton.tagName,
+                });
                 event.preventDefault();
                 this._hideModal();
                 return;
             }
             // Fallback backdrop close when running without Bootstrap modal plugin.
             if (event.target === this.modalEl && !window.bootstrap?.Modal) {
+                console.log("[FB Modal] backdrop clicked (fallback mode)");
                 this._hideModal();
             }
         });
@@ -218,8 +232,12 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     },
     _showModal() {
         if (!this.modalEl) {
+            console.log("[FB Modal] show requested without modal");
             return;
         }
+        console.log("[FB Modal] show", {
+            hasBootstrapModal: !!window.bootstrap?.Modal,
+        });
         if (window.bootstrap?.Modal) {
             window.bootstrap.Modal.getOrCreateInstance(this.modalEl).show();
             return;
@@ -232,8 +250,12 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     },
     _hideModal() {
         if (!this.modalEl) {
+            console.log("[FB Modal] hide requested without modal");
             return;
         }
+        console.log("[FB Modal] hide", {
+            hasBootstrapModal: !!window.bootstrap?.Modal,
+        });
         if (window.bootstrap?.Modal) {
             window.bootstrap.Modal.getOrCreateInstance(this.modalEl).hide();
             return;
