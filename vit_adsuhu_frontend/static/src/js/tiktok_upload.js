@@ -65,6 +65,10 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         this.selectedImageUrl = imageUrl;
         if (this.previewEl) {
             this.previewEl.src = imageUrl;
+            this.previewEl.dataset.imageUrl = imageUrl;
+        }
+        if (this.submitBtn) {
+            this.submitBtn.dataset.imageUrl = imageUrl;
         }
         if (this.captionEl) {
             this.captionEl.value = "";
@@ -124,10 +128,18 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
     },
     async _onSubmitTiktokUpload(event) {
         event.preventDefault();
-        if (!this.selectedImageUrl) {
+        const imageUrl =
+            this.selectedImageUrl ||
+            this.submitBtn?.dataset?.imageUrl ||
+            this.previewEl?.dataset?.imageUrl ||
+            this.previewEl?.getAttribute("src") ||
+            "";
+
+        if (!imageUrl) {
             this._showAlert("Image URL missing.", "danger");
             return;
         }
+        this.selectedImageUrl = imageUrl;
         this._setSubmitDisabled(true, "Posting...");
         try {
             const response = await fetch("/tiktok/post_image", {
@@ -137,7 +149,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
                     "X-CSRFToken": this.csrfToken,
                 },
                 body: JSON.stringify({
-                    image_url: this.selectedImageUrl,
+                    image_url: imageUrl,
                     caption: this.captionEl?.value || "",
                     return_url: this._getReturnUrl(),
                 }),
