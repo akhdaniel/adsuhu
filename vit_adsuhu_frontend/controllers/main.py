@@ -1079,7 +1079,8 @@ window.close();
             # TEMP test mode requested by user: post a public sample video URL
             # to verify if guideline block is media-type related.
             media_type = "VIDEO"
-            media_url = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            base_url = (request.env["ir.config_parameter"].sudo().get_param("web.base.url") or "").rstrip("/")
+            media_url = f"{base_url}/vit_ads_suhu_inherit/static/BigBuckBunny.mp4"
 
             creator_info = self._tiktok_creator_info(access_token)
             privacy_options = creator_info.get("privacy_level_options") or []
