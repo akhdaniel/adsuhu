@@ -7,7 +7,6 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     events: {
         "click .js-upload-facebook": "_onOpenFacebookUpload",
         "click .js-facebook-upload-submit": "_onSubmitFacebookUpload",
-        "click #facebook-upload-modal [data-bs-dismiss='modal']": "_onCloseFacebookModal",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
@@ -21,8 +20,27 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         this.previewEl = document.getElementById("facebook-upload-preview");
         this.submitBtn = document.querySelector(".js-facebook-upload-submit");
         this._hasRetriedForceLogin = false;
+        this._bindModalCloseEvents();
         this._showOAuthFeedbackFromQuery();
         return this._super(...arguments);
+    },
+    _bindModalCloseEvents() {
+        if (!this.modalEl || this._modalCloseBound) {
+            return;
+        }
+        this._modalCloseBound = true;
+        this.modalEl.addEventListener("click", (event) => {
+            const closeButton = event.target.closest(".js-facebook-modal-close,[data-bs-dismiss='modal']");
+            if (closeButton) {
+                event.preventDefault();
+                this._hideModal();
+                return;
+            }
+            // Fallback backdrop close when running without Bootstrap modal plugin.
+            if (event.target === this.modalEl && !window.bootstrap?.Modal) {
+                this._hideModal();
+            }
+        });
     },
     _showOAuthFeedbackFromQuery() {
         const params = new URLSearchParams(window.location.search);
@@ -227,10 +245,6 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         document.body.classList.remove("modal-open");
         const backdrops = document.querySelectorAll(".modal-backdrop");
         backdrops.forEach((el) => el.remove());
-    },
-    _onCloseFacebookModal(event) {
-        event.preventDefault();
-        this._hideModal();
     },
     async _openFacebookAuthPopup(authUrl) {
         const popup = window.open(
