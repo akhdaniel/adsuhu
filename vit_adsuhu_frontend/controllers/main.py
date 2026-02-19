@@ -247,7 +247,17 @@ class ProductValueAnalysisController(http.Controller):
         if not isinstance(data, dict):
             data = {}
         if response.status_code >= 400:
-            message = data.get("error_description") or data.get("message") or response.text or default_error
+            err_payload = data.get("error") if isinstance(data.get("error"), dict) else {}
+            message = (
+                data.get("error_description")
+                or err_payload.get("message")
+                or data.get("message")
+                or response.text
+                or default_error
+            )
+            log_id = err_payload.get("log_id") or data.get("log_id")
+            if log_id:
+                message = f"{message} (log_id: {log_id})"
             return data, False, message
         error_payload = data.get("error")
         if isinstance(error_payload, dict):
@@ -981,14 +991,16 @@ window.close();
             creator_info = self._tiktok_creator_info(access_token)
             privacy_options = creator_info.get("privacy_level_options") or []
             privacy_level = (privacy_options[0] if privacy_options else "SELF_ONLY")
+            caption_clean = re.sub(r"\s+", " ", (caption or "")).strip()
+            post_info = {
+                "privacy_level": privacy_level,
+            }
+            # TikTok can reject long/complex title; keep conservative length.
+            if caption_clean:
+                post_info["title"] = caption_clean[:150]
+
             payload = {
-                "post_info": {
-                    "title": caption[:2200],
-                    "privacy_level": privacy_level,
-                    "disable_comment": False,
-                    "disable_duet": False,
-                    "disable_stitch": False,
-                },
+                "post_info": post_info,
                 "source_info": {
                     "source": "PULL_FROM_URL",
                     "photo_images": [image_url],
@@ -997,6 +1009,24 @@ window.close();
                 "media_type": "PHOTO",
             }
             _, data, ok, error = self._tiktok_api_post("/v2/post/publish/content/init/", access_token, payload)
+            if (not ok) and isinstance(data, dict):
+                err = data.get("error") if isinstance(data.get("error"), dict) else {}
+                err_code = str(err.get("code") or "").lower()
+                err_msg = str(err.get("message") or error or "").lower()
+                # Fallback: if title/post_info rejected, retry with minimal post_info.
+                if err_code == "invalid_params" and ("post info" in err_msg or "post_info" in err_msg):
+                    fallback_payload = {
+                        "post_info": {
+                            "privacy_level": privacy_level,
+                        },
+                        "source_info": {
+                            "source": "PULL_FROM_URL",
+                            "photo_images": [image_url],
+                        },
+                        "post_mode": "DIRECT_POST",
+                        "media_type": "PHOTO",
+                    }
+                    _, data, ok, error = self._tiktok_api_post("/v2/post/publish/content/init/", access_token, fallback_payload)
             if not ok:
                 lowered = (error or "").lower()
                 if "access token" in lowered or "unauthorized" in lowered:
