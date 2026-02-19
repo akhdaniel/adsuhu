@@ -38,6 +38,7 @@ curl --location 'https://open.tiktokapis.com/v2/post/publish/video/init/' \
 }'
 
 
+# post photo
 
 curl --location 'https://open.tiktokapis.com/v2/post/publish/content/init/' \
 --header 'Authorization: Bearer act.BeHIY1zcMetD6e3VPuhnE2d59e6QGGdLY1x36oibNhvsyaLco31XwU8LJLez!5163.va' \
@@ -54,7 +55,7 @@ curl --location 'https://open.tiktokapis.com/v2/post/publish/content/init/' \
         "source": "PULL_FROM_URL",
         "photo_cover_index": 0,
         "photo_images": [
-            "https://app.adsuhu.com/web/image/vit.image_variant/4/image_512?unique=1771494450"
+            "https://app.adsuhu.com/vit_ads_suhu_inherit/static/sample.png"
         ]
     },
     "post_mode": "DIRECT_POST",
@@ -68,6 +69,6 @@ curl --location 'https://open.tiktokapis.com/v2/post/publish/status/fetch/' \
 --header 'Authorization: Bearer act.BeHIY1zcMetD6e3VPuhnE2d59e6QGGdLY1x36oibNhvsyaLco31XwU8LJLez!5163.va' \
 --header 'Content-Type: application/json; charset=UTF-8' \
 --data-raw '{
-  "publish_id": "p_pub_url~v2.7608512069213800469"
+  "publish_id": "p_pub_url~v2.7608511365820647444"
 }'
 
