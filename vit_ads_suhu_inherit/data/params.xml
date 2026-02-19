@@ -118,6 +118,10 @@
         <field name="key">tiktok_api_base</field>
         <field name="value">https://open.tiktokapis.com</field>
     </record>
+    <record id="tiktok_allowed_media_hosts" model="ir.config_parameter">
+        <field name="key">tiktok_allowed_media_hosts</field>
+        <field name="value">app.adsuhu.com</field>
+    </record>
     <record id="instagram_access_token" model="ir.config_parameter">
         <field name="key">instagram_access_token</field>
         <field name="value">...</field>

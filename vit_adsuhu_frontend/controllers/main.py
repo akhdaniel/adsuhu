@@ -293,6 +293,40 @@ class ProductValueAnalysisController(http.Controller):
             "privacy_level_options": info.get("privacy_level_options") or [],
         }
 
+    def _tiktok_allowed_media_hosts(self):
+        params = request.env["ir.config_parameter"].sudo()
+        configured = (params.get_param("tiktok_allowed_media_hosts") or "").strip()
+        hosts = [h.strip().lower() for h in configured.split(",") if h.strip()]
+        if hosts:
+            return hosts
+
+        base_url = (params.get_param("web.base.url") or "").strip()
+        host = (urlparse(base_url).hostname or "").strip().lower()
+        return [host] if host else []
+
+    def _tiktok_validate_media_url(self, media_url):
+        parsed = urlparse((media_url or "").strip())
+        if parsed.scheme != "https":
+            return False, "TikTok media URL must use HTTPS."
+        host = (parsed.hostname or "").lower()
+        if not host:
+            return False, "TikTok media URL host is invalid."
+
+        allowed_hosts = self._tiktok_allowed_media_hosts()
+        if not allowed_hosts:
+            return False, "TikTok media host allowlist is empty. Set tiktok_allowed_media_hosts."
+
+        def _match_allowed(candidate, allowed):
+            return candidate == allowed or candidate.endswith("." + allowed)
+
+        if not any(_match_allowed(host, allowed) for allowed in allowed_hosts):
+            return False, (
+                f"Media host '{host}' is not allowed for TikTok pull posting. "
+                f"Allowed hosts: {', '.join(allowed_hosts)}"
+            )
+
+        return True, ""
+
     def _tiktok_auth_required_payload(self, return_url, force_login=False, reason=None):
         safe_return = self._safe_local_url(return_url, "/product_analysis")
         auth_url = self._append_query_params(
@@ -924,11 +958,22 @@ window.close();
 
         try:
             creator_info = self._tiktok_creator_info(access_token)
+            privacy_options = creator_info.get("privacy_level_options") or []
+            has_self_only = "SELF_ONLY" in privacy_options
+            posting_ready = bool(has_self_only)
+            posting_message = ""
+            if not has_self_only:
+                posting_message = (
+                    "Akun TikTok ini belum siap untuk Direct Post (SELF_ONLY privacy belum tersedia). "
+                    "Cek app review/compliance di TikTok Developer Portal."
+                )
             return {
                 "auth_required": False,
                 "connected": True,
                 "creator": creator_info.get("creator_username"),
-                "privacy_level_options": creator_info.get("privacy_level_options") or [],
+                "privacy_level_options": privacy_options,
+                "posting_ready": posting_ready,
+                "posting_message": posting_message,
             }
         except Exception as exc:
             lowered = (str(exc) or "").lower()
@@ -990,7 +1035,17 @@ window.close();
         try:
             creator_info = self._tiktok_creator_info(access_token)
             privacy_options = creator_info.get("privacy_level_options") or []
-            privacy_level = (privacy_options[0] if privacy_options else "SELF_ONLY")
+            if "SELF_ONLY" not in privacy_options:
+                return {
+                    "error": (
+                        "TikTok Direct Post belum diizinkan untuk akun/app ini. "
+                        "SELF_ONLY privacy option tidak tersedia."
+                    )
+                }
+            is_allowed_media, media_error = self._tiktok_validate_media_url(image_url)
+            if not is_allowed_media:
+                return {"error": media_error}
+            privacy_level = "SELF_ONLY"
             caption_clean = re.sub(r"\s+", " ", (caption or "")).strip()
             post_info = {
                 "privacy_level": privacy_level,

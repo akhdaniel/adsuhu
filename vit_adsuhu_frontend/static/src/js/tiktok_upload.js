@@ -131,6 +131,14 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
 
             this._hideAuthPrompt();
             this._setSubmitDisabled(false);
+            if (json?.posting_ready === false) {
+                this._setSubmitDisabled(true);
+                this._showAlert(
+                    json?.posting_message || "Akun TikTok belum siap untuk posting dari aplikasi ini.",
+                    "warning"
+                );
+                return;
+            }
             const creator = json?.creator ? ` @${json.creator}` : "";
             this._showAlert(`TikTok connected${creator}. Klik Post to TikTok.`, "success");
         } catch (error) {
