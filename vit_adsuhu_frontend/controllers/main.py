@@ -346,6 +346,21 @@ class ProductValueAnalysisController(http.Controller):
 
         return True, ""
 
+    def _truncate_utf16_units(self, text, max_units):
+        value = str(text or "")
+        if max_units <= 0:
+            return ""
+        units = 0
+        out = []
+        for ch in value:
+            codepoint = ord(ch)
+            ch_units = 2 if codepoint > 0xFFFF else 1
+            if units + ch_units > max_units:
+                break
+            out.append(ch)
+            units += ch_units
+        return "".join(out)
+
     def _tiktok_auth_required_payload(self, return_url, force_login=False, reason=None):
         safe_return = self._safe_local_url(return_url, "/product_analysis")
         auth_url = self._append_query_params(
@@ -978,12 +993,12 @@ window.close();
         try:
             creator_info = self._tiktok_creator_info(access_token)
             privacy_options = creator_info.get("privacy_level_options") or []
-            has_self_only = "SELF_ONLY" in privacy_options
-            posting_ready = bool(has_self_only)
+            posting_ready = bool(privacy_options)
+            default_privacy = "SELF_ONLY" if "SELF_ONLY" in privacy_options else (privacy_options[0] if privacy_options else "")
             posting_message = ""
-            if not has_self_only:
+            if not posting_ready:
                 posting_message = (
-                    "Akun TikTok ini belum siap untuk Direct Post (SELF_ONLY privacy belum tersedia). "
+                    "Akun TikTok ini belum siap untuk Direct Post (privacy options kosong). "
                     "Cek app review/compliance di TikTok Developer Portal."
                 )
             return {
@@ -991,6 +1006,7 @@ window.close();
                 "connected": True,
                 "creator": creator_info.get("creator_username"),
                 "privacy_level_options": privacy_options,
+                "default_privacy_level": default_privacy,
                 "posting_ready": posting_ready,
                 "posting_message": posting_message,
             }
@@ -1002,7 +1018,7 @@ window.close();
             return {"auth_required": False, "connected": False, "error": str(exc) or "Failed to get TikTok status."}
 
     @http.route('/tiktok/post_image', type='json', auth='user', website=True, methods=['POST'])
-    def tiktok_post_image(self, image_url=None, caption=None, image_variant_id=None, return_url=None, **kwargs):
+    def tiktok_post_image(self, image_url=None, caption=None, image_variant_id=None, privacy_level=None, return_url=None, **kwargs):
         json_payload = request.httprequest.get_json(silent=True) or {}
         if not isinstance(json_payload, dict):
             json_payload = {}
@@ -1029,6 +1045,13 @@ window.close();
             or nested_params.get("image_variant_id")
             or ""
         )
+        privacy_level = (
+            privacy_level
+            or kwargs.get("privacy_level")
+            or json_payload.get("privacy_level")
+            or nested_params.get("privacy_level")
+            or ""
+        ).strip()
         return_url = (
             return_url
             or kwargs.get("return_url")
@@ -1054,30 +1077,41 @@ window.close();
         try:
             creator_info = self._tiktok_creator_info(access_token)
             privacy_options = creator_info.get("privacy_level_options") or []
-            if "SELF_ONLY" not in privacy_options:
+            if not privacy_options:
                 return {
                     "error": (
-                        "TikTok Direct Post belum diizinkan untuk akun/app ini. "
-                        "SELF_ONLY privacy option tidak tersedia."
+                        "TikTok Direct Post belum diizinkan untuk akun/app ini "
+                        "(privacy options tidak tersedia)."
                     )
                 }
             is_allowed_media, media_error = self._tiktok_validate_media_url(image_url)
             if not is_allowed_media:
                 return {"error": media_error}
-            privacy_level = "SELF_ONLY"
+            selected_privacy = privacy_level or ("SELF_ONLY" if "SELF_ONLY" in privacy_options else privacy_options[0])
+            if selected_privacy not in privacy_options:
+                return {
+                    "error": (
+                        f"Privacy level '{selected_privacy}' tidak diizinkan. "
+                        f"Opsi tersedia: {', '.join(privacy_options)}"
+                    )
+                }
             caption_clean = re.sub(r"\s+", " ", (caption or "")).strip()
+            title = self._truncate_utf16_units(caption_clean, 90)
+            description = self._truncate_utf16_units(caption_clean, 4000)
             post_info = {
-                "privacy_level": privacy_level,
+                "privacy_level": selected_privacy,
             }
-            # TikTok can reject long/complex title; keep conservative length.
-            if caption_clean:
-                post_info["title"] = caption_clean[:150]
+            if title:
+                post_info["title"] = title
+            if description:
+                post_info["description"] = description
 
             payload = {
                 "post_info": post_info,
                 "source_info": {
                     "source": "PULL_FROM_URL",
                     "photo_images": [image_url],
+                    "photo_cover_index": 0,
                 },
                 "post_mode": "DIRECT_POST",
                 "media_type": "PHOTO",
@@ -1091,11 +1125,12 @@ window.close();
                 if err_code == "invalid_params" and ("post info" in err_msg or "post_info" in err_msg):
                     fallback_payload = {
                         "post_info": {
-                            "privacy_level": privacy_level,
+                            "privacy_level": selected_privacy,
                         },
                         "source_info": {
                             "source": "PULL_FROM_URL",
                             "photo_images": [image_url],
+                            "photo_cover_index": 0,
                         },
                         "post_mode": "DIRECT_POST",
                         "media_type": "PHOTO",

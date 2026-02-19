@@ -839,6 +839,12 @@
                                     <label for="tiktok-upload-caption" class="form-label">Caption</label>
                                     <textarea id="tiktok-upload-caption" class="form-control" rows="4" placeholder="Tulis caption untuk post TikTok..."></textarea>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="tiktok-upload-privacy-select" class="form-label">Privacy</label>
+                                    <select id="tiktok-upload-privacy-select" class="form-select">
+                                        <option value="">Select privacy</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary js-tiktok-modal-close" data-bs-dismiss="modal">Cancel</button>

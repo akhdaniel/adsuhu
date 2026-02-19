@@ -15,6 +15,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         this.authWrapEl = document.getElementById("tiktok-upload-auth-wrap");
         this.authLinkEl = document.getElementById("tiktok-upload-auth-link");
         this.captionEl = document.getElementById("tiktok-upload-caption");
+        this.privacySelectEl = document.getElementById("tiktok-upload-privacy-select");
         this.previewEl = document.getElementById("tiktok-upload-preview");
         this.submitBtn = document.querySelector(".js-tiktok-upload-submit");
         this._bindModalCloseEvents();
@@ -87,6 +88,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         }
 
         this._hideAuthPrompt();
+        this._resetPrivacyOptions();
         this._showAlert("Checking TikTok login...", "info");
         this._showModal();
         await this._loadTiktokStatus();
@@ -131,6 +133,10 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
 
             this._hideAuthPrompt();
             this._setSubmitDisabled(false);
+            this._populatePrivacyOptions(
+                json?.privacy_level_options || [],
+                json?.default_privacy_level || ""
+            );
             if (json?.posting_ready === false) {
                 this._setSubmitDisabled(true);
                 this._showAlert(
@@ -160,6 +166,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
             this.previewEl?.dataset?.imageVariantId ||
             this.modalEl?.dataset?.imageVariantId ||
             "";
+        const privacyLevel = this.privacySelectEl?.value || "";
 
         if (!imageUrl && !imageVariantId) {
             this._showAlert("Image URL missing.", "danger");
@@ -180,6 +187,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
                 body: JSON.stringify({
                     image_url: imageUrl || "",
                     image_variant_id: imageVariantId || "",
+                    privacy_level: privacyLevel,
                     caption: this.captionEl?.value || "",
                     return_url: this._getReturnUrl(),
                 }),
@@ -338,6 +346,30 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         this.submitBtn.innerHTML = text
             ? `<i class="fa fa-send me-1"></i> ${text}`
             : '<i class="fa fa-send me-1"></i> Post to TikTok';
+    },
+    _resetPrivacyOptions() {
+        if (!this.privacySelectEl) {
+            return;
+        }
+        this.privacySelectEl.innerHTML = '<option value="">Select privacy</option>';
+    },
+    _populatePrivacyOptions(options, selectedValue) {
+        this._resetPrivacyOptions();
+        if (!this.privacySelectEl) {
+            return;
+        }
+        const values = Array.isArray(options) ? options : [];
+        for (const value of values) {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = value;
+            this.privacySelectEl.appendChild(option);
+        }
+        if (selectedValue && values.includes(selectedValue)) {
+            this.privacySelectEl.value = selectedValue;
+        } else if (values.length) {
+            this.privacySelectEl.value = values.includes("SELF_ONLY") ? "SELF_ONLY" : values[0];
+        }
     },
     _showAuthPrompt(authUrl) {
         if (!this.authWrapEl) {
