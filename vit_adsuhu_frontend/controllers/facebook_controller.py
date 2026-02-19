@@ -264,6 +264,7 @@ window.close();
                 timeout=self.FACEBOOK_TIMEOUT,
             )
             data = response.json()
+            _logger.info(f"/facebook/oauth/callback => data={data}")
         except Exception as exc:
             _logger.exception("Facebook token exchange failed")
             if popup_mode:
