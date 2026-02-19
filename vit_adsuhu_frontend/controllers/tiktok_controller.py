@@ -3,11 +3,14 @@ import logging
 import re
 import secrets
 import time
+import base64
+from io import BytesIO
 from urllib.parse import urlparse
 
 import requests
 from odoo import http
 from odoo.http import request
+from PIL import Image
 
 from .social_base import SocialControllerBase
 
@@ -176,6 +179,48 @@ class TikTokController(SocialControllerBase):
             out.append(ch)
             units += ch_units
         return "".join(out)
+
+    def _convert_png_url_to_jpg(self, media_url):
+        """
+        If source media is PNG, convert it to JPG and return a public /web/content URL.
+        Returns (final_url, converted_flag).
+        """
+        parsed = urlparse((media_url or "").strip())
+        looks_like_png = (parsed.path or "").lower().endswith(".png")
+
+        try:
+            response = requests.get(media_url, timeout=self.TIKTOK_TIMEOUT, allow_redirects=True)
+        except Exception:
+            return media_url, False
+        if response.status_code >= 400:
+            return media_url, False
+
+        content_type = (response.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+        is_png = looks_like_png or content_type == "image/png"
+        if not is_png:
+            return media_url, False
+
+        try:
+            img = Image.open(BytesIO(response.content))
+            if img.mode in ("RGBA", "LA", "P"):
+                img = img.convert("RGB")
+            out = BytesIO()
+            img.save(out, format="JPEG", quality=92, optimize=True)
+            jpg_bytes = out.getvalue()
+        except Exception:
+            return media_url, False
+
+        attachment = request.env["ir.attachment"].sudo().create({
+            "name": f"tiktok_media_{int(time.time())}.jpg",
+            "type": "binary",
+            "datas": base64.b64encode(jpg_bytes).decode(),
+            "mimetype": "image/jpeg",
+            "public": True,
+        })
+        base_url = (request.env["ir.config_parameter"].sudo().get_param("web.base.url") or "").rstrip("/")
+        if not base_url:
+            return media_url, False
+        return f"{base_url}/web/content/{attachment.id}?download=1", True
 
     def _tiktok_auth_required_payload(self, return_url, force_login=False, reason=None):
         safe_return = self._safe_local_url(return_url, "/product_analysis")
@@ -399,8 +444,8 @@ window.close();
             return self._tiktok_auth_required_payload(return_url, reason="missing_token")
 
         try:
-            image_url = 'https://app.adsuhu.com/vit_ads_suhu_inherit/static/sample.png'
             media_url = image_url
+            media_url, _converted = self._convert_png_url_to_jpg(media_url)
 
             creator_info = self._tiktok_creator_info(access_token)
             privacy_options = creator_info.get("privacy_level_options") or []

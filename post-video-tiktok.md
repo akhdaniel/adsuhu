@@ -55,7 +55,7 @@ curl --location 'https://open.tiktokapis.com/v2/post/publish/content/init/' \
         "source": "PULL_FROM_URL",
         "photo_cover_index": 0,
         "photo_images": [
-            "https://app.adsuhu.com/vit_ads_suhu_inherit/static/sample.png"
+            "https://app.adsuhu.com/vit_ads_suhu_inherit/static/sample.jpeg"
         ]
     },
     "post_mode": "DIRECT_POST",
