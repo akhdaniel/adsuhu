@@ -929,7 +929,9 @@ window.close();
 
     @http.route('/tiktok/post_image', type='json', auth='user', website=True, methods=['POST'])
     def tiktok_post_image(self, image_url=None, caption=None, image_variant_id=None, return_url=None, **kwargs):
-        json_payload = request.jsonrequest if isinstance(request.jsonrequest, dict) else {}
+        json_payload = request.httprequest.get_json(silent=True) or {}
+        if not isinstance(json_payload, dict):
+            json_payload = {}
         nested_params = json_payload.get("params") if isinstance(json_payload.get("params"), dict) else {}
 
         image_url = (
