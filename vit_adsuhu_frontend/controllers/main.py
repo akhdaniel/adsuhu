@@ -251,9 +251,14 @@ class ProductValueAnalysisController(http.Controller):
             return data, False, message
         error_payload = data.get("error")
         if isinstance(error_payload, dict):
+            code = str(error_payload.get("code") or "").lower()
+            # TikTok v2 APIs can return {"error": {"code": "ok", ...}} on success.
+            if code in ("", "ok", "success", "0"):
+                return data, True, ""
             message = error_payload.get("message") or error_payload.get("code") or default_error
             return data, False, str(message)
-        if data.get("error_code"):
+        raw_error_code = data.get("error_code")
+        if raw_error_code not in (None, "", 0, "0", "ok", "OK"):
             message = data.get("error_message") or data.get("description") or default_error
             return data, False, str(message)
         return data, True, ""
