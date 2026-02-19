@@ -446,6 +446,7 @@ window.close();
         try:
             media_url = image_url
             media_url, _converted = self._convert_png_url_to_jpg(media_url)
+            _logger.error(f"converted media_url {media_url}")
 
             creator_info = self._tiktok_creator_info(access_token)
             privacy_options = creator_info.get("privacy_level_options") or []
