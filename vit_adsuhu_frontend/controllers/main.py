@@ -929,8 +929,38 @@ window.close();
 
     @http.route('/tiktok/post_image', type='json', auth='user', website=True, methods=['POST'])
     def tiktok_post_image(self, image_url=None, caption=None, image_variant_id=None, return_url=None, **kwargs):
-        image_url = (image_url or "").strip()
-        caption = (caption or "").strip()
+        json_payload = request.jsonrequest if isinstance(request.jsonrequest, dict) else {}
+        nested_params = json_payload.get("params") if isinstance(json_payload.get("params"), dict) else {}
+
+        image_url = (
+            image_url
+            or kwargs.get("image_url")
+            or json_payload.get("image_url")
+            or nested_params.get("image_url")
+            or ""
+        ).strip()
+        caption = (
+            caption
+            or kwargs.get("caption")
+            or json_payload.get("caption")
+            or nested_params.get("caption")
+            or ""
+        ).strip()
+        image_variant_id = (
+            image_variant_id
+            or kwargs.get("image_variant_id")
+            or json_payload.get("image_variant_id")
+            or nested_params.get("image_variant_id")
+            or ""
+        )
+        return_url = (
+            return_url
+            or kwargs.get("return_url")
+            or json_payload.get("return_url")
+            or nested_params.get("return_url")
+            or ""
+        )
+
         if not image_url and image_variant_id:
             try:
                 variant = request.env["vit.image_variant"].sudo().browse(int(image_variant_id))
