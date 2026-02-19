@@ -25,7 +25,7 @@ curl --location 'https://open.tiktokapis.com/v2/post/publish/video/init/' \
 --data-raw '{
   "post_info": {
     "title": "this will be a funny #cat video on your @tiktok #fyp",
-    "privacy_level": "MUTUAL_FOLLOW_FRIENDS",
+    "privacy_level": "SELF_ONLY",
     "disable_duet": false,
     "disable_comment": true,
     "disable_stitch": false,
@@ -33,6 +33,6 @@ curl --location 'https://open.tiktokapis.com/v2/post/publish/video/init/' \
   },
   "source_info": {
       "source": "PULL_FROM_URL",
-      "video_url": "https://example.verified.domain.com/example_video.mp4"
+      "video_url": "https://app.adsuhu.com/vit_ads_suhu_inherit/static/BigBuckBunny2.mp4"
   }
 }'
