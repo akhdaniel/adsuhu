@@ -94,7 +94,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
                     const popupAuthUrl = this._withPopupParam(json.auth_url);
                     const ok = await this._openTiktokAuthPopup(popupAuthUrl);
                     if (ok) {
-                        await this._loadTiktokStatus();
+                        this._markReadyToPost();
                     }
                     return;
                 }
@@ -147,7 +147,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
                 const popupAuthUrl = this._withPopupParam(json.auth_url);
                 const ok = await this._openTiktokAuthPopup(popupAuthUrl);
                 if (ok) {
-                    await this._loadTiktokStatus();
+                    this._markReadyToPost();
                 }
                 return;
             }
@@ -206,6 +206,12 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
         document.body.classList.remove("modal-open");
         document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
     },
+    _markReadyToPost() {
+        this._hideAuthPrompt();
+        this._setSubmitDisabled(false);
+        this._showModal();
+        this._showAlert("TikTok connected. Sekarang siap post konten ini.", "success");
+    },
     async _openTiktokAuthPopup(authUrl) {
         const popup = window.open(
             authUrl,
@@ -241,7 +247,15 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
                     return;
                 }
                 if (data.success) {
-                    this._showAlert("TikTok connected. Lanjutkan posting...", "success");
+                    try {
+                        if (!popup.closed) {
+                            popup.close();
+                        }
+                    } catch (error) {
+                        // Ignore cross-window close errors.
+                    }
+                    window.focus();
+                    this._showModal();
                     finish(true);
                 } else {
                     this._showAlert(data.error || "TikTok login gagal.", "danger");
