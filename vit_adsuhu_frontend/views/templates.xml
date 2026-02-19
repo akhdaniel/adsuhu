@@ -680,9 +680,9 @@
                                                                         <a t-att-href="iv.image_url" target="_new">
                                                                             <img t-att-src="iv.image_url_512" class="img-fluid"/>
                                                                         </a>
-                                                                        <!-- <button class="btn btn-primary btn-sm mt-2 js-upload-facebook" t-att-data-image-url="iv.image_url">
-                                                                            <i class="fa fa-facebook me-1"></i> Upload to Facebook Page
-                                                                        </button> -->
+                                                                        <button class="btn btn-primary btn-sm mt-2 js-upload-facebook" t-att-data-image-url="iv.image_url">
+                                                                            <i class="fa fa-facebook me-1"></i> Facebook Page
+                                                                        </button>
                                                                     </div>
 
                                                                     <div class="col-md-6 gap-2 mb-2" id="generating_image" style="background-color: #eee; display:none">
