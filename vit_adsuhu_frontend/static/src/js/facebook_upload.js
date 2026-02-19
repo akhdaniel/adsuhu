@@ -7,6 +7,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     events: {
         "click .js-upload-facebook": "_onOpenFacebookUpload",
         "click .js-facebook-upload-submit": "_onSubmitFacebookUpload",
+        "click #facebook-upload-modal [data-bs-dismiss='modal']": "_onCloseFacebookModal",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
@@ -51,15 +52,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         this._hideAuthPrompt();
         this._showAlert("Loading your Facebook Pages...", "info");
 
-        if (this.modalEl && window.bootstrap?.Modal) {
-            window.bootstrap.Modal.getOrCreateInstance(this.modalEl).show();
-        } else if (this.modalEl) {
-            this.modalEl.classList.add("show");
-            this.modalEl.style.display = "block";
-            this.modalEl.setAttribute("aria-modal", "true");
-            this.modalEl.removeAttribute("aria-hidden");
-            document.body.classList.add("modal-open");
-        }
+        this._showModal();
 
         await this._loadFacebookPages();
     },
@@ -181,11 +174,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
             }
 
             this._showAlert("Image berhasil dipost ke Facebook Page.", "success");
-            if (this.modalEl && window.bootstrap?.Modal) {
-                setTimeout(() => {
-                    window.bootstrap.Modal.getOrCreateInstance(this.modalEl).hide();
-                }, 1200);
-            }
+            setTimeout(() => this._hideModal(), 1200);
         } catch (error) {
             this._showAlert(error.message || "Failed to post to Facebook.", "danger");
         } finally {
@@ -208,6 +197,40 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     },
     _buildForceLoginUrl() {
         return `/facebook/oauth/start?force_login=1&next=${encodeURIComponent(this._getReturnUrl())}`;
+    },
+    _showModal() {
+        if (!this.modalEl) {
+            return;
+        }
+        if (window.bootstrap?.Modal) {
+            window.bootstrap.Modal.getOrCreateInstance(this.modalEl).show();
+            return;
+        }
+        this.modalEl.classList.add("show");
+        this.modalEl.style.display = "block";
+        this.modalEl.setAttribute("aria-modal", "true");
+        this.modalEl.removeAttribute("aria-hidden");
+        document.body.classList.add("modal-open");
+    },
+    _hideModal() {
+        if (!this.modalEl) {
+            return;
+        }
+        if (window.bootstrap?.Modal) {
+            window.bootstrap.Modal.getOrCreateInstance(this.modalEl).hide();
+            return;
+        }
+        this.modalEl.classList.remove("show");
+        this.modalEl.style.display = "none";
+        this.modalEl.setAttribute("aria-hidden", "true");
+        this.modalEl.removeAttribute("aria-modal");
+        document.body.classList.remove("modal-open");
+        const backdrops = document.querySelectorAll(".modal-backdrop");
+        backdrops.forEach((el) => el.remove());
+    },
+    _onCloseFacebookModal(event) {
+        event.preventDefault();
+        this._hideModal();
     },
     async _openFacebookAuthPopup(authUrl) {
         const popup = window.open(
