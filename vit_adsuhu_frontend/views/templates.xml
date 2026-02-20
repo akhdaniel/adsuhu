@@ -680,10 +680,13 @@
                                                                         <a t-att-href="iv.image_url" target="_new">
                                                                             <img t-att-src="iv.image_url_512" class="img-fluid"/>
                                                                         </a>
-                                                                        <button class="btn btn-primary btn-sm mt-2 js-upload-facebook" t-att-data-image-url="iv.image_url">
+                                                                        <button type="button" class="btn btn-primary btn-sm mt-2 js-upload-facebook"
+                                                                            t-att-data-image-url="iv.image_url"
+                                                                            t-att-data-headline="iv.headline or ''"
+                                                                            t-att-data-primary-text="iv.primary_text or ''">
                                                                             <i class="fa fa-facebook me-1"></i> Facebook Page
                                                                         </button>
-                                                                        <button class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok"
+                                                                        <button type="button" class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok"
                                                                             t-att-data-image-url="iv.image_url"
                                                                             t-att-data-image-variant-id="iv.id"
                                                                             t-att-data-headline="iv.headline or ''"

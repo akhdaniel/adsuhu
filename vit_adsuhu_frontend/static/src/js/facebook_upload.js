@@ -6,7 +6,6 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     selector: ".adsuhu-container",
     events: {
         "click .js-upload-facebook": "_onOpenFacebookUpload",
-        "click .js-facebook-upload-submit": "_onSubmitFacebookUpload",
     },
     start() {
         this.csrfToken = document.getElementById("adsuhu-csrf-token")?.value || "";
@@ -25,8 +24,16 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
             hasSubmit: !!this.submitBtn,
         });
         this._bindModalCloseEvents();
+        this._bindSubmitEvent();
         this._showOAuthFeedbackFromQuery();
         return this._super(...arguments);
+    },
+    _bindSubmitEvent() {
+        if (!this.submitBtn || this._submitBound) {
+            return;
+        }
+        this._submitBound = true;
+        this.submitBtn.addEventListener("click", (event) => this._onSubmitFacebookUpload(event));
     },
     _bindModalCloseEvents() {
         if (!this.modalEl || this._modalCloseBound) {
@@ -68,6 +75,8 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         event.preventDefault();
         const button = event.currentTarget;
         const imageUrl = button?.dataset?.imageUrl || "";
+        const headline = (button?.dataset?.headline || "").trim();
+        const primaryText = (button?.dataset?.primaryText || "").trim();
         if (!imageUrl) {
             this._showAlert("Image URL not found.", "danger");
             return;
@@ -77,7 +86,12 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
             this.previewEl.src = imageUrl;
         }
         if (this.captionEl) {
-            this.captionEl.value = "";
+            const autoCaption = [headline, primaryText].filter(Boolean).join("\n\n");
+            this.captionEl.value = autoCaption;
+        }
+        if (this.modalEl) {
+            this.modalEl.dataset.headline = headline;
+            this.modalEl.dataset.primaryText = primaryText;
         }
         this._hasRetriedForceLogin = false;
         this._resetPageSelect();

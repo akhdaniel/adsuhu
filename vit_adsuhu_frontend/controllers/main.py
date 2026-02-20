@@ -253,10 +253,10 @@ class ProductValueAnalysisController(http.Controller):
                 "output_html": f"""<a href="{iv.image_url}" target="_new">
     <img src='{iv.image_url_512}' class='img-fluid'/>
 </a>
-<button class="btn btn-primary btn-sm mt-2 js-upload-facebook" data-image-url="{iv.image_url}">
+<button type="button" class="btn btn-primary btn-sm mt-2 js-upload-facebook" data-image-url="{iv.image_url}" data-headline="{escape(iv.headline or '')}" data-primary-text="{escape(iv.primary_text or '')}">
     <i class="fa fa-facebook me-1"></i> Upload to Facebook Page
 </button>
-<button class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok" data-image-url="{iv.image_url}" data-image-variant-id="{iv.id}" data-headline="{escape(iv.headline or '')}" data-primary-text="{escape(iv.primary_text or '')}">
+<button type="button" class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok" data-image-url="{iv.image_url}" data-image-variant-id="{iv.id}" data-headline="{escape(iv.headline or '')}" data-primary-text="{escape(iv.primary_text or '')}">
     <i class="fa fa-music me-1"></i> Post to TikTok
 </button>
 """,
