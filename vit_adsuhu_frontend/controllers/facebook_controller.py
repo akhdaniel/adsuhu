@@ -361,6 +361,14 @@ window.close();
                 return self._facebook_auth_required_payload(return_url, force_login=True, reason="token_invalid")
             return {"auth_required": False, "pages": [], "error": message}
 
+    @http.route('/facebook/disconnect', type='json', auth='user', website=True, methods=['POST'])
+    def facebook_disconnect(self, **kwargs):
+        try:
+            self._clear_user_facebook_token(request.env.uid)
+            return {"success": True, "connected": False}
+        except Exception as exc:
+            return {"success": False, "error": str(exc) or "Failed to disconnect Facebook account."}
+
     @http.route('/facebook/post_image', type='json', auth='user', website=True, methods=['POST'])
     def facebook_post_image(self, image_url=None, page_id=None, message=None, return_url=None, **kwargs):
         json_payload = request.httprequest.get_json(silent=True) or {}

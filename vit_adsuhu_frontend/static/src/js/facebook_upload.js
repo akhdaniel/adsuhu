@@ -19,6 +19,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         this.previewEl = document.getElementById("facebook-upload-preview");
         this.captionMetaEl = document.getElementById("facebook-caption-meta");
         this.submitBtn = document.querySelector(".js-facebook-upload-submit");
+        this.disconnectBtn = document.querySelector(".js-facebook-disconnect");
         this._hasRetriedForceLogin = false;
         console.log("[FB Modal] widget start", {
             hasModal: !!this.modalEl,
@@ -26,6 +27,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         });
         this._bindModalCloseEvents();
         this._bindSubmitEvent();
+        this._bindDisconnectEvent();
         this._showOAuthFeedbackFromQuery();
         return this._super(...arguments);
     },
@@ -35,6 +37,13 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         }
         this._submitBound = true;
         this.submitBtn.addEventListener("click", (event) => this._onSubmitFacebookUpload(event));
+    },
+    _bindDisconnectEvent() {
+        if (!this.disconnectBtn || this._disconnectBound) {
+            return;
+        }
+        this._disconnectBound = true;
+        this.disconnectBtn.addEventListener("click", (event) => this._onDisconnectFacebook(event));
     },
     _bindModalCloseEvents() {
         if (!this.modalEl || this._modalCloseBound) {
@@ -101,6 +110,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         this._hasRetriedForceLogin = false;
         this._resetPageSelect();
         this._hideAuthPrompt();
+        this._setDisconnectDisabled(true);
         this._showAlert("Loading your Facebook Pages...", "info");
 
         this._showModal();
@@ -144,12 +154,14 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
                     "warning"
                 );
                 this._setSubmitDisabled(true);
+                this._setDisconnectDisabled(true);
                 return;
             }
             if (json?.error) {
                 this._hideAuthPrompt();
                 this._showAlert(json.error, "danger");
                 this._setSubmitDisabled(true);
+                this._setDisconnectDisabled(true);
                 return;
             }
             const pages = json?.pages || [];
@@ -167,14 +179,51 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
                 this._hideAuthPrompt();
                 this._showAlert("Tidak ada Facebook Page yang bisa diakses akun ini.", "warning");
                 this._setSubmitDisabled(true);
+                this._setDisconnectDisabled(false);
                 return;
             }
             this._hideAuthPrompt();
             this._showAlert("Pilih page lalu klik Post to Facebook.", "success");
             this._setSubmitDisabled(false);
+            this._setDisconnectDisabled(false);
         } catch (error) {
             this._showAlert(error.message || "Failed to load Facebook pages.", "danger");
             this._setSubmitDisabled(true);
+            this._setDisconnectDisabled(true);
+        }
+    },
+    async _onDisconnectFacebook(event) {
+        event.preventDefault();
+        this._setDisconnectDisabled(true, "Disconnecting...");
+        this._setSubmitDisabled(true);
+        try {
+            const response = await fetch("/facebook/disconnect", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": this.csrfToken,
+                },
+                body: JSON.stringify({
+                    return_url: this._getReturnUrl(),
+                }),
+                credentials: "same-origin",
+            });
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text || "Failed to disconnect Facebook.");
+            }
+            const rpcJson = await response.json();
+            const json = this._unwrapRpcPayload(rpcJson);
+            if (json?.error || json?.success === false) {
+                throw new Error(json.error || "Failed to disconnect Facebook.");
+            }
+            this._resetPageSelect();
+            this._showAuthPrompt(this._buildForceLoginUrl());
+            this._showAlert("Facebook account disconnected.", "warning");
+        } catch (error) {
+            this._showAlert(error.message || "Failed to disconnect Facebook.", "danger");
+        } finally {
+            this._setDisconnectDisabled(false);
         }
     },
     async _onSubmitFacebookUpload(event) {
@@ -387,6 +436,15 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         this.submitBtn.innerHTML = text
             ? `<i class="fa fa-send me-1"></i> ${text}`
             : "<i class=\"fa fa-send me-1\"></i> Post to Facebook";
+    },
+    _setDisconnectDisabled(disabled, text) {
+        if (!this.disconnectBtn) {
+            return;
+        }
+        this.disconnectBtn.disabled = disabled;
+        this.disconnectBtn.innerHTML = text
+            ? `<i class="fa fa-unlink me-1"></i> ${text}`
+            : '<i class="fa fa-unlink me-1"></i> Disconnect';
     },
     _showAuthPrompt(authUrl) {
         if (!this.authWrapEl) {
