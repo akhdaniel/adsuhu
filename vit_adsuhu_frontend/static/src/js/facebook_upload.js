@@ -17,6 +17,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         this.pageSelectEl = document.getElementById("facebook-upload-page-select");
         this.captionEl = document.getElementById("facebook-upload-caption");
         this.previewEl = document.getElementById("facebook-upload-preview");
+        this.captionMetaEl = document.getElementById("facebook-caption-meta");
         this.submitBtn = document.querySelector(".js-facebook-upload-submit");
         this._hasRetriedForceLogin = false;
         console.log("[FB Modal] widget start", {
@@ -75,8 +76,10 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
         event.preventDefault();
         const button = event.currentTarget;
         const imageUrl = button?.dataset?.imageUrl || "";
-        const headline = (button?.dataset?.headline || "").trim();
-        const primaryText = (button?.dataset?.primaryText || "").trim();
+        const headline = this._stripHtml(button?.dataset?.headline || "");
+        const primaryText = this._stripHtml(button?.dataset?.primaryText || "");
+        const landingPageUrl = this._stripHtml(this.captionMetaEl?.dataset?.productUrl || "");
+        const productTags = this._normalizeTags(this.captionMetaEl?.dataset?.productTags || "");
         if (!imageUrl) {
             this._showAlert("Image URL not found.", "danger");
             return;
@@ -86,7 +89,9 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
             this.previewEl.src = imageUrl;
         }
         if (this.captionEl) {
-            const autoCaption = [headline, primaryText].filter(Boolean).join("\n\n");
+            const autoCaption = [headline, primaryText, landingPageUrl, productTags]
+                .filter(Boolean)
+                .join("\n\n");
             this.captionEl.value = autoCaption;
         }
         if (this.modalEl) {
@@ -175,7 +180,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     async _onSubmitFacebookUpload(event) {
         event.preventDefault();
         const pageId = this.pageSelectEl?.value || "";
-        const message = this.captionEl?.value || "";
+        const message = this._stripHtml(this.captionEl?.value || "");
         if (!pageId) {
             this._showAlert("Pilih Facebook Page dulu.", "danger");
             return;
@@ -243,6 +248,36 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
     },
     _buildForceLoginUrl() {
         return `/facebook/oauth/start?force_login=1&next=${encodeURIComponent(this._getReturnUrl())}`;
+    },
+    _stripHtml(value) {
+        const text = String(value || "");
+        if (!text) {
+            return "";
+        }
+        return text
+            .replace(/<[^>]*>/g, "")
+            .replace(/\r/g, "")
+            .split("\n")
+            .map((line) => line.replace(/\s+/g, " ").trim())
+            .filter(Boolean)
+            .join("\n");
+    },
+    _normalizeTags(rawTags) {
+        const plain = this._stripHtml(rawTags);
+        if (!plain) {
+            return "";
+        }
+        const tags = plain
+            .split(/[\n,;]+/)
+            .map((tag) => tag.trim())
+            .filter(Boolean)
+            .map((tag) => {
+                let cleaned = tag.replace(/^#+/, "");
+                cleaned = cleaned.replace(/\s+/g, "");
+                return cleaned ? `#${cleaned}` : "";
+            })
+            .filter(Boolean);
+        return tags.join(" ");
     },
     _showModal() {
         if (!this.modalEl) {

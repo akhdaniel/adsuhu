@@ -86,6 +86,12 @@
 
                 <div class="container adsuhu-container" id="main">
                     <input type="hidden" id="adsuhu-csrf-token" t-att-value="request.csrf_token()"/>
+                    <div
+                        id="facebook-caption-meta"
+                        class="d-none"
+                        t-att-data-product-url="analysis.product_url or ''"
+                        t-att-data-product-tags="analysis.tags or ''"
+                    ></div>
                     <div class="row">
                         <!-- ============================== TOC =========================== -->
                         <div class="col-lg-3 mb-4" id="toc">

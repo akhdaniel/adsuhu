@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 import secrets
 import time
 from urllib.parse import urlencode
@@ -388,6 +389,7 @@ window.close();
             or nested_params.get("message")
             or ""
         ).strip()
+        message = re.sub(r"<[^>]+>", "", message or "").strip()
         return_url = (
             return_url
             or kwargs.get("return_url")
