@@ -444,6 +444,14 @@
 
                                 </section>
                             </div>
+                            <div id="section-tags" style="scroll-margin-top: 6rem;" t-if="analysis.tags">
+                                <section class="adsuhu-section">
+                                    <h2 class="adsuhu-section-title">Tags</h2>
+                                    <div class="adsuhu-content">
+                                        <t t-esc="analysis.tags"/>
+                                    </div>
+                                </section>
+                            </div>
                             <!-- product analysis -->
                             <div t-attf-id="section-product_value_analysis" style="scroll-margin-top: 6rem;">
                                 <div id="loading-skeleton-product_value_analysis" style="display: none">
