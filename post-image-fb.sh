@@ -19,7 +19,7 @@ echo "https://www.facebook.com/${GRAPH_VER}/dialog/oauth?client_id=${APP_ID}&red
 
 
 # 2) exchange code -> user access token
-CODE="PASTE_CODE_FROM_REDIRECT"
+CODE="AQAOMV8YRiuewQ29fpA-Y1Q7EwQRgEK6xku511ugT0xrSwXlpM7rroglf00QH-0Q_Rjqgk0jDlJJaEDIHKxNGyswzB9JWFpL52oDN-ER1wcDejoCovFHh0mA6XuXvMDtVOz29lrr6eYs3teu61KmpFwi_rDiO5gtadExqInWACQoFW7_dEPljmVSPP0VJZB_V1-lmyoxg218igHZF_qxniU_CiMJpr9wVKxvPcU3HGt51QRD2_4x_RxXdzF6yLZJGVoQyfYKnLO-lmxOawFSWt83Ht9M7E3I-L7f5ND_bF3viTTFztRBHvkCTSpiAbSE7ZH51YoLlFyseMiWXUeUpVUW3LLcb4Hodzi5cS5GyQdr1NOdEz5u4BX-sqX3a0_3UjZJSgeJDzatQP0-IvW5PsdPqLgd2HIqY7dJtonv7Hc9lw"
 USER_TOKEN=$(curl -sG "https://graph.facebook.com/${GRAPH_VER}/oauth/access_token" \
   --data-urlencode "client_id=${APP_ID}" \
   --data-urlencode "client_secret=${APP_SECRET}" \

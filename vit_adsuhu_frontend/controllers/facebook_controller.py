@@ -208,11 +208,19 @@ class FacebookController(SocialControllerBase):
 
     @http.route('/facebook/oauth/callback', type='http', auth='user', website=True, csrf=False)
     def facebook_oauth_callback(self, **kwargs):
-        _logger.error(f"/facebook/oauth/callback >> kwargs={kwargs}")
+        _logger.error(
+            "/facebook/oauth/callback >> keys=%s args_keys=%s",
+            sorted(list(kwargs.keys())),
+            sorted(list(request.httprequest.args.keys())),
+        )
         cfg = self._facebook_config()
         redirect_target = self._safe_local_url(request.session.pop("facebook_oauth_next", "/product_analysis"))
         popup_mode = bool(request.session.pop("facebook_oauth_popup", False))
-        received_state = kwargs.get("state")
+        received_state = (
+            kwargs.get("state")
+            or request.params.get("state")
+            or request.httprequest.args.get("state")
+        )
         expected_state = request.session.pop("facebook_oauth_state", None)
 
         def _popup_response(success, error_message=""):
@@ -232,7 +240,22 @@ window.close();
 """
             return request.make_response(html, headers=[('Content-Type', 'text/html; charset=utf-8')])
 
-        if not expected_state or expected_state != received_state:
+        if not expected_state:
+            if popup_mode:
+                return _popup_response(False, "missing_expected_state")
+            return request.redirect(self._append_query_params(redirect_target, {"fb_error": "missing_expected_state"}))
+
+        if not received_state:
+            _logger.error(
+                "/facebook/oauth/callback missing state; expected_state_present=%s code_present=%s",
+                bool(expected_state),
+                bool(kwargs.get("code") or request.params.get("code") or request.httprequest.args.get("code")),
+            )
+            if popup_mode:
+                return _popup_response(False, "missing_state")
+            return request.redirect(self._append_query_params(redirect_target, {"fb_error": "missing_state"}))
+
+        if expected_state != received_state:
             if popup_mode:
                 return _popup_response(False, "invalid_state")
             return request.redirect(self._append_query_params(redirect_target, {"fb_error": "invalid_state"}))
