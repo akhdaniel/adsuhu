@@ -362,9 +362,40 @@ window.close();
 
     @http.route('/facebook/post_image', type='json', auth='user', website=True, methods=['POST'])
     def facebook_post_image(self, image_url=None, page_id=None, message=None, return_url=None, **kwargs):
-        image_url = (image_url or "").strip()
-        page_id = (page_id or "").strip()
-        message = (message or "").strip()
+        json_payload = request.httprequest.get_json(silent=True) or {}
+        if not isinstance(json_payload, dict):
+            json_payload = {}
+        nested_params = json_payload.get("params") if isinstance(json_payload.get("params"), dict) else {}
+
+        image_url = (
+            image_url
+            or kwargs.get("image_url")
+            or json_payload.get("image_url")
+            or nested_params.get("image_url")
+            or ""
+        ).strip()
+        page_id = (
+            page_id
+            or kwargs.get("page_id")
+            or json_payload.get("page_id")
+            or nested_params.get("page_id")
+            or ""
+        ).strip()
+        message = (
+            message
+            or kwargs.get("message")
+            or json_payload.get("message")
+            or nested_params.get("message")
+            or ""
+        ).strip()
+        return_url = (
+            return_url
+            or kwargs.get("return_url")
+            or json_payload.get("return_url")
+            or nested_params.get("return_url")
+            or ""
+        )
+
         if not image_url:
             return {"error": "Image URL is required."}
         if not page_id:
