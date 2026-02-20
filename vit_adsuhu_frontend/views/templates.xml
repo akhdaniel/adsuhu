@@ -808,22 +808,26 @@
                             </div>
                             <div class="modal-body">
                                 <div id="facebook-upload-alert" class="alert d-none" role="alert"></div>
-                                <div class="mb-3">
-                                    <img id="facebook-upload-preview" src="" class="img-fluid rounded" alt="Image preview" style="max-height: 280px;"/>
-                                </div>
                                 <div id="facebook-upload-auth-wrap" class="alert alert-warning d-none" role="alert">
                                     Facebook belum terkoneksi.
                                     <a id="facebook-upload-auth-link" href="#" class="btn btn-sm btn-primary ms-2">Login with Facebook</a>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="facebook-upload-page-select" class="form-label">Facebook Page</label>
-                                    <select id="facebook-upload-page-select" class="form-select">
-                                        <option value="">Select Facebook Page</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="facebook-upload-caption" class="form-label">Caption</label>
-                                    <textarea id="facebook-upload-caption" class="form-control" rows="4" placeholder="Tulis caption untuk post Facebook..."></textarea>
+                                <div class="row g-3 align-items-start">
+                                    <div class="col-md-6">
+                                        <img id="facebook-upload-preview" src="" class="img-fluid rounded w-100" alt="Image preview" style="max-height: 280px; object-fit: contain;"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="facebook-upload-caption" class="form-label">Caption</label>
+                                            <textarea id="facebook-upload-caption" class="form-control" rows="8" placeholder="Tulis caption untuk post Facebook..."></textarea>
+                                        </div>
+                                        <div class="mb-0">
+                                            <label for="facebook-upload-page-select" class="form-label">Facebook Page</label>
+                                            <select id="facebook-upload-page-select" class="form-select">
+                                                <option value="">Select Facebook Page</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -845,22 +849,26 @@
                             </div>
                             <div class="modal-body">
                                 <div id="tiktok-upload-alert" class="alert d-none" role="alert"></div>
-                                <div class="mb-3">
-                                    <img id="tiktok-upload-preview" src="" class="img-fluid rounded" alt="Image preview" style="max-height: 280px;"/>
-                                </div>
                                 <div id="tiktok-upload-auth-wrap" class="alert alert-warning d-none" role="alert">
                                     TikTok belum terkoneksi.
                                     <a id="tiktok-upload-auth-link" href="#" class="btn btn-sm btn-dark ms-2">Login with TikTok</a>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="tiktok-upload-caption" class="form-label">Caption</label>
-                                    <textarea id="tiktok-upload-caption" class="form-control" rows="4" placeholder="Tulis caption untuk post TikTok..."></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tiktok-upload-privacy-select" class="form-label">Privacy</label>
-                                    <select id="tiktok-upload-privacy-select" class="form-select">
-                                        <option value="">Select privacy</option>
-                                    </select>
+                                <div class="row g-3 align-items-start">
+                                    <div class="col-md-6">
+                                        <img id="tiktok-upload-preview" src="" class="img-fluid rounded w-100" alt="Image preview" style="max-height: 280px; object-fit: contain;"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="tiktok-upload-caption" class="form-label">Caption</label>
+                                            <textarea id="tiktok-upload-caption" class="form-control" rows="8" placeholder="Tulis caption untuk post TikTok..."></textarea>
+                                        </div>
+                                        <div class="mb-0">
+                                            <label for="tiktok-upload-privacy-select" class="form-label">Privacy</label>
+                                            <select id="tiktok-upload-privacy-select" class="form-select">
+                                                <option value="">Select privacy</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
