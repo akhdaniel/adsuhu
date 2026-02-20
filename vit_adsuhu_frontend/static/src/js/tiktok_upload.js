@@ -190,9 +190,7 @@ publicWidget.registry.AdsuhuTiktokUpload = publicWidget.Widget.extend({
             if (json?.error || json?.success === false) {
                 throw new Error(json.error || "Failed to disconnect TikTok.");
             }
-            this._resetPrivacyOptions();
-            this._showAuthPrompt(this._buildAuthStartUrl(true));
-            this._showAlert("TikTok account disconnected.", "warning");
+            this._hideModal();
         } catch (error) {
             this._showAlert(error.message || "Failed to disconnect TikTok.", "danger");
         } finally {

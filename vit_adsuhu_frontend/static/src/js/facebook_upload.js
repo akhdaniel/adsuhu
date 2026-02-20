@@ -217,9 +217,7 @@ publicWidget.registry.AdsuhuFacebookUpload = publicWidget.Widget.extend({
             if (json?.error || json?.success === false) {
                 throw new Error(json.error || "Failed to disconnect Facebook.");
             }
-            this._resetPageSelect();
-            this._showAuthPrompt(this._buildForceLoginUrl());
-            this._showAlert("Facebook account disconnected.", "warning");
+            this._hideModal();
         } catch (error) {
             this._showAlert(error.message || "Failed to disconnect Facebook.", "danger");
         } finally {
