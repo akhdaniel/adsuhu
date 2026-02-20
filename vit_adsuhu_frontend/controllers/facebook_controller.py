@@ -221,6 +221,8 @@ class FacebookController(SocialControllerBase):
             or request.params.get("state")
             or request.httprequest.args.get("state")
         )
+        
+        _logger.error(f"received_state={received_state}")
         expected_state = request.session.pop("facebook_oauth_state", None)
 
         def _popup_response(success, error_message=""):
