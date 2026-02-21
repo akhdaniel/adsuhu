@@ -47,8 +47,49 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         this._tocSyncEnabled = false;
         const result = this._super(...arguments);
         this._initTocSync();
+        this._initMobileTocToggle();
         this._injectClearButtons();
         return result;
+    },
+    _initMobileTocToggle() {
+        this.mobileTocToggleEl = document.getElementById("adsuhu-mobile-toc-toggle");
+        this.mobileTocBackdropEl = document.getElementById("adsuhu-mobile-toc-backdrop");
+        this.tocPanelEl = document.getElementById("toc");
+        if (!this.mobileTocToggleEl || !this.tocPanelEl) {
+            return;
+        }
+        this.mobileTocToggleEl.addEventListener("click", (event) => {
+            event.preventDefault();
+            const willOpen = !this.tocPanelEl.classList.contains("is-open");
+            this._setMobileTocOpen(willOpen);
+        });
+        if (this.mobileTocBackdropEl) {
+            this.mobileTocBackdropEl.addEventListener("click", () => this._setMobileTocOpen(false));
+        }
+        this.tocPanelEl.addEventListener("click", (event) => {
+            const tocLink = event.target.closest('a[href^="#"]');
+            if (tocLink && window.matchMedia("(max-width: 991.98px)").matches) {
+                this._setMobileTocOpen(false);
+            }
+        });
+        window.addEventListener("resize", () => {
+            if (!window.matchMedia("(max-width: 991.98px)").matches) {
+                this._setMobileTocOpen(false);
+            }
+        });
+        this._setMobileTocOpen(false);
+    },
+    _setMobileTocOpen(opened) {
+        const isOpened = !!opened;
+        if (this.tocPanelEl) {
+            this.tocPanelEl.classList.toggle("is-open", isOpened);
+        }
+        if (this.mobileTocBackdropEl) {
+            this.mobileTocBackdropEl.classList.toggle("is-open", isOpened);
+        }
+        if (this.mobileTocToggleEl) {
+            this.mobileTocToggleEl.setAttribute("aria-expanded", isOpened ? "true" : "false");
+        }
     },
     _initTocSync() {
         if (!this._tocSyncEnabled) {

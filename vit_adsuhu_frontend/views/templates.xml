@@ -92,6 +92,17 @@
                         t-att-data-product-url="analysis.product_url or ''"
                         t-att-data-product-tags="analysis.tags or ''"
                     ></div>
+                    <button
+                        id="adsuhu-mobile-toc-toggle"
+                        type="button"
+                        class="btn btn-dark adsuhu-mobile-toc-toggle"
+                        aria-label="Toggle table of contents"
+                        aria-controls="toc"
+                        aria-expanded="false"
+                    >
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <div id="adsuhu-mobile-toc-backdrop" class="adsuhu-mobile-toc-backdrop"></div>
                     <div class="row">
                         <!-- ============================== TOC =========================== -->
                         <div class="col-lg-3 mb-4" id="toc">
