@@ -711,6 +711,12 @@
                                                                             t-att-data-primary-text="iv.primary_text or ''">
                                                                             <i class="fa fa-facebook me-1"></i> Facebook Page
                                                                         </button>
+                                                                        <button type="button" class="btn btn-danger btn-sm mt-2 ms-1 js-upload-instagram"
+                                                                            t-att-data-image-url="iv.image_url"
+                                                                            t-att-data-headline="iv.headline or ''"
+                                                                            t-att-data-primary-text="iv.primary_text or ''">
+                                                                            <i class="fa fa-instagram me-1"></i> Instagram
+                                                                        </button>
                                                                         <button type="button" class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok"
                                                                             t-att-data-image-url="iv.image_url"
                                                                             t-att-data-image-variant-id="iv.id"
@@ -892,6 +898,50 @@
                                 <button type="button" class="btn btn-secondary js-tiktok-modal-close" data-bs-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-dark js-tiktok-upload-submit">
                                     <i class="fa fa-send me-1"></i> Post to TikTok
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="instagram-upload-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Post to Instagram</h5>
+                                <button type="button" class="btn-close js-instagram-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="instagram-upload-alert" class="alert d-none" role="alert"></div>
+                                <div id="instagram-upload-auth-wrap" class="alert alert-warning d-none" role="alert">
+                                    Instagram belum terkoneksi.
+                                    <a id="instagram-upload-auth-link" href="#" class="btn btn-sm btn-danger ms-2">Login with Instagram</a>
+                                </div>
+                                <div class="row g-3 align-items-start">
+                                    <div class="col-md-6">
+                                        <img id="instagram-upload-preview" src="" class="img-fluid rounded w-100" alt="Image preview" style="max-height: 280px; object-fit: contain;"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="instagram-upload-caption" class="form-label">Caption</label>
+                                            <textarea id="instagram-upload-caption" class="form-control" rows="8" placeholder="Tulis caption untuk post Instagram..."></textarea>
+                                        </div>
+                                        <div class="mb-0">
+                                            <label for="instagram-upload-account-select" class="form-label">Instagram Account</label>
+                                            <select id="instagram-upload-account-select" class="form-select">
+                                                <option value="">Select Instagram account</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-danger js-instagram-disconnect">
+                                    <i class="fa fa-unlink me-1"></i> Disconnect
+                                </button>
+                                <button type="button" class="btn btn-secondary js-instagram-modal-close" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger js-instagram-upload-submit">
+                                    <i class="fa fa-send me-1"></i> Post to Instagram
                                 </button>
                             </div>
                         </div>

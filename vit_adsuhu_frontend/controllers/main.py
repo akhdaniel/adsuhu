@@ -256,6 +256,9 @@ class ProductValueAnalysisController(http.Controller):
 <button type="button" class="btn btn-primary btn-sm mt-2 js-upload-facebook" data-image-url="{iv.image_url}" data-headline="{escape(iv.headline or '')}" data-primary-text="{escape(iv.primary_text or '')}">
     <i class="fa fa-facebook me-1"></i> Upload to Facebook Page
 </button>
+<button type="button" class="btn btn-danger btn-sm mt-2 ms-1 js-upload-instagram" data-image-url="{iv.image_url}" data-headline="{escape(iv.headline or '')}" data-primary-text="{escape(iv.primary_text or '')}">
+    <i class="fa fa-instagram me-1"></i> Post to Instagram
+</button>
 <button type="button" class="btn btn-dark btn-sm mt-2 ms-1 js-upload-tiktok" data-image-url="{iv.image_url}" data-image-variant-id="{iv.id}" data-headline="{escape(iv.headline or '')}" data-primary-text="{escape(iv.primary_text or '')}">
     <i class="fa fa-music me-1"></i> Post to TikTok
 </button>
