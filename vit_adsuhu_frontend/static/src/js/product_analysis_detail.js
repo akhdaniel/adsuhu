@@ -44,12 +44,16 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
             hook: "list-hook",
             ads_copy: "list-ads-copy",
         };
+        this._tocSyncEnabled = false;
         const result = this._super(...arguments);
         this._initTocSync();
         this._injectClearButtons();
         return result;
     },
     _initTocSync() {
+        if (!this._tocSyncEnabled) {
+            return;
+        }
         this.tocRoot = document.querySelector("#toc .adsuhu-toc");
         if (!this.tocRoot) {
             return;
@@ -264,8 +268,10 @@ publicWidget.registry.AdsuhuRegenerate = publicWidget.Widget.extend({
         }
 
         targetList.appendChild(item);
-        this._refreshTocTargets();
-        this._updateActiveToc();
+        if (this._tocSyncEnabled) {
+            this._refreshTocTargets();
+            this._updateActiveToc();
+        }
     },
     _injectClearButtons() {
         const sections = document.querySelectorAll(".adsuhu-section");
