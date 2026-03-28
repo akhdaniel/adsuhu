@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_vit_ai_token_category_read,access_vit_ai_token_category_read,model_vit_ai_token_category,,1,0,0,0
+access_vit_ai_token_category,access_vit_ai_token_category,model_vit_ai_token_category,base.group_system,1,1,1,1
+access_vit_ai_token_topup,access_vit_ai_token_topup,model_vit_ai_token_topup,base.group_system,1,1,1,1
+access_vit_ai_token_log,access_vit_ai_token_log,model_vit_ai_token_log,,1,0,1,0

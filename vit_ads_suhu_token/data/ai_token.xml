@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ai_token_category_video" model="vit.ai_token_category">
+            <field name="name">Video</field>
+            <field name="code">video</field>
+            <field name="token_cost">10</field>
+        </record>
+        <record id="ai_token_category_script" model="vit.ai_token_category">
+            <field name="name">Script</field>
+            <field name="code">script</field>
+            <field name="token_cost">1</field>
+        </record>
+        <record id="ai_token_category_image" model="vit.ai_token_category">
+            <field name="name">Image</field>
+            <field name="code">image</field>
+            <field name="token_cost">3</field>
+        </record>
+
+        <record id="product_ai_token_topup" model="product.template">
+            <field name="name">AI Token Topup</field>
+            <field name="type">service</field>
+            <field name="list_price">1.0</field>
+            <field name="ai_token_qty">100</field>
+        </record>
+    </data>
+</odoo>

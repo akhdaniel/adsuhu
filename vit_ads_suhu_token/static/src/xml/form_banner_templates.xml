@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vit_ads_suhu_token.BannerFormTokenBox" t-inherit="vit_ads_suhu_inherit.BannerFormRenderer" t-inherit-mode="extension">
+        <xpath expr="//div[contains(@class, 'row')][1]" position="replace">
+            <div class="row mx-0 align-items-center justify-content-center">
+                <div class="col-auto d-flex gap-2">
+                    <div class="ads_token_box">
+                        <span class="ads_token_label">Sisa Token</span>
+                        <span class="ads_token_value" t-esc="tokenDisplay"/>
+                    </div>
+                    <button type="button" class="ads_token_box ads_token_box--green" t-on-click="openTokenLog">
+                        <span class="ads_token_label">Riwayat Token</span>
+                    </button>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- AI Token Category -->
+        <record id="view_vit_ai_token_category_tree" model="ir.ui.view">
+            <field name="name">vit_ai_token_category_tree</field>
+            <field name="model">vit.ai_token_category</field>
+            <field name="arch" type="xml">
+                <list string="AI Token Categories">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="token_cost"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_vit_ai_token_category_form" model="ir.ui.view">
+            <field name="name">vit_ai_token_category_form</field>
+            <field name="model">vit.ai_token_category</field>
+            <field name="arch" type="xml">
+                <form string="AI Token Category">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="token_cost"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_vit_ai_token_category" model="ir.actions.act_window">
+            <field name="name">AI Token Categories</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.ai_token_category</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem id="menu_vit_ai_token_category" name="AI Token Categories" parent="vit_ads_suhu.vit_ads_suhu_config_menu" action="action_vit_ai_token_category" sequence="310" groups="base.group_system"/>
+
+        <!-- AI Token Topup -->
+        <record id="view_vit_ai_token_topup_tree" model="ir.ui.view">
+            <field name="name">vit_ai_token_topup_tree</field>
+            <field name="model">vit.ai_token_topup</field>
+            <field name="arch" type="xml">
+                <list string="AI Token Topups">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="product_id"/>
+                    <field name="token_qty"/>
+                    <field name="state"/>
+                    <field name="create_date"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_vit_ai_token_topup_form" model="ir.ui.view">
+            <field name="name">vit_ai_token_topup_form</field>
+            <field name="model">vit.ai_token_topup</field>
+            <field name="arch" type="xml">
+                <form string="AI Token Topup">
+                    <header>
+                        <button string="Confirm Topup" type="object" name="action_confirm" class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="user_id"/>
+                            <field name="product_id"/>
+                            <field name="token_qty"/>
+                            <field name="state"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_vit_ai_token_topup" model="ir.actions.act_window">
+            <field name="name">AI Token Topups</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.ai_token_topup</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem id="menu_vit_ai_token_topup" name="AI Token Topups" parent="vit_ads_suhu.vit_ads_suhu_config_menu" action="action_vit_ai_token_topup" sequence="320" groups="base.group_system"/>
+
+        <!-- AI Token Log -->
+        <record id="view_vit_ai_token_log_tree" model="ir.ui.view">
+            <field name="name">vit_ai_token_log_tree</field>
+            <field name="model">vit.ai_token_log</field>
+            <field name="arch" type="xml">
+                <list string="AI Token Logs">
+                    <field name="create_date"/>
+                    <field name="user_id"/>
+                    <field name="category_id"/>
+                    <field name="token_delta"/>
+                    <field name="ref_model"/>
+                    <field name="ref_id"/>
+                    <field name="note"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_vit_ai_token_log" model="ir.actions.act_window">
+            <field name="name">AI Token Logs</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vit.ai_token_log</field>
+            <field name="view_mode">list</field>
+        </record>
+
+        <menuitem id="menu_vit_ai_token_log" name="AI Token Logs" parent="vit_ads_suhu.vit_ads_suhu_config_menu" action="action_vit_ai_token_log" sequence="330" groups="base.group_system"/>
+    </data>
+</odoo>
