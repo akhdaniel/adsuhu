@@ -10,8 +10,11 @@ export class Stepper extends Component {
         onSelect: { type: Function },
     };
 
-    onStageClick(ev, key, status) {
+    onStageClick(ev) {
         ev.preventDefault();
+        const btn = ev.currentTarget;
+        const key = btn.dataset.key;
+        const status = btn.dataset.status;
         if (status === "blocked") {
             return;
         }

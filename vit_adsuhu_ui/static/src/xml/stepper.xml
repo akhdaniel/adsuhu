@@ -7,7 +7,9 @@
                     t-att-class="'o_adsuhu_step o_adsuhu_step_' + stage.status + (stage.key === props.current ? ' active' : '')"
                     t-att-disabled="stage.status === 'blocked' ? 'true' : undefined"
                     t-att-aria-current="stage.key === props.current ? 'step' : undefined"
-                    t-on-click="(ev) => onStageClick(ev, stage.key, stage.status)"
+                    t-att-data-key="stage.key"
+                    t-att-data-status="stage.status"
+                    t-on-click="onStageClick"
                     t-att-title="stage.status === 'blocked' ? 'Complete the previous step first' : undefined">
                     <span class="o_adsuhu_step_icon">
                         <t t-if="stage.status === 'done'"><i class="fa fa-check"/></t>
