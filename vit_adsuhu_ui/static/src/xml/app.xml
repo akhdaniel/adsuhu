@@ -35,8 +35,8 @@
                 <div class="o_adsuhu_main">
                     <StageView
                         stage="currentStage"
-                        hasPrev="Boolean(prevStage)"
-                        hasNext="Boolean(nextStage)"
+                        hasPrev="prevStage ? true : false"
+                        hasNext="nextStage ? true : false"
                         onPrev="goPrev"
                         onNext="goNext"
                         onRefresh="refresh"/>
