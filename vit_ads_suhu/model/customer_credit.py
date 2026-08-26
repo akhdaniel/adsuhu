@@ -58,4 +58,4 @@ class customer_credit(models.Model):
         })
         return super(customer_credit, self).copy(default)
 
-    customer_id = fields.Many2one(comodel_name="res.partner",  readonly="state=='draft'",  string=_("Customer"))
+    customer_id = fields.Many2one(comodel_name="res.partner",  string=_("Customer"))
