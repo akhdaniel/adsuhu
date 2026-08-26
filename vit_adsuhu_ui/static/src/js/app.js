@@ -63,6 +63,10 @@ export class App extends Component {
         });
         this._refreshTimer = null;
         this._pollTimer = null;
+        this.onSelectStage = this.onSelectStage.bind(this);
+        this.goNext = this.goNext.bind(this);
+        this.goPrev = this.goPrev.bind(this);
+        this.refresh = this.refresh.bind(this);
         onMounted(() => this._mount());
         onWillUnmount(() => {
             if (this._unsubscribe) {
