@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="vit_adsuhu_ui.ImageGallery">
-        <div class="o_adsuhu_gallery">
+        <div class="o_adsuhu_gallery" t-if="card">
             <div class="o_adsuhu_gallery_actions" t-if="card.image_actions &amp;&amp; card.image_actions.length">
                 <GenerateButton
                     action="card.image_actions[0]"
