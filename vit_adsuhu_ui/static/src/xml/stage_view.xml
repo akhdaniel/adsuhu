@@ -19,26 +19,45 @@
 
             <div class="o_adsuhu_cards">
                 <t t-foreach="stage.cards" t-as="card" t-key="stage.key + '-' + card.id">
-                    <div t-att-class="'o_adsuhu_card' + (card.status === 'processing' ? ' processing' : '')">
+                    <div t-att-class="'o_adsuhu_card' + (card.status === 'processing' ? ' processing' : '')"
+                        t-att-data-card-key="card.id">
                         <div class="o_adsuhu_card_head">
                             <div class="o_adsuhu_card_head_text">
                                 <h3 t-esc="card.title"/>
                                 <div class="o_adsuhu_card_sub" t-if="card.subtitle" t-esc="card.subtitle"/>
                             </div>
-                            <GenerateButton
-                                t-if="card.action"
-                                action="card.action"
-                                hasContent="card.hasContent"
-                                onDone="props.onRefresh"
-                                disabled="stage.status === 'processing'"/>
+                            <div class="o_adsuhu_card_head_actions">
+                                <button
+                                    t-if="card.hasContent"
+                                    t-att-class="'o_adsuhu_btn o_adsuhu_btn_ghost o_adsuhu_btn_sm' + (state.copied === ('card-' + card.id) ? ' copied' : '')"
+                                    t-on-click="copyCard">
+                                    <i t-att-class="'fa ' + (state.copied === ('card-' + card.id) ? 'fa-check' : 'fa-clipboard')"/>
+                                    <t t-esc="state.copied === ('card-' + card.id) ? 'Copied!' : 'Copy All'"/>
+                                </button>
+                                <GenerateButton
+                                    t-if="card.action"
+                                    action="card.action"
+                                    hasContent="card.hasContent"
+                                    onDone="props.onRefresh"
+                                    disabled="stage.status === 'processing'"/>
+                            </div>
                         </div>
 
                         <div class="o_adsuhu_card_body" t-if="card.hasContent">
-                            <div class="o_adsuhu_prose" t-if="card.content.html" t-raw="card.content.html"/>
+                            <div class="o_adsuhu_prose_wrap" t-if="card.content.html">
+                                <div class="o_adsuhu_prose" t-raw="card.content.html"/>
+                            </div>
                             <t t-if="card.content.blocks">
                                 <t t-foreach="card.content.blocks" t-as="block" t-key="block.name">
-                                    <div class="o_adsuhu_block" t-if="block.html">
-                                        <div class="o_adsuhu_block_title" t-esc="block.name"/>
+                                    <div class="o_adsuhu_block" t-if="block.html" t-att-data-key="block.name">
+                                        <div class="o_adsuhu_block_head">
+                                            <div class="o_adsuhu_block_title" t-esc="block.name"/>
+                                            <button
+                                                t-att-class="'o_adsuhu_btn_icon' + (state.copied === ('blk-' + block.name) ? ' copied' : '')"
+                                                t-on-click="copyBlock">
+                                                <i t-att-class="'fa ' + (state.copied === ('blk-' + block.name) ? 'fa-check' : 'fa-copy')"/>
+                                            </button>
+                                        </div>
                                         <div class="o_adsuhu_prose" t-raw="block.html"/>
                                     </div>
                                 </t>

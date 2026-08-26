@@ -35,4 +35,29 @@ export class StageView extends Component {
             }
         }, 1500);
     }
+
+    copyBlock(ev) {
+        const block = ev.currentTarget.closest(".o_adsuhu_block, .o_adsuhu_prose_wrap");
+        if (!block) {
+            return;
+        }
+        const prose = block.querySelector(".o_adsuhu_prose");
+        if (!prose) {
+            return;
+        }
+        const text = prose.innerText || prose.textContent || "";
+        this.copyText(text, "block-" + (block.dataset.key || ""));
+    }
+
+    copyCard(ev) {
+        const card = ev.currentTarget.closest(".o_adsuhu_card");
+        if (!card) {
+            return;
+        }
+        const prose = card.querySelector(".o_adsuhu_prose");
+        const blocks = card.querySelectorAll(".o_adsuhu_prose");
+        const parts = [];
+        blocks.forEach((p) => parts.push(p.innerText || p.textContent || ""));
+        this.copyText(parts.join("\n\n"), "card-" + card.dataset.cardKey);
+    }
 }
