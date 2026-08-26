@@ -9,7 +9,7 @@
                 <i t-att-class="'fa ' + (loading ? 'fa-spinner fa-spin' : 'fa-magic')"/>
                 <span t-esc="loading ? (hasContent ? 'Regenerating…' : 'Generating…') : label"/>
             </button>
-            <div class="o_adsuhu_btn_error" t-if="failed &amp;&amp; action.error" t-esc="action.error"/>
+            <div class="o_adsuhu_btn_error" t-if="failed &amp;&amp; action &amp;&amp; action.error" t-esc="action.error"/>
             <div class="o_adsuhu_btn_error" t-if="state.error" t-esc="state.error"/>
         </span>
     </t>

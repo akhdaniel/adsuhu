@@ -24,11 +24,11 @@ export class GenerateButton extends Component {
     }
 
     get loading() {
-        return this.state.started || this.props.action.status === "processing";
+        return this.state.started || (this.props.action && this.props.action.status === "processing");
     }
 
     get failed() {
-        return !this.loading && this.props.action.status === "failed";
+        return !this.loading && this.props.action && this.props.action.status === "failed";
     }
 
     _csrf() {
