@@ -416,7 +416,8 @@
 }
 
 .o_adsuhu_modal {
-    width: min(560px, 100%);
+    width: 100%;
+    max-width: 560px;
     max-height: 90vh;
     overflow: auto;
     background: var(--adsuhu-surface);
