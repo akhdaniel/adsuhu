@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vit_adsuhu_ui.GenerateButton">
+        <span class="o_adsuhu_gen">
+            <button
+                t-att-class="'o_adsuhu_btn o_adsuhu_btn_primary' + (loading ? ' loading' : '')"
+                t-att-disabled="(loading || disabled) ? 'true' : undefined"
+                t-on-click="onClick">
+                <i t-att-class="'fa ' + (loading ? 'fa-spinner fa-spin' : 'fa-magic')"/>
+                <span t-esc="loading ? (hasContent ? 'Regenerating…' : 'Generating…') : label"/>
+            </button>
+            <div class="o_adsuhu_btn_error" t-if="failed &amp;&amp; action.error" t-esc="action.error"/>
+            <div class="o_adsuhu_btn_error" t-if="state.error" t-esc="state.error"/>
+        </span>
+    </t>
+</templates>

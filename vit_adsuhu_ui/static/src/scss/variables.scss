@@ -1,0 +1,46 @@
+// Design tokens for the AdSuhu OWL UI.
+.o_adsuhu_app {
+    --adsuhu-bg: #f1f5f9;
+    --adsuhu-surface: #ffffff;
+    --adsuhu-surface-2: #f8fafc;
+    --adsuhu-surface-3: #eef2ff;
+    --adsuhu-border: #e2e8f0;
+    --adsuhu-border-strong: #cbd5e1;
+    --adsuhu-text: #0f172a;
+    --adsuhu-text-muted: #64748b;
+    --adsuhu-primary: #6366f1;
+    --adsuhu-primary-strong: #4f46e5;
+    --adsuhu-primary-soft: #eef2ff;
+    --adsuhu-success: #10b981;
+    --adsuhu-warning: #f59e0b;
+    --adsuhu-danger: #ef4444;
+    --adsuhu-info: #0ea5e9;
+    --adsuhu-facebook: #1877f2;
+    --adsuhu-instagram: #e1306c;
+    --adsuhu-tiktok: #010101;
+    --adsuhu-radius: 14px;
+    --adsuhu-radius-sm: 10px;
+    --adsuhu-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
+    --adsuhu-shadow-lg: 0 20px 44px rgba(15, 23, 42, 0.12);
+    --adsuhu-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    .o_adsuhu_app {
+        --adsuhu-bg: #0b1020;
+        --adsuhu-surface: #111a2e;
+        --adsuhu-surface-2: #0f1729;
+        --adsuhu-surface-3: #1b2a45;
+        --adsuhu-border: #1f2c44;
+        --adsuhu-border-strong: #2c3d5c;
+        --adsuhu-text: #e2e8f0;
+        --adsuhu-text-muted: #94a3b8;
+        --adsuhu-primary: #818cf8;
+        --adsuhu-primary-strong: #6366f1;
+        --adsuhu-primary-soft: #1e2640;
+        --adsuhu-tiktok: #f5f5f5;
+        --adsuhu-shadow: 0 6px 18px rgba(2, 6, 23, 0.5);
+        --adsuhu-shadow-lg: 0 20px 44px rgba(2, 6, 23, 0.6);
+    }
+}

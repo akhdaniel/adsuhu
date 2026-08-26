@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vit_adsuhu_ui.ImageGallery">
+        <div class="o_adsuhu_gallery">
+            <div class="o_adsuhu_gallery_actions" t-if="card.image_actions &amp;&amp; card.image_actions.length">
+                <GenerateButton
+                    action="card.image_actions[0]"
+                    hasContent="true"
+                    onDone="props.onDone"
+                    compact="true"/>
+            </div>
+            <div class="o_adsuhu_gallery_grid">
+                <t t-foreach="card.images" t-as="img" t-key="img.id">
+                    <div class="o_adsuhu_media_card">
+                        <div class="o_adsuhu_media_preview">
+                            <a t-att-href="img.image_url" target="_blank">
+                                <img t-att-src="img.image_url_512 || img.image_url" t-att-alt="img.name"/>
+                            </a>
+                        </div>
+                        <div class="o_adsuhu_media_meta">
+                            <div class="o_adsuhu_media_name" t-esc="img.name"/>
+                            <div class="o_adsuhu_media_actions">
+                                <button class="o_adsuhu_media_copy" t-on-click="copyText(img.headline, 'h-' + img.id)">
+                                    <i class="fa fa-clipboard"/>
+                                    <t t-esc="state.copied === ('h-' + img.id) ? 'Copied!' : 'Headline'"/>
+                                </button>
+                                <button class="o_adsuhu_media_copy" t-on-click="copyText(img.primary_text, 'p-' + img.id)">
+                                    <i class="fa fa-clipboard"/>
+                                    <t t-esc="state.copied === ('p-' + img.id) ? 'Copied!' : 'Text'"/>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="o_adsuhu_media_foot">
+                            <button class="o_adsuhu_media_post" t-on-click="openPoster(img)">
+                                <i class="fa fa-paper-plane"/> Post
+                            </button>
+                            <a class="o_adsuhu_media_dl" t-att-href="img.image_url" target="_blank">
+                                <i class="fa fa-download"/>
+                            </a>
+                        </div>
+                    </div>
+                </t>
+            </div>
+            <SocialPoster
+                t-if="state.activeImage"
+                image="state.activeImage"
+                onClose="closePoster"/>
+        </div>
+    </t>
+
+    <t t-name="vit_adsuhu_ui.SocialPoster">
+        <div class="o_adsuhu_modal_backdrop" t-on-click="props.onClose">
+            <div class="o_adsuhu_modal" t-on-click.stop="">
+                <div class="o_adsuhu_modal_head">
+                    <h3>Post to social media</h3>
+                    <button class="o_adsuhu_modal_close" t-on-click="props.onClose">
+                        <i class="fa fa-times"/>
+                    </button>
+                </div>
+                <div class="o_adsuhu_modal_body">
+                    <div class="o_adsuhu_platform_tabs">
+                        <button
+                            t-foreach="platforms" t-as="p" t-key="p.key"
+                            t-att-class="'o_adsuhu_platform_tab ' + (p.key === state.platform ? 'active ' : '') + p.cls"
+                            t-on-click="selectPlatform(p.key)">
+                            <i t-att-class="'fa ' + p.icon"/> <t t-esc="p.label"/>
+                        </button>
+                    </div>
+
+                    <div class="o_adsuhu_modal_alert" t-if="state.alert"
+                        t-att-class="'o_adsuhu_alert_' + state.alertType">
+                        <t t-esc="state.alert"/>
+                    </div>
+
+                    <a class="o_adsuhu_auth_link" t-if="state.authUrl" t-att-href="state.authUrl">
+                        <i class="fa fa-sign-in"/> <t t-esc="'Login to ' + platform.label"/>
+                    </a>
+
+                    <label class="o_adsuhu_field_label" t-if="platform.key !== 'tiktok'">
+                        <t t-esc="platform.label + ' target'"/>
+                    </label>
+                    <select t-if="platform.key !== 'tiktok' &amp;&amp; state.targets.length"
+                        class="o_adsuhu_select" t-model="state.targetId">
+                        <option value="" t-esc="'Select ' + platform.label + ' target'"/>
+                        <t t-foreach="state.targets" t-as="t" t-key="t.id">
+                            <option t-att-value="t.id" t-esc="t.label"/>
+                        </t>
+                    </select>
+
+                    <label class="o_adsuhu_field_label">Caption</label>
+                    <textarea class="o_adsuhu_textarea" rows="6" t-model="state.caption"/>
+
+                    <label class="o_adsuhu_field_label" t-if="platform.key === 'tiktok'">Privacy</label>
+                    <select t-if="platform.key === 'tiktok'" class="o_adsuhu_select"
+                        t-model="state.privacyLevel">
+                        <t t-foreach="state.privacyOptions" t-as="opt" t-key="opt.value">
+                            <option t-att-value="opt.value" t-esc="opt.label || opt.value"/>
+                        </t>
+                    </select>
+                </div>
+                <div class="o_adsuhu_modal_foot">
+                    <button class="o_adsuhu_btn o_adsuhu_btn_ghost" t-on-click="props.onClose">
+                        Cancel
+                    </button>
+                    <button class="o_adsuhu_btn o_adsuhu_btn_primary" t-on-click="submit"
+                        t-att-disabled="state.posting ? 'true' : undefined">
+                        <i t-att-class="'fa ' + (state.posting ? 'fa-spinner fa-spin' : 'fa-paper-plane')"/>
+                        <t t-esc="state.posting ? 'Posting…' : 'Post'"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

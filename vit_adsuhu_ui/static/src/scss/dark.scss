@@ -1,0 +1,19 @@
+// Dark-mode refinements. Token values flip in variables.scss via
+// prefers-color-scheme; these rules add context-aware polish on top.
+@media (prefers-color-scheme: dark) {
+    .o_adsuhu_app {
+        background:
+            radial-gradient(1100px 700px at 10% 5%, rgba(99, 102, 241, 0.1), transparent 60%),
+            radial-gradient(800px 500px at 90% 15%, rgba(14, 165, 233, 0.08), transparent 60%),
+            var(--adsuhu-bg);
+
+        .o_adsuhu_card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 30%),
+                var(--adsuhu-surface);
+        }
+
+        .o_adsuhu_step.active {
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+    }
+}
