@@ -15,12 +15,12 @@ class customer_credit(models.Model):
         pass
 
     name = fields.Char( required=True, copy=False, default="New", readonly=True,  string=_("Name"))
-    date_time = fields.Datetime( readonly="state=='draft'",  string=_("Date Time"))
-    credit = fields.Float( readonly="state=='draft'",  string=_("Credit"))
-    cost = fields.Float( readonly="state=='draft'",  string=_("Cost"))
-    is_usage = fields.Boolean( readonly="state=='draft'",  string=_("Is Usage"), default=True)
-    state = fields.Selection(selection=STATES,  readonly=True, default=STATES[0][0],  string=_("State"))
-    ref = fields.Char( readonly="state=='draft'",  string=_("Ref"))
+    date_time = fields.Datetime(string=_("Date Time"))
+    credit = fields.Float(string=_("Credit"))
+    cost = fields.Float(string=_("Cost"))
+    is_usage = fields.Boolean(string=_("Is Usage"), default=True)
+    state = fields.Selection(selection=STATES, readonly=True, default=STATES[0][0], string=_("State"))
+    ref = fields.Char(string=_("Ref"))
 
 
     @api.model_create_multi
