@@ -5,6 +5,7 @@ import { Component, useState } from "@odoo/owl";
 import { ImageGallery } from "./image_gallery";
 import { GenerateButton } from "./generate_button";
 
+
 export class StageView extends Component {
     static template = "vit_adsuhu_ui.StageView";
     static components = { ImageGallery, GenerateButton };

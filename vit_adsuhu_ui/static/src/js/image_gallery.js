@@ -5,6 +5,7 @@ import { Component, useState } from "@odoo/owl";
 import { SocialPoster } from "./social_poster";
 import { GenerateButton } from "./generate_button";
 
+
 export class ImageGallery extends Component {
     static template = "vit_adsuhu_ui.ImageGallery";
     static components = { SocialPoster, GenerateButton };

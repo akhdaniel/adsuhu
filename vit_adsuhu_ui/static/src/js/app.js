@@ -4,8 +4,8 @@ import { Component, markup, onMounted, onWillUnmount, useState } from "@odoo/owl
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 
-import { Stepper } from "./components/stepper";
-import { StageView } from "./components/stage_view";
+import { Stepper } from "./stepper";
+import { StageView } from "./stage_view";
 
 export const STAGE_ORDER = [
     "product",
