@@ -111,31 +111,32 @@ export class SocialPoster extends Component {
                 throw new Error(text || "Failed to load account data.");
             }
             const json = await response.json();
-            if (json?.auth_required) {
-                this.state.authUrl = json.auth_url || "";
+            const data = json.result || json;
+            if (data?.auth_required) {
+                this.state.authUrl = data.auth_url || "";
                 this.setAlert("Account not connected. Click the login link.", "warning");
                 return;
             }
-            if (json?.error) {
-                throw new Error(json.error);
+            if (data?.error) {
+                throw new Error(data.error);
             }
             if (this.state.platform === "facebook") {
-                this.state.targets = (json?.pages || []).map((p) => ({
+                this.state.targets = (data?.pages || []).map((p) => ({
                     id: p.id,
                     label: p.name,
                 }));
             } else if (this.state.platform === "instagram") {
-                this.state.targets = (json?.accounts || []).map((a) => ({
+                this.state.targets = (data?.accounts || []).map((a) => ({
                     id: a.id,
                     label: a.name || a.username || a.id,
                 }));
             } else {
-                this.state.privacyOptions = json?.privacy_level_options || [];
-                this.state.privacyLevel = json?.default_privacy_level || "";
-                this.state.tiktokReady = json?.posting_ready !== false;
+                this.state.privacyOptions = data?.privacy_level_options || [];
+                this.state.privacyLevel = data?.default_privacy_level || "";
+                this.state.tiktokReady = data?.posting_ready !== false;
                 if (!this.state.tiktokReady) {
                     this.setAlert(
-                        json?.posting_message || "TikTok account is not ready to post.",
+                        data?.posting_message || "TikTok account is not ready to post.",
                         "warning"
                     );
                 } else {
@@ -199,13 +200,14 @@ export class SocialPoster extends Component {
                 throw new Error(text || "Failed to post.");
             }
             const json = await response.json();
-            if (json?.auth_required && json?.auth_url) {
-                this.state.authUrl = json.auth_url;
+            const data = json.result || json;
+            if (data?.auth_required && data?.auth_url) {
+                this.state.authUrl = data.auth_url;
                 this.setAlert("Auth required. Click the login link.", "warning");
                 return;
             }
-            if (json?.error) {
-                throw new Error(json.error);
+            if (data?.error) {
+                throw new Error(data.error);
             }
             this.setAlert("Posted successfully!", "success");
             await sleep(1200);

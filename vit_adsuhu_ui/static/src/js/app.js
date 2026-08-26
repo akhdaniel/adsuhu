@@ -128,11 +128,12 @@ export class App extends Component {
                 throw new Error(text || "Failed to load analysis.");
             }
             const data = await response.json();
-            if (data.error) {
-                throw new Error(data.error);
+            const payload = data.result || data;
+            if (payload.error) {
+                throw new Error(payload.error);
             }
-            this.state.analysis = data.analysis || {};
-            this.state.stages = data.stages || [];
+            this.state.analysis = payload.analysis || {};
+            this.state.stages = payload.stages || [];
             this.state.loading = false;
             this.state.error = "";
         } catch (err) {

@@ -81,10 +81,11 @@ export class GenerateButton extends Component {
                     body: JSON.stringify({}),
                 });
                 const json = await response.json();
-                const status = json?.status || "idle";
+                const payload = json.result || json;
+                const status = payload?.status || "idle";
                 if (TERMINAL.has(status)) {
                     if (status === "failed") {
-                        this.state.error = json?.error || "Generation failed.";
+                        this.state.error = payload?.error || "Generation failed.";
                     }
                     this.state.started = false;
                     this.props.onDone?.();
