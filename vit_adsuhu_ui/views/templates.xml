@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="website_layout_fix" name="Fix lang.replace in website.layout"
-        inherit_id="website.layout">
-        <xpath expr="//t[@t-set='html_data']" position="before">
-            <t t-if="not isinstance(lang, str)" t-set="lang" t-value="lang.code if hasattr(lang, 'code') else str(lang)"/>
-        </xpath>
-    </template>
-
     <template id="app_page" name="AdSuhu UI App Page">
         <t t-call="website.layout">
             <div id="wrap" class="oe_structure">
