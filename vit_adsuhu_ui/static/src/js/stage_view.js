@@ -24,11 +24,36 @@ export class StageView extends Component {
             editingBlock: null,
             editText: "",
             saving: false,
+            collapsed: {},
         });
     }
 
     get stage() {
         return this.props.stage;
+    }
+
+    isCollapsed(block) {
+        return !!this.state.collapsed[block.edit_field + "-" + block.edit_id];
+    }
+
+    toggleCollapse(block) {
+        this.state.collapsed[block.edit_field + "-" + block.edit_id] = !this.state.collapsed[
+            block.edit_field + "-" + block.edit_id
+        ];
+    }
+
+    get isCardCollapsed() {
+        const card = this.props.stage.cards && this.props.stage.cards[0];
+        if (!card || !card.content || !card.content.edit_model) {
+            return false;
+        }
+        return !!this.state.collapsed["__card_" + card.content.edit_id];
+    }
+
+    toggleCardCollapse(card) {
+        this.state.collapsed["__card_" + card.content.edit_id] = !this.state.collapsed[
+            "__card_" + card.content.edit_id
+        ];
     }
 
     copyText(text, key) {

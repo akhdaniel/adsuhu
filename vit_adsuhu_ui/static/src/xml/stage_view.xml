@@ -45,15 +45,24 @@
 
                         <div class="o_adsuhu_card_body" t-if="card.hasContent">
                             <div class="o_adsuhu_prose_wrap" t-if="card.content.html &amp;&amp; !card.content.blocks">
-                                <div class="o_adsuhu_prose" t-raw="card.content.html"/>
-                                <t t-if="card.content.edit_model">
-                                    <div class="o_adsuhu_block_edit_bar">
-                                        <button class="o_adsuhu_btn_icon" title="Edit"
-                                            t-on-click="() => this.startEdit(card.content)">
-                                            <i class="fa fa-pencil"/>
-                                        </button>
+                                <div class="o_adsuhu_block" t-if="card.content.edit_model">
+                                    <div class="o_adsuhu_block_head">
+                                        <div class="o_adsuhu_block_title">Content</div>
+                                        <div class="o_adsuhu_block_actions">
+                                            <button class="o_adsuhu_btn_icon"
+                                                t-att-title="isCardCollapsed ? 'Show' : 'Hide'"
+                                                t-on-click="toggleCardCollapse(card)">
+                                                <i t-att-class="'fa ' + (isCardCollapsed ? 'fa-chevron-down' : 'fa-chevron-up')"/>
+                                            </button>
+                                            <button t-if="!isCardCollapsed" class="o_adsuhu_btn_icon" title="Copy"
+                                                t-on-click="copyCard">
+                                                <i class="fa fa-copy"/>
+                                            </button>
+                                        </div>
                                     </div>
-                                </t>
+                                    <div class="o_adsuhu_prose" t-if="!isCardCollapsed" t-raw="card.content.html"/>
+                                </div>
+                                <div class="o_adsuhu_prose" t-else="" t-raw="card.content.html"/>
                             </div>
                             <t t-if="card.content.blocks">
                                 <t t-foreach="card.content.blocks" t-as="block" t-key="block.name">
@@ -61,6 +70,13 @@
                                         <div class="o_adsuhu_block_head">
                                             <div class="o_adsuhu_block_title" t-esc="block.name"/>
                                             <div class="o_adsuhu_block_actions">
+                                                <button
+                                                    t-if="block.edit_model"
+                                                    class="o_adsuhu_btn_icon"
+                                                    t-att-title="isCollapsed(block) ? 'Show' : 'Hide'"
+                                                    t-on-click="() => this.toggleCollapse(block)">
+                                                    <i t-att-class="'fa ' + (isCollapsed(block) ? 'fa-chevron-down' : 'fa-chevron-up')"/>
+                                                </button>
                                                 <button
                                                     t-if="block.edit_model &amp;&amp; !isEditing(block)"
                                                     class="o_adsuhu_btn_icon" title="Edit"
@@ -98,7 +114,7 @@
                                             </div>
                                         </t>
                                         <t t-else="">
-                                            <div class="o_adsuhu_prose" t-raw="block.html"/>
+                                            <div class="o_adsuhu_prose" t-if="!isCollapsed(block)" t-raw="block.html"/>
                                         </t>
                                     </div>
                                 </t>
