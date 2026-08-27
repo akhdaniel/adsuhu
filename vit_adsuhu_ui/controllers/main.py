@@ -24,6 +24,32 @@ def _record_status(rec):
 
 class AdsuhuUi(http.Controller):
     @http.route(
+        "/adsui",
+        type="http",
+        auth="user",
+        website=True,
+    )
+    def dashboard(self, page=1, **kw):
+        Analysis = request.env["vit.product_value_analysis"].sudo()
+        domain = []
+        per_page = 12
+        total = Analysis.search_count(domain)
+        pager = request.website.pager(
+            url="/adsui",
+            total=total,
+            page=page,
+            step=per_page,
+            scope=7,
+        )
+        analyses = Analysis.search(
+            domain, offset=pager["offset"], limit=per_page, order="create_date desc"
+        )
+        return request.render(
+            "vit_adsuhu_ui.dashboard_template",
+            {"analyses": analyses, "pager": pager},
+        )
+
+    @http.route(
         "/adsui/<int:analysis_id>",
         type="http",
         auth="user",
