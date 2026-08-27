@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="o_adsuhu_card_body" t-if="card.hasContent">
-                            <div class="o_adsuhu_prose_wrap" t-if="card.content.html &amp;&amp; !card.content.blocks">
+                            <div class="o_adsuhu_prose_wrap" t-if="card.content.html &amp;&amp; !(card.content.blocks &amp;&amp; card.content.blocks.length)">
                                 <div class="o_adsuhu_block" t-if="card.content.edit_model">
                                     <div class="o_adsuhu_block_head">
                                         <div class="o_adsuhu_block_title">Content</div>
