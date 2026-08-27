@@ -442,11 +442,25 @@ class AdsuhuUi(http.Controller):
                     "status": _record_status(ads.image_generator_ids[:1]),
                     "images": images,
                     "blocks": [
-                        {"name": lp.name, "html": lp.output_html or ""}
+                        {
+                            "name": lp.name,
+                            "html": lp.output_html or "",
+                            "edit_model": "vit.landing_page_builder",
+                            "edit_id": lp.id,
+                            "edit_field": "output_html",
+                            "edit_raw": lp.output_html or "",
+                        }
                         for lp in ads.landing_page_builder_ids
                     ]
                     + [
-                        {"name": vid.name, "html": vid.output_html or ""}
+                        {
+                            "name": vid.name,
+                            "html": vid.output_html or "",
+                            "edit_model": "vit.video_director",
+                            "edit_id": vid.id,
+                            "edit_field": "output_html",
+                            "edit_raw": vid.output_html or "",
+                        }
                         for vid in ads.video_director_ids
                     ],
                     "image_actions": [
