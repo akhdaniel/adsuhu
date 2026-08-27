@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="app_page" name="AdSuhu UI App Page">
-        <t t-call="website.layout">
-            <div id="wrap" class="oe_structure">
+        <t t-call="web.frontend_layout">
+            <div id="wrap" class="oe_structure o_adsuhu_app">
                 <input type="hidden" id="adsuhu-csrf-token" t-att-value="request.csrf_token()"/>
                 <owl-component
                     name="vit_adsuhu_ui.App"
@@ -13,205 +13,197 @@
     </template>
 
     <template id="dashboard_template" name="AdSuhu Dashboard">
-        <t t-call="website.layout">
-            <div id="wrap" class="oe_structure">
-                <div class="o_adsuhu_app">
-                    <div class="o_adsuhu_header">
-                        <div class="o_adsuhu_header_title">
-                            <h1>Product Analysis</h1>
-                            <div class="o_adsuhu_header_meta">
-                                <span class="o_adsuhu_badge o_adsuhu_badge_muted">
-                                    <i class="fa fa-list"/> <t t-esc="len(analyses)"/> analyses
-                                </span>
-                            </div>
-                        </div>
-                        <a href="/adsui/create" class="o_adsuhu_btn o_adsuhu_btn_primary">
-                            <i class="fa fa-plus"/> New Analysis
-                        </a>
-                    </div>
-
-                    <div class="o_adsuhu_main">
-                        <t t-if="analyses">
-                            <div class="o_adsuhu_dashboard_grid">
-                                <t t-foreach="analyses" t-as="a" t-key="a.id">
-                                    <a t-attf-href="/adsui/#{a.id}" class="o_adsuhu_dash_card">
-                                        <div class="o_adsuhu_dash_card_head">
-                                            <span t-att-class="'o_adsuhu_chip o_adsuhu_chip_' + (a.status or 'idle')" t-esc="a.status or 'idle'"/>
-                                        </div>
-                                        <h3 class="o_adsuhu_dash_card_title" t-esc="a.name"/>
-                                        <div class="o_adsuhu_dash_card_meta">
-                                            <span t-if="a.target_market">
-                                                <i class="fa fa-globe"/> <t t-esc="a.target_market"/>
-                                            </span>
-                                            <span t-if="a.product_url">
-                                                <i class="fa fa-link"/> <t t-esc="a.product_url[:30]"/>
-                                            </span>
-                                        </div>
-                                        <div class="o_adsuhu_dash_card_date">
-                                            <i class="fa fa-clock-o"/> <span t-field="a.create_date" t-options='{"widget": "datetime"}'/>
-                                        </div>
-                                        <div class="o_adsuhu_dash_card_arrow">
-                                            <i class="fa fa-arrow-right"/>
-                                        </div>
-                                    </a>
-                                </t>
-                            </div>
-                        </t>
-                        <t t-else="">
-                            <div class="o_adsuhu_card_empty">
-                                <i class="fa fa-flask"/> No analyses yet. Start by creating your first product analysis.
-                                <div class="mt-3">
-                                    <a href="/adsui/create" class="o_adsuhu_btn o_adsuhu_btn_primary">
-                                        <i class="fa fa-plus"/> Create First Analysis
-                                    </a>
-                                </div>
-                            </div>
-                        </t>
-
-                        <div class="d-flex justify-content-center mt-4" t-if="pager">
-                            <t t-call="website.pager"/>
+        <t t-call="web.frontend_layout">
+            <div id="wrap" class="oe_structure o_adsuhu_app">
+                <div class="o_adsuhu_header">
+                    <div class="o_adsuhu_header_title">
+                        <h1>Product Analysis</h1>
+                        <div class="o_adsuhu_header_meta">
+                            <span class="o_adsuhu_badge o_adsuhu_badge_muted">
+                                <i class="fa fa-list"/> <t t-esc="len(analyses)"/> analyses
+                            </span>
                         </div>
                     </div>
+                    <a href="/adsui/create" class="o_adsuhu_btn o_adsuhu_btn_primary">
+                        <i class="fa fa-plus"/> New Analysis
+                    </a>
+                </div>
+
+                <div class="o_adsuhu_main">
+                    <t t-if="analyses">
+                        <div class="o_adsuhu_dashboard_grid">
+                            <t t-foreach="analyses" t-as="a" t-key="a.id">
+                                <a t-attf-href="/adsui/#{a.id}" class="o_adsuhu_dash_card">
+                                    <div class="o_adsuhu_dash_card_head">
+                                        <span t-att-class="'o_adsuhu_chip o_adsuhu_chip_' + (a.status or 'idle')" t-esc="a.status or 'idle'"/>
+                                    </div>
+                                    <h3 class="o_adsuhu_dash_card_title" t-esc="a.name"/>
+                                    <div class="o_adsuhu_dash_card_meta">
+                                        <span t-if="a.target_market">
+                                            <i class="fa fa-globe"/> <t t-esc="a.target_market"/>
+                                        </span>
+                                        <span t-if="a.product_url">
+                                            <i class="fa fa-link"/> <t t-esc="a.product_url[:30]"/>
+                                        </span>
+                                    </div>
+                                    <div class="o_adsuhu_dash_card_date">
+                                        <i class="fa fa-clock-o"/> <span t-field="a.create_date" t-options='{"widget": "datetime"}'/>
+                                    </div>
+                                    <div class="o_adsuhu_dash_card_arrow">
+                                        <i class="fa fa-arrow-right"/>
+                                    </div>
+                                </a>
+                            </t>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="o_adsuhu_card_empty">
+                            <i class="fa fa-flask"/> No analyses yet. Start by creating your first product analysis.
+                            <div class="mt-3">
+                                <a href="/adsui/create" class="o_adsuhu_btn o_adsuhu_btn_primary">
+                                    <i class="fa fa-plus"/> Create First Analysis
+                                </a>
+                            </div>
+                        </div>
+                    </t>
                 </div>
             </div>
         </t>
     </template>
 
     <template id="form_template" name="AdSuhu Analysis Form">
-        <t t-call="website.layout">
-            <div id="wrap" class="oe_structure">
-                <div class="o_adsuhu_app">
-                    <div class="o_adsuhu_header">
-                        <div class="o_adsuhu_header_title">
-                            <a t-att-href="'/adsui' if not is_edit else '/adsui/' + str(analysis.id)" class="o_adsuhu_link mb-2 d-inline-block">
-                                <i class="fa fa-arrow-left"/> Back to dashboard
-                            </a>
-                            <h1>
-                                <t t-if="is_edit">Edit Analysis</t>
-                                <t t-else="">New Analysis</t>
-                            </h1>
+        <t t-call="web.frontend_layout">
+            <div id="wrap" class="oe_structure o_adsuhu_app">
+                <div class="o_adsuhu_header">
+                    <div class="o_adsuhu_header_title">
+                        <a t-att-href="'/adsui' if not is_edit else '/adsui/' + str(analysis.id)" class="o_adsuhu_link mb-2 d-inline-block">
+                            <i class="fa fa-arrow-left"/> Back to dashboard
+                        </a>
+                        <h1>
+                            <t t-if="is_edit">Edit Analysis</t>
+                            <t t-else="">New Analysis</t>
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="o_adsuhu_main">
+                    <form t-att-action="'/product_analysis/' + str(analysis.id) + '/update' if is_edit else '/product_analysis/submit'"
+                        method="post" enctype="multipart/form-data" class="o_adsuhu_form">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                        <div class="o_adsuhu_form_card">
+                            <div class="o_adsuhu_form_card_header">
+                                <div class="o_adsuhu_form_card_icon"><i class="fa fa-cube"/></div>
+                                <div>
+                                    <h2 class="o_adsuhu_form_card_title">Product Information</h2>
+                                    <p class="o_adsuhu_form_card_sub">Basic details about your product</p>
+                                </div>
+                            </div>
+                            <div class="o_adsuhu_form_card_body">
+                                <div class="o_adsuhu_field">
+                                    <label class="o_adsuhu_field_label" for="product_name">Product Name</label>
+                                    <input type="text" class="o_adsuhu_input" name="product_name" id="product_name"
+                                        placeholder="e.g. Premium Running Shoes" required="required"
+                                        t-att-value="analysis.name if is_edit else ''"/>
+                                </div>
+                                <div class="o_adsuhu_field">
+                                    <label class="o_adsuhu_field_label" for="product_url">Product URL</label>
+                                    <input type="url" class="o_adsuhu_input" name="product_url" id="product_url"
+                                        placeholder="https://shopee.co.id/..." required="required"
+                                        t-att-value="analysis.product_url if is_edit else ''"/>
+                                </div>
+                                <div class="o_adsuhu_field_row">
+                                    <div class="o_adsuhu_field">
+                                        <label class="o_adsuhu_field_label" for="target_market">Target Market</label>
+                                        <input type="text" class="o_adsuhu_input" name="target_market" id="target_market"
+                                            placeholder="e.g. Indonesia, South East Asia" required="required"
+                                            t-att-value="analysis.target_market if is_edit else ''"/>
+                                    </div>
+                                    <div class="o_adsuhu_field">
+                                        <label class="o_adsuhu_field_label" for="lang_id">Language</label>
+                                        <select class="o_adsuhu_input" name="lang_id" id="lang_id">
+                                            <t t-foreach="langs" t-as="l">
+                                                <option t-att-value="l.id"
+                                                    t-att-selected="is_edit and analysis.lang_id and (l.id == analysis.lang_id.id) or (not is_edit and l.code == 'en_US')">
+                                                    <t t-esc="l.name"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="o_adsuhu_main">
-                        <form t-att-action="'/product_analysis/' + str(analysis.id) + '/update' if is_edit else '/product_analysis/submit'"
-                            method="post" enctype="multipart/form-data" class="o_adsuhu_form">
-                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-
-                            <div class="o_adsuhu_form_card">
-                                <div class="o_adsuhu_form_card_header">
-                                    <div class="o_adsuhu_form_card_icon"><i class="fa fa-cube"/></div>
-                                    <div>
-                                        <h2 class="o_adsuhu_form_card_title">Product Information</h2>
-                                        <p class="o_adsuhu_form_card_sub">Basic details about your product</p>
-                                    </div>
-                                </div>
-                                <div class="o_adsuhu_form_card_body">
-                                    <div class="o_adsuhu_field">
-                                        <label class="o_adsuhu_field_label" for="product_name">Product Name</label>
-                                        <input type="text" class="o_adsuhu_input" name="product_name" id="product_name"
-                                            placeholder="e.g. Premium Running Shoes" required="required"
-                                            t-att-value="analysis.name if is_edit else ''"/>
-                                    </div>
-                                    <div class="o_adsuhu_field">
-                                        <label class="o_adsuhu_field_label" for="product_url">Product URL</label>
-                                        <input type="url" class="o_adsuhu_input" name="product_url" id="product_url"
-                                            placeholder="https://shopee.co.id/..." required="required"
-                                            t-att-value="analysis.product_url if is_edit else ''"/>
-                                    </div>
-                                    <div class="o_adsuhu_field_row">
-                                        <div class="o_adsuhu_field">
-                                            <label class="o_adsuhu_field_label" for="target_market">Target Market</label>
-                                            <input type="text" class="o_adsuhu_input" name="target_market" id="target_market"
-                                                placeholder="e.g. Indonesia, South East Asia" required="required"
-                                                t-att-value="analysis.target_market if is_edit else ''"/>
-                                        </div>
-                                        <div class="o_adsuhu_field">
-                                            <label class="o_adsuhu_field_label" for="lang_id">Language</label>
-                                            <select class="o_adsuhu_input" name="lang_id" id="lang_id">
-                                                <t t-foreach="langs" t-as="lang">
-                                                    <option t-att-value="lang.id"
-                                                        t-att-selected="is_edit and analysis.lang_id and (lang.id == analysis.lang_id.id) or (not is_edit and lang.code == 'en_US')">
-                                                        <t t-esc="lang.name"/>
-                                                    </option>
-                                                </t>
-                                            </select>
-                                        </div>
-                                    </div>
+                        <div class="o_adsuhu_form_card">
+                            <div class="o_adsuhu_form_card_header">
+                                <div class="o_adsuhu_form_card_icon"><i class="fa fa-file-text-o"/></div>
+                                <div>
+                                    <h2 class="o_adsuhu_form_card_title">Description</h2>
+                                    <p class="o_adsuhu_form_card_sub">Provide initial context, AI will refine it</p>
                                 </div>
                             </div>
-
-                            <div class="o_adsuhu_form_card">
-                                <div class="o_adsuhu_form_card_header">
-                                    <div class="o_adsuhu_form_card_icon"><i class="fa fa-file-text-o"/></div>
-                                    <div>
-                                        <h2 class="o_adsuhu_form_card_title">Description</h2>
-                                        <p class="o_adsuhu_form_card_sub">Provide initial context, AI will refine it</p>
-                                    </div>
-                                </div>
-                                <div class="o_adsuhu_form_card_body">
-                                    <div class="o_adsuhu_field">
-                                        <label class="o_adsuhu_field_label" for="initial_description">
-                                            Initial Description
-                                            <span class="o_adsuhu_field_hint">What does this product do? Who is it for?</span>
-                                        </label>
-                                        <textarea class="o_adsuhu_textarea" name="initial_description" id="initial_description" rows="8"
-                                            placeholder="Describe the product, its main benefits, and target audience..."><t t-esc="analysis.initial_description if is_edit else ''"/></textarea>
-                                    </div>
+                            <div class="o_adsuhu_form_card_body">
+                                <div class="o_adsuhu_field">
+                                    <label class="o_adsuhu_field_label" for="initial_description">
+                                        Initial Description
+                                        <span class="o_adsuhu_field_hint">What does this product do? Who is it for?</span>
+                                    </label>
+                                    <textarea class="o_adsuhu_textarea" name="initial_description" id="initial_description" rows="8"
+                                        placeholder="Describe the product, its main benefits, and target audience..."><t t-esc="analysis.initial_description if is_edit else ''"/></textarea>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="o_adsuhu_form_card o_adsuhu_form_card_ai" t-if="is_edit">
-                                <div class="o_adsuhu_form_card_header">
-                                    <div class="o_adsuhu_form_card_icon o_adsuhu_form_card_icon_ai"><i class="fa fa-magic"/></div>
-                                    <div>
-                                        <h2 class="o_adsuhu_form_card_title">AI-Generated Content</h2>
-                                        <p class="o_adsuhu_form_card_sub">These will be auto-generated by AI when you open the analysis</p>
-                                    </div>
-                                </div>
-                                <div class="o_adsuhu_form_card_body">
-                                    <div class="o_adsuhu_field">
-                                        <label class="o_adsuhu_field_label" for="description">Product Description</label>
-                                        <textarea class="o_adsuhu_textarea" name="description" id="description" rows="6"
-                                            placeholder="AI-generated description..."><t t-esc="analysis.description if is_edit else ''"/></textarea>
-                                    </div>
-                                    <div class="o_adsuhu_field">
-                                        <label class="o_adsuhu_field_label" for="features">Key Features</label>
-                                        <textarea class="o_adsuhu_textarea o_adsuhu_textarea_tall" name="features" id="features"
-                                            placeholder="AI-generated features..."><t t-esc="analysis.features if is_edit else ''"/></textarea>
-                                    </div>
+                        <div class="o_adsuhu_form_card o_adsuhu_form_card_ai" t-if="is_edit">
+                            <div class="o_adsuhu_form_card_header">
+                                <div class="o_adsuhu_form_card_icon o_adsuhu_form_card_icon_ai"><i class="fa fa-magic"/></div>
+                                <div>
+                                    <h2 class="o_adsuhu_form_card_title">AI-Generated Content</h2>
+                                    <p class="o_adsuhu_form_card_sub">These will be auto-generated by AI when you open the analysis</p>
                                 </div>
                             </div>
-
-                            <div class="o_adsuhu_form_card">
-                                <div class="o_adsuhu_form_card_header">
-                                    <div class="o_adsuhu_form_card_icon"><i class="fa fa-tags"/></div>
-                                    <div>
-                                        <h2 class="o_adsuhu_form_card_title">Tags</h2>
-                                        <p class="o_adsuhu_form_card_sub">Keywords for categorization</p>
-                                    </div>
+                            <div class="o_adsuhu_form_card_body">
+                                <div class="o_adsuhu_field">
+                                    <label class="o_adsuhu_field_label" for="description">Product Description</label>
+                                    <textarea class="o_adsuhu_textarea" name="description" id="description" rows="6"
+                                        placeholder="AI-generated description..."><t t-esc="analysis.description if is_edit else ''"/></textarea>
                                 </div>
-                                <div class="o_adsuhu_form_card_body">
-                                    <div class="o_adsuhu_field">
-                                        <textarea class="o_adsuhu_textarea" name="tags" id="tags" rows="3" required="1"
-                                            placeholder="e.g. shoes, running, sports, outdoor"><t t-esc="analysis.tags if is_edit else ''"/></textarea>
-                                    </div>
+                                <div class="o_adsuhu_field">
+                                    <label class="o_adsuhu_field_label" for="features">Key Features</label>
+                                    <textarea class="o_adsuhu_textarea o_adsuhu_textarea_tall" name="features" id="features"
+                                        placeholder="AI-generated features..."><t t-esc="analysis.features if is_edit else ''"/></textarea>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="o_adsuhu_form_actions">
-                                <a t-att-href="'/adsui' if not is_edit else '/adsui/' + str(analysis.id)"
-                                    class="o_adsuhu_btn o_adsuhu_btn_ghost">
-                                    <i class="fa fa-times"/> Cancel
-                                </a>
-                                <button type="submit" class="o_adsuhu_btn o_adsuhu_btn_primary">
-                                    <i t-att-class="'fa ' + ('fa-save' if is_edit else 'fa-rocket')"/>
-                                    <t t-if="is_edit">Save Changes</t>
-                                    <t t-else="">Start Analysis</t>
-                                </button>
+                        <div class="o_adsuhu_form_card">
+                            <div class="o_adsuhu_form_card_header">
+                                <div class="o_adsuhu_form_card_icon"><i class="fa fa-tags"/></div>
+                                <div>
+                                    <h2 class="o_adsuhu_form_card_title">Tags</h2>
+                                    <p class="o_adsuhu_form_card_sub">Keywords for categorization</p>
+                                </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="o_adsuhu_form_card_body">
+                                <div class="o_adsuhu_field">
+                                    <textarea class="o_adsuhu_textarea" name="tags" id="tags" rows="3" required="1"
+                                        placeholder="e.g. shoes, running, sports, outdoor"><t t-esc="analysis.tags if is_edit else ''"/></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="o_adsuhu_form_actions">
+                            <a t-att-href="'/adsui' if not is_edit else '/adsui/' + str(analysis.id)"
+                                class="o_adsuhu_btn o_adsuhu_btn_ghost">
+                                <i class="fa fa-times"/> Cancel
+                            </a>
+                            <button type="submit" class="o_adsuhu_btn o_adsuhu_btn_primary">
+                                <i t-att-class="'fa ' + ('fa-save' if is_edit else 'fa-rocket')"/>
+                                <t t-if="is_edit">Save Changes</t>
+                                <t t-else="">Start Analysis</t>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </t>
