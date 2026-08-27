@@ -50,6 +50,12 @@ class AdsuhuUi(http.Controller):
                 and "<" in val
             ):
                 values[field] = re.sub(r"<[^>]+>", "", val)
+        # When editing the raw 'output' source, regenerate output_html from it.
+        if "output" in values and len(Record) == 1:
+            if hasattr(Record, "generate_output_html"):
+                Record.write(values)
+                Record.generate_output_html()
+                return {"status": "ok"}
         Record.write(values)
         return {"status": "ok"}
 
@@ -250,8 +256,8 @@ class AdsuhuUi(http.Controller):
                             "html": analysis.output_html or "",
                             "edit_model": "vit.product_value_analysis",
                             "edit_id": analysis.id,
-                            "edit_field": "output_html",
-                            "edit_raw": analysis.output_html or "",
+                            "edit_field": "output",
+                            "edit_raw": analysis.output or "",
                         },
                     }
                 ],
@@ -285,8 +291,8 @@ class AdsuhuUi(http.Controller):
                                     "html": mm.output_html or "",
                                     "edit_model": "vit.market_mapper",
                                     "edit_id": mm.id,
-                                    "edit_field": "output_html",
-                                    "edit_raw": mm.output_html or "",
+                                    "edit_field": "output",
+                                    "edit_raw": mm.output or "",
                                 }
                                 for mm in analysis.market_mapper_ids
                             ]
@@ -318,8 +324,8 @@ class AdsuhuUi(http.Controller):
                                 "html": ap.output_html or "",
                                 "edit_model": "vit.audience_profiler",
                                 "edit_id": ap.id,
-                                "edit_field": "output_html",
-                                "edit_raw": ap.output_html or "",
+                                "edit_field": "output",
+                                "edit_raw": ap.output or "",
                             }
                             for ap in mm.audience_profiler_ids
                         ]
@@ -358,8 +364,8 @@ class AdsuhuUi(http.Controller):
                                 "html": an.output_html or "",
                                 "edit_model": "vit.angle_hook",
                                 "edit_id": an.id,
-                                "edit_field": "output_html",
-                                "edit_raw": an.output_html or "",
+                                "edit_field": "output",
+                                "edit_raw": an.output or "",
                             }
                             for an in ap.angle_hook_ids
                         ]
@@ -400,8 +406,8 @@ class AdsuhuUi(http.Controller):
                                 or "",
                                 "edit_model": "vit.ads_copy",
                                 "edit_id": ads.id,
-                                "edit_field": "output_html",
-                                "edit_raw": ads.output_html or "",
+                                "edit_field": "output",
+                                "edit_raw": ads.output or "",
                             }
                             for ads in hook.ads_copy_ids
                         ]
@@ -447,8 +453,8 @@ class AdsuhuUi(http.Controller):
                             "html": lp.output_html or "",
                             "edit_model": "vit.landing_page_builder",
                             "edit_id": lp.id,
-                            "edit_field": "output_html",
-                            "edit_raw": lp.output_html or "",
+                            "edit_field": "output",
+                            "edit_raw": lp.output or "",
                         }
                         for lp in ads.landing_page_builder_ids
                     ]
@@ -458,8 +464,8 @@ class AdsuhuUi(http.Controller):
                             "html": vid.output_html or "",
                             "edit_model": "vit.video_director",
                             "edit_id": vid.id,
-                            "edit_field": "output_html",
-                            "edit_raw": vid.output_html or "",
+                            "edit_field": "output",
+                            "edit_raw": vid.output or "",
                         }
                         for vid in ads.video_director_ids
                     ],
