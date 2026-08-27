@@ -144,8 +144,19 @@ class video_director(models.Model):
                 )
             )
         except Exception as e:
-            _logger.error(self.output)
-            raise UserError('Failed to generate Output HTML')
+            _logger.warning("JSON parse failed for vit.video_director(%s), retrying with fix_json: %s", self.id, e)
+            try:
+                cleaned = self.clean_md(self.output)
+                fixed = self.fix_json(cleaned)
+                self.output_html = self.md_to_html(
+                    self.json_to_markdown(
+                        json.loads(fixed), level=3, max_level=4
+                    )
+                )
+            except Exception as e2:
+                _logger.error("vit.video_director(%s) fallback also failed: %s", self.id, e2)
+                self.output_html = self.md_to_html(self.output or "")
+                self.write({"status": "failed", "error_message": f"JSON parse error: {e}"})
 
 
     def action_generate_video(self):
