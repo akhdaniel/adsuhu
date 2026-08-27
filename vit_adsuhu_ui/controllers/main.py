@@ -32,7 +32,7 @@ class AdsuhuUi(http.Controller):
         methods=["POST"],
     )
     def save(self, **kw):
-        data = request.jsonrequest
+        data = request.get_json_data()
         model_name = data.get("model")
         record_id = data.get("id")
         values = data.get("values", {})
