@@ -50,6 +50,45 @@ class AdsuhuUi(http.Controller):
         )
 
     @http.route(
+        "/adsui/create",
+        type="http",
+        auth="user",
+        website=True,
+    )
+    def create(self, **kw):
+        langs = request.env["res.lang"].search([("active", "=", True)])
+        return request.render(
+            "vit_adsuhu_ui.form_template",
+            {
+                "langs": langs,
+                "analysis": False,
+                "is_edit": False,
+            },
+        )
+
+    @http.route(
+        "/adsui/<int:analysis_id>/edit",
+        type="http",
+        auth="user",
+        website=True,
+    )
+    def edit(self, analysis_id, **kw):
+        analysis = (
+            request.env["vit.product_value_analysis"].sudo().browse(analysis_id).exists()
+        )
+        if not analysis:
+            return request.not_found()
+        langs = request.env["res.lang"].search([("active", "=", True)])
+        return request.render(
+            "vit_adsuhu_ui.form_template",
+            {
+                "langs": langs,
+                "analysis": analysis,
+                "is_edit": True,
+            },
+        )
+
+    @http.route(
         "/adsui/<int:analysis_id>",
         type="http",
         auth="user",
