@@ -29,11 +29,6 @@ def _base_values(**kw):
     else:
         lang_code = getattr(lang, "code", "en_US")
     kw.setdefault("lang", lang_code)
-    # Fix: ir.qweb reads lang from env context, not from values dict.
-    # website.layout does lang.replace('_', '-') which crashes on res.lang records.
-    ctx = dict(request.env.context)
-    ctx["lang"] = lang_code
-    request.env = request.env(context=ctx)
     return kw
 
 
