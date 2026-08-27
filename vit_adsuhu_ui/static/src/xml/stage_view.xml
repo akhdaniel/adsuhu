@@ -67,9 +67,9 @@
                                         </div>
                                     </div>
                                     <t t-if="isEditing(card.content)">
-                                        <textarea class="o_adsuhu_edit_textarea"
-                                            t-model="state.editText"
-                                            rows="16"/>
+                                        <HtmlEditor
+                                            value="state.editText"
+                                            register="((getter) => this.onEditorRegister(getter))"/>
                                         <div class="o_adsuhu_edit_actions">
                                             <button class="o_adsuhu_btn o_adsuhu_btn_ghost o_adsuhu_btn_sm"
                                                 t-on-click="() => this.cancelEdit()">
@@ -122,9 +122,9 @@
                                             </div>
                                         </div>
                                         <t t-if="isEditing(block)">
-                                            <textarea class="o_adsuhu_edit_textarea"
-                                                t-model="state.editText"
-                                                rows="12"/>
+                                            <HtmlEditor
+                                                value="state.editText"
+                                                register="((getter) => this.onEditorRegister(getter))"/>
                                             <div class="o_adsuhu_edit_actions">
                                                 <button class="o_adsuhu_btn o_adsuhu_btn_ghost o_adsuhu_btn_sm"
                                                     t-on-click="() => this.cancelEdit()">

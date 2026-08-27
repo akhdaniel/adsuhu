@@ -4,11 +4,12 @@ import { Component, useState } from "@odoo/owl";
 
 import { ImageGallery } from "./image_gallery";
 import { GenerateButton } from "./generate_button";
+import { HtmlEditor } from "./html_editor";
 
 
 export class StageView extends Component {
     static template = "vit_adsuhu_ui.StageView";
-    static components = { ImageGallery, GenerateButton };
+    static components = { ImageGallery, GenerateButton, HtmlEditor };
     static props = {
         stage: { type: Object },
         hasPrev: { type: Boolean },
@@ -26,6 +27,7 @@ export class StageView extends Component {
             saving: false,
             collapsed: {},
         });
+        this._editorGetValue = null;
     }
 
     get stage() {
@@ -92,15 +94,27 @@ export class StageView extends Component {
     startEdit(block) {
         this.state.editingBlock = block.edit_field + "-" + block.edit_id;
         this.state.editText = block.edit_raw || "";
+        this._editorGetValue = null;
     }
 
     cancelEdit() {
         this.state.editingBlock = null;
-        this.state.editText = "";
+        this._editorGetValue = null;
     }
 
     isEditing(block) {
         return this.state.editingBlock === block.edit_field + "-" + block.edit_id;
+    }
+
+    onEditorRegister(getter) {
+        this._editorGetValue = getter;
+    }
+
+    _editorValue() {
+        if (this._editorGetValue) {
+            return this._editorGetValue();
+        }
+        return this.state.editText;
     }
 
     async saveEdit(block) {
@@ -108,6 +122,7 @@ export class StageView extends Component {
             return;
         }
         this.state.saving = true;
+        const value = this._editorValue();
         try {
             const csrf = document.getElementById("adsuhu-csrf-token")?.value || "";
             const response = await fetch("/adsui/save", {
@@ -120,7 +135,7 @@ export class StageView extends Component {
                 body: JSON.stringify({
                     model: block.edit_model,
                     id: block.edit_id,
-                    values: { [block.edit_field]: this.state.editText },
+                    values: { [block.edit_field]: value },
                 }),
             });
             const json = await response.json();
@@ -129,7 +144,7 @@ export class StageView extends Component {
                 throw new Error(result.error);
             }
             this.state.editingBlock = null;
-            this.state.editText = "";
+            this._editorGetValue = null;
             this.props.onRefresh?.();
         } catch (err) {
             console.error("Save failed:", err);

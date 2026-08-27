@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vit_adsuhu_ui.HtmlEditor">
+        <div class="o_wysiwyg_textarea_wrapper">
+            <textarea t-ref="textarea" t-att-value="props.value" style="width:100%;" class="d-none"/>
+        </div>
+    </t>
+</templates>
