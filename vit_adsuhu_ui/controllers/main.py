@@ -22,6 +22,16 @@ def _record_status(rec):
     return rec.status or "idle"
 
 
+def _base_values(**kw):
+    lang = request.env.context.get("lang") or request.env.lang or "en_US"
+    if hasattr(lang, "replace"):
+        lang_code = lang
+    else:
+        lang_code = getattr(lang, "code", "en_US")
+    kw.setdefault("lang", lang_code)
+    return kw
+
+
 class AdsuhuUi(http.Controller):
     @http.route(
         "/adsui",
@@ -46,7 +56,7 @@ class AdsuhuUi(http.Controller):
         )
         return request.render(
             "vit_adsuhu_ui.dashboard_template",
-            {"analyses": analyses, "pager": pager},
+            _base_values(analyses=analyses, pager=pager),
         )
 
     @http.route(
@@ -59,11 +69,11 @@ class AdsuhuUi(http.Controller):
         langs = request.env["res.lang"].search([("active", "=", True)])
         return request.render(
             "vit_adsuhu_ui.form_template",
-            {
-                "langs": langs,
-                "analysis": False,
-                "is_edit": False,
-            },
+            _base_values(
+                langs=langs,
+                analysis=False,
+                is_edit=False,
+            ),
         )
 
     @http.route(
@@ -81,11 +91,11 @@ class AdsuhuUi(http.Controller):
         langs = request.env["res.lang"].search([("active", "=", True)])
         return request.render(
             "vit_adsuhu_ui.form_template",
-            {
-                "langs": langs,
-                "analysis": analysis,
-                "is_edit": True,
-            },
+            _base_values(
+                langs=langs,
+                analysis=analysis,
+                is_edit=True,
+            ),
         )
 
     @http.route(
@@ -100,7 +110,7 @@ class AdsuhuUi(http.Controller):
         )
         if not analysis:
             return request.not_found()
-        return request.render("vit_adsuhu_ui.app_page", {"analysis": analysis})
+        return request.render("vit_adsuhu_ui.app_page", _base_values(analysis=analysis))
 
     @http.route(
         "/adsui/data/<int:analysis_id>",
