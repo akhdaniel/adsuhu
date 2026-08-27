@@ -26,17 +26,23 @@ UNICODE_ASCII_MAP = {
     "\u201d": '"',  # right double quote
     "\u2026": "...",  # ellipsis
 }
-DEFAULT_GENERAL_INSTRUCTION="""You MUST respond with ONLY valid JSON with no errors.
-ONLY plain ASCII, No Unicode characters.
-Do NOT include explanations or extra text.
-If you cannot comply, return an empty JSON object {}.
-You a free to add list element in the json list as many as needed.
-Ensure all strings are properly double-quoted and all keys are quoted.
-Do not use trailing commas or single quotes.
-DO NOT put double quote symbols inside any JSON keys and values, use <em></em> tags instead if you want to response with double quoted texts, 
-e.g. {"key","the value text "the emphazise text", normal text"}
-should be: {"key","the value text <em>the emphazise text</em>, normal text"}
-"""
+DEFAULT_GENERAL_INSTRUCTION="""CRITICAL JSON FORMATTING RULES — follow these exactly, no exceptions:
+
+1. Respond with ONLY valid, parseable JSON. No markdown, no code fences, no explanations.
+2. Use ONLY plain ASCII characters. No Unicode, no smart quotes ("" ''), no em-dashes.
+3. All JSON keys and string values must be wrapped in standard double quotes: "key": "value".
+4. NEVER put unescaped double quotes inside a string value. This breaks JSON parsing.
+   WRONG: {"note": "He said "hello""}        <- INVALID JSON, unescaped inner quotes
+   RIGHT: {"note": "He said hello"}           <- remove the inner quotes entirely
+   RIGHT: {"note": "He said <em>hello</em>"}  <- replace inner quotes with <em></em> tags
+5. If a string value needs emphasis or quoting, use HTML tags instead of quote marks:
+   - Emphasis: <em>text</em> or <strong>text</strong>
+   - Quoted terms: write them plainly, or wrap in <em></em>
+   - Never use single or double quote marks around words inside a JSON string value.
+6. No trailing commas. No single quotes anywhere. No comments.
+7. If you cannot comply and produce valid JSON, return an empty object: {}
+8. You are free to add as many list elements as needed — quality and completeness matter more than brevity."""
+
 class general_object(models.Model):
     """
     {
