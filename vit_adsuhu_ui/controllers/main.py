@@ -24,11 +24,16 @@ def _record_status(rec):
 
 def _base_values(**kw):
     lang = request.env.context.get("lang") or request.env.lang or "en_US"
-    if hasattr(lang, "replace"):
+    if isinstance(lang, str):
         lang_code = lang
     else:
         lang_code = getattr(lang, "code", "en_US")
     kw.setdefault("lang", lang_code)
+    # Fix: ir.qweb reads lang from env context, not from values dict.
+    # website.layout does lang.replace('_', '-') which crashes on res.lang records.
+    ctx = dict(request.env.context)
+    ctx["lang"] = lang_code
+    request.env = request.env(context=ctx)
     return kw
 
 
