@@ -42,8 +42,7 @@ export class StageView extends Component {
         ];
     }
 
-    get isCardCollapsed() {
-        const card = this.props.stage.cards && this.props.stage.cards[0];
+    isCardCollapsed(card) {
         if (!card || !card.content || !card.content.edit_model) {
             return false;
         }

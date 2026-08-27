@@ -50,17 +50,17 @@
                                         <div class="o_adsuhu_block_title">Content</div>
                                         <div class="o_adsuhu_block_actions">
                                             <button class="o_adsuhu_btn_icon"
-                                                t-att-title="isCardCollapsed ? 'Show' : 'Hide'"
-                                                t-on-click="toggleCardCollapse(card)">
-                                                <i t-att-class="'fa ' + (isCardCollapsed ? 'fa-chevron-down' : 'fa-chevron-up')"/>
+                                                t-att-title="isCardCollapsed(card) ? 'Show' : 'Hide'"
+                                                t-on-click="() => this.toggleCardCollapse(card)">
+                                                <i t-att-class="'fa ' + (isCardCollapsed(card) ? 'fa-chevron-down' : 'fa-chevron-up')"/>
                                             </button>
-                                            <button t-if="!isCardCollapsed" class="o_adsuhu_btn_icon" title="Copy"
+                                            <button t-if="!isCardCollapsed(card)" class="o_adsuhu_btn_icon" title="Copy"
                                                 t-on-click="copyCard">
                                                 <i class="fa fa-copy"/>
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="o_adsuhu_prose" t-if="!isCardCollapsed" t-raw="card.content.html"/>
+                                    <div class="o_adsuhu_prose" t-if="!isCardCollapsed(card)" t-raw="card.content.html"/>
                                 </div>
                                 <div class="o_adsuhu_prose" t-else="" t-raw="card.content.html"/>
                             </div>
