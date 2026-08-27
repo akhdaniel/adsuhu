@@ -277,6 +277,46 @@
     position: relative;
 }
 
+// ---- Edit mode ----
+.o_adsuhu_block_actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.o_adsuhu_block_edit_bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.75rem;
+}
+
+.o_adsuhu_edit_textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--adsuhu-primary);
+    border-radius: var(--adsuhu-radius-sm);
+    background: var(--adsuhu-surface-2);
+    color: var(--adsuhu-text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    resize: vertical;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+
+    &:focus {
+        outline: none;
+        border-color: var(--adsuhu-primary-strong);
+    }
+}
+
+.o_adsuhu_edit_actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+}
+
 // Prose (rendered markdown html)
 .o_adsuhu_prose {
     color: var(--adsuhu-text);

@@ -19,7 +19,12 @@ export class StageView extends Component {
     };
 
     setup() {
-        this.state = useState({ copied: "" });
+        this.state = useState({
+            copied: "",
+            editingBlock: null,
+            editText: "",
+            saving: false,
+        });
     }
 
     get stage() {
@@ -54,10 +59,58 @@ export class StageView extends Component {
         if (!card) {
             return;
         }
-        const prose = card.querySelector(".o_adsuhu_prose");
         const blocks = card.querySelectorAll(".o_adsuhu_prose");
         const parts = [];
         blocks.forEach((p) => parts.push(p.innerText || p.textContent || ""));
         this.copyText(parts.join("\n\n"), "card-" + card.dataset.cardKey);
+    }
+
+    startEdit(block) {
+        this.state.editingBlock = block.edit_field + "-" + block.edit_id;
+        this.state.editText = block.edit_raw || "";
+    }
+
+    cancelEdit() {
+        this.state.editingBlock = null;
+        this.state.editText = "";
+    }
+
+    isEditing(block) {
+        return this.state.editingBlock === block.edit_field + "-" + block.edit_id;
+    }
+
+    async saveEdit(block) {
+        if (this.state.saving) {
+            return;
+        }
+        this.state.saving = true;
+        try {
+            const csrf = document.getElementById("adsuhu-csrf-token")?.value || "";
+            const response = await fetch("/adsui/save", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrf,
+                },
+                credentials: "same-origin",
+                body: JSON.stringify({
+                    model: block.edit_model,
+                    id: block.edit_id,
+                    values: { [block.edit_field]: this.state.editText },
+                }),
+            });
+            const json = await response.json();
+            const result = json.result || json;
+            if (result.error) {
+                throw new Error(result.error);
+            }
+            this.state.editingBlock = null;
+            this.state.editText = "";
+            this.props.onRefresh?.();
+        } catch (err) {
+            console.error("Save failed:", err);
+        } finally {
+            this.state.saving = false;
+        }
     }
 }

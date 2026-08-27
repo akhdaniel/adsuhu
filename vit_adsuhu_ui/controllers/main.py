@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import re
 
 from markupsafe import Markup
 
@@ -23,6 +24,35 @@ def _record_status(rec):
 
 
 class AdsuhuUi(http.Controller):
+    @http.route(
+        "/adsui/save",
+        type="json",
+        auth="user",
+        website=True,
+        methods=["POST"],
+    )
+    def save(self, **kw):
+        data = request.jsonrequest
+        model_name = data.get("model")
+        record_id = data.get("id")
+        values = data.get("values", {})
+        if not model_name or not record_id or not values:
+            return {"error": "missing params"}
+        Record = request.env[model_name].sudo().browse(record_id).exists()
+        if not Record:
+            return {"error": "not_found"}
+        # output_html is rendered HTML - keep as-is.
+        # description/features/initial_description expect markdown - strip HTML tags.
+        for field, val in values.items():
+            if (
+                isinstance(val, str)
+                and field in ("description", "features", "initial_description")
+                and "<" in val
+            ):
+                values[field] = re.sub(r"<[^>]+>", "", val)
+        Record.write(values)
+        return {"status": "ok"}
+
     @http.route(
         "/adsui",
         type="http",
@@ -145,6 +175,7 @@ class AdsuhuUi(http.Controller):
         # --- Product (description + features) ---
         desc_html = _md(analysis.description)
         feats_html = _md(analysis.features)
+        initial_desc_html = _md(analysis.initial_description)
         stages.append(
             {
                 "key": "product",
@@ -165,8 +196,30 @@ class AdsuhuUi(http.Controller):
                         ),
                         "content": {
                             "blocks": [
-                                {"name": "Description", "html": desc_html},
-                                {"name": "Features", "html": feats_html},
+                                {
+                                    "name": "Initial Description",
+                                    "html": initial_desc_html,
+                                    "edit_model": "vit.product_value_analysis",
+                                    "edit_id": analysis.id,
+                                    "edit_field": "initial_description",
+                                    "edit_raw": analysis.initial_description or "",
+                                },
+                                {
+                                    "name": "Description",
+                                    "html": desc_html,
+                                    "edit_model": "vit.product_value_analysis",
+                                    "edit_id": analysis.id,
+                                    "edit_field": "description",
+                                    "edit_raw": analysis.description or "",
+                                },
+                                {
+                                    "name": "Features",
+                                    "html": feats_html,
+                                    "edit_model": "vit.product_value_analysis",
+                                    "edit_id": analysis.id,
+                                    "edit_field": "features",
+                                    "edit_raw": analysis.features or "",
+                                },
                             ]
                         },
                     }
@@ -193,7 +246,13 @@ class AdsuhuUi(http.Controller):
                             f"/regenerate_status/product_value_analysis/{analysis.id}",
                             analysis,
                         ),
-                        "content": {"html": analysis.output_html or ""},
+                        "content": {
+                            "html": analysis.output_html or "",
+                            "edit_model": "vit.product_value_analysis",
+                            "edit_id": analysis.id,
+                            "edit_field": "output_html",
+                            "edit_raw": analysis.output_html or "",
+                        },
                     }
                 ],
             }
@@ -221,7 +280,14 @@ class AdsuhuUi(http.Controller):
                         "action": market_action,
                         "content": {
                             "blocks": [
-                                {"name": mm.name, "html": mm.output_html or ""}
+                                {
+                                    "name": mm.name,
+                                    "html": mm.output_html or "",
+                                    "edit_model": "vit.market_mapper",
+                                    "edit_id": mm.id,
+                                    "edit_field": "output_html",
+                                    "edit_raw": mm.output_html or "",
+                                }
                                 for mm in analysis.market_mapper_ids
                             ]
                         },
@@ -247,7 +313,14 @@ class AdsuhuUi(http.Controller):
                     ),
                     "content": {
                         "blocks": [
-                            {"name": ap.name, "html": ap.output_html or ""}
+                            {
+                                "name": ap.name,
+                                "html": ap.output_html or "",
+                                "edit_model": "vit.audience_profiler",
+                                "edit_id": ap.id,
+                                "edit_field": "output_html",
+                                "edit_raw": ap.output_html or "",
+                            }
                             for ap in mm.audience_profiler_ids
                         ]
                     },
@@ -283,6 +356,10 @@ class AdsuhuUi(http.Controller):
                             {
                                 "name": an.name or f"Angle {an.angle_no}",
                                 "html": an.output_html or "",
+                                "edit_model": "vit.angle_hook",
+                                "edit_id": an.id,
+                                "edit_field": "output_html",
+                                "edit_raw": an.output_html or "",
                             }
                             for an in ap.angle_hook_ids
                         ]
@@ -321,6 +398,10 @@ class AdsuhuUi(http.Controller):
                                 "html": getattr(ads, "output_html_trimmed", None)
                                 or ads.output_html
                                 or "",
+                                "edit_model": "vit.ads_copy",
+                                "edit_id": ads.id,
+                                "edit_field": "output_html",
+                                "edit_raw": ads.output_html or "",
                             }
                             for ads in hook.ads_copy_ids
                         ]

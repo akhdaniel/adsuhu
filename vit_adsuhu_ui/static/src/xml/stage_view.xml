@@ -44,21 +44,62 @@
                         </div>
 
                         <div class="o_adsuhu_card_body" t-if="card.hasContent">
-                            <div class="o_adsuhu_prose_wrap" t-if="card.content.html">
+                            <div class="o_adsuhu_prose_wrap" t-if="card.content.html &amp;&amp; !card.content.blocks">
                                 <div class="o_adsuhu_prose" t-raw="card.content.html"/>
+                                <t t-if="card.content.edit_model">
+                                    <div class="o_adsuhu_block_edit_bar">
+                                        <button class="o_adsuhu_btn_icon" title="Edit"
+                                            t-on-click="() => this.startEdit(card.content)">
+                                            <i class="fa fa-pencil"/>
+                                        </button>
+                                    </div>
+                                </t>
                             </div>
                             <t t-if="card.content.blocks">
                                 <t t-foreach="card.content.blocks" t-as="block" t-key="block.name">
-                                    <div class="o_adsuhu_block" t-if="block.html" t-att-data-key="block.name">
+                                    <div class="o_adsuhu_block" t-if="block.html || block.edit_model" t-att-data-key="block.name">
                                         <div class="o_adsuhu_block_head">
                                             <div class="o_adsuhu_block_title" t-esc="block.name"/>
-                                            <button
-                                                t-att-class="'o_adsuhu_btn_icon' + (state.copied === ('blk-' + block.name) ? ' copied' : '')"
-                                                t-on-click="copyBlock">
-                                                <i t-att-class="'fa ' + (state.copied === ('blk-' + block.name) ? 'fa-check' : 'fa-copy')"/>
-                                            </button>
+                                            <div class="o_adsuhu_block_actions">
+                                                <button
+                                                    t-if="block.edit_model &amp;&amp; !isEditing(block)"
+                                                    class="o_adsuhu_btn_icon" title="Edit"
+                                                    t-on-click="() => this.startEdit(block)">
+                                                    <i class="fa fa-pencil"/>
+                                                </button>
+                                                <button
+                                                    t-if="state.copied !== ('blk-' + block.name)"
+                                                    class="o_adsuhu_btn_icon" title="Copy"
+                                                    t-on-click="copyBlock">
+                                                    <i class="fa fa-copy"/>
+                                                </button>
+                                                <span t-if="state.copied === ('blk-' + block.name)"
+                                                    class="o_adsuhu_btn_icon copied">
+                                                    <i class="fa fa-check"/>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="o_adsuhu_prose" t-raw="block.html"/>
+                                        <t t-if="isEditing(block)">
+                                            <textarea class="o_adsuhu_edit_textarea"
+                                                t-model="state.editText"
+                                                rows="12"/>
+                                            <div class="o_adsuhu_edit_actions">
+                                                <button class="o_adsuhu_btn o_adsuhu_btn_ghost o_adsuhu_btn_sm"
+                                                    t-on-click="() => this.cancelEdit()">
+                                                    <i class="fa fa-times"/> Cancel
+                                                </button>
+                                                <button
+                                                    t-att-class="'o_adsuhu_btn o_adsuhu_btn_primary o_adsuhu_btn_sm' + (state.saving ? ' loading' : '')"
+                                                    t-att-disabled="state.saving ? 'true' : undefined"
+                                                    t-on-click="() => this.saveEdit(block)">
+                                                    <i t-att-class="'fa ' + (state.saving ? 'fa-spinner fa-spin' : 'fa-save')"/>
+                                                    <t t-esc="state.saving ? 'Saving…' : 'Save'"/>
+                                                </button>
+                                            </div>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="o_adsuhu_prose" t-raw="block.html"/>
+                                        </t>
                                     </div>
                                 </t>
                             </t>
