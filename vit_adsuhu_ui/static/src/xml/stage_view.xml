@@ -54,13 +54,39 @@
                                                 t-on-click="() => this.toggleCardCollapse(card)">
                                                 <i t-att-class="'fa ' + (isCardCollapsed(card) ? 'fa-chevron-down' : 'fa-chevron-up')"/>
                                             </button>
-                                            <button t-if="!isCardCollapsed(card)" class="o_adsuhu_btn_icon" title="Copy"
+                                            <button
+                                                t-if="!isEditing(card.content)"
+                                                class="o_adsuhu_btn_icon" title="Edit"
+                                                t-on-click="() => this.startEdit(card.content)">
+                                                <i class="fa fa-pencil"/>
+                                            </button>
+                                            <button t-if="!isCardCollapsed(card) &amp;&amp; !isEditing(card.content)" class="o_adsuhu_btn_icon" title="Copy"
                                                 t-on-click="copyCard">
                                                 <i class="fa fa-copy"/>
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="o_adsuhu_prose" t-if="!isCardCollapsed(card)" t-raw="card.content.html"/>
+                                    <t t-if="isEditing(card.content)">
+                                        <textarea class="o_adsuhu_edit_textarea"
+                                            t-model="state.editText"
+                                            rows="16"/>
+                                        <div class="o_adsuhu_edit_actions">
+                                            <button class="o_adsuhu_btn o_adsuhu_btn_ghost o_adsuhu_btn_sm"
+                                                t-on-click="() => this.cancelEdit()">
+                                                <i class="fa fa-times"/> Cancel
+                                            </button>
+                                            <button
+                                                t-att-class="'o_adsuhu_btn o_adsuhu_btn_primary o_adsuhu_btn_sm' + (state.saving ? ' loading' : '')"
+                                                t-att-disabled="state.saving ? 'true' : undefined"
+                                                t-on-click="() => this.saveEdit(card.content)">
+                                                <i t-att-class="'fa ' + (state.saving ? 'fa-spinner fa-spin' : 'fa-save')"/>
+                                                <t t-esc="state.saving ? 'Saving…' : 'Save'"/>
+                                            </button>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="o_adsuhu_prose" t-if="!isCardCollapsed(card)" t-raw="card.content.html"/>
+                                    </t>
                                 </div>
                                 <div class="o_adsuhu_prose" t-else="" t-raw="card.content.html"/>
                             </div>
