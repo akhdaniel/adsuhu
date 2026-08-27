@@ -12,20 +12,6 @@
         </t>
     </template>
 
-    <template id="open_in_studio_list" name="Open AdSuhu Studio from List"
-        inherit_id="vit_adsuhu_frontend.product_analysis_list_template">
-        <xpath expr="//a[hasclass('adsuhu-btn-primary')]" position="attributes">
-            <attribute name="t-attf-href">/adsui/#{analysis.id}</attribute>
-        </xpath>
-    </template>
-
-    <template id="open_in_studio_card_title" name="Open AdSuhu Studio from Card Title"
-        inherit_id="vit_adsuhu_frontend.product_analysis_list_template">
-        <xpath expr="//h3[hasclass('adsuhu-card-title')]/a" position="attributes">
-            <attribute name="t-attf-href">/adsui/#{analysis.id}</attribute>
-        </xpath>
-    </template>
-
     <template id="dashboard_template" name="AdSuhu Dashboard">
         <t t-call="website.layout">
             <div id="wrap" class="oe_structure">
