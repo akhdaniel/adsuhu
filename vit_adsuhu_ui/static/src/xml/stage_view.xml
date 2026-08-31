@@ -10,7 +10,17 @@
                     <h2 t-esc="stage.label"/>
                     <p class="o_adsuhu_stage_hint" t-if="stage.hint" t-esc="stage.hint"/>
                 </div>
-                <span t-att-class="'o_adsuhu_chip o_adsuhu_chip_' + stage.status" t-esc="stage.status"/>
+                <div class="o_adsuhu_stage_head_actions">
+                    <button
+                        t-if="hasCollapsible"
+                        class="o_adsuhu_btn o_adsuhu_btn_ghost o_adsuhu_btn_sm"
+                        t-att-title="allCollapsed ? 'Expand all sections' : 'Collapse all sections'"
+                        t-on-click="() => this.toggleAll()">
+                        <i t-att-class="'fa ' + (allCollapsed ? 'fa-expand' : 'fa-compress')"/>
+                        <t t-esc="allCollapsed ? 'Expand All' : 'Collapse All'"/>
+                    </button>
+                    <span t-att-class="'o_adsuhu_chip o_adsuhu_chip_' + stage.status" t-esc="stage.status"/>
+                </div>
             </header>
 
             <div class="o_adsuhu_stage_error" t-if="stage.status === 'failed'">

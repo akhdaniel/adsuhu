@@ -57,6 +57,44 @@ export class StageView extends Component {
         ];
     }
 
+    /**
+     * Every collapsible key in the current stage: per-block keys plus
+     * single-content card keys.
+     */
+    get collapsibleKeys() {
+        const keys = [];
+        for (const card of this.props.stage.cards || []) {
+            const content = card.content || {};
+            const blocks = content.blocks || [];
+            if (blocks.length) {
+                for (const block of blocks) {
+                    if (block.edit_model) {
+                        keys.push(block.edit_field + "-" + block.edit_id);
+                    }
+                }
+            } else if (content.edit_model) {
+                keys.push("__card_" + content.edit_id);
+            }
+        }
+        return keys;
+    }
+
+    get hasCollapsible() {
+        return this.collapsibleKeys.length > 0;
+    }
+
+    get allCollapsed() {
+        const keys = this.collapsibleKeys;
+        return keys.length > 0 && keys.every((k) => !!this.state.collapsed[k]);
+    }
+
+    toggleAll() {
+        const collapse = !this.allCollapsed;
+        for (const key of this.collapsibleKeys) {
+            this.state.collapsed[key] = collapse;
+        }
+    }
+
     copyText(text, key) {
         navigator.clipboard?.writeText(text || "");
         this.state.copied = key;

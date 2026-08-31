@@ -96,6 +96,14 @@
     }
 }
 
+.o_adsuhu_stage_head_actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
 .o_adsuhu_stage_hint {
     margin: 0.2rem 0 0;
     color: var(--adsuhu-text-muted);
