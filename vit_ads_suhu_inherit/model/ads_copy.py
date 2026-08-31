@@ -777,4 +777,4 @@ Response in {self.lang_id.name} language.
             except Exception as e2:
                 _logger.error("ads_copy(%s) fallback also failed: %s", self.id, e2)
                 self.output_html = self.md_to_html(self.output or "")
-                self.write({"status": "failed", "error_message": f"JSON parse error: {e}"})
+                self.write({"error_message": f"JSON parse error (rendered as plain text): {e}"})

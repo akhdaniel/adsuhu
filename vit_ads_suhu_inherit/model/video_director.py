@@ -156,7 +156,7 @@ class video_director(models.Model):
             except Exception as e2:
                 _logger.error("vit.video_director(%s) fallback also failed: %s", self.id, e2)
                 self.output_html = self.md_to_html(self.output or "")
-                self.write({"status": "failed", "error_message": f"JSON parse error: {e}"})
+                self.write({"error_message": f"JSON parse error (rendered as plain text): {e}"})
 
 
     def action_generate_video(self):

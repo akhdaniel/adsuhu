@@ -176,7 +176,7 @@ Response in {self.lang_id.name} language.
             except Exception as e2:
                 _logger.error("vit.image_generator(%s) fallback also failed: %s", self.id, e2)
                 self.output_html = self.md_to_html(self.output or "")
-                self.write({"status": "failed", "error_message": f"JSON parse error: {e}"})
+                self.write({"error_message": f"JSON parse error (rendered as plain text): {e}"})
         
         # md = self.json_to_markdown(
         #         json.loads(self.clean_md(self.output)), level=3, max_level=4
