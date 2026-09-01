@@ -52,6 +52,36 @@ class general_object(models.Model):
 
     _name = "vit.general_object"
     _inherit = "vit.general_object"
+
+    @api.model
+    def _fix_stale_failed_statuses(self):
+        """One-time cleanup: reset 'failed' records that actually have content
+        and no real error message. Called via shell or post-migration."""
+        fixed = 0
+        for model_name in (
+            "vit.product_value_analysis",
+            "vit.market_mapper",
+            "vit.audience_profiler",
+            "vit.angle_hook",
+            "vit.hook",
+            "vit.ads_copy",
+            "vit.image_generator",
+            "vit.video_director",
+            "vit.landing_page_builder",
+        ):
+            recs = self.env[model_name].sudo().search([
+                ("status", "=", "failed"),
+                ("output_html", "!=", False),
+                ("output_html", "!=", ""),
+                "|",
+                ("error_message", "=", False),
+                ("error_message", "=", ""),
+            ])
+            if recs:
+                recs.write({"status": "done"})
+                _logger.info("_fix_stale_failed_statuses: reset %d %s records", len(recs), model_name)
+                fixed += len(recs)
+        return fixed
     
     status = fields.Selection(
         [
