@@ -81,6 +81,29 @@ class general_object(models.Model):
                 recs.write({"status": "done"})
                 _logger.info("_fix_stale_failed_statuses: reset %d %s records", len(recs), model_name)
                 fixed += len(recs)
+
+        # Second pattern: parent marked failed by a background job that raised
+        # (e.g. KeyError from action_split_angles/action_split_hooks) even though
+        # child records were already created with real content -- proof the batch
+        # made partial/full progress before the crash.
+        ap_failed = self.env["vit.audience_profiler"].sudo().search([("status", "=", "failed")])
+        for ap in ap_failed:
+            if ap.angle_hook_ids.filtered(lambda a: a.output_html):
+                ap.write({"status": "done"})
+                _logger.info(
+                    "_fix_stale_failed_statuses: reset audience_profiler(%s) - has angle content", ap.id
+                )
+                fixed += 1
+
+        an_failed = self.env["vit.angle_hook"].sudo().search([("status", "=", "failed")])
+        for an in an_failed:
+            if an.hook_ids.filtered(lambda h: h.output_html):
+                an.write({"status": "done"})
+                _logger.info(
+                    "_fix_stale_failed_statuses: reset angle_hook(%s) - has hook content", an.id
+                )
+                fixed += 1
+
         return fixed
     
     status = fields.Selection(

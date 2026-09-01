@@ -541,54 +541,111 @@ Response in {self.lang_id.name} language for all values in the JSON output.
         
 
     def action_split_angles(self, ):
-        js = json.loads(self.clean_md(self.output))
+        try:
+            js = json.loads(self.clean_md(self.output))
+        except Exception as e:
+            _logger.error(
+                "action_split_angles: master angle_hook(%s) output is not valid JSON: %s",
+                self.id, e,
+            )
+            raise UserError(f'Failed to parse master angle output: {e}')
 
         if not 'angles' in js:
+            _logger.error(
+                "action_split_angles: master angle_hook(%s) missing 'angles' key. Keys present: %s",
+                self.id, list(js.keys()),
+            )
             raise UserError('Split angles only in master angle')
 
-        big_ideas= js['big_ideas']
-        angles= js['angles']
-        strategic_notes= js['strategic_notes']
+        big_ideas = js.get('big_ideas', [])
+        angles = js.get('angles') or []
+        strategic_notes = js.get('strategic_notes', {})
 
-        for i,angle in enumerate(angles):
+        created_count = 0
+        for i, angle in enumerate(angles):
             # angle = {
             #  "angle": "Siap Audit Itu Bukan Klaim, Tapi Bukti",
             #  "pov": "Sistem persuratan bukan soal fitur, tapi soal apakah bisa dipertanggungjawabkan di depan auditor dan pimpinan.",
             #  "hooks": []
             # }
-            output={
-                'big_ideas':big_ideas,
-                'strategic_notes': strategic_notes
-            }
-            output.update(angle)
-            default = dict(
-                audience_profiler_id=self.audience_profiler_id.id,
-                name=f"AP {self.audience_profiler_id.audience_profile_no} - ANGLE {i+1}: {angle['angle']}",
-                angle_no=i+1,
-                description=angle['angle'],
-                output= json.dumps(output, indent=4),
-                gpt_session=self.gpt_session,
-                gpt_model_id=self.gpt_model_id.id,
+            try:
+                angle_title = angle.get('angle') or f"Angle {i+1}"
+                output = {
+                    'big_ideas': big_ideas,
+                    'strategic_notes': strategic_notes,
+                }
+                output.update(angle)
+                default = dict(
+                    audience_profiler_id=self.audience_profiler_id.id,
+                    name=f"AP {self.audience_profiler_id.audience_profile_no} - ANGLE {i+1}: {angle_title}",
+                    angle_no=i+1,
+                    description=angle_title,
+                    output=json.dumps(output, indent=4),
+                    gpt_session=self.gpt_session,
+                    gpt_model_id=self.gpt_model_id.id,
+                )
+                self.create(default)
+                created_count += 1
+            except Exception as e:
+                _logger.error(
+                    "action_split_angles: failed to create angle #%s for audience_profiler(%s) master(%s): %s | angle_data=%s",
+                    i+1, self.audience_profiler_id.id, self.id, e, angle,
+                )
+                continue
+
+        if created_count == 0 and angles:
+            raise UserError(
+                f'Failed to create any of the {len(angles)} angles. Check server logs for details.'
             )
-            an = self.create(default)
 
     def action_split_hooks(self, ):
-        angle = json.loads(self.clean_md(self.output))
-        for i,hook in enumerate(angle['hooks']):
-            output = {
-                'angle':angle['angle'],
-                'pov':angle['pov'],
-                'hook': hook
-            }
-            default = dict(
-                angle_hook_id=self.id,
-                name = f"AP {self.audience_profiler_id.audience_profile_no} - ANGLE {self.angle_no} - HOOK {i+1}",
-                hook_no= i+1,
-                description = hook['text'],
-                output="```json\n"+json.dumps(output, indent=4) + "\n```",
-                gpt_model_id=self.gpt_model_id.id,
+        try:
+            angle = json.loads(self.clean_md(self.output))
+        except Exception as e:
+            _logger.error(
+                "action_split_hooks: angle_hook(%s) output is not valid JSON: %s",
+                self.id, e,
             )
-            hook = self.env['vit.hook'].create(default)
+            raise UserError(f'Failed to parse angle output for hooks: {e}')
+
+        hooks = angle.get('hooks') or []
+        if not hooks:
+            _logger.warning(
+                "action_split_hooks: angle_hook(%s) has no 'hooks' array. Keys present: %s",
+                self.id, list(angle.keys()),
+            )
+
+        created_count = 0
+        for i, hook in enumerate(hooks):
+            try:
+                hook_text = hook.get('text') or f"Hook {i+1}"
+                output = {
+                    'angle': angle.get('angle', ''),
+                    'pov': angle.get('pov', ''),
+                    'hook': hook,
+                }
+                default = dict(
+                    angle_hook_id=self.id,
+                    name=f"AP {self.audience_profiler_id.audience_profile_no} - ANGLE {self.angle_no} - HOOK {i+1}",
+                    hook_no=i+1,
+                    description=hook_text,
+                    output="```json\n" + json.dumps(output, indent=4) + "\n```",
+                    gpt_model_id=self.gpt_model_id.id,
+                )
+                self.env['vit.hook'].create(default)
+                created_count += 1
+            except Exception as e:
+                _logger.error(
+                    "action_split_hooks: failed to create hook #%s for angle_hook(%s): %s | hook_data=%s",
+                    i+1, self.id, e, hook,
+                )
+                continue
+
+        if created_count == 0 and hooks:
+            _logger.error(
+                "action_split_hooks: created 0 of %s hooks for angle_hook(%s)",
+                len(hooks), self.id,
+            )
 
     def generate_output_html(self):
         try:

@@ -309,10 +309,24 @@ Response in {self.lang_id.name} language.
         an.action_generate()
         an.action_split_angles()
         an.active=False
-        
+
         for an in self.angle_hook_ids:
-            an.action_split_hooks()
-            an.generate_output_html()
+            try:
+                an.action_split_hooks()
+                an.generate_output_html()
+            except Exception as e:
+                _logger.error(
+                    "action_generate_angles: failed processing angle_hook(%s) for audience_profiler(%s): %s",
+                    an.id, self.id, e,
+                )
+                continue
 
             for hook in an.hook_ids:
-                hook.generate_output_html()
+                try:
+                    hook.generate_output_html()
+                except Exception as e:
+                    _logger.error(
+                        "action_generate_angles: failed rendering hook(%s) under angle_hook(%s): %s",
+                        hook.id, an.id, e,
+                    )
+                    continue
