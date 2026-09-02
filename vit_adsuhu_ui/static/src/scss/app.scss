@@ -230,10 +230,11 @@
 }
 
 .o_adsuhu_card_sub {
-    margin-top: 0.15rem;
-    font-size: 0.82rem;
-    color: var(--adsuhu-text-muted);
-    max-width: 60ch;
+    margin-top: 0.2rem;
+    font-size: 1rem;
+    color: var(--adsuhu-text);
+    font-weight: 500;
+    max-width: 70ch;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
