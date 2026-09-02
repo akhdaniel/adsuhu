@@ -15,7 +15,8 @@
                 </div>
             </t>
             <t t-else="">
-                <div t-att-class="'o_adsuhu_sticky_bar' + (state.stuck ? ' is-stuck' : '')">
+                <div t-att-class="'o_adsuhu_sticky_bar' + (state.stuck ? ' is-stuck' : '')"
+                    t-att-style="'top:' + state.headerOffset + 'px'">
                     <div class="o_adsuhu_header">
                         <div class="o_adsuhu_header_title">
                             <h1 t-esc="state.analysis.name"/>

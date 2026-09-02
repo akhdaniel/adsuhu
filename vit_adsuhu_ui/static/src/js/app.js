@@ -61,9 +61,11 @@ export class App extends Component {
             stages: [],
             current: "product",
             stuck: false,
+            headerOffset: 0,
         });
         this.stickySentinelRef = useRef("stickySentinel");
         this._stickyObserver = null;
+        this._resizeHandler = null;
         this._refreshTimer = null;
         this._pollTimer = null;
         this.onSelectStage = this.onSelectStage.bind(this);
@@ -73,6 +75,10 @@ export class App extends Component {
         onMounted(() => this._mount());
         onWillUnmount(() => {
             this._disconnectStickyObserver();
+            if (this._resizeHandler) {
+                window.removeEventListener("resize", this._resizeHandler);
+                this._resizeHandler = null;
+            }
             if (this._unsubscribe) {
                 this._unsubscribe();
             }
@@ -111,6 +117,26 @@ export class App extends Component {
         // The sticky bar (t-else branch) only mounts after loading finishes.
         // Observe the sentinel once the DOM has painted with the bar in place.
         requestAnimationFrame(() => this._setupStickyObserver());
+        this._measureHeaderOffset();
+        this._resizeHandler = () => this._measureHeaderOffset();
+        window.addEventListener("resize", this._resizeHandler);
+    }
+
+    /**
+     * The Odoo website header (#top) may become sticky/fixed and overlay the
+     * top of the page. Measure its offset height so our sticky bar pins below it.
+     */
+    _measureHeaderOffset() {
+        const header = document.querySelector("header#top");
+        if (header) {
+            const height = header.offsetHeight;
+            // Only offset if the header is actually affixed/fixed (sticky menu).
+            const style = window.getComputedStyle(header);
+            const isFixed = style.position === "fixed" || style.position === "sticky";
+            this.state.headerOffset = isFixed ? height : 0;
+        } else {
+            this.state.headerOffset = 0;
+        }
     }
 
     _setupStickyObserver() {
@@ -125,6 +151,9 @@ export class App extends Component {
                 if (entry) {
                     this.state.stuck = !entry.isIntersecting;
                 }
+                // The website header may become affixed/fixed only after the
+                // user scrolls; re-measure so our bar stays below it.
+                this._measureHeaderOffset();
             },
             { threshold: 0 }
         );
