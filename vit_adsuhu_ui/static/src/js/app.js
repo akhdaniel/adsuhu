@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, markup, onMounted, onWillUnmount, useState } from "@odoo/owl";
+import { Component, markup, onMounted, onWillUnmount, useRef, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 
@@ -60,7 +60,10 @@ export class App extends Component {
             analysis: {},
             stages: [],
             current: "product",
+            stuck: false,
         });
+        this.stickySentinelRef = useRef("stickySentinel");
+        this._stickyObserver = null;
         this._refreshTimer = null;
         this._pollTimer = null;
         this.onSelectStage = this.onSelectStage.bind(this);
@@ -69,6 +72,7 @@ export class App extends Component {
         this.refresh = this.refresh.bind(this);
         onMounted(() => this._mount());
         onWillUnmount(() => {
+            this._disconnectStickyObserver();
             if (this._unsubscribe) {
                 this._unsubscribe();
             }
@@ -104,6 +108,34 @@ export class App extends Component {
             }
         }, 5000);
         await this.refresh();
+        // The sticky bar (t-else branch) only mounts after loading finishes.
+        // Observe the sentinel once the DOM has painted with the bar in place.
+        requestAnimationFrame(() => this._setupStickyObserver());
+    }
+
+    _setupStickyObserver() {
+        const sentinel = this.stickySentinelRef.el;
+        if (!sentinel || typeof IntersectionObserver === "undefined") {
+            return;
+        }
+        this._disconnectStickyObserver();
+        this._stickyObserver = new IntersectionObserver(
+            (entries) => {
+                const entry = entries[0];
+                if (entry) {
+                    this.state.stuck = !entry.isIntersecting;
+                }
+            },
+            { threshold: 0 }
+        );
+        this._stickyObserver.observe(sentinel);
+    }
+
+    _disconnectStickyObserver() {
+        if (this._stickyObserver) {
+            this._stickyObserver.disconnect();
+            this._stickyObserver = null;
+        }
     }
 
     _csrf() {

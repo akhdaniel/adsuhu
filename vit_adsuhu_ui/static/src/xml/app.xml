@@ -2,23 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="vit_adsuhu_ui.App">
         <div class="o_adsuhu_app">
-            <div class="o_adsuhu_header">
-                <div class="o_adsuhu_header_title">
-                    <h1 t-esc="state.analysis.name"/>
-                    <div class="o_adsuhu_header_meta">
-                        <span class="o_adsuhu_badge" t-if="state.analysis.target_market">
-                            <i class="fa fa-globe"/> <t t-esc="state.analysis.target_market"/>
-                        </span>
-                        <span class="o_adsuhu_badge o_adsuhu_badge_muted" t-if="state.analysis.tags">
-                            <i class="fa fa-tags"/> <t t-esc="state.analysis.tags"/>
-                        </span>
-                    </div>
-                </div>
-                <a t-att-href="'/product_analysis/' + state.analysis.id"
-                    class="o_adsuhu_link" target="_blank">
-                    <i class="fa fa-external-link"/> Classic report
-                </a>
-            </div>
+            <div class="o_adsuhu_sticky_sentinel" t-ref="stickySentinel"/>
 
             <t t-if="state.loading">
                 <div class="o_adsuhu_loading">
@@ -31,7 +15,26 @@
                 </div>
             </t>
             <t t-else="">
-                <Stepper stages="stages" current="state.current" onSelect="onSelectStage"/>
+                <div t-att-class="'o_adsuhu_sticky_bar' + (state.stuck ? ' is-stuck' : '')">
+                    <div class="o_adsuhu_header">
+                        <div class="o_adsuhu_header_title">
+                            <h1 t-esc="state.analysis.name"/>
+                            <div class="o_adsuhu_header_meta">
+                                <span class="o_adsuhu_badge" t-if="state.analysis.target_market">
+                                    <i class="fa fa-globe"/> <t t-esc="state.analysis.target_market"/>
+                                </span>
+                                <span class="o_adsuhu_badge o_adsuhu_badge_muted" t-if="state.analysis.tags">
+                                    <i class="fa fa-tags"/> <t t-esc="state.analysis.tags"/>
+                                </span>
+                            </div>
+                        </div>
+                        <a t-att-href="'/product_analysis/' + state.analysis.id"
+                            class="o_adsuhu_link" target="_blank">
+                            <i class="fa fa-external-link"/> Classic report
+                        </a>
+                    </div>
+                    <Stepper stages="stages" current="state.current" onSelect="onSelectStage"/>
+                </div>
                 <div class="o_adsuhu_main">
                     <StageView
                         stage="currentStage"
