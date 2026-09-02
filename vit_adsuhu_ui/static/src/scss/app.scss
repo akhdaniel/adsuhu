@@ -333,6 +333,15 @@
     gap: 0.4rem;
 }
 
+.o_adsuhu_block_footer {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--adsuhu-border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 .o_adsuhu_block_edit_bar {
     display: flex;
     justify-content: flex-end;

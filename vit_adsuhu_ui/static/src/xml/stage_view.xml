@@ -152,6 +152,14 @@
                                         <t t-else="">
                                             <div class="o_adsuhu_prose" t-if="!isCollapsed(block)" t-raw="block.html"/>
                                         </t>
+                                        <t t-if="block.action &amp;&amp; !isEditing(block) &amp;&amp; !isCollapsed(block)">
+                                            <div class="o_adsuhu_block_footer">
+                                                <GenerateButton
+                                                    action="block.action"
+                                                    hasContent="block.html ? true : false"
+                                                    onDone="props.onRefresh"/>
+                                            </div>
+                                        </t>
                                     </div>
                                 </t>
                             </t>

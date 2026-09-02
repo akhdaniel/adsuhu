@@ -418,11 +418,12 @@ class AdsuhuUi(http.Controller):
             }
         )
 
-        # --- Creatives (images / landing pages / videos) ---
+        # --- Creatives (image prompts / image variants / landing pages / video scripts) ---
         creative_cards = []
         for ads in (
             analysis.market_mapper_ids.audience_profiler_ids.angle_hook_ids.hook_ids.ads_copy_ids
         ):
+            # Generated image variants
             images = [
                 {
                     "id": iv.id,
@@ -434,6 +435,52 @@ class AdsuhuUi(http.Controller):
                 }
                 for iv in ads.image_generator_ids.image_variant_ids
             ]
+
+            # Image prompt blocks (the prompt used to generate the image) + generate button
+            image_prompt_blocks = [
+                {
+                    "name": f"Image: {ig.name}",
+                    "html": ig.output_html or "",
+                    "edit_model": "vit.image_generator",
+                    "edit_id": ig.id,
+                    "edit_field": "output_html",
+                    "edit_raw": ig.output_html or "",
+                    "action": self._action(
+                        "image_variants",
+                        f"/image_generator/{ig.id}/image_variant/regenerate",
+                        f"/regenerate_status/image_variants/{ig.id}",
+                        ig,
+                    ),
+                }
+                for ig in ads.image_generator_ids
+            ]
+
+            # Landing page blocks
+            lp_blocks = [
+                {
+                    "name": lp.name,
+                    "html": lp.output_html or "",
+                    "edit_model": "vit.landing_page_builder",
+                    "edit_id": lp.id,
+                    "edit_field": "output_html",
+                    "edit_raw": lp.output_html or "",
+                }
+                for lp in ads.landing_page_builder_ids
+            ]
+
+            # Video director blocks
+            video_blocks = [
+                {
+                    "name": vid.name,
+                    "html": vid.output_html or "",
+                    "edit_model": "vit.video_director",
+                    "edit_id": vid.id,
+                    "edit_field": "output_html",
+                    "edit_raw": vid.output_html or "",
+                }
+                for vid in ads.video_director_ids
+            ]
+
             creative_cards.append(
                 {
                     "id": ads.id,
@@ -441,37 +488,7 @@ class AdsuhuUi(http.Controller):
                     "subtitle": "",
                     "status": _record_status(ads.image_generator_ids[:1]),
                     "images": images,
-                    "blocks": [
-                        {
-                            "name": lp.name,
-                            "html": lp.output_html or "",
-                            "edit_model": "vit.landing_page_builder",
-                            "edit_id": lp.id,
-                            "edit_field": "output_html",
-                            "edit_raw": lp.output_html or "",
-                        }
-                        for lp in ads.landing_page_builder_ids
-                    ]
-                    + [
-                        {
-                            "name": vid.name,
-                            "html": vid.output_html or "",
-                            "edit_model": "vit.video_director",
-                            "edit_id": vid.id,
-                            "edit_field": "output_html",
-                            "edit_raw": vid.output_html or "",
-                        }
-                        for vid in ads.video_director_ids
-                    ],
-                    "image_actions": [
-                        self._action(
-                            "image_variants",
-                            f"/image_generator/{ig.id}/image_variant/regenerate",
-                            f"/regenerate_status/image_variants/{ig.id}",
-                            ig,
-                        )
-                        for ig in ads.image_generator_ids
-                    ],
+                    "blocks": image_prompt_blocks + video_blocks + lp_blocks,
                 }
             )
         stages.append(
