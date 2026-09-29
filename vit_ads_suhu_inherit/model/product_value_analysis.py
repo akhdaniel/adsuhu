@@ -241,6 +241,38 @@ class product_value_analysis(models.Model):
     specific_instruction = fields.Text( string=("Specific Instruction"), default=DEFAULT_SPECIFIC_INSTRUCTION)
     report_template = fields.Binary( string=("Report Template"))
 
+    logo = fields.Binary(string=_("Logo"), attachment=True)
+    logo_filename = fields.Char(string=_("Logo Filename"))
+    kemasan = fields.Binary(string=_("Kemasan Produk"), attachment=True)
+    kemasan_filename = fields.Char(string=_("Kemasan Produk Filename"))
+
+    # ponytail: gpt-image-1.5 accepts up to 16 image inputs per request; both
+    # reference assets fit well inside that. Add fields here when the model
+    # starts accepting product shots as conditioning rather than description.
+    _BRAND_ASSET_FIELDS = ("logo", "kemasan")
+
+    def _brand_asset_data_uris(self):
+        """Reference images for creative generation, as fal-accepted data URIs.
+
+        Returns [(label, data_uri), ...] in a stable order, skipping empty fields.
+        Data URIs (not /web/image URLs) so the assets never need to be publicly
+        reachable - fal.ai accepts base64 data URIs directly.
+        """
+        self.ensure_one()
+        uris = []
+        for field_name in self._BRAND_ASSET_FIELDS:
+            raw = self[field_name]
+            if not raw:
+                continue
+            filename = self[f"{field_name}_filename"] or f"{field_name}.png"
+            ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "png"
+            if ext == "jpg":
+                ext = "jpeg"
+            if ext not in ("png", "jpeg", "webp"):
+                ext = "png"
+            uris.append((field_name, f"data:image/{ext};base64,{raw}"))
+        return uris
+
     def _get_default_lang(self):
         return self.env["res.lang"].search(
             [("iso_code", "=", "en")], limit=1

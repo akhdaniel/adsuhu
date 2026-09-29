@@ -90,9 +90,30 @@ class image_generator(models.Model):
         fal_api_key = self.env["ir.config_parameter"].sudo().get_param("fal_api_key")
         fal = Fal(api_key=fal_api_key)
 
+        # Reference assets (logo / kemasan) travel with the analysis and ride
+        # along into creative generation. With them we must call the /edit
+        # endpoint, which takes image_urls; without them we stay on text2image.
+        brand_assets = self.ads_copy_id.product_value_analysis_id._brand_asset_data_uris()
+        if brand_assets:
+            model = f"{model}/edit"
+            additional_payload = {
+                "image_urls": [uri for _label, uri in brand_assets],
+                "input_fidelity": "high",
+            }
+            asset_labels = ", ".join(label for label, _uri in brand_assets)
+            image_prompt = (
+                f"{image_prompt}\n\n"
+                f"Reference images attached, in order: {asset_labels}. "
+                "Reproduce the brand logo exactly as shown, unchanged in shape, "
+                "colour and lettering. Reproduce the product packaging exactly as "
+                "shown. Keep both visually faithful to the reference."
+            )
+        else:
+            additional_payload = {}
+
         image_url = fal.generate_image(image_prompt=image_prompt, 
                        model_name=model, 
-                       additional_payload={},)
+                       additional_payload=additional_payload,)
         
         if not image_url:
             raise UserError('fal Image URL Empty!')
