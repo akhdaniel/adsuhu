@@ -10,6 +10,11 @@ class Fal:
     def __init__(self, api_key=None):
         self.api_key=api_key
         self.model_name=False
+        # Always defined: generate() reads self.final_url after _download_request(),
+        # and a non-2xx result fetch previously left it unset -> AttributeError
+        # that masked the real fal error.
+        self.final_url=False
+        self.last_error=None
 
     def generate(self, model_name, prompt, additional_payload={} ):
         """
@@ -53,7 +58,13 @@ class Fal:
             payload.update(additional_payload)
 
         begin = time.time()
-        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        self.last_error=None
+        try:
+            response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=120)
+        except requests.RequestException as e:
+            self.last_error = f"fal submit failed: {e}"
+            _logger.error("    Submit exception: %s", e)
+            return False
         if response.status_code == 200:
             result = response.json()
             _logger.info(f"result={result}")
@@ -62,16 +73,23 @@ class Fal:
             self.status_url = result["status_url"]
             _logger.info(f"    Task submitted. Request ID: {self.request_id}")
         else:
-            _logger.info(f"    Error: {response.status_code}, {response.text}")
-            return
+            self.last_error = f"fal submit HTTP {response.status_code}: {response.text[:500]}"
+            _logger.error("    Submit error: %s, %s", response.status_code, response.text[:500])
+            return False
 
         # check status
         # headers = {"Authorization": f"Key {self.api_key}"}
 
         # Poll for results
         final_url = False
-        while True:
-            response = requests.get(self.status_url, headers=headers)
+        max_wait = 600
+        while time.time() - begin < max_wait:
+            try:
+                response = requests.get(self.status_url, headers=headers, timeout=30)
+            except requests.RequestException as e:
+                self.last_error = f"fal status poll failed: {e}"
+                _logger.error("    Status poll exception: %s", e)
+                break
             if response.status_code in [200,202]:
                 result = response.json()
                 status = result["status"]
@@ -88,28 +106,42 @@ class Fal:
                 elif status == 'IN_QUEUE':
                     _logger.info(f"    Task still in queue. Status: {status}")
                 else:
-                    _logger.info(f"    Task failed/unknown status: {result.get('error')}")
-                    break                    
+                    self.last_error = f"fal task {status}: {result.get('error') or result.get('logs') or result}"
+                    _logger.error("    Task failed/unknown status: %s", self.last_error)
+                    break
             else:
-                _logger.error(f"    Error: {response.status_code}, {response.text}")
+                self.last_error = f"fal status poll HTTP {response.status_code}: {response.text[:500]}"
+                _logger.error("    Status error: %s, %s", response.status_code, response.text[:500])
                 break
 
             time.sleep(1)
+        else:
+            self.last_error = f"fal task timed out after {max_wait}s"
+            _logger.error("    %s (model=%s)", self.last_error, self.model_name)
 
         return final_url
 
     def _download_request(self,):
-        
+        self.final_url = False
         headers = {"Authorization": f"Key {self.api_key}"}
-        response = requests.get(self.response_url, headers=headers)
+        try:
+            response = requests.get(self.response_url, headers=headers, timeout=60)
+        except requests.RequestException as e:
+            self.last_error = f"fal result fetch failed: {e}"
+            _logger.error("    Result fetch exception: %s", e)
+            return
         if response.status_code in [200,202]:
             result = response.json()
-            print('---- result --- ')
-            print(result)
-            images = result['images']
-            self.final_url = images[0]['url']
+            _logger.info("    result=%s", result)
+            images = result.get("images") or []
+            if not images:
+                self.last_error = f"fal result has no images: {result}"
+                _logger.error("    %s", self.last_error)
+                return
+            self.final_url = images[0].get("url")
         else:
-            _logger.info(f"    Error: {response.status_code}, {response.text}")
+            self.last_error = f"fal result HTTP {response.status_code}: {response.text[:500]}"
+            _logger.error("    Result error: %s, %s", response.status_code, response.text[:500])
 
     def generate_image(self, image_prompt, 
                        model_name='fal-ai/flux-pro', 

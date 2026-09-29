@@ -116,7 +116,7 @@ class image_generator(models.Model):
                        additional_payload=additional_payload,)
         
         if not image_url:
-            raise UserError('fal Image URL Empty!')
+            raise UserError('fal Image URL Empty! (%s)' % (fal.last_error or 'no detail from fal'))
         
         response = requests.get(image_url)
         response.raise_for_status()
