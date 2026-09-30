@@ -91,16 +91,23 @@ class image_generator(models.Model):
         fal = Fal(api_key=fal_api_key)
 
         # Reference assets (logo / kemasan) travel with the analysis and ride
-        # along into creative generation. With them we must call the /edit
-        # endpoint, which takes image_urls; without them we stay on text2image.
-        brand_assets = self.ads_copy_id.product_value_analysis_id._brand_asset_data_uris()
+        # along into creative generation. fal rejects inline data URIs for real
+        # images (image_load_error), so they are hosted on the fal CDN first and
+        # passed as URLs. With assets we use the /edit endpoint, the only one
+        # that accepts image_urls.
+        brand_assets = self.ads_copy_id.product_value_analysis_id._brand_asset_images()
+        additional_payload = {}
         if brand_assets:
             model = f"{model}/edit"
+            image_urls = [
+                fal.upload(data, content_type, file_name)
+                for _label, data, content_type, file_name in brand_assets
+            ]
             additional_payload = {
-                "image_urls": [uri for _label, uri in brand_assets],
+                "image_urls": image_urls,
                 "input_fidelity": "high",
             }
-            asset_labels = ", ".join(label for label, _uri in brand_assets)
+            asset_labels = ", ".join(label for label, _d, _c, _f in brand_assets)
             image_prompt = (
                 f"{image_prompt}\n\n"
                 f"Reference images attached, in order: {asset_labels}. "
@@ -108,8 +115,6 @@ class image_generator(models.Model):
                 "colour and lettering. Reproduce the product packaging exactly as "
                 "shown. Keep both visually faithful to the reference."
             )
-        else:
-            additional_payload = {}
 
         image_url = fal.generate_image(image_prompt=image_prompt, 
                        model_name=model, 

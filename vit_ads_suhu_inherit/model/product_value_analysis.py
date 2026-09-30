@@ -251,27 +251,48 @@ class product_value_analysis(models.Model):
     # starts accepting product shots as conditioning rather than description.
     _BRAND_ASSET_FIELDS = ("logo", "kemasan")
 
-    def _brand_asset_data_uris(self):
-        """Reference images for creative generation, as fal-accepted data URIs.
+    # Magic-byte signatures, checked in order. Filename extensions cannot be
+    # trusted here: a mislabelled image makes fal reject it with
+    # image_load_error, which reads as a corrupt file rather than a wrong type.
+    _IMAGE_MIME_SIGNATURES = (
+        (b"\x89PNG\r\n\x1a\n", "image/png"),
+        (b"\xff\xd8\xff", "image/jpeg"),
+        (b"GIF87a", "image/gif"),
+        (b"GIF89a", "image/gif"),
+    )
 
-        Returns [(label, data_uri), ...] in a stable order, skipping empty fields.
-        Data URIs (not /web/image URLs) so the assets never need to be publicly
-        reachable - fal.ai accepts base64 data URIs directly.
+    def _brand_asset_images(self):
+        """Reference assets for creative generation.
+
+        Returns [(label, raw_bytes, content_type, file_name), ...] in a stable
+        order, skipping empty fields. Bytes (not base64) because the caller
+        uploads them to the fal CDN - fal rejects inline data URIs for real
+        images, so the assets have to be hosted rather than embedded.
         """
         self.ensure_one()
-        uris = []
+        assets = []
         for field_name in self._BRAND_ASSET_FIELDS:
             raw = self[field_name]
             if not raw:
                 continue
-            filename = self[f"{field_name}_filename"] or f"{field_name}.png"
-            ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else "png"
-            if ext == "jpg":
-                ext = "jpeg"
-            if ext not in ("png", "jpeg", "webp"):
-                ext = "png"
-            uris.append((field_name, f"data:image/{ext};base64,{raw}"))
-        return uris
+            try:
+                data = base64.b64decode(raw, validate=False)
+            except Exception as e:
+                _logger.warning("Could not decode %s of %s: %s", field_name, self.id, e)
+                continue
+            if not data:
+                continue
+            content_type = "image/webp" if data[:4] == b"RIFF" and data[8:12] == b"WEBP" else None
+            for signature, mime in self._IMAGE_MIME_SIGNATURES:
+                if data.startswith(signature):
+                    content_type = mime
+                    break
+            if not content_type:
+                _logger.warning("Unrecognised image format for %s of %s, skipping.", field_name, self.id)
+                continue
+            ext = content_type.split("/")[1].replace("jpeg", "jpg")
+            assets.append((field_name, data, content_type, f"{field_name}.{ext}"))
+        return assets
 
     def _get_default_lang(self):
         return self.env["res.lang"].search(

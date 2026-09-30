@@ -143,6 +143,83 @@ class Fal:
             self.last_error = f"fal result HTTP {response.status_code}: {response.text[:500]}"
             _logger.error("    Result error: %s, %s", response.status_code, response.text[:500])
 
+    # ------------------------------------------------------------------
+    # CDN upload
+    # ------------------------------------------------------------------
+    REST_URL = "https://rest.fal.ai"
+
+    def _cdn_token(self):
+        """Short-lived CDN upload token. The API key is not accepted by the
+        v3 CDN upload endpoint directly - it needs a scoped token."""
+        response = requests.post(
+            f"{self.REST_URL}/storage/auth/token?storage_type=fal-cdn-v3",
+            headers={
+                "Authorization": f"Key {self.api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            json={},
+            timeout=60,
+        )
+        response.raise_for_status()
+        return response.json()
+
+    def _upload_v3(self, data, content_type, file_name):
+        token = self._cdn_token()
+        response = requests.post(
+            f"{token['base_url']}/files/upload",
+            headers={
+                "Authorization": f"{token['token_type']} {token['token']}",
+                "Content-Type": content_type,
+                "X-Fal-File-Name": file_name,
+            },
+            data=data,
+            timeout=180,
+        )
+        response.raise_for_status()
+        return response.json()["access_url"]
+
+    def _upload_storage(self, data, content_type, file_name):
+        """Fallback repository, authenticated with the API key directly."""
+        response = requests.post(
+            f"{self.REST_URL}/storage/upload/initiate?storage_type=gcs",
+            headers={
+                "Authorization": f"Key {self.api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            json={"file_name": file_name, "content_type": content_type},
+            timeout=60,
+        )
+        response.raise_for_status()
+        init = response.json()
+        put = requests.put(
+            init["upload_url"],
+            headers={"Content-Type": content_type},
+            data=data,
+            timeout=180,
+        )
+        put.raise_for_status()
+        return init["file_url"]
+
+    def upload(self, data, content_type, file_name):
+        """Upload raw bytes to the fal CDN and return a public URL.
+
+        fal models reject inline data URIs for real images with image_load_error,
+        so reference assets have to be hosted. Mirrors the fal-client SDK:
+        primary repository fal_v3, falling back to the REST storage repository.
+        """
+        errors = []
+        for label, attempt in (("fal_v3", self._upload_v3), ("fal", self._upload_storage)):
+            try:
+                url = attempt(data, content_type, file_name)
+                _logger.info("    Uploaded %s via %s: %s", file_name, label, url)
+                return url
+            except Exception as e:
+                errors.append(f"{label}: {e}")
+                _logger.warning("    Upload via %s failed: %s", label, e)
+        raise RuntimeError("fal CDN upload failed (%s)" % "; ".join(errors))
+
     def generate_image(self, image_prompt, 
                        model_name='fal-ai/flux-pro', 
                        additional_payload={},):
