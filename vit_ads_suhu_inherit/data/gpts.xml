@@ -360,6 +360,7 @@ CRITICAL TEXT SAFETY RULES:
 - Headline MUST be completely visible and readable.
 - CTA MUST be completely visible and readable.
 - NEVER crop, clip, truncate, cut off, or partially hide any text.
+- NEVER crop, clip, truncate, cut off, or partially hide any reference image if exists.
 - NEVER allow any letter, word, punctuation, or part of the CTA to touch
   or cross the image boundary.
 - Keep the entire headline and CTA inside a generous inner safe zone.
