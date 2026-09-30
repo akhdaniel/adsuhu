@@ -347,7 +347,7 @@ Headline (MUST BE FULLY VISIBLE, NOT CLIPPED):
 Call To Action (MUST BE FULLY VISIBLE, NOT CLIPPED):
 {cta}
 
-Primary Text for your reference only, do not show in the image:
+Primary Text for your reference only, do NOT show in the image:
 {primary_text}
 
 Visual Concept:
@@ -358,6 +358,7 @@ Brand Personality:
 
 CRITICAL TEXT SAFETY RULES:
 - Headline MUST be completely visible and readable.
+- Do NOT show Primary Text in the image creative, its just for your reference
 - CTA MUST be completely visible and readable.
 - NEVER crop, clip, truncate, cut off, or partially hide any text.
 - NEVER crop, clip, truncate, cut off, or partially hide any reference image if exists.
