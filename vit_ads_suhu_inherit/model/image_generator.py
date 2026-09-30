@@ -73,16 +73,21 @@ class image_generator(models.Model):
             return pricing.get(quality, pricing["high"]).get(size, 0.034)
 
         params = self.env["ir.config_parameter"].sudo()
-        usd_to_idr = float(params.get_param("image_usd_to_idr", "17000"))
+        usd_to_idr = float(params.get_param("usd_to_idr", params.get_param("image_usd_to_idr", "17000")) or "17000")
         image_quality = (params.get_param("image_quality", "high") or "high").lower()
         image_size = params.get_param("image_size", "1024x1024") or "1024x1024"
+        image_margin = float(params.get_param("image_margin", "4") or "4")
+        ref_input_usd = float(params.get_param("image_ref_input_usd", "0.10") or "0.10")
 
         input_tokens = _count_input_tokens(image_prompt)
         input_cost_usd = (input_tokens / 1000.0) * 0.005
         image_cost_usd = _get_image_cost_usd(image_quality, image_size)
+        # /edit bills the reference images as input tokens as well.
+        brand_assets = self.ads_copy_id.product_value_analysis_id._brand_asset_images()
+        if brand_assets:
+            image_cost_usd += ref_input_usd * len(brand_assets)
         total_cost_idr = (input_cost_usd + image_cost_usd) * usd_to_idr
-        generate_image_margin = 4 # system params
-        resale_cost_idr = total_cost_idr * generate_image_margin  # 200% margin
+        resale_cost_idr = total_cost_idr * image_margin  # default 4x
         credits_used = resale_cost_idr # Rp // int(math.ceil(resale_cost_idr / 100.0))
         if self.partner_id and (self.partner_id.customer_limit or 0) < credits_used:
             raise UserError(NOT_ENOUGH_CREDIT)
@@ -95,7 +100,6 @@ class image_generator(models.Model):
         # images (image_load_error), so they are hosted on the fal CDN first and
         # passed as URLs. With assets we use the /edit endpoint, the only one
         # that accepts image_urls.
-        brand_assets = self.ads_copy_id.product_value_analysis_id._brand_asset_images()
         additional_payload = {}
         if brand_assets:
             model = f"{model}/edit"

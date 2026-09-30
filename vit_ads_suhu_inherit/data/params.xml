@@ -34,6 +34,10 @@
         <field name="key">image_usd_to_idr</field>
         <field name="value">17000</field>
     </record>
+    <record id="usd_to_idr" model="ir.config_parameter">
+        <field name="key">usd_to_idr</field>
+        <field name="value">17000</field>
+    </record>
     <record id="image_quality" model="ir.config_parameter">
         <field name="key">image_quality</field>
         <field name="value">high</field>
@@ -41,6 +45,30 @@
     <record id="image_size" model="ir.config_parameter">
         <field name="key">image_size</field>
         <field name="value">1024x1024</field>
+    </record>
+    <record id="image_margin" model="ir.config_parameter">
+        <field name="key">image_margin</field>
+        <field name="value">4</field>
+    </record>
+    <record id="image_ref_input_usd" model="ir.config_parameter">
+        <field name="key">image_ref_input_usd</field>
+        <field name="value">0.10</field>
+    </record>
+    <record id="text_margin" model="ir.config_parameter">
+        <field name="key">text_margin</field>
+        <field name="value">10</field>
+    </record>
+    <record id="deepseek_input_usd_per_1m" model="ir.config_parameter">
+        <field name="key">deepseek_input_usd_per_1m</field>
+        <field name="value">1.32</field>
+    </record>
+    <record id="deepseek_cache_hit_usd_per_1m" model="ir.config_parameter">
+        <field name="key">deepseek_cache_hit_usd_per_1m</field>
+        <field name="value">0.044</field>
+    </record>
+    <record id="deepseek_output_usd_per_1m" model="ir.config_parameter">
+        <field name="key">deepseek_output_usd_per_1m</field>
+        <field name="value">3.96</field>
     </record>
     <record id="linkedin_access_token" model="ir.config_parameter">
         <field name="key">linkedin_access_token</field>
