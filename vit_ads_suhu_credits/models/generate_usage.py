@@ -164,12 +164,8 @@ class ProductValueAnalysis(models.Model):
         return res
 
 
-class StageUsageMixin(object):
-    """Billing for the DeepSeek pipeline stages.
-
-    Subclasses it with the recordset the stage lives on; super() resolves to
-    the registered model's action_generate, so billing wraps the real API call.
-    """
+class MarketMapper(models.Model):
+    _inherit = "vit.market_mapper"
 
     def action_generate(self):
         if self.partner_id and self.partner_id.customer_limit <= MIN_CREDIT:
@@ -184,25 +180,81 @@ class StageUsageMixin(object):
         return res
 
 
-class MarketMapper(StageUsageMixin, models.Model):
-    _inherit = "vit.market_mapper"
-
-
-class AudienceProfiler(StageUsageMixin, models.Model):
+class AudienceProfiler(models.Model):
     _inherit = "vit.audience_profiler"
 
+    def action_generate(self):
+        if self.partner_id and self.partner_id.customer_limit <= MIN_CREDIT:
+            raise UserError(NOT_ENOUGH_CREDIT)
+        res = super().action_generate()
 
-class AngleHook(StageUsageMixin, models.Model):
+        charge_usage(
+            self, self.env, lambda rec: f"{rec.display_name or rec._name}",
+            input_text=self.input,
+            output_text=self.output or "",
+        )
+        return res
+
+
+class AngleHook(models.Model):
     _inherit = "vit.angle_hook"
 
+    def action_generate(self):
+        if self.partner_id and self.partner_id.customer_limit <= MIN_CREDIT:
+            raise UserError(NOT_ENOUGH_CREDIT)
+        res = super().action_generate()
 
-class Hook(StageUsageMixin, models.Model):
+        charge_usage(
+            self, self.env, lambda rec: f"{rec.display_name or rec._name}",
+            input_text=self.input,
+            output_text=self.output or "",
+        )
+        return res
+
+
+class Hook(models.Model):
     _inherit = "vit.hook"
 
+    def action_generate(self):
+        if self.partner_id and self.partner_id.customer_limit <= MIN_CREDIT:
+            raise UserError(NOT_ENOUGH_CREDIT)
+        res = super().action_generate()
 
-class AdsCopy(StageUsageMixin, models.Model):
+        charge_usage(
+            self, self.env, lambda rec: f"{rec.display_name or rec._name}",
+            input_text=self.input,
+            output_text=self.output or "",
+        )
+        return res
+
+
+class AdsCopy(models.Model):
     _inherit = "vit.ads_copy"
 
+    def action_generate(self):
+        if self.partner_id and self.partner_id.customer_limit <= MIN_CREDIT:
+            raise UserError(NOT_ENOUGH_CREDIT)
+        res = super().action_generate()
 
-class VideoDirector(StageUsageMixin, models.Model):
+        charge_usage(
+            self, self.env, lambda rec: f"{rec.display_name or rec._name}",
+            input_text=self.input,
+            output_text=self.output or "",
+        )
+        return res
+
+
+class VideoDirector(models.Model):
     _inherit = "vit.video_director"
+
+    def action_generate(self):
+        if self.partner_id and self.partner_id.customer_limit <= MIN_CREDIT:
+            raise UserError(NOT_ENOUGH_CREDIT)
+        res = super().action_generate()
+
+        charge_usage(
+            self, self.env, lambda rec: f"{rec.display_name or rec._name}",
+            input_text=self.input,
+            output_text=self.output or "",
+        )
+        return res
