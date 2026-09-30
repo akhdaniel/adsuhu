@@ -32,11 +32,11 @@
     </record>
     <record id="image_usd_to_idr" model="ir.config_parameter">
         <field name="key">image_usd_to_idr</field>
-        <field name="value">17000</field>
+        <field name="value">18000</field>
     </record>
     <record id="usd_to_idr" model="ir.config_parameter">
         <field name="key">usd_to_idr</field>
-        <field name="value">17000</field>
+        <field name="value">18000</field>
     </record>
     <record id="image_quality" model="ir.config_parameter">
         <field name="key">image_quality</field>
