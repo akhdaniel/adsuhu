@@ -111,9 +111,44 @@ class image_generator(models.Model):
             image_prompt = (
                 f"{image_prompt}\n\n"
                 f"Reference images attached, in order: {asset_labels}. "
-                "Reproduce the brand logo exactly as shown, unchanged in shape, "
-                "colour and lettering. Reproduce the product packaging exactly as "
-                "shown. Keep both visually faithful to the reference."
+                """REFERENCE IMAGE INSTRUCTIONS:
+                One or more reference images have been provided.
+
+                Use the reference images ONLY as supporting visual references for
+                specific branded assets such as:
+                - product packaging
+                - product appearance
+                - logo
+                - brand mark
+                - label
+                - UI/product screenshot
+                - other explicitly identifiable brand assets
+
+                IMPORTANT:
+                - The reference image is NOT the main creative concept.
+                - Do NOT copy the reference image's overall composition.
+                - Do NOT copy its background, environment, camera angle, lighting setup,
+                layout, or visual storytelling unless explicitly requested.
+                - Do NOT use a person/model/actor from the reference image as the main actor.
+                - Do NOT make the reference image determine the pose, facial expression,
+                scene, or story.
+                - The main actor, emotion, environment, action, composition, and story
+                must come from the original Visual Concept and campaign instructions.
+                - If the reference contains a product/package, reproduce its recognizable
+                appearance and branding accurately and integrate it naturally into the
+                newly generated scene.
+                - If the reference contains a logo or brand mark, preserve its recognizable
+                identity and proportions.
+                - Do not redesign, rename, or invent a different version of the referenced
+                brand/product.
+                - The reference asset should support the advertising concept, not replace it.
+
+                PRIORITY:
+                The original prompt and Visual Concept have priority over the reference
+                images.
+
+                Use the reference images to improve product/brand fidelity while creating
+                an otherwise new composition based on the original creative brief."""
             )
 
         image_url = fal.generate_image(image_prompt=image_prompt, 
