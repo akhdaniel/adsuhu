@@ -357,13 +357,38 @@ Brand Personality:
 {brand_personality}
 
 CRITICAL TEXT SAFETY RULES:
-- Headline text MUST be fully inside SAFE AREA
-- CTA button/text MUST be fully inside SAFE AREA
-- NO cropping, NO clipping, NO cutoff text
-- Add generous padding/margins around headline and CTA
-- Keep important text at center 80% of canvas
-- Do NOT place text near edges
-- Design for multiple placements (Feed, Stories, Reels)
+- Headline MUST be completely visible and readable.
+- CTA MUST be completely visible and readable.
+- NEVER crop, clip, truncate, cut off, or partially hide any text.
+- NEVER allow any letter, word, punctuation, or part of the CTA to touch
+  or cross the image boundary.
+- Keep the entire headline and CTA inside a generous inner safe zone.
+- Maintain at least 10% vertical padding from the top and bottom edges.
+- Maintain at least 8% horizontal padding from the left and right edges.
+- Do NOT place headline or CTA against the extreme top or bottom of the canvas.
+- Do NOT allow decorative elements, people, products, or other objects to
+  overlap or obscure the text.
+- If necessary, reduce the font size or rearrange the text layout so the
+  ENTIRE text remains visible.
+- Prefer fewer lines with comfortable spacing over oversized typography.
+- Text readability and complete text visibility have higher priority than
+  visual scale.
+
+TEXT MUST FIT INSIDE THIS APPROXIMATE SAFE AREA:
+
+┌─────────────────────────────┐
+│       10% TOP MARGIN        │
+│                             │
+│    ┌───────────────────┐    │
+│    │                   │    │
+│    │  HEADLINE / CTA   │    │
+│    │                   │    │
+│    └───────────────────┘    │
+│                             │
+│      10% BOTTOM MARGIN      │
+└─────────────────────────────┘
+
+The safe area applies to the actual final output canvas.
 
 Design & Conversion Rules:
 - Strong visual hierarchy
