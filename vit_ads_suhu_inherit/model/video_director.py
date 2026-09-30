@@ -105,6 +105,12 @@ class video_director(models.Model):
         if not api_key:
             raise UserError("FAL API Key belum diset")
 
+        costs = self._actor_image_costs()
+        partner = self.partner_id
+        if partner and (partner.customer_limit or 0) < costs["sale_idr"]:
+            from odoo.addons.vit_ads_suhu_inherit.model.constants import NOT_ENOUGH_CREDIT
+            raise UserError(NOT_ENOUGH_CREDIT)
+
         fal = Fal(api_key=api_key)
 
         image_url = fal.generate_image(
@@ -115,6 +121,28 @@ class video_director(models.Model):
         self.main_actor_url = image_url
         if image_url:
             self.download_actor_image()
+
+            self.env['vit.topup.service'].create_usage_credit(
+                partner,
+                name=f"actor_image:{self.id}",
+                credit=-costs["sale_idr"],
+                cost=-costs["cost_idr"],
+            )
+
+    def _actor_image_costs(self):
+        """Cost of the actor image (flux-pro v1.1-ultra).
+
+        fal does not publish unit pricing for this endpoint, so it is
+        configurable - default is deliberately conservative so the resale
+        price never undercuts the vendor bill.
+        """
+        params = self.env["ir.config_parameter"].sudo()
+        usd_to_idr = float(params.get_param("usd_to_idr", params.get_param("image_usd_to_idr", "18000")) or "18000")
+        actor_cost_usd = float(params.get_param("actor_image_cost_usd", "0.25") or "0.25")
+        image_margin = float(params.get_param("image_margin", "4") or "4")
+        cost_idr = actor_cost_usd * usd_to_idr
+        sale_idr = cost_idr * image_margin
+        return {"cost_idr": cost_idr, "sale_idr": sale_idr}
 
     def download_actor_image(self):
         for rec in self:
