@@ -148,7 +148,26 @@ class image_generator(models.Model):
                 images.
 
                 Use the reference images to improve product/brand fidelity while creating
-                an otherwise new composition based on the original creative brief."""
+                an otherwise new composition based on the original creative brief.
+                
+                OUTPUT CANVAS:
+
+                The reference image may have a different aspect ratio from the requested
+                advertising canvas.
+
+                DO NOT preserve the reference image's aspect ratio.
+
+                DO NOT add white borders, white margins, letterboxing, pillarboxing,
+                or empty side panels to accommodate the reference image.
+
+                Generate the final advertisement directly on the requested output canvas.
+
+                The reference image is an asset reference only. It must be naturally
+                recomposed into the target canvas.
+
+                The final image must fill the entire canvas edge-to-edge with no
+                artificial white space caused by the reference image.
+                """
             )
 
         image_url = fal.generate_image(image_prompt=image_prompt, 
