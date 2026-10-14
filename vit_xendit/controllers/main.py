@@ -116,11 +116,11 @@ class XenditController(http.Controller):
         cfg = self._get_xendit_config()
         expected_token = cfg["webhook_token"]
         if expected_token and token != expected_token:
-            _logger.warning("Xendit webhook token mismatch.")
+            _logger.error("Xendit webhook token mismatch.")
             return {"status": "forbidden"}
 
         forward_url = payload.get("success_redirect_url") or ""
-        _logger.info(f'forward_url={forward_url}')
+        _logger.error(f'forward_url={forward_url}')
         if forward_url.startswith("http://bootcamp.vitraining.com") or forward_url.startswith("https://bootcamp.vitraining.com"):
             try:
                 base_url = "http://bootcamp.vitraining.com"
@@ -163,10 +163,10 @@ class XenditController(http.Controller):
                 headers["x-callback-token"] = token
             try:
                 resp = requests.post(target_url, json=payload, headers=headers, timeout=15)
-                _logger.info(f"event forward {target_url}: {resp.status_code} {resp.text}")
+                _logger.error(f"event forward {target_url}: {resp.status_code} {resp.text}")
                 return {"status": "ok", "forward": {"status_code": resp.status_code, "text": resp.text}}
             except Exception as e:
-                _logger.warning("Forward event webhook failed: %s", e)
+                _logger.error("Forward event webhook failed: %s", e)
                 return {"status": "forward_failed", "error": str(e)}
 
         status = payload.get("status") or payload.get("invoice_status")

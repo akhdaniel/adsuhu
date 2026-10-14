@@ -130,6 +130,7 @@ class image_generator(models.Model):
 
                 IMPORTANT:
                 - The reference image is NOT the main creative concept, should only appears ONCE in the creative
+                - Do NOT crop the referece image
                 - Do NOT copy the reference image's overall composition.
                 - Do NOT copy its background, environment, camera angle, lighting setup,
                 layout, or visual storytelling unless explicitly requested.
