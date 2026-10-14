@@ -5,8 +5,11 @@ import logging
 import time
 import requests
 import json
+import re
 _logger = logging.getLogger(__name__)
 _webhook_url = '/payment/xendit/webhook'
+_event_webhook_url = 'https://event.xerpium.com/api/xendit/webhook'
+_event_external_id = re.compile(r'^evt-[\w-]+::REG-[A-Z0-9]+$')
 
 
 class XenditController(http.Controller):
@@ -150,11 +153,26 @@ class XenditController(http.Controller):
                 _logger.warning("Forward webhook failed: %s", e)
                 return {"status": "forward_failed", "error": str(e)}
 
+        # Invoice dari aplikasi event.xerpium.com: external_id = "evt-<event>::REG-<id>"
+        external_id = payload.get("external_id") or ""
+        if _event_external_id.match(external_id):
+            target_url = request.env['ir.config_parameter'].sudo().get_param(
+                'xendit_event_webhook_url', _event_webhook_url)
+            headers = {"Content-Type": "application/json"}
+            if token:
+                headers["x-callback-token"] = token
+            try:
+                resp = requests.post(target_url, json=payload, headers=headers, timeout=15)
+                _logger.info(f"event forward {target_url}: {resp.status_code} {resp.text}")
+                return {"status": "ok", "forward": {"status_code": resp.status_code, "text": resp.text}}
+            except Exception as e:
+                _logger.warning("Forward event webhook failed: %s", e)
+                return {"status": "forward_failed", "error": str(e)}
+
         status = payload.get("status") or payload.get("invoice_status")
         if status not in ["PAID", "SETTLED"]:
             return {"status": "ignored"}
 
-        external_id = payload.get("external_id") or ""
         if not external_id.startswith("adsuhu_topup:"):
             return {"status": "ignored"}
 
